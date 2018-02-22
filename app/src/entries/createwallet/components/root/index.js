@@ -1,6 +1,5 @@
 import React, { PureComponent } from "react";
 import { NavLink, Link } from "react-router-dom";
-import { Modal, Button } from "antd";
 import { I18n } from "react-i18next";
 import "./index.less";
 
@@ -15,6 +14,9 @@ export default class Root extends PureComponent {
 	componentDidMount() {
 		document.addEventListener("click", this.groupClose, false);
 	}
+	componentWillUnmount() {
+		document.removeEventListener("click", this.groupClose, false);
+	}
 	groupClose() {
 		let list = this.state.isShow.map(item => {
 			item = false;
@@ -23,9 +25,6 @@ export default class Root extends PureComponent {
 		this.setState({
 			isShow: list
 		});
-	}
-	componentWillUnmount() {
-		document.removeEventListener("click", this.groupClose, false);
 	}
 	openFaceClick(idx, e) {
 		let list = this.state.isShow.map((item, index) => {
