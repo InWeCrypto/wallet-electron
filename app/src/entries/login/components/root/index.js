@@ -7,22 +7,15 @@ import "./index.less";
 export default class Root extends PureComponent {
 	constructor(props) {
 		super(props);
-		this.state = {
-			phoneNum: "",
-			code: "",
-			open: false,
-			checkDev: true
-		};
+		this.state = {};
 	}
-	componentDidMount() {
-		console.log(i18n.t("login.login", this.props.lng));
-	}
+	componentDidMount() {}
 	render() {
 		let { lng } = this.props;
 		return (
 			<I18n>
 				{(t, { i18n }) => (
-					<div className="login ui">
+					<div className="login">
 						<div className="login-content">
 							{t("login.login", lng)}
 						</div>
