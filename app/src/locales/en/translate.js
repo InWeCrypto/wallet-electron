@@ -10,6 +10,14 @@ export default {
 		groupTitle: "Wallet list",
 		groupMore: "ALL Assets"
 	},
+	createWallet: {
+		title: "Create Wallet",
+		cancel: "Cancel",
+		create: "Create",
+		walletName: "Wallet Name",
+		password: "Password",
+		repeatPassword: "Repeat Password"
+	},
 	menu: {
 		project: "project"
 	}
