@@ -1,0 +1,10 @@
+
+> InWe@1.0.0 dev /work/cms-website
+> cross-env NODE_ENV=development webpack-dev-server --open --inline --progress --profile "."
+
+
+Project is running at [1m[34mhttp://localhost:8080/[39m[22m
+webpack output is served from [1m[34m/[39m[22m
+404s will fallback to [1m[34m/index.html[39m[22m
+webpack: wait until bundle finished: /
+webpack: Failed to compile.

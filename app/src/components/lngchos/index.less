@@ -1,0 +1,31 @@
+.chooseLng {
+	align-items: center;
+	justify-content: center;
+	.lng {
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+		width: 1.1rem;
+		height: 0.32rem;
+		margin: 0 0.35rem;
+		cursor: pointer;
+		.icon {
+			width: 0.26rem;
+			height: 0.26rem;
+			background: url("../../assets/images/weixuan_ico.png") no-repeat
+				center center / contain;
+			&.choosed {
+				background: url("../../assets/images/selected_ico.png")
+					no-repeat center center / contain;
+			}
+		}
+		.text {
+			color: #646464;
+			font-size: 0.24rem;
+			line-height: 0.32rem;
+			&.choosed {
+				color: #fff;
+			}
+		}
+	}
+}

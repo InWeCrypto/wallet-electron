@@ -1,0 +1,44 @@
+.c-inputBox {
+	width: 100%;
+	height: 0.6rem;
+	padding: 0;
+	.name {
+		float: left;
+		width: 1.02rem;
+		line-height: 0.6rem;
+		height: 0.6rem;
+		font-size: 0.18rem;
+		color: #fff;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		text-align: right;
+		margin-right: 0.4rem;
+	}
+	.input {
+		float: left;
+		width: 5.27rem;
+		height: 0.6rem;
+		border-radius: 0.3rem;
+		border: 1px solid #979797;
+		overflow: hidden;
+		&.focus {
+			border-color: #44cb82;
+			input {
+				background: rgba(32, 32, 59, 1);
+			}
+		}
+		input {
+			display: block;
+			width: 100%;
+			height: 100%;
+			box-sizing: border-box;
+			padding-left: 0.4rem;
+			color: #fff;
+			font-size: 0.16rem;
+			line-height: 0.6rem;
+			border: 0;
+			outline: 0;
+			background: rgba(32, 32, 59, 0.3);
+		}
+	}
+}

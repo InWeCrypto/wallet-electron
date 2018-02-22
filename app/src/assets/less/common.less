@@ -1,0 +1,305 @@
+@import "./base.less";
+html {
+	font-size: 100px;
+}
+body {
+	font-size: 16px;
+}
+#root {
+	width: 100%;
+	height: 100%;
+}
+.mainBox {
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+	// min-width: 6.7rem;
+	// min-height: 7.5rem;
+	background: #20203b;
+}
+.home-box {
+	position: relative;
+	height: 100%;
+	background: #20203b;
+	display: flex;
+	flex-direction: column;
+	overflow: auto;
+	overflow-x: hidden;
+}
+.ui {
+	display: flex;
+}
+.ui.start {
+	align-items: flex-start;
+}
+.ui.center {
+	align-items: center;
+}
+.ui.end {
+	align-items: flex-end;
+}
+.ui.jcenter {
+	justify-content: center;
+}
+.ui.jstart {
+	justify-content: flex-start;
+}
+.ui.jend {
+	justify-content: flex-end;
+}
+.ui .f1 {
+	flex: 1;
+	min-width: 0;
+}
+
+// cdy
+.ui.jc-sb {
+	justify-content: space-between;
+}
+.ui.jc-sa {
+	justify-content: space-around;
+}
+.ui.jc-c {
+	justify-content: center;
+}
+.ui.fd-c {
+	flex-direction: column;
+}
+.ui.ai-c {
+	align-items: center;
+}
+.Center {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+.Ycenter {
+	position: absolute;
+	top: 50%;
+	transform: translate(0, -50%);
+}
+.Xcenter {
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%, 0);
+}
+.W {
+	width: 100%;
+}
+.Hide {
+	display: none !important;
+}
+
+//cdy
+::-webkit-scrollbar {
+	width: 0;
+	height: 0;
+	background: transparent;
+}
+input {
+	border: 0;
+	outline: none;
+}
+button {
+	border: 0;
+	outline: none;
+	cursor: pointer;
+}
+.mgt-1 {
+	margin-top: 0.1rem;
+}
+.mgt-2 {
+	margin-top: 0.2rem;
+}
+.mgt-3 {
+	margin-top: 0.3rem;
+}
+.mgt-4 {
+	margin-top: 0.4rem;
+}
+.mgt-5 {
+	margin-top: 0.5rem;
+}
+.mgt-6 {
+	margin-top: 0.6rem;
+}
+.mgt-7 {
+	margin-top: 0.7rem;
+}
+.mgt-8 {
+	margin-top: 0.8rem;
+}
+.mgt-9 {
+	margin-top: 0.9rem;
+}
+.mgt-10 {
+	margin-top: 1rem;
+}
+
+.bg {
+	background: linear-gradient(
+		to right bottom,
+		rgba(45, 188, 197, 1),
+		rgba(18, 18, 56, 1)
+	);
+}
+.c-btn-normal {
+	border: 0;
+	outline: none;
+	width: 1.12rem;
+	height: 0.46rem;
+	border-radius: 0.1rem;
+	color: #fff;
+
+	background: linear-gradient(
+		to bottom,
+		rgba(130, 224, 172, 1),
+		rgba(71, 196, 127, 1)
+	);
+	&:hover {
+		background: linear-gradient(
+			to bottom,
+			rgba(71, 196, 127, 1),
+			rgba(130, 224, 172, 1)
+		);
+	}
+	cursor: pointer;
+}
+.c-btn-big {
+	border: 0;
+	outline: none;
+	width: 1.8rem;
+	height: 0.44rem;
+	border-radius: 0.1rem;
+	color: #fff;
+
+	background: linear-gradient(
+		to bottom,
+		rgba(130, 224, 172, 1),
+		rgba(71, 196, 127, 1)
+	);
+	&:hover {
+		background: linear-gradient(
+			to bottom,
+			rgba(71, 196, 127, 1),
+			rgba(130, 224, 172, 1)
+		);
+	}
+}
+.backBtn {
+	position: absolute;
+	left: 0.2rem;
+	top: 0.2rem;
+	z-index: 10;
+	width: 0.26rem;
+	height: 0.26rem;
+	cursor: pointer;
+	background: url("../../assets/images/back_default.png") no-repeat center
+		center / cover;
+	&:hover {
+		background: url("../../assets/images/back_hover.png") no-repeat center
+			center / cover;
+	}
+}
+.f1 {
+	flex: 1;
+}
+.f2 {
+	flex: 2;
+}
+.f3 {
+	flex: 3;
+}
+.f4 {
+	flex: 4;
+}
+.f5 {
+	flex: 5;
+}
+//ant下拉菜单重写
+.ant-dropdown {
+	background: #404056;
+	border-radius: 0.1rem;
+	overflow: hidden;
+}
+.ant-dropdown-menu {
+	font-size: 0.16rem;
+	outline: none;
+	position: relative;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	text-align: left;
+	background-color: rgba(32, 32, 59, 0.3) !important;
+	border-radius: 0.3rem;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	background-clip: padding-box;
+	overflow: hidden;
+	.ant-dropdown-menu-item {
+		color: #fff;
+		background-color: transparent;
+		text-align: center;
+		&.ant-dropdown-menu-item-active {
+			color: #44cb82;
+			background-color: transparent;
+		}
+	}
+}
+//重写date
+.ant-calendar-picker {
+	height: 0.6rem;
+	line-height: 0.6rem;
+	input {
+		color: #fff;
+		display: block;
+		width: 2.7rem;
+		height: 0.6rem;
+		border-radius: 0.3rem;
+		border: 1px solid #979797;
+		padding-left: 0.15rem;
+		line-height: 0.6rem;
+		background: rgba(32, 32, 59, 0.3);
+	}
+	.ant-calendar-picker-icon:after {
+		color: rgba(255, 255, 255, 0.5);
+		font-size: 0.2rem;
+		position: relative;
+		left: -0.2rem;
+		top: -0.04rem;
+	}
+}
+
+//公共样式
+.mbox {
+	border-radius: 0.1rem;
+	background: #404056;
+}
+.minput {
+	height: 0.6rem;
+	line-height: 0.6rem;
+	color: #fff;
+	display: block;
+	border-radius: 0.3rem;
+	border: 1px solid #979797;
+	padding-left: 0.15rem;
+	background: rgba(32, 32, 59, 0.3);
+	&:focus {
+		border: 1px solid #44cb82;
+		background: rgba(32, 32, 59, 1);
+	}
+}
+.img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+.mgr0 {
+	margin-right: 0 !important;
+}
+.c-dropdown {
+	button {
+		box-sizing: border-box;
+	}
+}

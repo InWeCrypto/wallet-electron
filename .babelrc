@@ -1,0 +1,13 @@
+{
+	"presets": ["env", "react", "es2015", "stage-0"],
+	"ignore": ["./react/dist/ueditor/"],
+	"plugins": [
+		"syntax-dynamic-import",
+		"transform-class-properties",
+		"transform-decorators-legacy",
+		"transform-es2015-arrow-functions",
+		"transform-object-rest-spread",
+		"transform-remove-strict-mode",
+		["import", { "libraryName": "antd", "style": "css" }]
+	]
+}
