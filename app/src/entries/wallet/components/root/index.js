@@ -1,4 +1,5 @@
 import React, { PureComponent } from "react";
+import { Link } from "react-router-dom";
 import { I18n } from "react-i18next";
 import "./index.less";
 import creatWallet from "#/createwallet_ico.png";
@@ -20,10 +21,15 @@ export default class Root extends PureComponent {
 							{t("wallet.bigTitle", lng)}
 						</div>
 						<div className="wallet-ctrl">
-							<div className="wallet-ctrlbtn">
+							<Link
+								className="wallet-ctrlbtn"
+								to={{
+									pathname: "createwallet"
+								}}
+							>
 								<img className="walletimg" src={creatWallet} />
 								<div>{t("wallet.createWallet", lng)}</div>
-							</div>
+							</Link>
 							<div className="wallet-ctrlbtn">
 								<img className="walletimg" src={importWallet} />
 								<div>{t("wallet.importWallet", lng)}</div>

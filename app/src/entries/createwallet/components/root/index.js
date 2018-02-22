@@ -10,21 +10,22 @@ export default class Root extends PureComponent {
 		this.state = {
 			isShow: [false]
 		};
+		this.groupClose = this.groupClose.bind(this);
 	}
 	componentDidMount() {
-		document.addEventListener(
-			"click",
-			() => {
-				let list = this.state.isShow.map(item => {
-					item = false;
-					return item;
-				});
-				this.setState({
-					isShow: list
-				});
-			},
-			false
-		);
+		document.addEventListener("click", this.groupClose, false);
+	}
+	groupClose() {
+		let list = this.state.isShow.map(item => {
+			item = false;
+			return item;
+		});
+		this.setState({
+			isShow: list
+		});
+	}
+	componentWillUnmount() {
+		document.removeEventListener("click", this.groupClose, false);
 	}
 	openFaceClick(idx, e) {
 		let list = this.state.isShow.map((item, index) => {
