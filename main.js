@@ -30,8 +30,8 @@ function createWindow() {
 		minWidth: 1440,
 		webPreferences: {
 			webSecurity: false
-		},
-		titleBarStyle: "hiddenInset"
+		}
+		// titleBarStyle: "hiddenInset"
 	});
 
 	if (!isDev) {
