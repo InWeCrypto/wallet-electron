@@ -3,7 +3,8 @@ import { NavLink, Link } from "react-router-dom";
 import { Modal, Button } from "antd";
 import { I18n } from "react-i18next";
 import "./index.less";
-import loginHeader from "../../../../assets/images/login.png";
+import loginHeader from "#/login.png";
+
 export default class Root extends PureComponent {
 	constructor(props) {
 		super(props);
@@ -17,7 +18,9 @@ export default class Root extends PureComponent {
 				{(t, { i18n }) => (
 					<div className="login">
 						<div className="login-content">
-							<div className="login-header" />
+							<div className="login-header">
+								<img src={loginHeader} />
+							</div>
 						</div>
 					</div>
 				)}
