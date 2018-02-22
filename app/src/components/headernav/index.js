@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import leftimg from "#/zuo_ico.png";
 import rightimg from "#/you_ico.png";
-import backimg from "#/zuo_ico.png";
+import homeimg from "#/zhuye_ico.png";
 import refreshimg from "#/shuaxin_ico.png";
 
 import "./index.less";
@@ -20,10 +20,10 @@ class Demo extends PureComponent {
 						<img src={backimg} alt="" />
 					</div>
 					<div className="btn-back">
-						<img src={backimg} alt="" />
+						<img src={rightimg} alt="" />
 					</div>
 					<div className="btn-back">
-						<img src={backimg} alt="" />
+						<img src={homeimg} alt="" />
 					</div>
 				</div>
 				<div className="right">
