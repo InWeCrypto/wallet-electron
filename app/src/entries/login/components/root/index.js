@@ -13,15 +13,16 @@ export default class Root extends PureComponent {
 	render() {
 		let { lng } = this.props;
 		return (
-			<I18n>
-				{(t, { i18n }) => (
-					<div className="login">
-						<div className="login-content">
-							{t("login.login", lng)}
-						</div>
-					</div>
-				)}
-			</I18n>
+			<div>22</div>
+			// <I18n>
+			// 	{(t, { i18n }) => (
+			// 		<div className="login">
+			// 			<div className="login-content">
+			// 				{t("login.login", lng)}
+			// 			</div>
+			// 		</div>
+			// 	)}
+			// </I18n>
 		);
 	}
 }
