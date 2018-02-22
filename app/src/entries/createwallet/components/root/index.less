@@ -1,0 +1,119 @@
+.createwallet {
+	position: relative;
+	height: 100%;
+	.create-title {
+		font-size: 0.3rem;
+		color: #47d184;
+		text-align: center;
+		padding: 0.4rem 0;
+		box-sizing: border-box;
+	}
+	.create-container {
+		display: flex;
+		justify-content: center;
+		color: #fff;
+		.create-group {
+			width: 2.4rem;
+			margin: 0 0.1rem;
+			position: absolute;
+			transform-style: preserve-3d;
+
+			.wallet-img {
+				width: 1rem;
+				height: 1rem;
+			}
+			.wallet-img1 {
+				width: 0.6rem;
+				height: 0.6rem;
+				position: relative;
+				z-index: 2;
+			}
+			.t1 {
+				margin-top: 0.3rem;
+				font-size: 0.24rem;
+			}
+			.back-img {
+				text-align: center;
+			}
+			.create-face {
+				text-align: center;
+				transform: rotateY(0deg);
+				z-index: 2;
+				backface-visibility: hidden;
+			}
+			.create-back {
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100%;
+				transform: rotateY(-180deg);
+				backface-visibility: hidden;
+			}
+			.create-box {
+				position: relative;
+				width: 2.4rem;
+				height: auto;
+				transition: 0.6s;
+				transform-style: preserve-3d;
+			}
+			&.showback .create-box {
+				transform: rotateY(180deg);
+			}
+			.create-detail {
+				text-align: left;
+				width: 100%;
+				background: #2e2e4c;
+				position: relative;
+				top: -0.3rem;
+				box-sizing: border-box;
+				padding: 0.6rem 0.12rem 0.12rem 0.12rem;
+				border-radius: 0.08rem;
+				.detail-item {
+					margin: 0.09rem 0;
+					.detail-nam {
+						margin-right: 0.1rem;
+					}
+					.input {
+						width: 100%;
+						background: rgba(0, 0, 0, 0.17);
+						padding: 0.08rem 0.15rem;
+						box-sizing: border-box;
+						border-radius: 0.2rem;
+						color: rgba(255, 255, 255, 0.2);
+						border: none;
+						outline: none;
+						&::-webkit-input-placeholder {
+							color: rgba(255, 255, 255, 0.2);
+						}
+					}
+				}
+				.detail-ctrl {
+					padding: 0.2rem 0;
+					text-align: center;
+					.detail-btn {
+						display: inline-block;
+						margin: 0 0.18rem;
+						border-radius: 0.08rem;
+						width: 0.7rem;
+						height: 0.3rem;
+						line-height: 0.3rem;
+						cursor: pointer;
+						background: linear-gradient(
+							to right,
+							#ffffff 0%,
+							#cacaca 10%,
+							#bdbdbd 100%
+						);
+						&.c {
+							background: linear-gradient(
+								to right,
+								#82e0ac,
+								#47c47f
+							);
+						}
+					}
+				}
+			}
+		}
+	}
+}

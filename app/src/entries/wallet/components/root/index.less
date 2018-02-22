@@ -1,0 +1,94 @@
+.wallet {
+	position: relative;
+	height: 100%;
+	.bigtitle {
+		text-align: center;
+		color: #47d184;
+		font-size: 0.36rem;
+		padding: 0.4rem 0;
+	}
+	.wallet-ctrl {
+		box-sizing: border-box;
+		padding: 0.2rem 0.4rem;
+		display: flex;
+		.wallet-ctrlbtn {
+			width: 2.4rem;
+			height: 1.6rem;
+			align-items: center;
+			background: #2e2e4c;
+			border-radius: 0.08rem;
+			display: flex;
+			justify-content: center;
+			flex-flow: column;
+			color: #fff;
+			cursor: pointer;
+			margin-right: 0.2rem;
+			font-size: 0.18rem;
+			.walletimg {
+				width: 0.48rem;
+				height: 0.48rem;
+				margin-bottom: 0.1rem;
+			}
+		}
+	}
+	.wallet-container {
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		top: 3.34rem;
+		box-sizing: border-box;
+		padding: 0 0.44rem;
+		color: #fff;
+		.group-title {
+			background: #2e2e4c;
+			box-sizing: border-box;
+			padding: 0 0.2rem;
+			border-radius: 0.04rem 0.04rem 0 0;
+			box-sizing: border-box;
+			.ui {
+				border-bottom: 1px solid #373755;
+				padding: 0.2rem 0 0.18rem 0;
+			}
+			.t1 {
+				color: #47d184;
+				font-size: 0.18rem;
+			}
+		}
+		.group-main {
+			position: absolute;
+			left: 0.44rem;
+			right: 0.44rem;
+			top: 0.66rem;
+			bottom: 0.5rem;
+			background: #2e2e4c;
+			overflow: auto;
+			border-radius: 0 0 0.04rem 0.04rem;
+			box-sizing: border-box;
+			padding: 0 0.2rem;
+		}
+		.wallet-group {
+			padding: 0.2rem 0;
+			border-top: 1px solid #373755;
+			&:nth-child(1) {
+				border-top: none;
+			}
+			.wallet-img {
+				width: 0.56rem;
+				height: 0.56rem;
+				margin-right: 0.2rem;
+			}
+			.wallet-name {
+				font-size: 0.18rem;
+			}
+			.wallet-address {
+				font-size: 0.14rem;
+				margin-top: 0.1rem;
+			}
+			.t3 {
+				color: #ff7044;
+				font-size: 0.2rem;
+			}
+		}
+	}
+}
