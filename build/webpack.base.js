@@ -7,6 +7,7 @@ const uglify = require("uglifyjs-webpack-plugin");
 var path = require("path");
 var entries = {};
 var rootPath = path.resolve(__dirname, "../app/src");
+
 entries.app = [rootPath + "/index.js", rootPath + "/assets/less/common.less"];
 entries.pace = [
 	rootPath + "/assets/less/pace.theme.less",
@@ -20,7 +21,10 @@ var webpackConfig = {
 	entry: entries,
 	resolve: {
 		extensions: [".web.js", ".mjs", ".js", ".json", ".jsx"],
-		alias: {}
+		alias: {
+			"@": path.resolve(__dirname, "../app/src/components"),
+			"#": path.resolve(__dirname, "../app/src/assets/images")
+		}
 	},
 	node: {
 		fs: "empty"
