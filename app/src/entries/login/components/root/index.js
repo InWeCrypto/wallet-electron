@@ -4,11 +4,6 @@ import { Modal, Button } from "antd";
 import { I18n } from "react-i18next";
 import "./index.less";
 import loginHeader from "#/tou_pic.png";
-<<<<<<< HEAD
-
-=======
-import loginName from "#/loginname.png";
->>>>>>> ccbc368d6b7f408637ff6ed620cf619ee6f7448a
 export default class Root extends PureComponent {
 	constructor(props) {
 		super(props);
