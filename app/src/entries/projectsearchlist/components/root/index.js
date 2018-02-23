@@ -17,36 +17,44 @@ export default class Root extends PureComponent {
 	componentDidMount() {}
 	render() {
 		let { lng } = this.props;
+		let arr = [];
+		for (var i = 0; i < 100; i++) {
+			arr.push(1);
+		}
 		return (
 			<I18n>
 				{(t, { i18n }) => (
-					<div className="main-box project">
+					<div className="main-box projectlist">
 						<Menu curmenu="project" />
 						<div className="content-container">
 							<HeaderNav />
 							<div className="content project-content">
-								<div className="title Hide">
-									Search the project you want to know
-								</div>
 								<div className="search-box">
 									<img src={searchimg} alt="" />
 									<input type="text" />
 								</div>
-								<div className="tags-box">
-									<div className="tagsname">
-										Everyone in the search
-									</div>
-									<ul className="tags">
-										<li className="tags-cell">Trinity</li>
-										<li className="tags-cell">
-											TrinityTrinitynity
-										</li>
-										<li className="tags-cell">
-											Trinitynity
-										</li>
-										<li className="tags-cell">Tri</li>
-									</ul>
-								</div>
+								<ul className="search-list">
+									{arr.map(() => {
+										return (
+											<li className="search-cell">
+												<div className="imgbox">
+													<img
+														src={searchimg}
+														alt=""
+													/>
+												</div>
+												<div className="messBox">
+													<div className="name">
+														TNC &nbsp; (Trinity)
+													</div>
+													<div className="mess">
+														Offchain Scaling All
+													</div>
+												</div>
+											</li>
+										);
+									})}
+								</ul>
 							</div>
 						</div>
 					</div>
