@@ -21,7 +21,7 @@ export default class Root extends PureComponent {
 								<img className="login-img" src={loginHeader} />
 							</div>
 							<div className="login-name">
-								<img className="loginname" src={loginName} />
+								{/* <img className="loginname" src={loginName} /> */}
 							</div>
 							<div className="login-btn">
 								<span className="loginbtn">

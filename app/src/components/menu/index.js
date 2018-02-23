@@ -10,12 +10,7 @@ class Menu extends PureComponent {
 		super(props);
 		this.state = { showSearch: false, user: null };
 	}
-	componentDidMount() {
-		let user = localStorage.getItem("userInfo");
-		this.setState({
-			user: JSON.parse(JSON.parse(user).data)
-		});
-	}
+	componentDidMount() {}
 	render() {
 		const { user } = this.state;
 		const { curmenu, curchildmenu, lng } = this.props;
