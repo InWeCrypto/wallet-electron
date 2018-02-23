@@ -1,0 +1,102 @@
+.wallet {
+	position: relative;
+	height: 100%;
+	box-sizing: border-box;
+	padding: 0 0.4rem;
+	.box1 {
+		padding: 0.4rem 0;
+		.icon {
+			width: 0.8rem;
+			height: 0.8rem;
+			margin-right: 0.2rem;
+		}
+		.money {
+			margin-left: 0.2rem;
+			height: 0.8rem;
+			color: #5c89eb;
+			font-size: 0.24rem;
+		}
+		.name {
+			font-size: 0.3rem;
+			color: #fff;
+		}
+		.address {
+			font-size: 0.2rem;
+			margin-top: 0.2rem;
+			color: #fff;
+		}
+	}
+	.box2 {
+		background: #2e2e4c;
+		border-radius: 0.08rem;
+		box-sizing: border-box;
+		padding: 0.2rem;
+		.nav-item {
+			display: inline-block;
+			margin: 0 0.2rem;
+			font-size: 0.18rem;
+			color: #55557d;
+			cursor: pointer;
+			&.cur {
+				color: #47d184;
+			}
+		}
+		.box-btn {
+			margin-left: 0.2rem;
+			padding: 0 0.08rem;
+			height: 0.36rem;
+			border-radius: 0.08rem;
+			display: flex;
+			font-size: 0.14rem;
+			color: #fff;
+			flex-flow: column;
+			justify-content: center;
+			// align-items: center;
+			cursor: pointer;
+			background: linear-gradient(
+				to right,
+				rgba(255, 205, 193, 1) 0%,
+				#e63d00 40%,
+				#e63d00 100%
+			);
+			&.disabled {
+				background: #c9c6c6;
+			}
+			.t2 {
+				font-size: 0.12rem;
+				line-height: 1;
+			}
+			.t1 {
+				line-height: 1;
+			}
+		}
+	}
+	.box3 {
+		position: absolute;
+		left: 0.4rem;
+		right: 0.4rem;
+		bottom: 0.4rem;
+		top: 2.71rem;
+		background: #2e2e4c;
+		border-radius: 0.08rem;
+		box-sizing: border-box;
+		overflow: auto;
+		padding: 0.2rem;
+		.wallet-item {
+			padding: 0.25rem 0;
+			color: #fff;
+			border-bottom: 1px solid #373755;
+			.icon {
+				width: 0.4rem;
+				height: 0.4rem;
+				margin-right: 0.1rem;
+			}
+			.name {
+				margin-right: 0.2rem;
+			}
+			.t1 {
+				font-size: 0.12rem;
+			}
+		}
+	}
+}

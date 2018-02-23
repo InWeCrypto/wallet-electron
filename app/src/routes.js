@@ -14,6 +14,7 @@ import ImportWatch from "./entries/importwatch";
 import ImportEnd from "./entries/importend";
 import NeoWallet from "./entries/neowallet";
 import EthWallet from "./entries/ethwallet";
+import WatchWallet from "./entries/watchwallet";
 //authority  addauthor
 export default () => {
 	return (
@@ -31,6 +32,7 @@ export default () => {
 			<Route path="/importend" component={ImportEnd} />
 			<Route path="/neowallet" component={NeoWallet} />
 			<Route path="/ethwallet" component={EthWallet} />
+			<Route path="/watchwallet" component={WatchWallet} />
 		</Switch>
 	);
 };
