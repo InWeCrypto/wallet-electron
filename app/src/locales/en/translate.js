@@ -18,6 +18,13 @@ export default {
 		password: "Password",
 		repeatPassword: "Repeat Password"
 	},
+	importWallet: {
+		title: "Import Wallet",
+		keystore: "Keystore",
+		mnemonic: "Mnemonic",
+		private: "Private Key",
+		watch: "Watch"
+	},
 	menu: {
 		project: "project"
 	}
