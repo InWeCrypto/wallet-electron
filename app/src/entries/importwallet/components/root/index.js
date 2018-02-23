@@ -24,12 +24,17 @@ export default class Root extends PureComponent {
 						</div>
 						<div className="import-container">
 							<div className="ui jcenter">
-								<div className="import-group">
+								<Link
+									to={{
+										pathname: "importkeystore"
+									}}
+									className="import-group"
+								>
 									<img className="importicon" src={keyicon} />
 									<div className="t1">
 										{t("importWallet.keystore", lng)}
 									</div>
-								</div>
+								</Link>
 								<div className="import-group">
 									<img className="importicon" src={mneicon} />
 									<div className="t1">
