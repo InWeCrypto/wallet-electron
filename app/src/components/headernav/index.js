@@ -15,20 +15,20 @@ class Demo extends PureComponent {
 		const {} = this.props;
 		return (
 			<div className="header-nav">
-				<div className="left">
+				<div className="left ui">
 					<div className="btn-back">
-						<img src={backimg} alt="" />
+						<img className="img" src={leftimg} alt="" />
 					</div>
-					<div className="btn-back">
-						<img src={rightimg} alt="" />
+					<div className="btn-prev">
+						<img className="img" src={rightimg} alt="" />
 					</div>
-					<div className="btn-back">
-						<img src={homeimg} alt="" />
+					<div className="btn-home">
+						<img className="img" src={homeimg} alt="" />
 					</div>
 				</div>
-				<div className="right">
+				<div className="right ui">
 					<div className="btn-refresh">
-						<img src={refreshimg} alt="" />
+						<img className="img" src={refreshimg} alt="" />
 					</div>
 				</div>
 			</div>

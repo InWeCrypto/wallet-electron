@@ -26,6 +26,9 @@ export default {
 		watch: "Watch"
 	},
 	menu: {
-		project: "project"
+		project: "Project",
+		dashboard: "DashBoard",
+		wallet: "Wallet",
+		myfollowup: "My Follow-up"
 	}
 };

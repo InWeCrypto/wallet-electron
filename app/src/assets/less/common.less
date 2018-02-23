@@ -310,9 +310,19 @@ body {
 }
 
 //pc端钱包
-.contentContainer {
-	flex: 1;
-	display: flex;
-	flex-direction: column;
+.main-box {
+	position: relative;
+	width: 100%;
 	height: 100%;
+	display: flex;
+	.content-container {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		.content {
+			flex: 1;
+			overflow: scroll;
+		}
+	}
 }
