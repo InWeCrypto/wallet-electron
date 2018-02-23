@@ -7,6 +7,7 @@ import Wallet from "./entries/wallet";
 import CreateWallet from "./entries/createwallet";
 import ImportWallet from "./entries/importwallet";
 import ImportKeystore from "./entries/importkeystore";
+import ImportMnemonic from "./entries/importmnemonic";
 //authority  addauthor
 export default () => {
 	return (
@@ -17,6 +18,7 @@ export default () => {
 			<Route path="/createwallet" component={CreateWallet} />
 			<Route path="/importwallet" component={ImportWallet} />
 			<Route path="/importkeystore" component={ImportKeystore} />
+			<Route path="/importmnemonic" component={ImportMnemonic} />
 		</Switch>
 	);
 };

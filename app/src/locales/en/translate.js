@@ -25,6 +25,12 @@ export default {
 		private: "Private Key",
 		watch: "Watch"
 	},
+	keyStore: {
+		title: "Keystore",
+		textarea: "Copy and paste the content of the keystore file",
+		input: "Upload the keystore file",
+		next: "Next"
+	},
 	menu: {
 		project: "Project",
 		dashboard: "DashBoard",

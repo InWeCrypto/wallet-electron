@@ -35,12 +35,17 @@ export default class Root extends PureComponent {
 										{t("importWallet.keystore", lng)}
 									</div>
 								</Link>
-								<div className="import-group">
+								<Link
+									to={{
+										pathname: "importmnemonic"
+									}}
+									className="import-group"
+								>
 									<img className="importicon" src={mneicon} />
 									<div className="t1">
 										{t("importWallet.mnemonic", lng)}
 									</div>
-								</div>
+								</Link>
 							</div>
 							<div className="ui jcenter">
 								<div className="import-group">
