@@ -11,6 +11,7 @@ import ImportMnemonic from "./entries/importmnemonic";
 import ImportPrivate from "./entries/importprivate";
 import ImportWatch from "./entries/importwatch";
 import ImportEnd from "./entries/importend";
+import NeoWallet from "./entries/neowallet";
 //authority  addauthor
 export default () => {
 	return (
@@ -25,6 +26,7 @@ export default () => {
 			<Route path="/importprivate" component={ImportPrivate} />
 			<Route path="/importwatch" component={ImportWatch} />
 			<Route path="/importend" component={ImportEnd} />
+			<Route path="/neowallet" component={NeoWallet} />
 		</Switch>
 	);
 };
