@@ -20,7 +20,10 @@ export default class Root extends PureComponent {
 								src="https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=2743341508,493051922&fm=173&s=F203B14451608CEC1EFED1830300309B&w=218&h=146&img.JPEG"
 							/>
 							<div className="f1">
-								<div className="name">sdasdas</div>
+								<div className="name">
+									<span>sdasdas</span>
+									<span className="watch">watch</span>
+								</div>
 								<div className="address">3232</div>
 							</div>
 							<div className="money">$100.00</div>
