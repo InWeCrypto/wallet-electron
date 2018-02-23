@@ -25,6 +25,40 @@ export default {
 		private: "Private Key",
 		watch: "Watch"
 	},
+	keyStore: {
+		title: "Keystore",
+		textarea: "Copy and paste the content of the keystore file",
+		input: "Upload the keystore file",
+		next: "Next"
+	},
+	mnemonic: {
+		title: "Mnemonic",
+		textarea: "Please use space to separate the mnemonic words",
+		next: "Next"
+	},
+	private: {
+		title: "Private Key",
+		textarea: "Please input your private key",
+		next: "Next"
+	},
+	private: {
+		title: "Private Key",
+		textarea: "Please input your private key",
+		next: "Next"
+	},
+	watch: {
+		title: "Watch Wallet",
+		textarea:
+			"Watch Wallet needs your wallet address only, serving as a way to manage and trade as a regular account. For security reasons, Cold Wallets among the others are recommended for large amount of assets.",
+		next: "Next"
+	},
+	end: {
+		title: "Creat Wallet",
+		name: "Wallet Name",
+		password: "Password",
+		previous: "Previous",
+		comfirm: "Comfirm"
+	},
 	menu: {
 		project: "Project",
 		dashboard: "DashBoard",
