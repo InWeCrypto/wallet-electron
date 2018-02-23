@@ -48,13 +48,23 @@ export default class Root extends PureComponent {
 								</Link>
 							</div>
 							<div className="ui jcenter">
-								<div className="import-group">
+								<Link
+									to={{
+										pathname: "importprivate"
+									}}
+									className="import-group"
+								>
 									<img className="importicon" src={priicon} />
 									<div className="t1">
 										{t("importWallet.private", lng)}
 									</div>
-								</div>
-								<div className="import-group">
+								</Link>
+								<Link
+									to={{
+										pathname: "importwatch"
+									}}
+									className="import-group"
+								>
 									<img
 										className="importicon"
 										src={watchicon}
@@ -62,7 +72,7 @@ export default class Root extends PureComponent {
 									<div className="t1">
 										{t("importWallet.watch", lng)}
 									</div>
-								</div>
+								</Link>
 							</div>
 						</div>
 					</div>

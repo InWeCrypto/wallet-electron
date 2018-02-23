@@ -13,22 +13,19 @@ export default class Root extends PureComponent {
 		return (
 			<I18n>
 				{(t, { i18n }) => (
-					<div className="importmnemonic">
-						<div className="title">{t("mnemonic.title", lng)}</div>
-						<div className="mnemonic-container ui jcenter">
-							<div className="mnemonic-box">
+					<div className="importprivate">
+						<div className="title">{t("private.title", lng)}</div>
+						<div className="private-container ui jcenter">
+							<div className="private-box">
 								<div>
 									<textarea
 										className="textarea"
-										placeholder={t(
-											"mnemonic.textarea",
-											lng
-										)}
+										placeholder={t("private.textarea", lng)}
 									/>
 								</div>
-								<div className="mnemonic-btn">
+								<div className="private-btn">
 									<span className="btn">
-										{t("mnemonic.next", lng)}
+										{t("private.next", lng)}
 									</span>
 								</div>
 							</div>
