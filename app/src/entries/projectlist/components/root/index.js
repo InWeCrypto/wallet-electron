@@ -33,28 +33,30 @@ export default class Root extends PureComponent {
 									<img src={searchimg} alt="" />
 									<input type="text" />
 								</div>
-								<ul className="search-list">
-									{arr.map(() => {
-										return (
-											<li className="search-cell">
-												<div className="imgbox">
-													<img
-														src={searchimg}
-														alt=""
-													/>
-												</div>
-												<div className="messBox">
-													<div className="name">
-														TNC &nbsp; (Trinity)
+								<div className="search-list">
+									<ul className="search-list-ul">
+										{arr.map((val, idex) => {
+											return (
+												<li key={idex} className="search-cell">
+													<div className="imgbox">
+														<img
+															src={searchimg}
+															alt=""
+														/>
 													</div>
-													<div className="mess">
-														Offchain Scaling All
+													<div className="messBox">
+														<div className="name">
+															TNC &nbsp; (Trinity)
+														</div>
+														<div className="mess">
+															Offchain Scaling All
+														</div>
 													</div>
-												</div>
-											</li>
-										);
-									})}
-								</ul>
+												</li>
+											);
+										})}
+									</ul>
+								</div>
 							</div>
 						</div>
 					</div>
