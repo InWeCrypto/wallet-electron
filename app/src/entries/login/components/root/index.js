@@ -3,7 +3,7 @@ import { NavLink, Link } from "react-router-dom";
 import { Modal, Button } from "antd";
 import { I18n } from "react-i18next";
 import "./index.less";
-import loginHeader from "#/login.png";
+import loginHeader from "#/tou_pic.png";
 
 export default class Root extends PureComponent {
 	constructor(props) {

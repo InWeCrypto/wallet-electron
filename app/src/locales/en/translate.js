@@ -3,6 +3,9 @@ export default {
 		login: "login"
 	},
 	menu: {
-		project: "project"
+		project: "Project",
+		dashboard: "DashBoard",
+		wallet: "Wallet",
+		myfollowup: "My Follow-up"
 	}
 };

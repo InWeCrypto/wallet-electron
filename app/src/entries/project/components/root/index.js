@@ -15,15 +15,18 @@ export default class Root extends PureComponent {
 	componentDidMount() {}
 	render() {
 		let { lng } = this.props;
+		let arr = [];
+		for (var i = 0; i < 100; i++) {
+			arr.push("1");
+		}
 		return (
 			<I18n>
 				{(t, { i18n }) => (
-					<div className="project">
-						<Menu cur="project" />
-						<div className="contentContainer">
-							<div className="content">
-								<img src={img} alt="" />
-							</div>
+					<div className="main-box project">
+						<Menu curmenu="project" />
+						<div className="content-container">
+							<HeaderNav />
+							<div className="content">123</div>
 						</div>
 					</div>
 				)}

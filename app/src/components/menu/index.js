@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 import { NavLink } from "react-router-dom";
 import { I18n } from "react-i18next";
 
-// import memberImg from "../../assets/images/touxiang_icon.png";
+import memberImg from "#/tou_ico.png";
 
 import "./index.less";
 class Menu extends PureComponent {
@@ -23,14 +23,33 @@ class Menu extends PureComponent {
 			<I18n>
 				{(t, { i18n }) => (
 					<div className="menu-left">
-						{/* <img className="user-logo" src={memberImg} alt="" /> */}
-						<div className="user-name">{user && user["name"]}</div>
-						<div className="user-position">
-							{user &&
-								user.menu_group &&
-								user.menu_group.group_name}
-						</div>
+						<p className="title">InWeWallet</p>
+						<img className="user-logo" src={memberImg} alt="" />
 						<ul className="menuList">
+							<li className={curmenu == "dashboard" ? "cur" : ""}>
+								<div className="menu-dashboard menuicon" />
+								<div className="menu-name">
+									<NavLink
+										to={{
+											pathname: "/project"
+										}}
+									>
+										{t("menu.dashboard", lng)}
+									</NavLink>
+								</div>
+							</li>
+							<li className={curmenu == "wallet" ? "cur" : ""}>
+								<div className="menu-wallet menuicon" />
+								<div className="menu-name">
+									<NavLink
+										to={{
+											pathname: "/project"
+										}}
+									>
+										{t("menu.wallet", lng)}
+									</NavLink>
+								</div>
+							</li>
 							<li className={curmenu == "project" ? "cur" : ""}>
 								<div className="menu-project menuicon" />
 								<div className="menu-name">
@@ -40,6 +59,20 @@ class Menu extends PureComponent {
 										}}
 									>
 										{t("menu.project", lng)}
+									</NavLink>
+								</div>
+							</li>
+							<li
+								className={curmenu == "myfollowup" ? "cur" : ""}
+							>
+								<div className="menu-follow menuicon" />
+								<div className="menu-name">
+									<NavLink
+										to={{
+											pathname: "/project"
+										}}
+									>
+										{t("menu.myfollowup", lng)}
 									</NavLink>
 								</div>
 							</li>

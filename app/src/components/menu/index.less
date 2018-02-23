@@ -3,130 +3,136 @@
 	width: 2.24rem;
 	overflow: scroll;
 	background: #2e2e4c;
-}
-.user-logo {
-	display: block;
-	width: 0.8rem;
-	height: 0.8rem;
-	margin: 0.94rem auto 0 auto;
-	border-radius: 100%;
-	overflow: hidden;
-}
-.user-name {
-	margin: 0 auto;
-	margin-top: 0.23rem;
-	font-size: 0.18rem;
-	line-height: 0.25rem;
-	text-align: center;
-	color: #fff;
-	font-size: 0.18rem;
-}
-.user-position {
-	margin: 0 auto;
-	margin-top: 0.07rem;
-	text-align: center;
-}
-.menuList {
-	width: 100%;
-	li {
-		position: relative;
-		height: 0.27rem;
-		text-align: left;
-		margin-top: 0.28rem;
-		color: #777f8b;
-		font-size: 0.16rem;
-		line-height: 0.28rem;
-		a {
+	.title {
+		margin-top: 0.93rem;
+		line-height: 0.34rem;
+		color: #fff;
+		font-size: 0.28rem;
+		text-align: center;
+		font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+	}
+	.user-logo {
+		display: block;
+		width: 0.8rem;
+		height: 0.8rem;
+		margin: 0.36rem auto 0 auto;
+		margin-bottom: 0.2rem;
+		border-radius: 100%;
+		overflow: hidden;
+	}
+	.user-position {
+		margin: 0 auto;
+		margin-top: 0.07rem;
+		text-align: center;
+	}
+	.menuList {
+		width: 100%;
+		li {
+			position: relative;
+			height: 0.7rem;
+			text-align: left;
 			color: #777f8b;
-		}
-		cursor: pointer;
-		&:hover,
-		&.cur {
-			color: #44cb82;
+			font-size: 0.16rem;
+			line-height: 0.7rem;
 			a {
-				color: #44cb82;
+				color: #777f8b;
 			}
-			.childMenu {
-				opacity: 1;
-			}
-			// .menu-project {
-			// 	background: url("../../assets/images/xiangmuku_ico_selected.png")
-			// 		no-repeat center center / contain;
-			// }
-		}
-		.childMenu {
-			opacity: 0;
-			transition: all 0.4s ease;
-			span {
-				display: block;
-				position: relative;
-				text-align: center;
-				font-size: 0.14rem;
-				line-height: 0.2rem;
-				color: #44cb82;
-				margin-top: 0.14rem;
-				&:hover:after,
-				&.cur:after {
+			cursor: pointer;
+			&:hover,
+			&.cur {
+				&::after {
 					display: block;
 					content: "";
+					width: 0.06rem;
+					height: 100%;
+					background: #44cb82;
 					position: absolute;
-					left: 50%;
-					bottom: 0;
-					transform: translateX(-50%);
-					width: 0.56rem;
-					height: 1px;
-					background: linear-gradient(
-						to right,
-						rgba(68, 203, 130, 0.3),
-						rgba(68, 203, 130, 1)
-					);
+					left: 0;
+					top: 0;
+				}
+				color: #44cb82;
+				background: #49495d;
+				a {
+					color: #44cb82;
+				}
+				.childMenu {
+					opacity: 1;
+				}
+				.menu-dashboard {
+					background: url("../../assets/images/dashboadr_ico_s.png")
+						no-repeat center center / contain;
+				}
+				.menu-wallet {
+					background: url("../../assets/images/wallet_ico_s.png")
+						no-repeat center center / contain;
+				}
+				.menu-project {
+					background: url("../../assets/images/project_ico_s.png")
+						no-repeat center center / contain;
+				}
+				.menu-follow {
+					background: url("../../assets/images/follow_ico_s.png")
+						no-repeat center center / contain;
 				}
 			}
+			.childMenu {
+				opacity: 0;
+				transition: all 0.4s ease;
+				span {
+					display: block;
+					position: relative;
+					text-align: center;
+					font-size: 0.14rem;
+					line-height: 0.2rem;
+					color: #44cb82;
+					margin-top: 0.14rem;
+					&:hover:after,
+					&.cur:after {
+						display: block;
+						content: "";
+						position: absolute;
+						left: 50%;
+						bottom: 0;
+						transform: translateX(-50%);
+						width: 0.56rem;
+						height: 1px;
+						background: linear-gradient(
+							to right,
+							rgba(68, 203, 130, 0.3),
+							rgba(68, 203, 130, 1)
+						);
+					}
+				}
+			}
+			.menuicon {
+				position: absolute;
+				top: 50%;
+				right: 1.38rem;
+				transform: translateY(-50%);
+				width: 0.27rem;
+				height: 0.27rem;
+				margin-right: 0.1rem;
+			}
+			.menu-name {
+				padding-left: 0.86rem;
+				box-sizing: border-box;
+			}
+			.menu-project {
+				background: url("../../assets/images/project_ico.png") no-repeat
+					center center / contain;
+			}
+			.menu-dashboard {
+				background: url("../../assets/images/dashboadr_ico.png")
+					no-repeat center center / contain;
+			}
+			.menu-wallet {
+				background: url("../../assets/images/wallet_ico.png") no-repeat
+					center center / contain;
+			}
+			.menu-follow {
+				background: url("../../assets/images/follow_ico.png") no-repeat
+					center center / contain;
+			}
 		}
-		.menuicon {
-			position: absolute;
-			top: 50%;
-			right: 1.38rem;
-			transform: translateY(-50%);
-			width: 0.27rem;
-			height: 0.27rem;
-			margin-right: 0.1rem;
-		}
-		.menu-name {
-			padding-left: 0.86rem;
-			box-sizing: border-box;
-		}
-		// .menu-project {
-		// 	background: url("../../assets/images/xiangmuku_ico.png") no-repeat
-		// 		center center / contain;
-		// }
-		// .menu-news {
-		// 	background: url("../../assets/images/zixunguanli_ico.png") no-repeat
-		// 		center center / contain;
-		// }
-		// .menu-trading {
-		// 	background: url("../../assets/images/kongtoushezhi_ico.png")
-		// 		no-repeat center center / contain;
-		// }
-		// .menu-swiper {
-		// 	background: url("../../assets/images/lunboguanli_ico.png") no-repeat
-		// 		center center / contain;
-		// }
-		// .menu-comment {
-		// 	background: url("../../assets/images/pinglunguanli_ico.png")
-		// 		no-repeat center center / contain;
-		// }
-		// .menu-user {
-		// 	background: url("../../assets/images/yonghuguanli_ico.png")
-		// 		no-repeat center center / contain;
-		// }
-		// .menu-wallet {
-		// 	background: url("../../assets/images/qianbaoguanli_ico.png")
-		// 		no-repeat center center / contain;
-		// }
-		// .menu-system {
-		// 	background: url("../../assets/images/xitongshezhi_ico.png")
-		// 		no-repeat center center / contain;
-		// }
 	}
 }
