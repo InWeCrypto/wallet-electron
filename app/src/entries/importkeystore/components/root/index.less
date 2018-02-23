@@ -1,2 +1,64 @@
 .importkeystore {
+	.keystore-title {
+		padding: 0.4rem 0;
+		font-size: 0.3rem;
+		color: #47d184;
+		text-align: center;
+	}
+	.keystore-container {
+		display: flex;
+		justify-content: center;
+	}
+	.keystore-box {
+		max-width: 90%;
+		width: 7.7rem;
+		background: #2e2e4c;
+		border-radius: 0.08rem;
+		box-sizing: border-box;
+		padding: 0.2rem;
+	}
+	.keystore-group {
+		align-items: flex-start;
+		margin: 0.2rem 0;
+		.icon-check {
+			margin-right: 0.1rem;
+			display: block;
+			width: 0.16rem;
+			height: 0.16rem;
+			background-size: 100% 100% !important;
+			&.uncheck {
+				background: url("../../../../assets/images/uncheck.png") left
+					top no-repeat;
+			}
+			&.checked {
+				background: url("../../../../assets/images/checked.png") left
+					top no-repeat;
+			}
+		}
+		.keystore-text {
+			width: 100%;
+			resize: none;
+			background: rgba(0, 0, 0, 0.17);
+			height: 1.8rem;
+			border: none;
+			outline: none;
+			border-radius: 0.08rem;
+			box-sizing: border-box;
+			padding: 0.1rem;
+			color: rgba(255, 255, 255, 1);
+		}
+		.filename {
+			width: 100%;
+			padding: 0.1rem;
+			box-sizing: border-box;
+		}
+		.icon-openfile {
+			display: block;
+			height: 0.22rem;
+			width: 0.22rem;
+			background: url("../../../../assets/images/file_icon.png") left top
+				no-repeat;
+			background-size: 100% 100% !important;
+		}
+	}
 }
