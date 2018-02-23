@@ -32,10 +32,6 @@ export default class Root extends PureComponent {
 								<div className="nav-item">Receive</div>
 								<div className="nav-item">Record</div>
 							</div>
-							<div className="box-btn">
-								<div className="t1">Claim</div>
-								<div className="t2">2000.00GAS</div>
-							</div>
 							<div className="box-btn">Add Asset</div>
 						</div>
 						<div className="box3">
