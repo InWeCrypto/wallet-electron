@@ -20,7 +20,10 @@ export default class Root extends PureComponent {
 								<div className="keystore-group ui">
 									<i className="icon-check uncheck" />
 									<div className="f1">
-										<textarea className="keystore-text" />
+										<textarea
+											className="keystore-text"
+											placeholder="Copy and paste the content of the keystore file"
+										/>
 									</div>
 								</div>
 								<div className="keystore-group ui">
@@ -31,6 +34,7 @@ export default class Root extends PureComponent {
 												type="text"
 												disabled="disabled"
 												className="filename"
+												placeholder="Upload the keystore file"
 											/>
 										</div>
 										<i className="icon-openfile" />
