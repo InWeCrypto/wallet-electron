@@ -52,6 +52,13 @@ export default {
 			"Watch Wallet needs your wallet address only, serving as a way to manage and trade as a regular account. For security reasons, Cold Wallets among the others are recommended for large amount of assets.",
 		next: "Next"
 	},
+	end: {
+		title: "Creat Wallet",
+		name: "Wallet Name",
+		password: "Password",
+		previous: "Previous",
+		comfirm: "Comfirm"
+	},
 	menu: {
 		project: "Project",
 		dashboard: "DashBoard",
