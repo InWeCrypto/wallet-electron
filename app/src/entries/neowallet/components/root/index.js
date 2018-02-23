@@ -27,12 +27,24 @@ export default class Root extends PureComponent {
 						</div>
 						<div className="box2 ui center">
 							<div className="navbox f1">
-								<div className="nav-item">Asset</div>
+								<div className="nav-item cur">Asset</div>
 								<div className="nav-item">Send</div>
 								<div className="nav-item">Receive</div>
 								<div className="nav-item">Record</div>
 							</div>
-							<div>22</div>
+							<div className="box-btn">
+								<div className="t1">Claim</div>
+								<div className="t2">2000.00GAS</div>
+							</div>
+							<div className="box-btn">Add Asset</div>
+						</div>
+						<div className="box3">
+							<div className="wallet-item ui center">
+								<img
+									className="icon"
+									src="https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=703596290,1200042368&fm=173&s=05105F955E20468E2A8D7D610300E0F0&w=218&h=146&img.JPEG"
+								/>
+							</div>
 						</div>
 					</div>
 				)}
