@@ -21,7 +21,7 @@ class Menu extends PureComponent {
 						<p className="title">InWeWallet</p>
 						<img className="user-logo" src={memberImg} alt="" />
 						<ul className="menuList">
-							<li className={curmenu == "dashboard" ? "cur" : ""}>
+							{/* <li className={curmenu == "dashboard" ? "cur" : ""}>
 								<div className="menu-dashboard menuicon" />
 								<div className="menu-name">
 									<NavLink
@@ -32,13 +32,13 @@ class Menu extends PureComponent {
 										{t("menu.dashboard", lng)}
 									</NavLink>
 								</div>
-							</li>
+							</li> */}
 							<li className={curmenu == "wallet" ? "cur" : ""}>
 								<div className="menu-wallet menuicon" />
 								<div className="menu-name">
 									<NavLink
 										to={{
-											pathname: "/project"
+											pathname: "/wallet"
 										}}
 									>
 										{t("menu.wallet", lng)}
@@ -57,7 +57,7 @@ class Menu extends PureComponent {
 									</NavLink>
 								</div>
 							</li>
-							<li
+							{/* <li
 								className={curmenu == "myfollowup" ? "cur" : ""}
 							>
 								<div className="menu-follow menuicon" />
@@ -70,7 +70,7 @@ class Menu extends PureComponent {
 										{t("menu.myfollowup", lng)}
 									</NavLink>
 								</div>
-							</li>
+							</li> */}
 						</ul>
 					</div>
 				)}
