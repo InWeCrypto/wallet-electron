@@ -65,11 +65,11 @@ export default class Root extends PureComponent {
 									Record
 								</div>
 							</div>
-							<div className="box-btn">
+							<div className="box-btn line-orange">
 								<div className="t1">Claim</div>
 								<div className="t2">2000.00GAS</div>
 							</div>
-							<div className="box-btn">Add Asset</div>
+							<div className="box-btn line-orange">Add Asset</div>
 						</div>
 						{type === 1 && (
 							<div className="box3">
