@@ -8,7 +8,7 @@ export default class Root extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-			type: 3
+			type: 4
 		};
 	}
 	componentDidMount() {}
@@ -148,6 +148,7 @@ export default class Root extends PureComponent {
 								</div>
 							</div>
 						)}
+						{type === 4 && <div className="box6">22</div>}
 					</div>
 				)}
 			</I18n>
