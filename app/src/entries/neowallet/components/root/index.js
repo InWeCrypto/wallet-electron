@@ -148,7 +148,18 @@ export default class Root extends PureComponent {
 								</div>
 							</div>
 						)}
-						{type === 4 && <div className="box6">22</div>}
+						{type === 4 && (
+							<div className="box6">
+								<div className="record-item ui center">
+									<img
+										className="record-icon"
+										src="https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=4274948427,2487433404&fm=173&s=03B35C8544C8A74540915D910300A089&w=218&h=146&img.JPEG"
+									/>
+									<div className="record-address f1">22</div>
+									<div className="record-num">222</div>
+								</div>
+							</div>
+						)}
 					</div>
 				)}
 			</I18n>
