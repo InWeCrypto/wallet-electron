@@ -39,7 +39,7 @@ export default class Root extends PureComponent {
 								<div className="t1">Claim</div>
 								<div className="t2">2000.00GAS</div>
 							</div>
-							<div className="box-btn">Add Asset</div>
+							<div className="box-btn line-orange">Add Asset</div>
 						</div>
 						<div className="box3">
 							<div className="wallet-item ui center">

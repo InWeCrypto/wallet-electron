@@ -8,7 +8,7 @@ export default class Root extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-			type: 2
+			type: 3
 		};
 	}
 	componentDidMount() {}
@@ -122,6 +122,29 @@ export default class Root extends PureComponent {
 								</div>
 								<div className="btn-box">
 									<span className="button-green">Send</span>
+								</div>
+							</div>
+						)}
+						{type === 3 && (
+							<div className="box5">
+								<div className="receive-title">
+									Recive ETH/ ERC 20 Token
+								</div>
+								<div className="qcodebox">
+									<img
+										className="qcode"
+										src="https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1062989499,1682648318&fm=58"
+									/>
+								</div>
+								<div className="btn-box">
+									<span className="button-green">
+										<i className="icon-copy" />
+										<span className="t">Copy Address</span>
+									</span>
+									<span className="button-green">
+										<i className="icon-print" />
+										<span className="t">Print Address</span>
+									</span>
 								</div>
 							</div>
 						)}
