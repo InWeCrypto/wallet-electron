@@ -1,12 +1,14 @@
 import React, { PureComponent } from "react";
 import { I18n } from "react-i18next";
+import { Select, Slider } from "antd";
+const Option = Select.Option;
 import "./index.less";
 
 export default class Root extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-			type: 4
+			type: 2
 		};
 	}
 	componentDidMount() {}
@@ -17,6 +19,9 @@ export default class Root extends PureComponent {
 		this.setState({
 			type: idx
 		});
+	}
+	sliderChange(res) {
+		console.log(res);
 	}
 	render() {
 		let { lng } = this.props;
@@ -112,6 +117,26 @@ export default class Root extends PureComponent {
 												</Option>
 											</Select>
 										</div>
+									</div>
+								</div>
+								<div className="send-item">
+									<div className="send-name ui">
+										<div className="f1">Mining Fee</div>
+										<div className="t2">
+											0.000029384 ETH
+										</div>
+									</div>
+									<div className="ui center slideritem">
+										<div>Slow</div>
+										<div className="f1 sliderbox">
+											<Slider
+												onChange={this.sliderChange.bind(
+													this
+												)}
+												defaultValue={30}
+											/>
+										</div>
+										<div>Quick</div>
 									</div>
 								</div>
 								<div className="btn-box">
