@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import { Link } from "react-router-dom";
 import { I18n } from "react-i18next";
+import Menu from "@/menu";
 import "./index.less";
 import creatWallet from "#/createwallet_ico.png";
 import importWallet from "#/import_wallet_ico.png";
@@ -16,65 +17,100 @@ export default class Root extends PureComponent {
 		return (
 			<I18n>
 				{(t, { i18n }) => (
-					<div className="wallet">
-						<div className="bigtitle">
-							{t("wallet.bigTitle", lng)}
-						</div>
-						<div className="wallet-ctrl">
-							<Link
-								className="wallet-ctrlbtn"
-								to={{
-									pathname: "createwallet"
-								}}
-							>
-								<img className="walletimg" src={creatWallet} />
-								<div>{t("wallet.createWallet", lng)}</div>
-							</Link>
-							<div className="wallet-ctrlbtn">
-								<img className="walletimg" src={importWallet} />
-								<div>{t("wallet.importWallet", lng)}</div>
-							</div>
-							<div className="wallet-ctrlbtn">
-								<img className="walletimg" src={ledger} />
-								<div>{t("wallet.ledger", lng)}</div>
-							</div>
-						</div>
-						<div className="wallet-container">
-							<div className="group-title">
-								<div className="ui">
-									<div className="f1 t1">
-										{t("wallet.groupTitle", lng)}
+					<div className="main-box">
+						<Menu curmenu="wallet" />
+						<div className="content-container">
+							<div className="content">
+								<div className="wallet">
+									<div className="bigtitle">
+										{t("wallet.bigTitle", lng)}
 									</div>
-									<span className="t2">
-										{t("wallet.groupMore", lng)}
-									</span>
-								</div>
-							</div>
-							<div className="group-main">
-								<div className="ui center wallet-group">
-									<img
-										className="wallet-img"
-										src="https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=216453846,3984923503&fm=173&s=9F3E6F80D0836AE609A50CC30300E093&w=218&h=146&img.JPEG"
-									/>
-									<div className="f1">
-										<div className="wallet-name">2</div>
-										<div className="wallet-address">2</div>
+									<div className="wallet-ctrl">
+										<Link
+											className="wallet-ctrlbtn"
+											to={{
+												pathname: "createwallet"
+											}}
+										>
+											<img
+												className="walletimg"
+												src={creatWallet}
+											/>
+											<div>
+												{t("wallet.createWallet", lng)}
+											</div>
+										</Link>
+										<div className="wallet-ctrlbtn">
+											<img
+												className="walletimg"
+												src={importWallet}
+											/>
+											<div>
+												{t("wallet.importWallet", lng)}
+											</div>
+										</div>
+										<div className="wallet-ctrlbtn">
+											<img
+												className="walletimg"
+												src={ledger}
+											/>
+											<div>{t("wallet.ledger", lng)}</div>
+										</div>
 									</div>
-									<div>
-										<span className="t3">$12222.00</span>
-									</div>
-								</div>
-								<div className="ui center wallet-group">
-									<img
-										className="wallet-img"
-										src="https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=216453846,3984923503&fm=173&s=9F3E6F80D0836AE609A50CC30300E093&w=218&h=146&img.JPEG"
-									/>
-									<div className="f1">
-										<div className="wallet-name">2</div>
-										<div className="wallet-address">2</div>
-									</div>
-									<div>
-										<span className="t3">$12222.00</span>
+									<div className="wallet-container">
+										<div className="group-title">
+											<div className="ui">
+												<div className="f1 t1">
+													{t(
+														"wallet.groupTitle",
+														lng
+													)}
+												</div>
+												<span className="t2">
+													{t("wallet.groupMore", lng)}
+												</span>
+											</div>
+										</div>
+										<div className="group-main">
+											<div className="ui center wallet-group">
+												<img
+													className="wallet-img"
+													src="https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=216453846,3984923503&fm=173&s=9F3E6F80D0836AE609A50CC30300E093&w=218&h=146&img.JPEG"
+												/>
+												<div className="f1">
+													<div className="wallet-name">
+														2
+													</div>
+													<div className="wallet-address">
+														2
+													</div>
+												</div>
+												<div>
+													<span className="t3">
+														$12222.00
+													</span>
+												</div>
+											</div>
+											<div className="ui center wallet-group">
+												<img
+													className="wallet-img"
+													src="https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=216453846,3984923503&fm=173&s=9F3E6F80D0836AE609A50CC30300E093&w=218&h=146&img.JPEG"
+												/>
+												<div className="f1">
+													<div className="wallet-name">
+														2
+													</div>
+													<div className="wallet-address">
+														2
+													</div>
+												</div>
+												<div>
+													<span className="t3">
+														$12222.00
+													</span>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>

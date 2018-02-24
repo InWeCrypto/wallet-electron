@@ -15,7 +15,8 @@ import ImportEnd from "./entries/importend";
 import NeoWallet from "./entries/neowallet";
 import EthWallet from "./entries/ethwallet";
 import WatchWallet from "./entries/watchwallet";
-//authority  addauthor
+import TransationDetail from "./entries/transationdetail";
+//transationdetail
 export default () => {
 	return (
 		<Switch>
@@ -33,6 +34,7 @@ export default () => {
 			<Route path="/neowallet" component={NeoWallet} />
 			<Route path="/ethwallet" component={EthWallet} />
 			<Route path="/watchwallet" component={WatchWallet} />
+			<Route path="/transationdetail" component={TransationDetail} />
 		</Switch>
 	);
 };
