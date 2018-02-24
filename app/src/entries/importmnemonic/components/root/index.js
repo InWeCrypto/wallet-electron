@@ -1,5 +1,7 @@
 import React, { PureComponent } from "react";
 import { I18n } from "react-i18next";
+import Menu from "@/menu";
+import HeaderNav from "@/headernav";
 import "./index.less";
 
 export default class Root extends PureComponent {
@@ -13,23 +15,33 @@ export default class Root extends PureComponent {
 		return (
 			<I18n>
 				{(t, { i18n }) => (
-					<div className="importmnemonic">
-						<div className="title">{t("mnemonic.title", lng)}</div>
-						<div className="mnemonic-container ui jcenter">
-							<div className="mnemonic-box">
-								<div>
-									<textarea
-										className="textarea"
-										placeholder={t(
-											"mnemonic.textarea",
-											lng
-										)}
-									/>
-								</div>
-								<div className="mnemonic-btn">
-									<span className="btn">
-										{t("mnemonic.next", lng)}
-									</span>
+					<div className="main-box">
+						<Menu curmenu="wallet" />
+						<div className="content-container">
+							<HeaderNav />
+							<div className="content">
+								<div className="importmnemonic">
+									<div className="title">
+										{t("mnemonic.title", lng)}
+									</div>
+									<div className="mnemonic-container ui jcenter">
+										<div className="mnemonic-box">
+											<div>
+												<textarea
+													className="textarea"
+													placeholder={t(
+														"mnemonic.textarea",
+														lng
+													)}
+												/>
+											</div>
+											<div className="mnemonic-btn">
+												<span className="btn">
+													{t("mnemonic.next", lng)}
+												</span>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>

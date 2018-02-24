@@ -40,7 +40,12 @@ export default class Root extends PureComponent {
 												{t("wallet.createWallet", lng)}
 											</div>
 										</Link>
-										<div className="wallet-ctrlbtn">
+										<Link
+											to={{
+												pathname: "importwallet"
+											}}
+											className="wallet-ctrlbtn"
+										>
 											<img
 												className="walletimg"
 												src={importWallet}
@@ -48,7 +53,7 @@ export default class Root extends PureComponent {
 											<div>
 												{t("wallet.importWallet", lng)}
 											</div>
-										</div>
+										</Link>
 										<div className="wallet-ctrlbtn">
 											<img
 												className="walletimg"
