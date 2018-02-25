@@ -15,8 +15,14 @@ export default class Root extends PureComponent {
 		this.state = {};
 	}
 	componentDidMount() {}
+	showFrozenInp() {
+		this.setState({
+			frozenShow: true
+		});
+	}
 	render() {
 		let { lng } = this.props;
+		let { frozenShow } = this.state;
 
 		return (
 			<I18n>
@@ -37,16 +43,32 @@ export default class Root extends PureComponent {
 											Total Claim
 										</button>
 									</div>
-									<div className="gasBox frozen ">
+									<div
+										className={
+											frozenShow
+												? "gasBox frozen"
+												: "gasBox"
+										}
+									>
 										<div className="gastitle">
 											Frozen Gas
 										</div>
 										<div className="money">300.0000</div>
+
 										<input
-											type="text"
+											className={
+												frozenShow ? "showhei" : ""
+											}
+											type="password"
 											placeholder="Enter your password"
 										/>
-										<button className="total">
+
+										<button
+											className="total"
+											onClick={this.showFrozenInp.bind(
+												this
+											)}
+										>
 											Unfreeze
 										</button>
 									</div>

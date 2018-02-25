@@ -8,6 +8,7 @@ import icon1 from "#/mnemonic_ico.png";
 import icon2 from "#/key.png";
 import icon3 from "#/delet.png";
 import searchimg from "#/search_ico.png";
+import { toHref } from "../../../../utils/util.js";
 
 import "./index.less";
 
@@ -17,8 +18,27 @@ export default class Root extends PureComponent {
 		this.state = {};
 	}
 	componentDidMount() {}
+	showInputBox() {
+		this.setState({
+			isShowInputBox: true
+		});
+	}
+	hideInputBox(e) {
+		e.stopPropagation();
+		e.nativeEvent.stopImmediatePropagation();
+		this.setState({
+			isShowInputBox: false
+		});
+	}
+	surePassword() {
+		toHref("mnemonic");
+	}
+	toKeystroe() {
+		toHref("keystore");
+	}
 	render() {
 		let { lng } = this.props;
+		let { isShowInputBox } = this.state;
 
 		return (
 			<I18n>
@@ -33,7 +53,10 @@ export default class Root extends PureComponent {
 								</div>
 								<div className="title2">backup your wallet</div>
 								<div className="hotarea-box">
-									<div className="hotarea inMnemonic">
+									<div
+										className="hotarea inMnemonic"
+										onClick={this.showInputBox.bind(this)}
+									>
 										<div className="imgbox">
 											<img
 												className="img"
@@ -42,22 +65,37 @@ export default class Root extends PureComponent {
 											/>
 										</div>
 										<div className="name">Mnemonic</div>
-										<div className="hideBox">
-											<input
-												placeholder="Enter your password"
-												type="text"
-											/>
-											<div className="btnBox">
-												<button className="cancel">
-													cancel
-												</button>
-												<button className="comfirm">
-													comfirm
-												</button>
+										{isShowInputBox && (
+											<div className="hideBox">
+												<input
+													placeholder="Enter your password"
+													type="password"
+												/>
+												<div className="btnBox">
+													<button
+														className="cancel"
+														onClick={this.hideInputBox.bind(
+															this
+														)}
+													>
+														cancel
+													</button>
+													<button
+														className="comfirm"
+														onClick={this.surePassword.bind(
+															this
+														)}
+													>
+														comfirm
+													</button>
+												</div>
 											</div>
-										</div>
+										)}
 									</div>
-									<div className="hotarea">
+									<div
+										className="hotarea"
+										onClick={this.toKeystroe.bind(this)}
+									>
 										<div className="imgbox">
 											<img
 												className="img"

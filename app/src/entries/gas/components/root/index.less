@@ -47,9 +47,7 @@
 				input {
 					display: block;
 					margin: 0 auto;
-					margin-top: 0.18rem;
 					width: 1.68rem;
-					height: 0.4rem;
 					border: 0;
 					outline: none;
 					background: rgba(0, 0, 0, 0.17);
@@ -58,8 +56,14 @@
 					text-align: center;
 					font-size: 0.14rem;
 					color: #fff;
+					transition: all 0.3s ease-in-out;
 					&::-webkit-input-placeholder {
 						color: rgba(255, 255, 255, 0.17);
+					}
+					height: 0;
+					&.showhei {
+						height: 0.4rem;
+						margin-top: 0.18rem;
 					}
 				}
 				button {

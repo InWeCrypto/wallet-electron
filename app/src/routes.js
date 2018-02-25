@@ -6,6 +6,7 @@ import Project from "./entries/project";
 import Projectlist from "./entries/projectlist";
 import Managewallet from "./entries/managewallet";
 import Mnemonic from "./entries/mnemonic";
+import Mnemonicsure from "./entries/mnemonicsure";
 import Keystore from "./entries/keystore";
 import Gas from "./entries/gas";
 import Addasset from "./entries/addasset";
@@ -31,6 +32,7 @@ export default () => {
 			<Route path="/projectlist" component={Projectlist} />
 			<Route path="/managewallet" component={Managewallet} />
 			<Route path="/mnemonic" component={Mnemonic} />
+			<Route path="/mnemonicsure" component={Mnemonicsure} />
 			<Route path="/keystore" component={Keystore} />
 			<Route path="/gas" component={Gas} />
 			<Route path="/addasset" component={Addasset} />
