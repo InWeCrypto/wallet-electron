@@ -8,6 +8,8 @@ import Managewallet from "./entries/managewallet";
 import Mnemonic from "./entries/mnemonic";
 import Keystore from "./entries/keystore";
 import Gas from "./entries/gas";
+import Addasset from "./entries/addasset";
+import Watchmanagewallet from "./entries/watchmanagewallet";
 import Wallet from "./entries/wallet";
 import CreateWallet from "./entries/createwallet";
 import ImportWallet from "./entries/importwallet";
@@ -24,13 +26,15 @@ import TransationDetail from "./entries/transationdetail";
 export default () => {
 	return (
 		<Switch>
-			<Route path="/" exact component={Gas} />
+			<Route path="/" exact component={Watchmanagewallet} />
 			<Route path="/project" component={Project} />
 			<Route path="/projectlist" component={Projectlist} />
 			<Route path="/managewallet" component={Managewallet} />
 			<Route path="/mnemonic" component={Mnemonic} />
 			<Route path="/keystore" component={Keystore} />
 			<Route path="/gas" component={Gas} />
+			<Route path="/addasset" component={Addasset} />
+			<Route path="/watchmanagewallet" component={Watchmanagewallet} />
 			<Route path="/wallet" component={Wallet} />
 			<Route path="/createwallet" component={CreateWallet} />
 			<Route path="/importwallet" component={ImportWallet} />
