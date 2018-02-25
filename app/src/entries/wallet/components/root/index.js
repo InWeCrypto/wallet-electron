@@ -6,6 +6,7 @@ import "./index.less";
 import creatWallet from "#/createwallet_ico.png";
 import importWallet from "#/import_wallet_ico.png";
 import ledger from "#/ledger_ico.png";
+import ledger1 from "#/ledger_ico1.png";
 export default class Root extends PureComponent {
 	constructor(props) {
 		super(props);
@@ -54,12 +55,26 @@ export default class Root extends PureComponent {
 												{t("wallet.importWallet", lng)}
 											</div>
 										</Link>
-										<div className="wallet-ctrlbtn">
+										{/* <div className="wallet-ctrlbtn">
 											<img
 												className="walletimg"
 												src={ledger}
 											/>
 											<div>{t("wallet.ledger", lng)}</div>
+                                        </div> */}
+										<div className="wallet-ctrlbtn disabled">
+											<img
+												className="walletimg"
+												src={ledger1}
+											/>
+											<div className="t1">
+												<span>
+													{t("wallet.ledger", lng)}
+												</span>
+												<div className="t2">
+													{t("wallet.soon", lng)}
+												</div>
+											</div>
 										</div>
 									</div>
 									<div className="wallet-container">

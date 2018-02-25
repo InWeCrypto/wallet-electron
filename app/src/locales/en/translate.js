@@ -8,7 +8,8 @@ export default {
 		importWallet: "Import Wallet",
 		ledger: "Ledger",
 		groupTitle: "Wallet list",
-		groupMore: "ALL Assets"
+		groupMore: "ALL Assets",
+		soon: "This function is coming soon"
 	},
 	createWallet: {
 		title: "Create Wallet",
