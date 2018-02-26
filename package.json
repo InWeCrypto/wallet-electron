@@ -4,17 +4,19 @@
 	"description": "inwewallet",
 	"main": "main.js",
 	"scripts": {
-		"dev":
-			"concurrently \"webpack  --config webpack.config.js --progress --profile&& electron .\" \"cross-env NODE_ENV=production webpack --watch\"",
+		"dev": "concurrently \"webpack  --config webpack.config.js --progress --profile&& electron .\" \"cross-env NODE_ENV=production webpack --watch\"",
 		"compile": "webpack --config webpack.config.js --progress --profile",
-		"postinstall":
-			"electron-builder install-app-dep && webpack  --progress --profile --config webpack.dll.config.js",
+		"postinstall": "electron-builder install-app-dep && webpack  --progress --profile --config webpack.dll.config.js",
 		"pack": "electron-builder --dir",
 		"dist": "webpack --config webpack.dll.config.js && electron-builder"
 	},
 	"build": {
 		"appId": "com.electron.inwecrypto",
-		"files": ["./main.js", "resources/index.html", "resources/"],
+		"files": [
+			"./main.js",
+			"resources/index.html",
+			"resources/"
+		],
 		"dmg": {
 			"contents": [
 				{
@@ -30,7 +32,10 @@
 			]
 		},
 		"linux": {
-			"target": ["AppImage", "deb"]
+			"target": [
+				"AppImage",
+				"deb"
+			]
 		},
 		"win": {
 			"target": "nsis",
@@ -89,6 +94,7 @@
 		"cache-loader": "^1.0.3",
 		"classnames": "^2.2.5",
 		"clean-webpack-plugin": "^0.1.17",
+		"copy-webpack-plugin": "^4.4.2",
 		"cross-env": "^5.0.1",
 		"css-loader": "^0.28.5",
 		"electron-builder": "^19.31.1",

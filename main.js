@@ -1,5 +1,8 @@
 const { app, BrowserWindow } = require("electron");
 const electron = require("electron");
+const process = require("process");
+const cp = require("child_process");
+
 const ipc = electron.ipcMain;
 const dialog = electron.dialog;
 const Menu = electron.Menu;
@@ -15,6 +18,20 @@ let win;
 // console.log(process.env.NODE_ENV);
 
 const isDev = process.mainModule.filename.indexOf("app.asar") === -1;
+
+const p = path.join(__dirname, "resources/server/appdata");
+cp.exec(
+	path.join(__dirname, `resources/server/wallet-service -appdir ${p}`),
+	function(e, stdout, stderr) {
+		if (!e) {
+			console.log(stdout);
+			console.log(stderr);
+		}
+		if (e) {
+			console.log("23232");
+		}
+	}
+);
 
 if (isDev) {
 	require("electron-reload")(__dirname);

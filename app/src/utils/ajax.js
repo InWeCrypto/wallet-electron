@@ -54,7 +54,7 @@ function checkRight(response) {
 	}
 }
 
-function request(method, url, params = {}, header = {}) {
+function request(method, url, params = {}, header = {}, isLocal = false) {
 	const languageItem = getLocalItem("language");
 	const userInfo = getLocalItem("userInfo");
 	const headers = {
@@ -68,8 +68,7 @@ function request(method, url, params = {}, header = {}) {
 	if (userInfo && userInfo.data) {
 		headers.Authorization = JSON.parse(userInfo.data).token;
 	}
-	// let isD = JSON.parse(window.localStorage.getItem("isDev"));
-	let _url = requestUrl + url;
+	let _url = requestUrl(isLocal) + url;
 	let body;
 
 	if (METHODS.includes(method)) {
@@ -99,8 +98,8 @@ function request(method, url, params = {}, header = {}) {
 const methods = {};
 
 [...METHODS, ...BODY_METHODS].forEach(method => {
-	methods[method] = ({ url, params, header }) =>
-		request(method, url, params, header);
+	methods[method] = ({ url, params, header, isLocal }) =>
+		request(method, url, params, header, isLocal);
 });
 
 export default methods;

@@ -3,6 +3,7 @@ var fs = require("fs");
 var path = require("path");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
+var CopyWebpackPlugin = require("copy-webpack-plugin");
 const uglify = require("uglifyjs-webpack-plugin");
 var path = require("path");
 var entries = {};
@@ -135,7 +136,13 @@ var webpackConfig = {
 		new ExtractTextPlugin("assets/css/[name].css"),
 		new webpack.DllReferencePlugin({
 			manifest: require("../resources/mainfest/vendor-mainfest.json")
-		})
+		}),
+		new CopyWebpackPlugin([
+			{
+				from: path.join(__dirname, "../server"),
+				to: "server"
+			}
+		])
 	]
 };
 

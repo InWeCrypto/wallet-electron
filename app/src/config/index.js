@@ -1,6 +1,6 @@
-// export const requestUrl = isDev => {
-// 	return isDev
-// 		? "https://dev.inwecrypto.com:4432/v2/"
-// 		: "https://china.inwecrypto.com:4432/v2/";
-// };
-export const requestUrl = "https://dev.inwecrypto.com:4431/v2/api/";
+export const requestUrl = isLocal => {
+	return isLocal
+		? "http://localhost:14019/"
+		: "https://dev.inwecrypto.com:4431/v2/api/";
+};
+// export const requestUrl = "https://dev.inwecrypto.com:4431/v2/api/";
