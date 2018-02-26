@@ -7,6 +7,7 @@ import creatWallet from "#/createwallet_ico.png";
 import importWallet from "#/import_wallet_ico.png";
 import ledger from "#/ledger_ico.png";
 import ledger1 from "#/ledger_ico1.png";
+import { toHref } from "../../../../utils/util";
 export default class Root extends PureComponent {
 	constructor(props) {
 		super(props);
@@ -14,6 +15,19 @@ export default class Root extends PureComponent {
 	}
 	componentDidMount() {
 		this.props.getWalletList();
+	}
+	goDetail(item) {
+		if (!item) {
+			return;
+		}
+		if (item.category.id === 1) {
+			toHref(`ethwallet?id=${item.id}`);
+			return;
+		}
+		if (item.category.id === 2) {
+			toHref(`neowallet?id=${item.id}`);
+			return;
+		}
 	}
 	render() {
 		let { lng, walletList } = this.props;
@@ -94,44 +108,50 @@ export default class Root extends PureComponent {
 											</div>
 										</div>
 										<div className="group-main">
-											<div className="ui center wallet-group">
-												<img
-													className="wallet-img"
-													src="https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=216453846,3984923503&fm=173&s=9F3E6F80D0836AE609A50CC30300E093&w=218&h=146&img.JPEG"
-												/>
-												<div className="f1">
-													<div className="wallet-name">
-														2
-													</div>
-													<div className="wallet-address">
-														2
-													</div>
-												</div>
-												<div>
-													<span className="t3">
-														$12222.00
-													</span>
-												</div>
-											</div>
-											<div className="ui center wallet-group">
-												<img
-													className="wallet-img"
-													src="https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=216453846,3984923503&fm=173&s=9F3E6F80D0836AE609A50CC30300E093&w=218&h=146&img.JPEG"
-												/>
-												<div className="f1">
-													<div className="wallet-name">
-														2
-													</div>
-													<div className="wallet-address">
-														2
-													</div>
-												</div>
-												<div>
-													<span className="t3">
-														$12222.00
-													</span>
-												</div>
-											</div>
+											{walletList &&
+												walletList.list &&
+												walletList.list.length > 0 &&
+												walletList.list.map(
+													(item, index) => {
+														return (
+															<div
+																key={index}
+																className="ui center wallet-group"
+																onClick={this.goDetail.bind(
+																	this,
+																	item
+																)}
+															>
+																<img
+																	className="wallet-img"
+																	src={
+																		item.category &&
+																		item
+																			.category
+																			.img
+																	}
+																/>
+																<div className="f1">
+																	<div className="wallet-name">
+																		{
+																			item.name
+																		}
+																	</div>
+																	<div className="wallet-address">
+																		{
+																			item.address
+																		}
+																	</div>
+																</div>
+																<div>
+																	<span className="t3">
+																		$12222.00
+																	</span>
+																</div>
+															</div>
+														);
+													}
+												)}
 										</div>
 									</div>
 								</div>

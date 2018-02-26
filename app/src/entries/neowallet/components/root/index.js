@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import { I18n } from "react-i18next";
 import { Select } from "antd";
+import { getQuery, toHref } from "../../../../utils/util";
 import Menu from "@/menu";
 import HeaderNav from "@/headernav";
 const Option = Select.Option;
@@ -10,10 +11,16 @@ export default class Root extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-			type: 4
+			type: 1
 		};
 	}
-	componentDidMount() {}
+	componentDidMount() {
+		let q = getQuery(window.location.href);
+		let obj = JSON.parse(localStorage.getItem("walletObject"));
+		if (q && q.id) {
+			this.props.setNeoWalletInfo(obj[q.id]);
+		}
+	}
 	navCur(idx) {
 		return idx === this.state.type ? "nav-item cur" : "nav-item";
 	}
@@ -22,8 +29,11 @@ export default class Root extends PureComponent {
 			type: idx
 		});
 	}
+	addAsset(info) {
+		toHref(`addasset?walletid=${info.id}&&wallettype=${info.category.id}`);
+	}
 	render() {
-		let { lng } = this.props;
+		let { lng, neoWalletDetailInfo } = this.props;
 		let { type } = this.state;
 		return (
 			<I18n>
@@ -37,11 +47,21 @@ export default class Root extends PureComponent {
 									<div className="box1 ui center">
 										<img
 											className="icon"
-											src="https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=2743341508,493051922&fm=173&s=F203B14451608CEC1EFED1830300309B&w=218&h=146&img.JPEG"
+											src={
+												neoWalletDetailInfo &&
+												neoWalletDetailInfo.category &&
+												neoWalletDetailInfo.category.img
+											}
 										/>
 										<div className="f1">
-											<div className="name">sdasdas</div>
-											<div className="address">3232</div>
+											<div className="name">
+												{neoWalletDetailInfo &&
+													neoWalletDetailInfo.name}
+											</div>
+											<div className="address">
+												{neoWalletDetailInfo &&
+													neoWalletDetailInfo.address}
+											</div>
 										</div>
 										<div className="money">$100.00</div>
 									</div>
@@ -100,7 +120,13 @@ export default class Root extends PureComponent {
 											<div className="t1">Claim</div>
 											<div className="t2">2000.00GAS</div>
 										</div>
-										<div className="box-btn line-orange">
+										<div
+											onClick={this.addAsset.bind(
+												this,
+												neoWalletDetailInfo
+											)}
+											className="box-btn line-orange"
+										>
 											Add Asset
 										</div>
 									</div>

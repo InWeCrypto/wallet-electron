@@ -3,6 +3,6 @@ import * as reducers from "./controls/reducers";
 import * as globalReducer from "../../globalreducer";
 import React, { PureComponent } from "react";
 injectReducer("globData", globalReducer);
-injectReducer("login", reducers);
+injectReducer("addasset", reducers);
 import Root from "./containers/root";
 export default Root;

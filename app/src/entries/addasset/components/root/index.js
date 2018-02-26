@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { Modal, Button } from "antd";
+import { getQuery } from "../../../../utils/util";
 import { I18n } from "react-i18next";
 import Menu from "@/menu/index.js";
 import HeaderNav from "@/headernav/index.js";
@@ -15,9 +16,23 @@ export default class Root extends PureComponent {
 		super(props);
 		this.state = {};
 	}
-	componentDidMount() {}
+	componentDidMount() {
+		let q = getQuery(window.location.href);
+		if (q && q.walletid && q.wallettype) {
+			this.props.getAssetsList({
+				wallet_category_id: q.wallettype,
+				wallet_id: q.walletid
+			});
+		}
+	}
+	checkAsset(item) {
+		this.props.checkChange({
+			id: item.id,
+			state: !item.isCheck
+		});
+	}
 	render() {
-		let { lng } = this.props;
+		let { lng, assetsList } = this.props;
 
 		return (
 			<I18n>
@@ -30,44 +45,54 @@ export default class Root extends PureComponent {
 								<div className="title">Add Asset</div>
 								<div className="cokBox">
 									<ul className="assetUl">
-										<li className="assetCell">
-											<div className="imgbox">
-												<img
-													className="img"
-													src={chooseico}
-													alt=""
-												/>
-											</div>
-											<div className="nameStr">
-												Raiden(RDN)
-											</div>
-											<div className="choose">
-												<img
-													className="img"
-													src={chooseico}
-													alt=""
-												/>
-											</div>
-										</li>
-										<li className="assetCell">
-											<div className="imgbox">
-												<img
-													className="img"
-													src={chooseico}
-													alt=""
-												/>
-											</div>
-											<div className="nameStr">
-												Raiden(RDN)
-											</div>
-											<div className="choose">
-												<img
-													className="img"
-													src={chooseico2}
-													alt=""
-												/>
-											</div>
-										</li>
+										{assetsList &&
+											assetsList.list &&
+											assetsList.list.length > 0 &&
+											assetsList.list.map(
+												(item, index) => {
+													return (
+														<li
+															key={index}
+															className="assetCell"
+															onClick={this.checkAsset.bind(
+																this,
+																item
+															)}
+														>
+															<div className="imgbox">
+																<img
+																	className="img"
+																	src={
+																		item.icon
+																	}
+																/>
+															</div>
+															<div className="nameStr">
+																{item.name}
+																{/* Raiden(RDN) */}
+															</div>
+															<div className="choose">
+																{!item.isCheck && (
+																	<img
+																		className="img"
+																		src={
+																			chooseico
+																		}
+																	/>
+																)}
+																{item.isCheck && (
+																	<img
+																		className="img"
+																		src={
+																			chooseico2
+																		}
+																	/>
+																)}
+															</div>
+														</li>
+													);
+												}
+											)}
 									</ul>
 									<button className="confirmBtn button-green">
 										confirm
