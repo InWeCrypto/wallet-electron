@@ -13,7 +13,10 @@ export default function promiseMiddleware({ dispatch }) {
 		if (!isPromise(promise)) return next(action);
 
 		promise.then(res => {
-			return next({ ...action, payload: res.data });
+			return next({
+				...action,
+				payload: res.data ? res.data : res
+			});
 		});
 
 		return promise;

@@ -3,7 +3,9 @@ import { NavLink, Link } from "react-router-dom";
 import { I18n } from "react-i18next";
 import Menu from "@/menu";
 import HeaderNav from "@/headernav";
+import http from "../../../../utils/ajax";
 import "./index.less";
+import { toHref } from "../../../../utils/util";
 
 export default class Root extends PureComponent {
 	constructor(props) {
@@ -34,7 +36,7 @@ export default class Root extends PureComponent {
 			});
 		} else {
 			let arr = [];
-			this.props.map(() => {
+			this.props.walletTypes.map(() => {
 				arr.push({
 					isShow: false,
 					walletName: "",
@@ -93,17 +95,26 @@ export default class Root extends PureComponent {
 	createWalletClick(idx) {
 		let { walletTypes } = this.props;
 		let { itemList } = this.state;
-		let param = {
-			category_id: walletTypes[idx].id,
+		let params = {
 			name: itemList[idx].walletName,
-			address: "AH3V6KHbJoe5jRDwuxXtBPRiyLKYwEau8o"
+			type: walletTypes[idx].name.toLowerCase(),
+			password: itemList[idx].password
 		};
-		//eth:0x21cD879e7b7fE6de1225B431E782C40b72441Be0
-		//neo:AH3V6KHbJoe5jRDwuxXtBPRiyLKYwEau8o
-		this.props.createWallet(param).then(res => {
-			if (res.code === 4000) {
-				Msg.prompt("success");
-			}
+		this.props.getCreateAddress(params).then(res => {
+			this.props
+				.createWallet({
+					category_id: walletTypes[idx].id,
+					name: itemList[idx].walletName,
+					address: res.address
+				})
+				.then(res1 => {
+					if (res1.code === 4000) {
+						Msg.prompt("success");
+						setTimeout(() => {
+							toHref("wallet");
+						}, 2000);
+					}
+				});
 		});
 	}
 	render() {

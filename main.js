@@ -9,13 +9,8 @@ const Menu = electron.Menu;
 const Tray = electron.Tray;
 const path = require("path");
 const url = require("url");
-// const { isBuild } = require("./build.config");
-// console.log(isBuild);
-// const isBuild = true; //是否编译环境
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
+
 let win;
-// console.log(process.env.NODE_ENV);
 
 const isDev = process.mainModule.filename.indexOf("app.asar") === -1;
 
@@ -34,7 +29,7 @@ cp.exec(
 );
 
 if (isDev) {
-	require("electron-reload")(__dirname);
+	//require("electron-reload")(__dirname);
 }
 
 function createWindow() {

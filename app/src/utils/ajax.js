@@ -55,50 +55,81 @@ function checkRight(response) {
 }
 
 function request(method, url, params = {}, header = {}, isLocal = false) {
-	const languageItem = getLocalItem("language");
-	const userInfo = getLocalItem("userInfo");
-	const headers = {
-		"Content-Type": "application/json",
-		lang: languageItem
-			? languageItem.data ? languageItem.data : "zh"
-			: "zh",
-		Accept: "*/*",
-		...header
-	};
-	if (userInfo && userInfo.data) {
-		headers.Authorization = JSON.parse(userInfo.data).token;
-	}
-	let _url = requestUrl(isLocal) + url;
-	let body;
+	if (!isLocal) {
+		const languageItem = getLocalItem("language");
+		const userInfo = getLocalItem("userInfo");
+		const headers = {
+			"Content-Type": "application/json",
+			lang: languageItem
+				? languageItem.data ? languageItem.data : "zh"
+				: "zh",
+			Accept: "*/*",
+			...header
+		};
+		if (userInfo && userInfo.data) {
+			headers.Authorization = JSON.parse(userInfo.data).token;
+		}
+		let _url = requestUrl(isLocal) + url;
+		let body;
 
-	if (METHODS.includes(method)) {
-		const _params = [];
+		if (METHODS.includes(method)) {
+			const _params = [];
 
-		for (let key in params) {
-			_params.push(`${key}=${params[key]}`);
+			for (let key in params) {
+				_params.push(`${key}=${params[key]}`);
+			}
+
+			if (_params.length) {
+				_url += "?";
+				_url += _params.join("&");
+			}
+		} else {
+			body = JSON.stringify(params);
 		}
 
-		if (_params.length) {
-			_url += "?";
-			_url += _params.join("&");
-		}
+		return fetch(_url, {
+			method,
+			body,
+			headers
+		})
+			.then(checkStatus)
+			.then(parseJSON)
+			.then(checkRight);
 	} else {
-		body = JSON.stringify(params);
+		let body;
+		const headers = {
+			"Content-Type": "application/json",
+			...header
+		};
+		if (METHODS.includes(method)) {
+			const _params = [];
+
+			for (let key in params) {
+				_params.push(`${key}=${params[key]}`);
+			}
+
+			if (_params.length) {
+				_url += "?";
+				_url += _params.join("&");
+			}
+		} else {
+			body = JSON.stringify(params);
+		}
+		let _url = requestUrl(isLocal) + url;
+		return fetch(_url, {
+			method,
+			body,
+			headers
+		})
+			.then(checkStatus)
+			.then(parseJSON);
 	}
-	return fetch(_url, {
-		method,
-		body,
-		headers
-	})
-		.then(checkStatus)
-		.then(parseJSON)
-		.then(checkRight);
 }
 
 const methods = {};
 
 [...METHODS, ...BODY_METHODS].forEach(method => {
-	methods[method] = ({ url, params, header, isLocal }) =>
+	methods[method] = ({ url, params, header }, isLocal) =>
 		request(method, url, params, header, isLocal);
 });
 

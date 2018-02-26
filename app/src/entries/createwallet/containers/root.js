@@ -8,12 +8,13 @@ import * as globalActions from "../../../globalactions";
 export default connect(
 	({
 		globData: { userInfo, lng, walletTypes },
-		createWallet: { createWalletR }
+		createWallet: { createWalletR, createAddress }
 	}) => ({
 		userInfo,
 		walletTypes,
 		lng,
-		createWalletR
+		createWalletR,
+		createAddress
 	}),
 	{
 		...actions,
