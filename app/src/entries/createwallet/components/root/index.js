@@ -15,6 +15,7 @@ export default class Root extends PureComponent {
 	}
 	componentDidMount() {
 		document.addEventListener("click", this.groupClose, false);
+		this.props.getWalletType();
 	}
 	componentWillUnmount() {
 		document.removeEventListener("click", this.groupClose, false);

@@ -3,11 +3,12 @@ import {
 	LNG,
 	EMAILCODE,
 	USERINFO,
+	WALLETTYPES,
 	NICKNAME,
-	USERHEADER,
-	HEADERMARKET,
-	RESETPASSWORD,
-	GETIMGOPTION
+	USERHEADER
+	// HEADERMARKET,
+	// RESETPASSWORD,
+	// GETIMGOPTION
 } from "./globalactions";
 export const lng = handleActions(
 	{
@@ -37,15 +38,22 @@ export const emailCode = handleActions(
 	},
 	null
 );
-export const commonMarket = handleActions(
+
+export const walletTypes = handleActions(
 	{
-		[HEADERMARKET]: (state, { payload }) => payload
+		[WALLETTYPES]: (state, { payload }) => payload
 	},
 	null
 );
-export const imgOption = handleActions(
-	{
-		[GETIMGOPTION]: (state, { payload }) => payload
-	},
-	null
-);
+// export const commonMarket = handleActions(
+// 	{
+// 		[HEADERMARKET]: (state, { payload }) => payload
+// 	},
+// 	null
+// );
+// export const imgOption = handleActions(
+// 	{
+// 		[GETIMGOPTION]: (state, { payload }) => payload
+// 	},
+// 	null
+// );

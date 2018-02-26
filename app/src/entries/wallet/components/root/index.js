@@ -16,7 +16,7 @@ export default class Root extends PureComponent {
 		this.props.getWalletList();
 	}
 	render() {
-		let { lng } = this.props;
+		let { lng, walletList } = this.props;
 		return (
 			<I18n>
 				{(t, { i18n }) => (
