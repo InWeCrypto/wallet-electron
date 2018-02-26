@@ -12,7 +12,9 @@ export default class Root extends PureComponent {
 		super(props);
 		this.state = {};
 	}
-	componentDidMount() {}
+	componentDidMount() {
+		this.props.getWalletList();
+	}
 	render() {
 		let { lng } = this.props;
 		return (

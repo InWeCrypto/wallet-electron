@@ -27,7 +27,7 @@ import TransationDetail from "./entries/transationdetail";
 export default () => {
 	return (
 		<Switch>
-			<Route path="/" exact component={Watchmanagewallet} />
+			<Route path="/" exact component={Login} />
 			<Route path="/project" component={Project} />
 			<Route path="/projectlist" component={Projectlist} />
 			<Route path="/managewallet" component={Managewallet} />

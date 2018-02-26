@@ -3,9 +3,10 @@ import Root from "../components/root";
 import * as actions from "../controls/actions";
 import * as globalActions from "../../../globalactions";
 export default connect(
-	({ globData: { userInfo, lng } }) => ({
+	({ globData: { userInfo, lng }, wallet: { walletList } }) => ({
 		userInfo,
-		lng
+		lng,
+		walletList
 	}),
 	{
 		...actions,

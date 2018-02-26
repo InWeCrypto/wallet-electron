@@ -37,7 +37,7 @@ function checkRight(response) {
 		return response;
 	} else if (response.code === 4001 || response.code === 4010) {
 		localStorage.removeItem("userInfo");
-		window.location.href = "/";
+		//window.location.href = "/";
 		store.dispatch(setReduxUserInfo(null));
 		return {
 			msg: response.msg,
@@ -68,8 +68,8 @@ function request(method, url, params = {}, header = {}) {
 	if (userInfo && userInfo.data) {
 		headers.Authorization = JSON.parse(userInfo.data).token;
 	}
-	let isD = JSON.parse(window.localStorage.getItem("isDev"));
-	let _url = requestUrl(isD) + url;
+	// let isD = JSON.parse(window.localStorage.getItem("isDev"));
+	let _url = requestUrl + url;
 	let body;
 
 	if (METHODS.includes(method)) {

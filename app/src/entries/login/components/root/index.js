@@ -3,6 +3,7 @@ import { NavLink, Link } from "react-router-dom";
 import { Modal, Button } from "antd";
 import { I18n } from "react-i18next";
 import "./index.less";
+import loginName from "#/loginname.png";
 import loginHeader from "#/tou_pic.png";
 export default class Root extends PureComponent {
 	constructor(props) {
@@ -21,7 +22,7 @@ export default class Root extends PureComponent {
 								<img className="login-img" src={loginHeader} />
 							</div>
 							<div className="login-name">
-								{/* <img className="loginname" src={loginName} /> */}
+								<img className="loginname" src={loginName} />
 							</div>
 							<div className="login-btn">
 								<span className="loginbtn">
