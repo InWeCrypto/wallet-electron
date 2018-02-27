@@ -16,8 +16,7 @@ export default class Root extends PureComponent {
 			type: 1,
 			sendAddress: "",
 			sendAmount: "",
-			sendKey: 0,
-			isHasQcode: false
+			sendKey: 0
 		};
 	}
 	componentDidMount() {
@@ -62,11 +61,8 @@ export default class Root extends PureComponent {
 		this.setState({
 			type: idx
 		});
-		if (idx === 3 && !this.state.isHasQcode) {
+		if (idx === 3) {
 			this.setQcode(this.props.neoWalletDetailInfo.address);
-			this.setState({
-				isHasQcode: true
-			});
 		}
 	}
 	addAsset(info) {

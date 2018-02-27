@@ -1,5 +1,7 @@
 import React, { PureComponent } from "react";
 import { I18n } from "react-i18next";
+import { getQuery } from "../../../../utils/util";
+import QRCode from "../../../../assets/js/qcode";
 import { Select, Slider } from "antd";
 import Menu from "@/menu";
 import HeaderNav from "@/headernav";
@@ -10,10 +12,44 @@ export default class Root extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-			type: 2
+			type: 1
 		};
 	}
-	componentDidMount() {}
+	componentDidMount() {
+		let q = getQuery(window.location.href);
+		let obj = JSON.parse(localStorage.getItem("walletObject"));
+		if (q && q.id) {
+			this.props.setEthWalletInfo(obj[q.id]);
+			// this.props.getWalletAssets({
+			// 	wallet_id: q.id,
+			// 	wallet_category_id: 2
+			// });
+			this.props.getEthWalletConversion({
+				id: q.id
+			});
+		}
+	}
+	setCopy() {
+		clipboard.writeText(this.props.ethWalletDetailInfo.address);
+		Msg.prompt("copy success");
+	}
+	setPrint() {
+		ipc.send("print-preview", {
+			str: this.props.ethWalletDetailInfo.address,
+			title: this.props.ethWalletDetailInfo.name
+		});
+	}
+	setQcode(str) {
+		setTimeout(() => {
+			var box = document.getElementById("qrcode");
+			var n = box.offsetWidth - 10;
+			var qrcode = new QRCode(box, {
+				width: n, //设置宽高
+				height: n
+			});
+			qrcode.makeCode(str);
+		}, 10);
+	}
 	navCur(idx) {
 		return idx === this.state.type ? "nav-item cur" : "nav-item";
 	}
@@ -21,12 +57,18 @@ export default class Root extends PureComponent {
 		this.setState({
 			type: idx
 		});
+		if (idx === 3) {
+			this.setQcode(this.props.ethWalletDetailInfo.address);
+		}
+	}
+	addAsset(info) {
+		toHref(`addasset?walletid=${info.id}&&wallettype=${info.category.id}`);
 	}
 	sliderChange(res) {
 		console.log(res);
 	}
 	render() {
-		let { lng } = this.props;
+		let { lng, ethWalletDetailInfo, ethWalletConversion } = this.props;
 		let { type } = this.state;
 		return (
 			<I18n>
@@ -40,11 +82,21 @@ export default class Root extends PureComponent {
 									<div className="box1 ui center">
 										<img
 											className="icon"
-											src="https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=2743341508,493051922&fm=173&s=F203B14451608CEC1EFED1830300309B&w=218&h=146&img.JPEG"
+											src={
+												ethWalletDetailInfo &&
+												ethWalletDetailInfo.category &&
+												ethWalletDetailInfo.category.img
+											}
 										/>
 										<div className="f1">
-											<div className="name">sdasdas</div>
-											<div className="address">3232</div>
+											<div className="name">
+												{ethWalletDetailInfo &&
+													ethWalletDetailInfo.name}
+											</div>
+											<div className="address">
+												{ethWalletDetailInfo &&
+													ethWalletDetailInfo.address}
+											</div>
 										</div>
 										<div className="money">$100.00</div>
 									</div>
@@ -99,7 +151,13 @@ export default class Root extends PureComponent {
 												Record
 											</div>
 										</div>
-										<div className="box-btn line-orange">
+										<div
+											className="box-btn line-orange"
+											onClick={this.addAsset.bind(
+												this,
+												ethWalletDetailInfo
+											)}
+										>
 											Add Asset
 										</div>
 									</div>
@@ -108,16 +166,64 @@ export default class Root extends PureComponent {
 											<div className="wallet-item ui center">
 												<img
 													className="icon"
-													src="https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=703596290,1200042368&fm=173&s=05105F955E20468E2A8D7D610300E0F0&w=218&h=146&img.JPEG"
+													src={
+														ethWalletConversion &&
+														ethWalletConversion.record &&
+														ethWalletConversion
+															.record.category &&
+														ethWalletConversion
+															.record.category.img
+													}
 												/>
 												<div className="f1 name">
-													22
+													{ethWalletConversion &&
+														ethWalletConversion.record &&
+														ethWalletConversion
+															.record.category &&
+														ethWalletConversion
+															.record.category
+															.name}
 												</div>
 												<div>
 													<div className="t1">2</div>
 													<div className="t1">2</div>
 												</div>
 											</div>
+											{ethWalletConversion &&
+												ethWalletConversion.list &&
+												ethWalletConversion.list
+													.length > 0 &&
+												ethWalletConversion.list.map(
+													(item, index) => {
+														return (
+															<div
+																key={index}
+																className="wallet-item ui center"
+															>
+																<img
+																	className="icon"
+																	src={
+																		item.gnt_category &&
+																		item
+																			.gnt_category
+																			.icon
+																	}
+																/>
+																<div className="f1 name">
+																	{item.name}
+																</div>
+																<div>
+																	<div className="t1">
+																		2
+																	</div>
+																	<div className="t1">
+																		2
+																	</div>
+																</div>
+															</div>
+														);
+													}
+												)}
 										</div>
 									)}
 									{type === 2 && (
@@ -197,19 +303,29 @@ export default class Root extends PureComponent {
 												Recive ETH/ ERC 20 Token
 											</div>
 											<div className="qcodebox">
-												<img
+												<div
 													className="qcode"
-													src="https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1062989499,1682648318&fm=58"
+													id="qrcode"
 												/>
 											</div>
 											<div className="btn-box">
-												<span className="button-green">
+												<span
+													className="button-green"
+													onClick={this.setCopy.bind(
+														this
+													)}
+												>
 													<i className="icon-copy" />
 													<span className="t">
 														Copy Address
 													</span>
 												</span>
-												<span className="button-green">
+												<span
+													className="button-green"
+													onClick={this.setPrint.bind(
+														this
+													)}
+												>
 													<i className="icon-print" />
 													<span className="t">
 														Print Address

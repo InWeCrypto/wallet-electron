@@ -130,7 +130,10 @@ ipc.on("print-preview", (event, arg) => {
 	});
 });
 ipc.on("print-to-pdf", function(event, arg) {
-	const pdfPath = path.join(os.tmpdir(), "print.pdf");
+	const pdfPath = path.join(
+		os.tmpdir(),
+		`${arg.title}_${parseInt(Math.random() * 100000000, 10)}.pdf`
+	);
 	const win = BrowserWindow.fromWebContents(event.sender);
 	win.webContents.printToPDF({}, function(error, data) {
 		if (error) throw error;

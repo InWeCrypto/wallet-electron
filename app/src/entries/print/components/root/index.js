@@ -23,7 +23,8 @@ export default class Root extends PureComponent {
 	}
 	printPDFClick() {
 		ipc.send("print-to-pdf", {
-			url: window.location.href
+			url: window.location.href,
+			title: this.state.title
 		});
 	}
 	setQcode(str) {

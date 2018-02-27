@@ -6,9 +6,14 @@ import * as globalActions from "../../../globalactions";
 //    categoryList
 //}),
 export default connect(
-	({ globData: { userInfo, lng } }) => ({
+	({
+		globData: { userInfo, lng },
+		ethwallet: { ethWalletConversion, ethWalletDetailInfo }
+	}) => ({
 		userInfo,
-		lng
+		lng,
+		ethWalletConversion,
+		ethWalletDetailInfo
 	}),
 	{
 		...actions,
