@@ -6,15 +6,9 @@ import * as globalActions from "../../../globalactions";
 //    categoryList
 //}),
 export default connect(
-	({
-		globData: { userInfo, lng },
-		neowallet: { neoWalletDetailInfo, neoWalletAssets, neoConversion }
-	}) => ({
+	({ globData: { userInfo, lng } }) => ({
 		userInfo,
-		lng,
-		neoWalletDetailInfo,
-		neoWalletAssets,
-		neoConversion
+		lng
 	}),
 	{
 		...actions,

@@ -2,14 +2,15 @@ const { app, BrowserWindow } = require("electron");
 const electron = require("electron");
 const process = require("process");
 const cp = require("child_process");
-
+const os = require("os");
+const fs = require("fs");
 const ipc = electron.ipcMain;
 const dialog = electron.dialog;
 const Menu = electron.Menu;
 const Tray = electron.Tray;
 const path = require("path");
 const url = require("url");
-
+const shell = electron.shell;
 let win;
 
 const isDev = process.mainModule.filename.indexOf("app.asar") === -1;
@@ -113,4 +114,32 @@ app.on("activate", () => {
 
 ipc.on("errorMsg", function(event, text, title) {
 	dialog.showErrorBox(text, title);
+});
+ipc.on("print-preview", (event, arg) => {
+	winprintp = new BrowserWindow({ width: 790, height: 800 });
+	winprintp.loadURL(
+		"file:///" +
+			path.join(
+				__dirname,
+				`resources/index.html#print?str=${arg.str}&title=${arg.title}`
+			)
+	);
+	winprintp.setMenu(null);
+	winprintp.webContents.on("did-finish-load", () => {
+		winprintp.webContents.send("request", arg);
+	});
+});
+ipc.on("print-to-pdf", function(event, arg) {
+	const pdfPath = path.join(os.tmpdir(), "print.pdf");
+	const win = BrowserWindow.fromWebContents(event.sender);
+	win.webContents.printToPDF({}, function(error, data) {
+		if (error) throw error;
+		fs.writeFile(pdfPath, data, function(error) {
+			if (error) {
+				throw error;
+			}
+			shell.openExternal("file://" + pdfPath);
+			event.sender.send("wrote-pdf", pdfPath);
+		});
+	});
 });

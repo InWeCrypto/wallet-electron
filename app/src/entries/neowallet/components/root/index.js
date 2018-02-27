@@ -5,6 +5,7 @@ import { getQuery, toHref } from "../../../../utils/util";
 import QRCode from "../../../../assets/js/qcode";
 import Menu from "@/menu";
 import HeaderNav from "@/headernav";
+import neoicon from "#/neoicon.png";
 const Option = Select.Option;
 import "./index.less";
 
@@ -12,7 +13,11 @@ export default class Root extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-			type: 1
+			type: 1,
+			sendAddress: "",
+			sendAmount: "",
+			sendKey: 0,
+			isHasQcode: false
 		};
 	}
 	componentDidMount() {
@@ -24,7 +29,20 @@ export default class Root extends PureComponent {
 				wallet_id: q.id,
 				wallet_category_id: 2
 			});
+			this.props.getNeoWalletConversion({
+				id: q.id
+			});
 		}
+	}
+	setCopy() {
+		clipboard.writeText(this.props.neoWalletDetailInfo.address);
+		Msg.prompt("copy success");
+	}
+	setPrint() {
+		ipc.send("print-preview", {
+			str: this.props.neoWalletDetailInfo.address,
+			title: this.props.neoWalletDetailInfo.name
+		});
 	}
 	setQcode(str) {
 		setTimeout(() => {
@@ -44,16 +62,40 @@ export default class Root extends PureComponent {
 		this.setState({
 			type: idx
 		});
-		if (idx === 3) {
+		if (idx === 3 && !this.state.isHasQcode) {
 			this.setQcode(this.props.neoWalletDetailInfo.address);
+			this.setState({
+				isHasQcode: true
+			});
 		}
 	}
 	addAsset(info) {
 		toHref(`addasset?walletid=${info.id}&&wallettype=${info.category.id}`);
 	}
+	sendAddress(e) {
+		this.setState({
+			sendAddress: e.target.value
+		});
+	}
+	sendAmount(e) {
+		this.setState({
+			sendAmount: e.target.value
+		});
+	}
+	sendKeyChange(e) {
+		console.log(e);
+		this.setState({
+			sendKey: e
+		});
+	}
 	render() {
-		let { lng, neoWalletDetailInfo, neoWalletAssets } = this.props;
-		let { type } = this.state;
+		let {
+			lng,
+			neoWalletDetailInfo,
+			neoWalletAssets,
+			neoConversion
+		} = this.props;
+		let { type, sendAddress, sendAmount, sendKey } = this.state;
 		return (
 			<I18n>
 				{(t, { i18n }) => (
@@ -62,7 +104,7 @@ export default class Root extends PureComponent {
 						<div className="content-container">
 							<HeaderNav />
 							<div className="content">
-								<div className="wallet">
+								<div className="wallet neowallet">
 									<div className="box1 ui center">
 										<img
 											className="icon"
@@ -151,11 +193,124 @@ export default class Root extends PureComponent {
 									</div>
 									{type === 1 && (
 										<div className="box3">
-											{neoWalletAssets &&
-												neoWalletAssets.list &&
-												neoWalletAssets.list.length >
-													0 &&
-												neoWalletAssets.list.map(
+											<div className="wallet-item ui center">
+												<img
+													className="icon"
+													src={neoicon}
+												/>
+												<div className="f1 name">
+													NEO
+												</div>
+												<div
+													style={{
+														textAlign: "right"
+													}}
+												>
+													{neoConversion &&
+														neoConversion.record && (
+															<div className="t1">
+																{neoConversion
+																	.record
+																	.balance ==
+																0
+																	? "0"
+																	: neoConversion
+																			.record
+																			.balance}
+															</div>
+														)}
+													{neoConversion &&
+														neoConversion.record && (
+															<div className="t1">
+																${" "}
+																{neoConversion
+																	.record
+																	.balance ==
+																0
+																	? "0"
+																	: (
+																			neoConversion
+																				.record
+																				.balance *
+																			neoConversion
+																				.record
+																				.cap
+																				.price_usd
+																		).toFixed(
+																			8
+																		)}
+															</div>
+														)}
+												</div>
+											</div>
+											<div className="wallet-item ui center">
+												<img
+													className="icon"
+													src={neoicon}
+												/>
+												<div className="f1 name">
+													GAS
+												</div>
+												<div
+													style={{
+														textAlign: "right"
+													}}
+												>
+													{neoConversion &&
+														neoConversion.record &&
+														neoConversion.record
+															.gnt &&
+														neoConversion.record
+															.gnt[0] && (
+															<div className="t1">
+																{neoConversion
+																	.record
+																	.gnt[0]
+																	.balance ==
+																0
+																	? "0"
+																	: neoConversion
+																			.record
+																			.gnt[0]
+																			.balance}
+															</div>
+														)}
+
+													{neoConversion &&
+														neoConversion.record &&
+														neoConversion.record
+															.gnt &&
+														neoConversion.record
+															.gnt[0] && (
+															<div className="t1">
+																${" "}
+																{neoConversion
+																	.record
+																	.gnt[0]
+																	.balance ==
+																0
+																	? "0"
+																	: (
+																			neoConversion
+																				.record
+																				.gnt[0]
+																				.balance *
+																			neoConversion
+																				.record
+																				.gnt[0]
+																				.cap
+																				.price_usd
+																		).toFixed(
+																			8
+																		)}
+															</div>
+														)}
+												</div>
+											</div>
+											{neoConversion &&
+												neoConversion.list &&
+												neoConversion.list.length > 0 &&
+												neoConversion.list.map(
 													(item, index) => {
 														return (
 															<div
@@ -165,18 +320,50 @@ export default class Root extends PureComponent {
 																<img
 																	className="icon"
 																	src={
-																		item.icon
+																		item.gnt_category &&
+																		item
+																			.gnt_category
+																			.icon
 																	}
 																/>
 																<div className="f1 name">
 																	{item.name}
 																</div>
-																<div>
+																<div
+																	style={{
+																		textAlign:
+																			"right"
+																	}}
+																>
 																	<div className="t1">
-																		2
+																		{parseInt(
+																			item.balance,
+																			10
+																		).toFixed(
+																			item.decimals
+																		) == 0
+																			? 0
+																			: parseInt(
+																					item.balance,
+																					10
+																				).toFixed(
+																					item.decimals
+																				)}
 																	</div>
 																	<div className="t1">
-																		2
+																		${" "}
+																		{(
+																			parseInt(
+																				item.balance,
+																				10
+																			) *
+																			item
+																				.gnt_category
+																				.cap
+																				.price_usd
+																		).toFixed(
+																			item.decimals
+																		)}
 																	</div>
 																</div>
 															</div>
@@ -195,6 +382,10 @@ export default class Root extends PureComponent {
 													<input
 														type="text"
 														className="input"
+														value={sendAddress}
+														onChange={this.sendAddress.bind(
+															this
+														)}
 													/>
 												</div>
 											</div>
@@ -204,25 +395,137 @@ export default class Root extends PureComponent {
 														Amount
 													</div>
 													<div className="t1">
-														Available：10.0000 RDN
+														Available：
+														{sendKey == 0 && (
+															<span>
+																{neoConversion &&
+																neoConversion.record &&
+																neoConversion
+																	.record
+																	.balance ==
+																	0
+																	? "0"
+																	: neoConversion
+																			.record
+																			.balance}
+															</span>
+														)}
+														{sendKey == 1 && (
+															<span>
+																{neoConversion &&
+																neoConversion.record &&
+																neoConversion
+																	.record
+																	.gnt &&
+																neoConversion
+																	.record
+																	.gnt[0] &&
+																neoConversion
+																	.record
+																	.gnt[0]
+																	.balance ==
+																	0
+																	? "0"
+																	: neoConversion
+																			.record
+																			.gnt[0]
+																			.balance}
+															</span>
+														)}
+														{sendKey > 1 && (
+															<span>
+																{parseInt(
+																	neoConversion
+																		.list[
+																		sendKey -
+																			2
+																	].balance,
+																	10
+																) == 0
+																	? "0"
+																	: parseInt(
+																			neoConversion
+																				.list[
+																				sendKey -
+																					2
+																			]
+																				.balance,
+																			10
+																		).toFixed(
+																			neoConversion
+																				.list[
+																				sendKey -
+																					2
+																			]
+																				.decimals
+																		)}
+															</span>
+														)}{" "}
+														{sendKey == 0 && "NEO"}
+														{sendKey == 1 && "GAS"}
+														{sendKey > 1 &&
+															neoConversion &&
+															neoConversion.list[
+																sendKey - 2
+															].name}
 													</div>
 												</div>
 												<div className="ui input-box">
 													<input
 														type="text"
 														className="input"
+														value={sendAmount}
+														onChange={this.sendAmount.bind(
+															this
+														)}
 													/>
 													<div>
 														<Select
-															defaultValue="jack"
+															defaultValue={
+																sendKey
+															}
 															style={{
 																width: 120,
 																height: 60
 															}}
+															onChange={this.sendKeyChange.bind(
+																this
+															)}
 														>
-															<Option value="jack">
-																Jack
+															<Option value={0}>
+																NEO
 															</Option>
+															<Option value={1}>
+																GAS
+															</Option>
+															{neoConversion &&
+																neoConversion.list &&
+																neoConversion
+																	.list
+																	.length >
+																	0 &&
+																neoConversion.list.map(
+																	(
+																		item,
+																		index
+																	) => {
+																		return (
+																			<Option
+																				key={
+																					index
+																				}
+																				value={
+																					index +
+																					2
+																				}
+																			>
+																				{
+																					item.name
+																				}
+																			</Option>
+																		);
+																	}
+																)}
 														</Select>
 													</div>
 												</div>
@@ -246,13 +549,23 @@ export default class Root extends PureComponent {
 												/>
 											</div>
 											<div className="btn-box">
-												<span className="button-green">
+												<span
+													className="button-green"
+													onClick={this.setCopy.bind(
+														this
+													)}
+												>
 													<i className="icon-copy" />
 													<span className="t">
 														Copy Address
 													</span>
 												</span>
-												<span className="button-green">
+												<span
+													className="button-green"
+													onClick={this.setPrint.bind(
+														this
+													)}
+												>
 													<i className="icon-print" />
 													<span className="t">
 														Print Address

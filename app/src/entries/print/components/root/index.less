@@ -1,0 +1,32 @@
+.printpage {
+	text-align: center;
+	width: 100%;
+	height: 100%;
+	background: #fff;
+	.print-title {
+		padding: 0.4rem;
+		font-size: 0.3rem;
+		color: #404040;
+	}
+	.qcodebox {
+		display: inline-block;
+		width: 3rem;
+		height: 3rem;
+	}
+	.print-str {
+		font-size: 0.2rem;
+		padding: 0.2rem;
+	}
+	.printbtn {
+		margin: 0 0.1rem;
+		width: 1.4rem;
+	}
+}
+@media print {
+	.printpage {
+		.printbtn {
+			display: none;
+			color: #fff;
+		}
+	}
+}

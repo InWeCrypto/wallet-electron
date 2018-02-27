@@ -12,8 +12,10 @@
 
     <script type="text/javascript" src="./mainfest/vendor.dll.js"></script>
     <script>
-        // window.ipc = require("electron").ipcRenderer;
+        window.ipc = require("electron").ipcRenderer;
         // window.clipboard = require('electron').clipboard;
+        var electron = require('electron')
+        window.clipboard = electron.clipboard;
     </script>
 
 

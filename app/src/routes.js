@@ -23,6 +23,7 @@ import NeoWallet from "./entries/neowallet";
 import EthWallet from "./entries/ethwallet";
 import WatchWallet from "./entries/watchwallet";
 import TransationDetail from "./entries/transationdetail";
+import Print from "./entries/print";
 //transationdetail
 export default () => {
 	return (
@@ -49,6 +50,7 @@ export default () => {
 			<Route path="/ethwallet" component={EthWallet} />
 			<Route path="/watchwallet" component={WatchWallet} />
 			<Route path="/transationdetail" component={TransationDetail} />
+			<Route path="/print" component={Print} />
 		</Switch>
 	);
 };
