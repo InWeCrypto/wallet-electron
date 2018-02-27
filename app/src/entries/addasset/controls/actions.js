@@ -6,6 +6,7 @@ import { Modal } from "antd";
 const PRE_FIX = "ADDASSET_";
 export const GETASSETLIST = `${PRE_FIX}GETASSETLIST`;
 export const CHECKASSETLIST = `${PRE_FIX}CHECKASSETLIST`;
+export const CONFIRMCHOOSE = `${PRE_FIX}CONFIRMCHOOSE`;
 export const getAssetsList = createAction(GETASSETLIST, params => {
 	return http
 		.get({
@@ -28,4 +29,10 @@ export const getAssetsList = createAction(GETASSETLIST, params => {
 });
 export const checkChange = createAction(CHECKASSETLIST, params => {
 	return params;
+});
+export const submitAddAsset = createAction(CONFIRMCHOOSE, params => {
+	return http.post({
+		url: "user-gnt",
+		params
+	});
 });

@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { Modal, Button } from "antd";
-import { getQuery } from "../../../../utils/util";
+import { getQuery, toHref } from "../../../../utils/util";
 import { I18n } from "react-i18next";
 import Menu from "@/menu/index.js";
 import HeaderNav from "@/headernav/index.js";
@@ -23,12 +23,40 @@ export default class Root extends PureComponent {
 				wallet_category_id: q.wallettype,
 				wallet_id: q.walletid
 			});
+			this.setState({
+				wallet_id: q.walletid,
+				wallet_category_id: q.wallettype
+			});
 		}
 	}
 	checkAsset(item) {
 		this.props.checkChange({
 			id: item.id,
 			state: !item.isCheck
+		});
+	}
+	submitData() {
+		let list = [];
+		this.props.assetsList.list.map((item, index) => {
+			if (item.isCheck) {
+				list.push(item.id);
+			}
+		});
+		let params = {
+			wallet_id: this.state.wallet_id,
+			gnt_category_ids: `[${list.join(",")}]`
+		};
+		this.props.submitAddAsset(params).then(res => {
+			if (res.code === 4000) {
+				console.log(this.state.wallet_category_id);
+				if (this.state.wallet_category_id == 1) {
+					toHref(`ethwallet?id=${this.state.wallet_id}`);
+				}
+				if (this.state.wallet_category_id == 2) {
+					console.log(11);
+					toHref(`neowallet?id=${this.state.wallet_id}`);
+				}
+			}
 		});
 	}
 	render() {
@@ -94,7 +122,10 @@ export default class Root extends PureComponent {
 												}
 											)}
 									</ul>
-									<button className="confirmBtn button-green">
+									<button
+										onClick={this.submitData.bind(this)}
+										className="confirmBtn button-green"
+									>
 										confirm
 									</button>
 								</div>

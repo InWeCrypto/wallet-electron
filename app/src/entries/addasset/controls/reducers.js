@@ -1,5 +1,5 @@
 import { handleActions } from "redux-actions";
-import { GETASSETLIST, CHECKASSETLIST } from "./actions";
+import { GETASSETLIST, CHECKASSETLIST, CONFIRMCHOOSE } from "./actions";
 
 export const assetsList = handleActions(
 	{
@@ -12,7 +12,8 @@ export const assetsList = handleActions(
 				return item;
 			});
 			return { ...state, list: [...list] };
-		}
+		},
+		[CONFIRMCHOOSE]: (state, { payload }) => state
 	},
 	null
 );

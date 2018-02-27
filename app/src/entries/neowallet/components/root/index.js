@@ -2,6 +2,7 @@ import React, { PureComponent } from "react";
 import { I18n } from "react-i18next";
 import { Select } from "antd";
 import { getQuery, toHref } from "../../../../utils/util";
+import QRCode from "../../../../assets/js/qcode";
 import Menu from "@/menu";
 import HeaderNav from "@/headernav";
 const Option = Select.Option;
@@ -19,7 +20,22 @@ export default class Root extends PureComponent {
 		let obj = JSON.parse(localStorage.getItem("walletObject"));
 		if (q && q.id) {
 			this.props.setNeoWalletInfo(obj[q.id]);
+			this.props.getWalletAssets({
+				wallet_id: q.id,
+				wallet_category_id: 2
+			});
 		}
+	}
+	setQcode(str) {
+		setTimeout(() => {
+			var box = document.getElementById("qrcode");
+			var n = box.offsetWidth - 10;
+			var qrcode = new QRCode(box, {
+				width: n, //设置宽高
+				height: n
+			});
+			qrcode.makeCode(str);
+		}, 10);
 	}
 	navCur(idx) {
 		return idx === this.state.type ? "nav-item cur" : "nav-item";
@@ -28,12 +44,15 @@ export default class Root extends PureComponent {
 		this.setState({
 			type: idx
 		});
+		if (idx === 3) {
+			this.setQcode(this.props.neoWalletDetailInfo.address);
+		}
 	}
 	addAsset(info) {
 		toHref(`addasset?walletid=${info.id}&&wallettype=${info.category.id}`);
 	}
 	render() {
-		let { lng, neoWalletDetailInfo } = this.props;
+		let { lng, neoWalletDetailInfo, neoWalletAssets } = this.props;
 		let { type } = this.state;
 		return (
 			<I18n>
@@ -132,19 +151,38 @@ export default class Root extends PureComponent {
 									</div>
 									{type === 1 && (
 										<div className="box3">
-											<div className="wallet-item ui center">
-												<img
-													className="icon"
-													src="https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=703596290,1200042368&fm=173&s=05105F955E20468E2A8D7D610300E0F0&w=218&h=146&img.JPEG"
-												/>
-												<div className="f1 name">
-													22
-												</div>
-												<div>
-													<div className="t1">2</div>
-													<div className="t1">2</div>
-												</div>
-											</div>
+											{neoWalletAssets &&
+												neoWalletAssets.list &&
+												neoWalletAssets.list.length >
+													0 &&
+												neoWalletAssets.list.map(
+													(item, index) => {
+														return (
+															<div
+																key={index}
+																className="wallet-item ui center"
+															>
+																<img
+																	className="icon"
+																	src={
+																		item.icon
+																	}
+																/>
+																<div className="f1 name">
+																	{item.name}
+																</div>
+																<div>
+																	<div className="t1">
+																		2
+																	</div>
+																	<div className="t1">
+																		2
+																	</div>
+																</div>
+															</div>
+														);
+													}
+												)}
 										</div>
 									)}
 									{type === 2 && (
@@ -199,12 +237,12 @@ export default class Root extends PureComponent {
 									{type === 3 && (
 										<div className="box5">
 											<div className="receive-title">
-												Recive ETH/ ERC 20 Token
+												Recive NEP-5 Token
 											</div>
 											<div className="qcodebox">
-												<img
+												<div
 													className="qcode"
-													src="https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1062989499,1682648318&fm=58"
+													id="qrcode"
 												/>
 											</div>
 											<div className="btn-box">
