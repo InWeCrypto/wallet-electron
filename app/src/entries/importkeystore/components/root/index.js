@@ -7,11 +7,37 @@ import "./index.less";
 export default class Root extends PureComponent {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			type: 0,
+			readFileText: null,
+			readFileName: ""
+		};
 	}
 	componentDidMount() {}
+	checkClick(idx) {
+		this.setState({
+			type: idx
+		});
+	}
+	inputFileChange(e) {
+		let file = e.target.files[0];
+		let path = file.path;
+		this.setState({
+			readFileName: path
+		});
+		fs.readFile(path, "utf8", (err, data) => {
+			if (err) {
+				Msg.alert("读取文件错误");
+				return;
+			}
+			this.setState({
+				readFileText: data
+			});
+		});
+	}
 	render() {
 		let { lng } = this.props;
+		let { type, readFileText, readFileName } = this.state;
 		return (
 			<I18n>
 				{(t, { i18n }) => (
@@ -27,7 +53,18 @@ export default class Root extends PureComponent {
 									<div className="keystore-container">
 										<div className="keystore-box">
 											<div className="keystore-group ui">
-												<i className="icon-check uncheck" />
+												{type == 0 && (
+													<i className="icon-check checked" />
+												)}
+												{type != 0 && (
+													<i
+														className="icon-check uncheck"
+														onClick={this.checkClick.bind(
+															this,
+															0
+														)}
+													/>
+												)}
 												<div className="f1">
 													<textarea
 														className="keystore-text"
@@ -39,7 +76,18 @@ export default class Root extends PureComponent {
 												</div>
 											</div>
 											<div className="keystore-group ui">
-												<i className="icon-check uncheck" />
+												{type == 1 && (
+													<i className="icon-check checked" />
+												)}
+												{type != 1 && (
+													<i
+														className="icon-check uncheck"
+														onClick={this.checkClick.bind(
+															this,
+															1
+														)}
+													/>
+												)}
 												<div className="f1 ui center">
 													<div className="f1">
 														<input
@@ -50,9 +98,19 @@ export default class Root extends PureComponent {
 																"keyStore.input",
 																lng
 															)}
+															value={readFileName}
 														/>
 													</div>
-													<i className="icon-openfile" />
+													<div className="file-btn">
+														<input
+															ref="inputFile"
+															type="file"
+															onChange={this.inputFileChange.bind(
+																this
+															)}
+														/>
+														<i className="icon-openfile" />
+													</div>
 												</div>
 											</div>
 											<div className="key-next">

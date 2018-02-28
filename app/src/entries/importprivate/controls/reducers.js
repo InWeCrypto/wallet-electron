@@ -1,9 +1,9 @@
 import { handleActions } from "redux-actions";
-import { GETCODE } from "./actions";
+import { IMPORTPRIVATE } from "./actions";
 
-export const code = handleActions(
+export const importPrivate = handleActions(
 	{
-		[GETCODE]: (state, { payload }) => payload
+		[IMPORTPRIVATE]: (state, { payload }) => payload
 	},
 	[]
 );

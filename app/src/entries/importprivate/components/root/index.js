@@ -7,11 +7,20 @@ import "./index.less";
 export default class Root extends PureComponent {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			text: ""
+		};
 	}
 	componentDidMount() {}
+	textChange(e) {
+		this.setState({
+			text: e.target.value
+		});
+	}
+	importClick() {}
 	render() {
 		let { lng } = this.props;
+		let { text } = this.state;
 		return (
 			<I18n>
 				{(t, { i18n }) => (
@@ -32,6 +41,10 @@ export default class Root extends PureComponent {
 													placeholder={t(
 														"private.textarea",
 														lng
+													)}
+													value={text}
+													onChange={this.textChange.bind(
+														this
 													)}
 												/>
 											</div>

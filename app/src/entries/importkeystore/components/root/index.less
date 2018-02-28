@@ -45,7 +45,7 @@
 			border-radius: 0.08rem;
 			box-sizing: border-box;
 			padding: 0.1rem;
-			color: rgba(255, 255, 255, 1);
+			color: rgba(255, 255, 255, 0.4);
 		}
 		.filename {
 			width: 100%;
@@ -54,6 +54,7 @@
 			background: rgba(0, 0, 0, 0.17);
 			outline: none;
 			border-radius: 0.08rem;
+			color: rgba(255, 255, 255, 0.4);
 		}
 		.icon-openfile {
 			display: block;
@@ -62,7 +63,22 @@
 			background: url("../../../../assets/images/file_icon.png") left top
 				no-repeat;
 			background-size: 100% 100% !important;
+			background-color: #2e2e4c;
+			position: absolute;
+			left: 0;
+			top: 0;
+			pointer-events: none;
+			cursor: pointer;
+		}
+		.file-btn {
+			width: 0.22rem;
+			height: 0.22rem;
+			overflow: hidden;
+			position: relative;
 			margin-left: 0.1rem;
+			input {
+				font-size: 100px;
+			}
 		}
 	}
 	.key-next {
