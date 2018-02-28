@@ -60,6 +60,12 @@ export default {
 		previous: "Previous",
 		comfirm: "Comfirm"
 	},
+	confirmPassword: {
+		title: "Confirm",
+		cannel: "cannel",
+		confirm: "confirm",
+		holder: "password"
+	},
 	menu: {
 		project: "Project",
 		dashboard: "DashBoard",

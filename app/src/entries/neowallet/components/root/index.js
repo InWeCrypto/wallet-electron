@@ -3,6 +3,7 @@ import { I18n } from "react-i18next";
 import { Select } from "antd";
 import { getQuery, toHref } from "../../../../utils/util";
 import QRCode from "../../../../assets/js/qcode";
+import ConfirmPassword from "../../../../components/confirmpassword";
 import Menu from "@/menu";
 import HeaderNav from "@/headernav";
 import neoicon from "#/neoicon.png";
@@ -589,6 +590,7 @@ export default class Root extends PureComponent {
 								</div>
 							</div>
 						</div>
+						<ConfirmPassword lng={lng} />
 					</div>
 				)}
 			</I18n>
