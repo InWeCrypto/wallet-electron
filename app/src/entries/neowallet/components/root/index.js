@@ -17,7 +17,9 @@ export default class Root extends PureComponent {
 			type: 1,
 			sendAddress: "",
 			sendAmount: "",
-			sendKey: 0
+			sendKey: 0,
+			isShowPass: false,
+			password: ""
 		};
 	}
 	componentDidMount() {
@@ -80,9 +82,25 @@ export default class Root extends PureComponent {
 		});
 	}
 	sendKeyChange(e) {
-		console.log(e);
 		this.setState({
 			sendKey: e
+		});
+	}
+	sendClick() {
+		this.setState({
+			isShowPass: true
+		});
+	}
+	closePasss() {
+		this.setState({
+			isShowPass: false
+		});
+	}
+	confirmPass(res) {
+		console.log(res);
+		this.setState({
+			isShowPass: false,
+			password: res
 		});
 	}
 	render() {
@@ -92,7 +110,7 @@ export default class Root extends PureComponent {
 			neoWalletAssets,
 			neoConversion
 		} = this.props;
-		let { type, sendAddress, sendAmount, sendKey } = this.state;
+		let { type, sendAddress, sendAmount, sendKey, isShowPass } = this.state;
 		return (
 			<I18n>
 				{(t, { i18n }) => (
@@ -528,7 +546,12 @@ export default class Root extends PureComponent {
 												</div>
 											</div>
 											<div className="btn-box">
-												<span className="button-green">
+												<span
+													className="button-green"
+													onClick={this.sendClick.bind(
+														this
+													)}
+												>
 													Send
 												</span>
 											</div>
@@ -590,7 +613,13 @@ export default class Root extends PureComponent {
 								</div>
 							</div>
 						</div>
-						<ConfirmPassword lng={lng} />
+						{isShowPass && (
+							<ConfirmPassword
+								lng={lng}
+								close={this.closePasss.bind(this)}
+								confirm={this.confirmPass.bind(this)}
+							/>
+						)}
 					</div>
 				)}
 			</I18n>

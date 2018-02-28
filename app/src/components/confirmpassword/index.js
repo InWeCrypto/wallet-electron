@@ -1,4 +1,5 @@
 import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
 import { I18n } from "react-i18next";
 
 import "./index.less";
@@ -9,10 +10,17 @@ class ConfirmPassword extends PureComponent {
 			password: ""
 		};
 	}
+
 	inputChange(e) {
 		this.setState({
 			password: e.target.value
 		});
+	}
+	cannelClick() {
+		this.props.close();
+	}
+	confirmClick() {
+		this.props.confirm(this.state.password);
 	}
 	render() {
 		let { lng } = this.props;
@@ -37,7 +45,10 @@ class ConfirmPassword extends PureComponent {
 								/>
 							</div>
 							<div className="confirmbtn">
-								<span className="btn button-default">
+								<span
+									className="btn button-default"
+									onClick={this.cannelClick.bind(this)}
+								>
 									{t("confirmPassword.cannel", lng)}
 								</span>
 								{password.length < 6 && (
@@ -46,7 +57,10 @@ class ConfirmPassword extends PureComponent {
 									</span>
 								)}
 								{password.length >= 6 && (
-									<span className="btn button-green">
+									<span
+										className="btn button-green"
+										onClick={this.confirmClick.bind(this)}
+									>
 										{t("confirmPassword.confirm", lng)}
 									</span>
 								)}
@@ -58,4 +72,8 @@ class ConfirmPassword extends PureComponent {
 		);
 	}
 }
+ConfirmPassword.propTypes = {
+	close: PropTypes.func,
+	confirm: PropTypes.func
+};
 export default ConfirmPassword;
