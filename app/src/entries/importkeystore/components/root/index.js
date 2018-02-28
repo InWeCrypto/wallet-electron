@@ -21,6 +21,9 @@ export default class Root extends PureComponent {
 	}
 	inputFileChange(e) {
 		let file = e.target.files[0];
+		if (!file) {
+			return;
+		}
 		let path = file.path;
 		this.setState({
 			readFileName: path
