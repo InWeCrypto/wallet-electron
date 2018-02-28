@@ -44,11 +44,19 @@ export default class Root extends PureComponent {
 			[type]: e.target.value
 		});
 	}
-	sendRegisterCode() {
-		this.props.sendEmailCode(this.state.registerEmail);
+	sendRegisterCode(callback) {
+		this.props.sendEmailCode(this.state.registerEmail).then(res => {
+			if (res.code === 4000 && typeof callback === "function") {
+				callback();
+			}
+		});
 	}
-	sendForgetCode() {
-		this.props.sendEmailCode(this.state.forgetEmail);
+	sendForgetCode(callback) {
+		this.props.sendEmailCode(this.state.forgetEmail).then(res => {
+			if (res.code === 4000 && typeof callback === "function") {
+				callback();
+			}
+		});
 	}
 	render() {
 		let { lng } = this.props;

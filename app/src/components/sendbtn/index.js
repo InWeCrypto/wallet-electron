@@ -11,11 +11,12 @@ class SendBtn extends PureComponent {
 		};
 	}
 	sendClick() {
-		this.props.onClick();
-		this.setState({
-			isSending: true
+		this.props.onClick(function() {
+			this.setState({
+				isSending: true
+			});
+			this.setTime();
 		});
-		this.setTime();
 	}
 	setTime() {
 		clearTimeout(timer);
