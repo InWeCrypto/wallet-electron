@@ -12,7 +12,11 @@ export default class Root extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-			type: 1
+			type: 1,
+			selectKey: 0,
+			sendAddress: "",
+			sendAmount: "",
+			minNumber: 0
 		};
 	}
 	componentDidMount() {
@@ -65,11 +69,24 @@ export default class Root extends PureComponent {
 		toHref(`addasset?walletid=${info.id}&&wallettype=${info.category.id}`);
 	}
 	sliderChange(res) {
-		console.log(res);
+		this.setState({
+			minNumber: res
+		});
+	}
+	selectChange(res) {
+		this.setState({
+			selectKey: res
+		});
 	}
 	render() {
 		let { lng, ethWalletDetailInfo, ethWalletConversion } = this.props;
-		let { type } = this.state;
+		let {
+			type,
+			selectKey,
+			sendAddress,
+			sendAmount,
+			minNumber
+		} = this.state;
 		return (
 			<I18n>
 				{(t, { i18n }) => (
@@ -212,12 +229,32 @@ export default class Root extends PureComponent {
 																<div className="f1 name">
 																	{item.name}
 																</div>
-																<div>
+																<div
+																	style={{
+																		textAlign:
+																			"right"
+																	}}
+																>
 																	<div className="t1">
-																		2
+																		{parseInt(
+																			item.balance,
+																			10
+																		)}
 																	</div>
 																	<div className="t1">
-																		2
+																		${" "}
+																		{parseInt(
+																			item.balance,
+																			10
+																		) *
+																			(item.gnt_category &&
+																				item
+																					.gnt_category
+																					.cap &&
+																				item
+																					.gnt_category
+																					.cap
+																					.price_usd)}
 																	</div>
 																</div>
 															</div>
@@ -236,6 +273,7 @@ export default class Root extends PureComponent {
 													<input
 														type="text"
 														className="input"
+														value={sendAddress}
 													/>
 												</div>
 											</div>
@@ -245,25 +283,102 @@ export default class Root extends PureComponent {
 														Amount
 													</div>
 													<div className="t1">
-														Available：10.0000 RDN
+														Available：10.0000
+														{selectKey == 0 && (
+															<span>
+																{ethWalletConversion &&
+																	ethWalletConversion.record &&
+																	ethWalletConversion
+																		.record
+																		.category &&
+																	ethWalletConversion
+																		.record
+																		.category
+																		.name}
+															</span>
+														)}
+														{selectKey > 0 && (
+															<span>
+																{ethWalletConversion &&
+																	ethWalletConversion.list &&
+																	ethWalletConversion
+																		.list[
+																		selectKey -
+																			1
+																	] &&
+																	ethWalletConversion
+																		.list[
+																		selectKey -
+																			1
+																	].name}
+															</span>
+														)}
 													</div>
 												</div>
 												<div className="ui input-box">
 													<input
 														type="text"
 														className="input"
+														value={sendAmount}
 													/>
 													<div>
 														<Select
-															defaultValue="jack"
+															defaultValue={0}
 															style={{
 																width: 120,
 																height: 60
 															}}
+															onChange={this.selectChange.bind(
+																this
+															)}
 														>
-															<Option value="jack">
-																Jack
-															</Option>
+															{ethWalletConversion &&
+																ethWalletConversion.record &&
+																ethWalletConversion
+																	.record
+																	.category && (
+																	<Option
+																		value={
+																			0
+																		}
+																	>
+																		{
+																			ethWalletConversion
+																				.record
+																				.category
+																				.name
+																		}
+																	</Option>
+																)}
+
+															{ethWalletConversion &&
+																ethWalletConversion.list &&
+																ethWalletConversion
+																	.list
+																	.length >
+																	0 &&
+																ethWalletConversion.list.map(
+																	(
+																		item,
+																		index
+																	) => {
+																		return (
+																			<Option
+																				key={
+																					index
+																				}
+																				value={
+																					index +
+																					1
+																				}
+																			>
+																				{
+																					item.name
+																				}
+																			</Option>
+																		);
+																	}
+																)}
 														</Select>
 													</div>
 												</div>
@@ -284,7 +399,9 @@ export default class Root extends PureComponent {
 															onChange={this.sliderChange.bind(
 																this
 															)}
-															defaultValue={30}
+															defaultValue={
+																minNumber
+															}
 														/>
 													</div>
 													<div>Quick</div>
