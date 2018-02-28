@@ -78,6 +78,11 @@ export default class Root extends PureComponent {
 			selectKey: res
 		});
 	}
+	inputChange(type, e) {
+		this.setState({
+			[type]: e.target.value
+		});
+	}
 	render() {
 		let { lng, ethWalletDetailInfo, ethWalletConversion } = this.props;
 		let {
@@ -274,6 +279,10 @@ export default class Root extends PureComponent {
 														type="text"
 														className="input"
 														value={sendAddress}
+														onChange={this.inputChange.bind(
+															this,
+															"sendAddress"
+														)}
 													/>
 												</div>
 											</div>
@@ -320,6 +329,10 @@ export default class Root extends PureComponent {
 														type="text"
 														className="input"
 														value={sendAmount}
+														onChange={this.inputChange.bind(
+															this,
+															"sendAmount"
+														)}
 													/>
 													<div>
 														<Select
