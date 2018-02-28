@@ -15,10 +15,7 @@ export const getCode = createAction(GETCODE, params => {
 		})
 		.then(res => {
 			if (res.code === 4000) {
-				Modal.success({
-					title: "提示",
-					content: "发送成功请注意查收"
-				});
+				Msg.prompt("发送成功请注意查收");
 			}
 			return res;
 		});

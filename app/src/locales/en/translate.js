@@ -1,6 +1,16 @@
 export default {
 	login: {
-		login: "login"
+		signin: "Sign In",
+		signup: "Sign Up",
+		forget: "Forget Password?",
+		email: "Email Address",
+		code: "Verification Code",
+		password: "Password",
+		repassword: "Repeat Password",
+		reset: "Reset Password"
+	},
+	send: {
+		txt: "send"
 	},
 	wallet: {
 		bigTitle: "My Wallet",

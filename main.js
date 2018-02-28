@@ -1,6 +1,5 @@
 const { app, BrowserWindow } = require("electron");
 const electron = require("electron");
-const process = require("process");
 const cp = require("child_process");
 const os = require("os");
 const fs = require("fs");
