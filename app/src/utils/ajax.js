@@ -54,8 +54,8 @@ function checkRight(response) {
 	}
 }
 
-function request(method, url, params = {}, header = {}, isLocal = false) {
-	if (!isLocal) {
+function request(method, url, params = {}, header = {}, isLocal = 1) {
+	if (isLocal != 2) {
 		const languageItem = getLocalItem("language");
 		const userInfo = getLocalItem("userInfo");
 		const headers = {

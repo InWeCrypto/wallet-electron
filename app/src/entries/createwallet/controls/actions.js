@@ -19,6 +19,6 @@ export const getCreateAddress = createAction(GETADDRESS, params => {
 			url: "wallet",
 			params
 		},
-		true
+		2
 	);
 });
