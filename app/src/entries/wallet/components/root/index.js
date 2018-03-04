@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import { Link } from "react-router-dom";
 import { I18n } from "react-i18next";
+import { getQuery } from "../../../../utils/util";
 import Menu from "@/menu";
 import "./index.less";
 import creatWallet from "#/createwallet_ico.png";
@@ -14,7 +15,26 @@ export default class Root extends PureComponent {
 		this.state = {};
 	}
 	componentDidMount() {
-		this.props.getWalletList();
+		this.props.getWalletList().then(res => {
+			if (res.code === 4000) {
+				let list = [];
+				res.data.list.map((item, index) => {
+					list.push(item.id);
+				});
+				this.props
+					.getWalletConversion({ ids: `[${list.join(",")}]` })
+					.then(res => {
+						if (res.code === 4000) {
+							let dlist = [];
+							res.data.list.map((item, index) => {
+								this.props.getWalletDetail({
+									id: item.id
+								});
+							});
+						}
+					});
+			}
+		});
 	}
 	goDetail(item) {
 		if (!item) {
@@ -29,8 +49,80 @@ export default class Root extends PureComponent {
 			return;
 		}
 	}
+	getChildMoney(list, o) {
+		let num = 0;
+		if (o.category_id == 1) {
+			if (list && list.length > 0) {
+				list.map((item, index) => {
+					let price =
+						item.gnt_category && item.gnt_category.cap
+							? this.props.lng == "en"
+								? item.gnt_category.cap.price_usd
+								: item.gnt_category.cap.price_cny
+							: 0;
+					num = num - 0 + getEthNum(item.balance) * price - 0;
+				});
+			}
+			if (
+				this.props.walletConversion &&
+				this.props.walletConversion.list &&
+				this.props.walletConversion.list.length > 0
+			) {
+				this.props.walletConversion.list.map((item, index) => {
+					if (item.id == o.id) {
+						let price =
+							item.gnt_category && item.gnt_category.cap
+								? this.props.lng == "en"
+									? item.gnt_category.cap.price_usd
+									: item.gnt_category.cap.price_cny
+								: 0;
+						num = num - 0 + getEthNum(item.balance) * price - 0;
+					}
+				});
+			}
+			let res = new Number(num) + 0;
+			return typeof res === "number" && !isNaN(res) ? res : 0;
+		}
+		if (o.category_id == 2) {
+			if (list && list.length > 0) {
+				list.map((item, index) => {
+					let price =
+						item.gnt_category && item.gnt_category.cap
+							? this.props.lng == "en"
+								? item.gnt_category.cap.price_usd
+								: item.gnt_category.cap.price_cny
+							: 0;
+					num =
+						num +
+						getNumFromStr(item.balance) /
+							Math.pow(10, item.decimals) *
+							price -
+						0;
+				});
+			}
+			if (
+				this.props.walletConversion &&
+				this.props.walletConversion.list &&
+				this.props.walletConversion.list.length > 0
+			) {
+				this.props.walletConversion.list.map((item, index) => {
+					if (item.id == o.id) {
+						let price =
+							item.gnt_category && item.gnt_category.cap
+								? this.props.lng == "en"
+									? item.gnt_category.cap.price_usd
+									: item.gnt_category.cap.price_cny
+								: 0;
+						num += item.balance & price;
+					}
+				});
+			}
+			let res = new Number(num) + 0;
+			return typeof res === "number" && !isNaN(res) ? res : 0;
+		}
+	}
 	render() {
-		let { lng, walletList } = this.props;
+		let { lng, walletList, walletConversion, walletDetail } = this.props;
 		return (
 			<I18n>
 				{(t, { i18n }) => (
@@ -144,9 +236,18 @@ export default class Root extends PureComponent {
 																	</div>
 																</div>
 																<div>
-																	<span className="t3">
-																		$12222.00
-																	</span>
+																	{item.id &&
+																		walletDetail && (
+																			<span className="t3">
+																				${this.getChildMoney(
+																					walletDetail[
+																						item
+																							.id
+																					],
+																					item
+																				)}
+																			</span>
+																		)}
 																</div>
 															</div>
 														);

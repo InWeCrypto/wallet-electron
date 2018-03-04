@@ -11,7 +11,7 @@ class SendBtn extends PureComponent {
 		};
 	}
 	sendClick() {
-		this.props.onClick(function() {
+		this.props.onClick(() => {
 			this.setState({
 				isSending: true
 			});

@@ -235,7 +235,11 @@ export default class Root extends PureComponent {
 															</div>
 														)}
 													{neoConversion &&
-														neoConversion.record && (
+														neoConversion.record &&
+														neoConversion.record
+															.cap &&
+														neoConversion.record.cap
+															.price_usd && (
 															<div className="t1">
 																${" "}
 																{neoConversion
@@ -294,11 +298,20 @@ export default class Root extends PureComponent {
 													{neoConversion &&
 														neoConversion.record &&
 														neoConversion.record
+															.cap &&
+														neoConversion.record
 															.gnt &&
 														neoConversion.record
-															.gnt[0] && (
+															.gnt[0] &&
+														neoConversion.record
+															.gnt[0].cap &&
+														neoConversion.record
+															.gnt[0].cap
+															.price_usd && (
 															<div className="t1">
-																${" "}
+																{lng == "en"
+																	? "$"
+																	: "￥"}{" "}
 																{neoConversion
 																	.record
 																	.gnt[0]
@@ -316,7 +329,7 @@ export default class Root extends PureComponent {
 																				.cap
 																				.price_usd
 																		).toFixed(
-																			8
+																			2
 																		)}
 															</div>
 														)}
@@ -351,33 +364,49 @@ export default class Root extends PureComponent {
 																	}}
 																>
 																	<div className="t1">
-																		{parseInt(
-																			item.balance,
-																			10
-																		).toFixed(
-																			item.decimals
+																		{getNumFromStr(
+																			item.balance
 																		) == 0
 																			? 0
-																			: parseInt(
-																					item.balance,
-																					10
-																				).toFixed(
+																			: getNumFromStr(
+																					item.balance
+																				) /
+																				Math.pow(
+																					10,
 																					item.decimals
 																				)}
 																	</div>
 																	<div className="t1">
-																		${" "}
+																		{lng ==
+																		"en"
+																			? "$"
+																			: "￥"}{" "}
 																		{(
-																			parseInt(
-																				item.balance,
-																				10
+																			getNumFromStr(
+																				item.balance
+																			) /
+																			Math.pow(
+																				10,
+																				item.decimals
 																			) *
-																			item
-																				.gnt_category
-																				.cap
-																				.price_usd
+																			(lng ==
+																			"en"
+																				? item
+																						.gnt_category
+																						.cap &&
+																					item
+																						.gnt_category
+																						.cap
+																						.price_usd
+																				: item
+																						.gnt_category
+																						.cap &&
+																					item
+																						.gnt_category
+																						.cap
+																						.price_cny)
 																		).toFixed(
-																			item.decimals
+																			2
 																		)}
 																	</div>
 																</div>
@@ -449,24 +478,24 @@ export default class Root extends PureComponent {
 														)}
 														{sendKey > 1 && (
 															<span>
-																{parseInt(
+																{getNumFromStr(
 																	neoConversion
 																		.list[
 																		sendKey -
 																			2
-																	].balance,
-																	10
+																	].balance
 																) == 0
 																	? "0"
-																	: parseInt(
+																	: getNumFromStr(
 																			neoConversion
 																				.list[
 																				sendKey -
 																					2
 																			]
-																				.balance,
-																			10
-																		).toFixed(
+																				.balance
+																		) /
+																		Math.pow(
+																			10,
 																			neoConversion
 																				.list[
 																				sendKey -

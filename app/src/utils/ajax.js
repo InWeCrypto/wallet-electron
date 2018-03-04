@@ -1,7 +1,7 @@
 import "whatwg-fetch";
 import Promise from "promise-polyfill";
 import { requestUrl } from "../config/";
-import { getLocalItem } from "./util";
+import { getLocalItem, toHref } from "./util";
 import { setReduxUserInfo } from "../globalactions";
 import { Modal } from "antd";
 const METHODS = ["get", "delete"];
@@ -37,7 +37,7 @@ function checkRight(response) {
 		return response;
 	} else if (response.code === 4001 || response.code === 4010) {
 		localStorage.removeItem("userInfo");
-		//window.location.href = "/";
+		toHref("/");
 		store.dispatch(setReduxUserInfo(null));
 		return {
 			msg: response.msg,

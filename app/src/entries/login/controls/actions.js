@@ -4,19 +4,16 @@ import http from "../../../utils/ajax";
 import { Modal } from "antd";
 
 const PRE_FIX = "LOGIN_";
-export const GETCODE = `${PRE_FIX}GETCODE`;
-export const LOGIN = `${PRE_FIX}LOGIN`;
+export const SIGNIN = `${PRE_FIX}SIGNIN`;
+export const RESETPASSWORD = `${PRE_FIX}RESETPASSWORD`;
 
-export const getCode = createAction(GETCODE, params => {
-	return http
-		.post({
-			url: "get_code",
+export const signIn = createAction(SIGNIN, params => {
+	return http.post(
+		{
+			url: "login",
 			params
-		})
-		.then(res => {
-			if (res.code === 4000) {
-				Msg.prompt("发送成功请注意查收");
-			}
-			return res;
-		});
+		},
+		3
+	);
 });
+//

@@ -1,5 +1,5 @@
 import { handleActions } from "redux-actions";
-import { WALLETINFO, GETETHWALLETCONVERSION } from "./actions";
+import { WALLETINFO, GETETHWALLETCONVERSION, ETHINFO } from "./actions";
 
 export const ethWalletDetailInfo = handleActions(
 	{
@@ -12,4 +12,10 @@ export const ethWalletConversion = handleActions(
 		[GETETHWALLETCONVERSION]: (state, { payload }) => payload
 	},
 	[]
+);
+export const ethConversion = handleActions(
+	{
+		[ETHINFO]: (state, { payload }) => payload
+	},
+	null
 );

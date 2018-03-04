@@ -7,7 +7,8 @@ export default {
 		code: "Verification Code",
 		password: "Password",
 		repassword: "Repeat Password",
-		reset: "Reset Password"
+		reset: "Reset Password",
+		nickname: "Nickname"
 	},
 	send: {
 		txt: "send"
@@ -81,5 +82,23 @@ export default {
 		dashboard: "DashBoard",
 		wallet: "Wallet",
 		myfollowup: "My Follow-up"
+	},
+	error: {
+		emailEmpty: "Email address cannot be empty",
+		passwordEmpty: "Password cannot be empty",
+		rpasswordEmpty: "Repeating password cannot be empty",
+		emailSend: "Email sending failed, please try again ",
+		resetPass: "Password reset failed, please try again",
+		passLength: "The entered passwords are inconsistent ",
+		passError: "The entered passwords are inconsistent ",
+		codeEmpty: "Verification code cannot be empty",
+		followError: "you know the math"
+	},
+	success: {
+		login: "Log in successfully",
+		resetPass: "Your password has been reset, please sign in again. ",
+		emailSend: "The email is send successfully. ",
+		resetPass: "Your password has been revised successfully. ",
+		registerSuccess: "register success"
 	}
 };

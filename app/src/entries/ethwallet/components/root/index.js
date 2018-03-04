@@ -27,9 +27,12 @@ export default class Root extends PureComponent {
 			// this.props.getWalletAssets({
 			// 	wallet_id: q.id,
 			// 	wallet_category_id: 2
-			// });
+			// }); d
 			this.props.getEthWalletConversion({
 				id: q.id
+			});
+			this.props.getEthConversion({
+				ids: `[${q.id}]`
 			});
 		}
 	}
@@ -84,7 +87,12 @@ export default class Root extends PureComponent {
 		});
 	}
 	render() {
-		let { lng, ethWalletDetailInfo, ethWalletConversion } = this.props;
+		let {
+			lng,
+			ethWalletDetailInfo,
+			ethWalletConversion,
+			ethConversion
+		} = this.props;
 		let {
 			type,
 			selectKey,
@@ -189,25 +197,39 @@ export default class Root extends PureComponent {
 												<img
 													className="icon"
 													src={
-														ethWalletConversion &&
-														ethWalletConversion.record &&
-														ethWalletConversion
-															.record.category &&
-														ethWalletConversion
-															.record.category.img
+														ethConversion &&
+														ethConversion.list &&
+														ethConversion.list[0] &&
+														ethConversion.list[0]
+															.category &&
+														ethConversion.list[0]
+															.category.img
 													}
 												/>
 												<div className="f1 name">
-													{ethWalletConversion &&
-														ethWalletConversion.record &&
-														ethWalletConversion
-															.record.category &&
-														ethWalletConversion
-															.record.category
-															.name}
+													{ethConversion &&
+														ethConversion.list &&
+														ethConversion.list[0] &&
+														ethConversion.list[0]
+															.category &&
+														ethConversion.list[0]
+															.category.name}
 												</div>
 												<div>
-													<div className="t1">2</div>
+													<div className="t1">
+														{ethConversion &&
+															ethConversion.list &&
+															ethConversion
+																.list[0] && (
+																<span>
+																	{getEthNum(
+																		ethConversion
+																			.list[0]
+																			.balance
+																	)}
+																</span>
+															)}
+													</div>
 													<div className="t1">2</div>
 												</div>
 											</div>
@@ -241,25 +263,36 @@ export default class Root extends PureComponent {
 																	}}
 																>
 																	<div className="t1">
-																		{parseInt(
-																			item.balance,
-																			10
+																		{getEthNum(
+																			item.balance
 																		)}
 																	</div>
 																	<div className="t1">
-																		${" "}
-																		{parseInt(
-																			item.balance,
-																			10
+																		{lng ==
+																		"en"
+																			? "$"
+																			: "￥"}{" "}
+																		{getEthNum(
+																			item.balance
 																		) *
-																			(item.gnt_category &&
-																				item
-																					.gnt_category
-																					.cap &&
-																				item
-																					.gnt_category
-																					.cap
-																					.price_usd)}
+																			(lng ==
+																			"en"
+																				? item.gnt_category &&
+																					item
+																						.gnt_category
+																						.cap &&
+																					item
+																						.gnt_category
+																						.cap
+																						.price_usd
+																				: item.gnt_category &&
+																					item
+																						.gnt_category
+																						.cap &&
+																					item
+																						.gnt_category
+																						.cap
+																						.price_cny)}
 																	</div>
 																</div>
 															</div>

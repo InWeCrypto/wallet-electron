@@ -1,9 +1,9 @@
 import { handleActions } from "redux-actions";
-import { GETCODE } from "./actions";
+import { SIGNIN, RESETPASSWORD } from "./actions";
 
-export const code = handleActions(
+export const userInfo = handleActions(
 	{
-		[GETCODE]: (state, { payload }) => payload
+		[SIGNIN]: (state, { payload }) => payload
 	},
 	null
 );

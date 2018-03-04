@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { I18n } from "react-i18next";
+import { setLocalItem, toHref } from "../../../../utils/util";
 import SendBtn from "../../../../components/sendbtn";
 import "./index.less";
 import loginName from "#/loginname.png";
@@ -14,6 +15,7 @@ export default class Root extends PureComponent {
 			password: "",
 			registerEmail: "",
 			registerCode: "",
+			registerNickname: "",
 			registerPassword: "",
 			registerRepassword: "",
 			forgetEmail: "",
@@ -45,6 +47,10 @@ export default class Root extends PureComponent {
 		});
 	}
 	sendRegisterCode(callback) {
+		if (this.state.registerEmail.length <= 0) {
+			Msg.prompt(i18n.t("error.emailEmpty", this.props.lng));
+			return;
+		}
 		this.props.sendEmailCode(this.state.registerEmail).then(res => {
 			if (res.code === 4000 && typeof callback === "function") {
 				callback();
@@ -52,11 +58,88 @@ export default class Root extends PureComponent {
 		});
 	}
 	sendForgetCode(callback) {
+		if (this.state.forgetEmail.length <= 0) {
+			Msg.prompt(i18n.t("error.emailEmpty", this.props.lng));
+			return;
+		}
 		this.props.sendEmailCode(this.state.forgetEmail).then(res => {
 			if (res.code === 4000 && typeof callback === "function") {
+				console.log(1111);
 				callback();
 			}
 		});
+	}
+	signInClick() {
+		this.props
+			.signIn({
+				email: this.state.email,
+				password: this.state.password
+			})
+			.then(res => {
+				if (res.code === 4000) {
+					setLocalItem("userInfo", JSON.stringify(res.data));
+					toHref("wallet");
+				}
+			});
+	}
+	forgetUser() {
+		let {
+			forgetEmail,
+			forgetCode,
+			forgetPassword,
+			forgetRepassword
+		} = this.state;
+
+		this.props
+			.forgetUser({
+				email: forgetEmail,
+				code: forgetCode,
+				password: forgetPassword,
+				password_confirmation: forgetRepassword
+			})
+			.then(res => {
+				if (res.code === 4000) {
+					this.setState({
+						type: "signin",
+						forgetEmail: "",
+						forgetCode: "",
+						forgetPassword: "",
+						forgetRepassword: ""
+					});
+				}
+			});
+	}
+	registerUser() {
+		let {
+			registerEmail,
+			registerCode,
+			registerNickname,
+			registerPassword,
+			registerRepassword
+		} = this.state;
+		this.props
+			.registerUser({
+				email: registerEmail,
+				code: registerCode,
+				name: registerNickname,
+				password: registerPassword,
+				password_confirmation: registerRepassword
+			})
+			.then(res => {
+				if (res.code === 4000) {
+					Msg.prompt(
+						i18n.t("success.registerSuccess", this.props.lng)
+					);
+					this.setState({
+						type: "register",
+						registerEmail: "",
+						registerCode: "",
+						registerNickname: "",
+						registerPassword: "",
+						registerRepassword: ""
+					});
+				}
+			});
 	}
 	render() {
 		let { lng } = this.props;
@@ -66,6 +149,7 @@ export default class Root extends PureComponent {
 			password,
 			registerEmail,
 			registerCode,
+			registerNickname,
 			registerPassword,
 			registerRepassword,
 			forgetEmail,
@@ -135,7 +219,12 @@ export default class Root extends PureComponent {
 										</span>
 									</div>
 									<div className="login-btn">
-										<span className="loginbtn">
+										<span
+											className="loginbtn"
+											onClick={this.signInClick.bind(
+												this
+											)}
+										>
 											{t("login.signin", lng)}
 										</span>
 										<div className="signup">
@@ -207,6 +296,23 @@ export default class Root extends PureComponent {
 										<div className="input-box">
 											<input
 												className="input"
+												type="text"
+												placeholder={t(
+													"login.nickname",
+													lng
+												)}
+												value={registerNickname}
+												onChange={this.inputChange.bind(
+													this,
+													"registerNickname"
+												)}
+											/>
+										</div>
+									</div>
+									<div className="login-item">
+										<div className="input-box">
+											<input
+												className="input"
 												type="password"
 												placeholder={t(
 													"login.password",
@@ -238,7 +344,12 @@ export default class Root extends PureComponent {
 										</div>
 									</div>
 									<div className="login-btn">
-										<span className="loginbtn">
+										<span
+											className="loginbtn"
+											onClick={this.registerUser.bind(
+												this
+											)}
+										>
 											{t("login.signup", lng)}
 										</span>
 									</div>
@@ -332,7 +443,10 @@ export default class Root extends PureComponent {
 										</div>
 									</div>
 									<div className="login-btn">
-										<span className="loginbtn">
+										<span
+											className="loginbtn"
+											onClick={this.forgetUser.bind(this)}
+										>
 											{t("login.reset", lng)}
 										</span>
 									</div>

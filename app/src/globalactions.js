@@ -15,9 +15,12 @@ export const changeLng = createAction(LNG, lng => {
 });
 export const sendEmailCode = createAction(EMAILCODE, email => {
 	return http
-		.post({
-			url: `send_code/${email}`
-		})
+		.post(
+			{
+				url: `send_code/${email}`
+			},
+			3
+		)
 		.then(res => {
 			if (res.code === 4000) {
 				Msg.prompt(
@@ -31,10 +34,13 @@ export const sendEmailCode = createAction(EMAILCODE, email => {
 });
 export const registerUser = createAction(USERINFO, params => {
 	return http
-		.post({
-			url: "register",
-			params: params
-		})
+		.post(
+			{
+				url: "register",
+				params: params
+			},
+			3
+		)
 		.then(res => {
 			if (res.code === 4000) {
 				setLocalItem("userInfo", JSON.stringify(res.data));
@@ -48,10 +54,13 @@ export const setReduxUserInfo = createAction(USERINFO, data => {
 });
 export const forgetUser = createAction(USERINFO, params => {
 	return http
-		.post({
-			url: "forgot_password",
-			params: params
-		})
+		.post(
+			{
+				url: "forgot_password",
+				params: params
+			},
+			3
+		)
 		.then(res => {
 			return {
 				code: res.code,

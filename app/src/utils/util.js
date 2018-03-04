@@ -243,3 +243,68 @@ export const toHref = (toSit, query) => {
 	}
 };
 window.toHref = toHref;
+export const getNumFromStr = str => {
+	if (!str) {
+		return 0;
+	}
+	var Str2Bytes = str => {
+		var pos = 0;
+
+		var len = str.length;
+
+		if (len % 2 != 0) {
+			return null;
+		}
+
+		len /= 2;
+
+		var hexA = new Array();
+
+		for (var i = 0; i < len; i++) {
+			var s = str.substr(pos, 2);
+
+			var v = parseInt(s, 16);
+
+			hexA.push(v);
+
+			pos += 2;
+		}
+
+		return hexA;
+	};
+	var Bytes2Str = arr => {
+		var str = "";
+		for (var i = 0; i < arr.length; i++) {
+			var tmp = arr[i].toString(16);
+			if (tmp.length == 1) {
+				tmp = "0" + tmp;
+			}
+			str += tmp;
+		}
+		return str;
+	};
+	var arr = Str2Bytes(str);
+	if (!arr || arr.length <= 0) {
+		return 0;
+	}
+	var str16 = Bytes2Str(arr.reverse());
+	var num = parseInt(new Number(`0x${str16}`), 10);
+	return num;
+};
+window.getNumFromStr = getNumFromStr;
+export const getEthNum = num => {
+	if (!num || num.length < 8) {
+		return 0;
+	}
+	let res = (
+		parseInt(
+			parseInt(new Number(num), 10) / Math.pow(10, 18) * 10 * 10 * 10 * 10
+		) /
+		10 /
+		10 /
+		10 /
+		10
+	).toFixed(4);
+	return res == 0 ? "0" : res;
+};
+window.getEthNum = getEthNum;
