@@ -97,6 +97,9 @@ export default class Root extends PureComponent {
 								? item.gnt_category.cap.price_usd
 								: item.gnt_category.cap.price_cny
 							: 0;
+					// if (o.id === 51) {
+					// 	console.log(price);
+					// }
 					num =
 						num +
 						getNumFromStr(item.balance) /
@@ -144,7 +147,11 @@ export default class Root extends PureComponent {
 	}
 	goManger(item, e) {
 		e.stopPropagation();
-		toHref(`managewallet?id=${item.id}`);
+		if (item.isWatch) {
+			toHref(`managewatchwallet?id=${item.id}`);
+		} else {
+			toHref(`managewallet?id=${item.id}`);
+		}
 	}
 	render() {
 		let {
