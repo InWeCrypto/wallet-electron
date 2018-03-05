@@ -1,8 +1,10 @@
 import React, { PureComponent } from "react";
 import { I18n } from "react-i18next";
 import Menu from "@/menu";
+import { getQuery } from "../../../../utils/util";
 import HeaderNav from "@/headernav";
 import "./index.less";
+import { toHref } from "../../../../utils/util";
 
 export default class Root extends PureComponent {
 	constructor(props) {
@@ -10,13 +12,27 @@ export default class Root extends PureComponent {
 		this.state = {
 			type: 0,
 			readFileText: null,
-			readFileName: ""
+			readFileName: "",
+			textValue: "",
+			walletType: ""
 		};
 	}
-	componentDidMount() {}
+	componentDidMount() {
+		let q = getQuery(window.location.href);
+		if (q.wallettype) {
+			this.setState({
+				walletType: q.wallettype
+			});
+		}
+	}
 	checkClick(idx) {
 		this.setState({
 			type: idx
+		});
+	}
+	textValueChange(e) {
+		this.setState({
+			textValue: e.target.value
 		});
 	}
 	inputFileChange(e) {
@@ -38,9 +54,23 @@ export default class Root extends PureComponent {
 			});
 		});
 	}
+	goNext() {
+		if (this.state.type == 0) {
+			let str = this.state.textValue;
+			let reg = /^\{.*?\}$/;
+			if (!reg.test(str)) {
+				Msg.prompt("Key store type is error");
+				return;
+			}
+			toHref(
+				"importend",
+				`typeid=${this.state.walletType}&type=keystore&value=${str}`
+			);
+		}
+	}
 	render() {
 		let { lng } = this.props;
-		let { type, readFileText, readFileName } = this.state;
+		let { type, readFileText, readFileName, textValue } = this.state;
 		return (
 			<I18n>
 				{(t, { i18n }) => (
@@ -74,6 +104,10 @@ export default class Root extends PureComponent {
 														placeholder={t(
 															"keyStore.textarea",
 															lng
+														)}
+														value={textValue}
+														onChange={this.textValueChange.bind(
+															this
 														)}
 													/>
 												</div>
@@ -117,7 +151,12 @@ export default class Root extends PureComponent {
 												</div>
 											</div>
 											<div className="key-next">
-												<span className="keybtn">
+												<span
+													className="keybtn"
+													onClick={this.goNext.bind(
+														this
+													)}
+												>
 													{t("keyStore.next", lng)}
 												</span>
 											</div>

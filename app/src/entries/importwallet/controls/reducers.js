@@ -5,5 +5,5 @@ export const code = handleActions(
 	{
 		[GETCODE]: (state, { payload }) => payload
 	},
-	[]
+	null
 );

@@ -3,6 +3,7 @@ import http from "../../../utils/ajax";
 
 const PRE_FIX = "WALLET_";
 export const GETLIST = `${PRE_FIX}GETLIST`;
+export const GETLOCALLIST = `${PRE_FIX}GETLOCALLIST`;
 export const GETWALLETCOVERSION = `${PRE_FIX}GETWALLETCOVERSION`;
 export const GETWALLETDETAIL = `${PRE_FIX}GETWALLETDETAIL`;
 
@@ -24,6 +25,15 @@ export const getWalletList = createAction(GETLIST, params => {
 			}
 			return res;
 		});
+});
+export const getLocalList = createAction(GETLOCALLIST, params => {
+	return http.get(
+		{
+			url: "wallet/",
+			params
+		},
+		2
+	);
 });
 export const getWalletConversion = createAction(GETWALLETCOVERSION, params => {
 	return http.get({

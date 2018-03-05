@@ -5,13 +5,14 @@ import * as globalActions from "../../../globalactions";
 export default connect(
 	({
 		globData: { userInfo, lng },
-		wallet: { walletList, walletConversion, walletDetail }
+		wallet: { walletList, walletConversion, walletDetail, localWalletList }
 	}) => ({
 		userInfo,
 		lng,
 		walletList,
 		walletConversion,
-		walletDetail
+		walletDetail,
+		localWalletList
 	}),
 	{
 		...actions,

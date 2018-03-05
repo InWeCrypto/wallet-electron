@@ -1,9 +1,20 @@
 import { handleActions } from "redux-actions";
-import { GETLIST, GETWALLETCOVERSION, GETWALLETDETAIL } from "./actions";
+import {
+	GETLIST,
+	GETWALLETCOVERSION,
+	GETWALLETDETAIL,
+	GETLOCALLIST
+} from "./actions";
 
 export const walletList = handleActions(
 	{
 		[GETLIST]: (state, { payload }) => payload
+	},
+	null
+);
+export const localWalletList = handleActions(
+	{
+		[GETLOCALLIST]: (state, { payload }) => payload
 	},
 	null
 );

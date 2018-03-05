@@ -1,23 +1,40 @@
 import React, { PureComponent } from "react";
 import { I18n } from "react-i18next";
+import { getQuery } from "../../../../utils/util";
 import Menu from "@/menu";
 import HeaderNav from "@/headernav";
 import "./index.less";
+import { toHref } from "../../../../utils/util";
 
 export default class Root extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-			text: ""
+			text: "",
+			walletType: ""
 		};
 	}
-	componentDidMount() {}
+	componentDidMount() {
+		let q = getQuery(window.location.href);
+		if (q.wallettype) {
+			this.setState({
+				walletType: q.wallettype
+			});
+		}
+	}
 	textChange(e) {
 		this.setState({
 			text: e.target.value
 		});
 	}
-	importClick() {}
+	goEnd() {
+		toHref(
+			"importend",
+			`typeid=${this.state.walletType}&value=${
+				this.state.text
+			}&&type=privatekey`
+		);
+	}
 	render() {
 		let { lng } = this.props;
 		let { text } = this.state;
@@ -49,7 +66,12 @@ export default class Root extends PureComponent {
 												/>
 											</div>
 											<div className="private-btn">
-												<span className="btn">
+												<span
+													className="btn"
+													onClick={this.goEnd.bind(
+														this
+													)}
+												>
 													{t("private.next", lng)}
 												</span>
 											</div>

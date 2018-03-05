@@ -35,16 +35,21 @@ export default class Root extends PureComponent {
 					});
 			}
 		});
+		this.props.getLocalList();
 	}
 	goDetail(item) {
 		if (!item) {
 			return;
 		}
-		if (item.category.id === 1) {
+		if (item.isWatch) {
+			toHref(`watchwallet?id=${item.id}`);
+			return;
+		}
+		if (item.category.id === 1 && !item.isWatch) {
 			toHref(`ethwallet?id=${item.id}`);
 			return;
 		}
-		if (item.category.id === 2) {
+		if (item.category.id === 2 && !item.isWatch) {
 			toHref(`neowallet?id=${item.id}`);
 			return;
 		}
@@ -121,8 +126,36 @@ export default class Root extends PureComponent {
 			return typeof res === "number" && !isNaN(res) ? res : 0;
 		}
 	}
+	getCommonList(server, local) {
+		if (!(server && local)) {
+			return null;
+		}
+		let l = [];
+		server.list.map((item, index) => {
+			item.isWatch = true;
+			local.map((i, m) => {
+				if (item.address && i.address && item.address === i.address) {
+					item.isWatch = false;
+				}
+			});
+			l.push(item);
+		});
+		return l;
+	}
+	goManger(item, e) {
+		e.stopPropagation();
+		toHref(`managewallet?id=${item.id}`);
+	}
 	render() {
-		let { lng, walletList, walletConversion, walletDetail } = this.props;
+		let {
+			lng,
+			walletList,
+			walletConversion,
+			walletDetail,
+			localWalletList
+		} = this.props;
+		let list = this.getCommonList(walletList, localWalletList);
+		//console.log(list);
 		return (
 			<I18n>
 				{(t, { i18n }) => (
@@ -200,59 +233,69 @@ export default class Root extends PureComponent {
 											</div>
 										</div>
 										<div className="group-main">
-											{walletList &&
-												walletList.list &&
-												walletList.list.length > 0 &&
-												walletList.list.map(
-													(item, index) => {
-														return (
-															<div
-																key={index}
-																className="ui center wallet-group"
-																onClick={this.goDetail.bind(
+											{list &&
+												list.length > 0 &&
+												list.map((item, index) => {
+													return (
+														<div
+															key={index}
+															className="ui center wallet-group"
+															onClick={this.goDetail.bind(
+																this,
+																item
+															)}
+														>
+															<img
+																className="wallet-img"
+																onClick={this.goManger.bind(
 																	this,
 																	item
 																)}
-															>
-																<img
-																	className="wallet-img"
-																	src={
-																		item.category &&
-																		item
-																			.category
-																			.img
-																	}
-																/>
-																<div className="f1">
-																	<div className="wallet-name">
-																		{
-																			item.name
-																		}
-																	</div>
-																	<div className="wallet-address">
-																		{
-																			item.address
-																		}
-																	</div>
+																src={
+																	item.category &&
+																	item
+																		.category
+																		.img
+																}
+															/>
+															<div className="f1">
+																<div className="wallet-name">
+																	{item.name}
+																	{item.isWatch ? (
+																		<span className="watch">
+																			watch
+																		</span>
+																	) : (
+																		""
+																	)}
 																</div>
-																<div>
-																	{item.id &&
-																		walletDetail && (
-																			<span className="t3">
-																				${this.getChildMoney(
-																					walletDetail[
-																						item
-																							.id
-																					],
-																					item
-																				)}
-																			</span>
-																		)}
+																<div className="wallet-address">
+																	{
+																		item.address
+																	}
 																</div>
 															</div>
-														);
-													}
-												)}
+															<div>
+																{item.id &&
+																	walletDetail && (
+																		<span className="t3">
+																			{lng ===
+																			"en"
+																				? "$"
+																				: "￥"}
+																			{this.getChildMoney(
+																				walletDetail[
+																					item
+																						.id
+																				],
+																				item
+																			)}
+																		</span>
+																	)}
+															</div>
+														</div>
+													);
+												})}
 										</div>
 									</div>
 								</div>

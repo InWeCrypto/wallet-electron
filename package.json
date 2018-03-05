@@ -57,6 +57,7 @@
 		"i18next-xhr-backend": "^1.5.1",
 		"navigator": "^1.0.1",
 		"normalize.css": "^7.0.0",
+		"npm": "^5.7.1",
 		"postcss-loader": "^2.0.8",
 		"react": "^16.2.0",
 		"react-css-modules": "^4.7.1",

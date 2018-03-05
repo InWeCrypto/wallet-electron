@@ -114,18 +114,30 @@ export default class Root extends PureComponent {
 											className="icon"
 											src={
 												ethWalletDetailInfo &&
-												ethWalletDetailInfo.category &&
-												ethWalletDetailInfo.category.img
+												ethWalletDetailInfo.list &&
+												ethWalletDetailInfo.list[0] &&
+												ethWalletDetailInfo.list[0]
+													.category &&
+												ethWalletDetailInfo.list[0]
+													.category.img
 											}
 										/>
 										<div className="f1">
 											<div className="name">
 												{ethWalletDetailInfo &&
-													ethWalletDetailInfo.name}
+													ethWalletDetailInfo.list &&
+													ethWalletDetailInfo
+														.list[0] &&
+													ethWalletDetailInfo.list[0]
+														.name}
 											</div>
 											<div className="address">
 												{ethWalletDetailInfo &&
-													ethWalletDetailInfo.address}
+													ethWalletDetailInfo.list &&
+													ethWalletDetailInfo
+														.list[0] &&
+													ethWalletDetailInfo.list[0]
+														.address}
 											</div>
 										</div>
 										<div className="money">$100.00</div>
