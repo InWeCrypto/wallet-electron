@@ -16,7 +16,8 @@ export default class Root extends PureComponent {
 			importType: "",
 			category_id: "",
 			mnemonic: "",
-			privatekey: ""
+			privatekey: "",
+			watchAddress: ""
 		};
 	}
 	componentDidMount() {
@@ -43,6 +44,9 @@ export default class Root extends PureComponent {
 		if (q.type == "privatekey") {
 			set.privatekey = q.value.trim();
 		}
+		if (q.type == "watch") {
+			set.watchAddress = q.value.trim();
+		}
 		this.setState({
 			...set
 		});
@@ -64,9 +68,22 @@ export default class Root extends PureComponent {
 			params.mnemonic = this.state.mnemonic;
 		}
 		if (this.state.importType === "privatekey") {
-			params.privatekey = this.state.privatekey;
+			params.wif = this.state.privatekey;
 		}
-
+		if (this.state.importType === "watch") {
+			this.props
+				.createServerWallet({
+					category_id: this.state.category_id,
+					name: this.state.name,
+					address: this.state.watchAddress
+				})
+				.then(res => {
+					if (res.code === 4000) {
+						toHref("wallet");
+					}
+				});
+			return;
+		}
 		this.props.importWallet(params).then(res => {
 			if (res.address) {
 				this.props
