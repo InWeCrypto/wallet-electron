@@ -2,6 +2,7 @@ import React, { PureComponent } from "react";
 import { I18n } from "react-i18next";
 import Menu from "@/menu";
 import { getQuery } from "../../../../utils/util";
+import ConfirmPassword from "@/confirmpassword";
 import HeaderNav from "@/headernav";
 import "./index.less";
 import { toHref } from "../../../../utils/util";
@@ -14,16 +15,22 @@ export default class Root extends PureComponent {
 			readFileText: null,
 			readFileName: "",
 			textValue: "",
-			walletType: ""
+			walletType: "",
+			isChange: false,
+			isShowPass: false
 		};
 	}
 	componentDidMount() {
 		let q = getQuery(window.location.href);
+		let set = {};
 		if (q.wallettype) {
-			this.setState({
-				walletType: q.wallettype
-			});
+			set.walletType = q.wallettype;
 		}
+		if (q.isChange) {
+			set.isChange = true;
+			set.name = q.name;
+		}
+		this.setState({ ...set });
 	}
 	checkClick(idx) {
 		this.setState({
@@ -68,9 +75,61 @@ export default class Root extends PureComponent {
 			);
 		}
 	}
+	opPass() {
+		if (this.state.type == 0) {
+			var str = this.state.textValue;
+			let reg = /^\{.*?\}$/;
+			if (!reg.test(str)) {
+				Msg.prompt("Key store type is error");
+				return;
+			}
+		}
+		this.setState({
+			isShowPass: true
+		});
+	}
+	closePass() {
+		this.setState({
+			isShowPass: false
+		});
+	}
+	changeHot(res) {
+		let type = null;
+		if (this.state.walletType == 1) {
+			type = "eth";
+		}
+		if (this.state.walletType == 2) {
+			type = "neo";
+		}
+		if (this.state.walletType == 3) {
+			type = "btc";
+		}
+		this.props
+			.changeToHot({
+				name: this.state.name,
+				type: type,
+				json: this.state.textValue,
+				password: res
+			})
+			.then(res => {
+				if (res.address && res.address.length > 0) {
+					this.setState({
+						isShowPass: false
+					});
+					toHref("wallet");
+				}
+			});
+	}
 	render() {
 		let { lng } = this.props;
-		let { type, readFileText, readFileName, textValue } = this.state;
+		let {
+			type,
+			readFileText,
+			readFileName,
+			textValue,
+			isChange,
+			isShowPass
+		} = this.state;
 		return (
 			<I18n>
 				{(t, { i18n }) => (
@@ -151,16 +210,45 @@ export default class Root extends PureComponent {
 												</div>
 											</div>
 											<div className="key-next">
-												<span
-													className="keybtn"
-													onClick={this.goNext.bind(
-														this
-													)}
-												>
-													{t("keyStore.next", lng)}
-												</span>
+												{!isChange && (
+													<span
+														className="keybtn"
+														onClick={this.goNext.bind(
+															this
+														)}
+													>
+														{t(
+															"keyStore.next",
+															lng
+														)}
+													</span>
+												)}
+												{isChange && (
+													<span
+														className="keybtn"
+														onClick={this.opPass.bind(
+															this
+														)}
+													>
+														{t(
+															"keyStore.changeHot",
+															lng
+														)}
+													</span>
+												)}
 											</div>
 										</div>
+										{isShowPass && (
+											<ConfirmPassword
+												confirm={this.changeHot.bind(
+													this
+												)}
+												close={this.closePass.bind(
+													this
+												)}
+												lng={lng}
+											/>
+										)}
 									</div>
 								</div>
 							</div>

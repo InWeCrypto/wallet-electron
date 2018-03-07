@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { I18n } from "react-i18next";
 import Menu from "@/menu";
 import HeaderNav from "@/headernav";
+import { getQuery } from "../../../../utils/util";
 import "./index.less";
 import keyicon from "#/key.png";
 import mneicon from "#/mnemonic_ico.png";
@@ -15,10 +16,19 @@ export default class Root extends PureComponent {
 		super(props);
 		this.state = {
 			type: 1,
-			walletId: null
+			walletId: null,
+			name: ""
 		};
 	}
 	componentDidMount() {
+		let q = getQuery(window.location.href);
+		if (q.isChange) {
+			this.setState({
+				type: 3,
+				walletId: q.type,
+				name: q.name
+			});
+		}
 		this.props.getWalletType();
 	}
 	chooseType(item) {
@@ -29,7 +39,7 @@ export default class Root extends PureComponent {
 	}
 	render() {
 		let { lng, walletTypes } = this.props;
-		let { type, walletId } = this.state;
+		let { type, walletId, name } = this.state;
 		return (
 			<I18n>
 				{(t, { i18n }) => (
@@ -151,6 +161,72 @@ export default class Root extends PureComponent {
 														)}
 													</div>
 												</Link>
+											</div>
+										</div>
+									)}
+									{type == 3 && (
+										<div className="import-container">
+											<div className="ui jcenter">
+												<Link
+													to={{
+														pathname:
+															"importkeystore",
+														search: `?wallettype=${walletId}&name=${name}&isChange=true`
+													}}
+													className="import-group"
+												>
+													<img
+														className="importicon"
+														src={keyicon}
+													/>
+													<div className="t1">
+														{t(
+															"importWallet.keystore",
+															lng
+														)}
+													</div>
+												</Link>
+												<Link
+													to={{
+														pathname:
+															"importmnemonic",
+														search: `?wallettype=${walletId}&name=${name}&isChange=true`
+													}}
+													className="import-group"
+												>
+													<img
+														className="importicon"
+														src={mneicon}
+													/>
+													<div className="t1">
+														{t(
+															"importWallet.mnemonic",
+															lng
+														)}
+													</div>
+												</Link>
+											</div>
+											<div className="ui jcenter">
+												<Link
+													to={{
+														pathname:
+															"importprivate",
+														search: `?wallettype=${walletId}&name=${name}&isChange=true`
+													}}
+													className="import-group"
+												>
+													<img
+														className="importicon"
+														src={priicon}
+													/>
+													<div className="t1">
+														{t(
+															"importWallet.private",
+															lng
+														)}
+													</div>
+												</Link>
+												<div className="import-group disnone" />
 											</div>
 										</div>
 									)}

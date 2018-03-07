@@ -1,9 +1,9 @@
 import { handleActions } from "redux-actions";
-import { GETCODE } from "./actions";
+import { DELETEWATCHMANNAGEWALLET } from "./actions";
 
-export const code = handleActions(
+export const watchWallet = handleActions(
 	{
-		[GETCODE]: (state, { payload }) => payload
+		[DELETEWATCHMANNAGEWALLET]: (state, { payload }) => payload
 	},
-	[]
+	null
 );

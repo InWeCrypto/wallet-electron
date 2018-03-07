@@ -11,16 +11,24 @@ export default class Root extends PureComponent {
 		super(props);
 		this.state = {
 			text: "",
-			walletType: ""
+			walletType: "",
+			isChange: false,
+			name: ""
 		};
 	}
 	componentDidMount() {
 		let q = getQuery(window.location.href);
+		let set = {};
 		if (q.wallettype) {
-			this.setState({
-				walletType: q.wallettype
-			});
+			set.walletType = q.wallettype;
 		}
+		if (q.isChange) {
+			set.isChange = true;
+			set.name = q.name;
+		}
+		this.setState({
+			...set
+		});
 	}
 	textChange(e) {
 		this.setState({
@@ -37,7 +45,7 @@ export default class Root extends PureComponent {
 	}
 	render() {
 		let { lng } = this.props;
-		let { text } = this.state;
+		let { text, isChange } = this.state;
 		return (
 			<I18n>
 				{(t, { i18n }) => (
@@ -66,14 +74,29 @@ export default class Root extends PureComponent {
 												/>
 											</div>
 											<div className="private-btn">
-												<span
-													className="btn"
-													onClick={this.goEnd.bind(
-														this
-													)}
-												>
-													{t("private.next", lng)}
-												</span>
+												{!isChange && (
+													<span
+														className="btn"
+														onClick={this.goEnd.bind(
+															this
+														)}
+													>
+														{t("private.next", lng)}
+													</span>
+												)}
+												{isChange && (
+													<span
+														className="btn"
+														onClick={this.goEnd.bind(
+															this
+														)}
+													>
+														{t(
+															"private.changeHot",
+															lng
+														)}
+													</span>
+												)}
 											</div>
 										</div>
 									</div>

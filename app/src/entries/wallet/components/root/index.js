@@ -137,7 +137,12 @@ export default class Root extends PureComponent {
 		server.list.map((item, index) => {
 			item.isWatch = true;
 			local.map((i, m) => {
-				if (item.address && i.address && item.address === i.address) {
+				if (
+					item.address &&
+					i.address &&
+					item.address === i.address &&
+					item.name === i.name
+				) {
 					item.isWatch = false;
 				}
 			});
@@ -148,7 +153,11 @@ export default class Root extends PureComponent {
 	goManger(item, e) {
 		e.stopPropagation();
 		if (item.isWatch) {
-			toHref(`managewatchwallet?id=${item.id}`);
+			toHref(
+				`watchmanagewallet?id=${item.id}&type=${
+					item.category_id
+				}&name=${item.name}`
+			);
 		} else {
 			toHref(`managewallet?id=${item.id}`);
 		}

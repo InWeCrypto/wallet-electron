@@ -2,6 +2,7 @@ import React, { PureComponent } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { Modal, Button } from "antd";
 import { I18n } from "react-i18next";
+import { getQuery, toHref } from "../../../../utils/util";
 import Menu from "@/menu/index.js";
 import HeaderNav from "@/headernav/index.js";
 import icon1 from "#/mnemonic_ico.png";
@@ -14,12 +15,39 @@ import "./index.less";
 export default class Root extends PureComponent {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			id: ""
+		};
 	}
-	componentDidMount() {}
+	componentDidMount() {
+		let q = getQuery(window.location.href);
+		if (q.id && q.type && q.name) {
+			this.setState({
+				id: q.id,
+				name: q.name,
+				type: q.type
+			});
+		}
+	}
+	deleteWatch() {
+		this.props
+			.deleteWatchWallet({
+				id: this.state.id
+			})
+			.then(res => {
+				if (res.code === 4000) {
+					toHref("wallet");
+				}
+			});
+	}
+	goChange() {
+		toHref(
+			"importwallet",
+			`name=${this.state.name}&type=${this.state.type}&isChange=true`
+		);
+	}
 	render() {
 		let { lng } = this.props;
-
 		return (
 			<I18n>
 				{(t, { i18n }) => (
@@ -31,9 +59,12 @@ export default class Root extends PureComponent {
 								<div className="title">
 									Manager wallet setting
 								</div>
-								<div className="title2">backup your wallet</div>
+								{/* <div className="title2">backup your wallet</div> */}
 								<div className="hotarea-box">
-									<div className="hotarea">
+									<div
+										className="hotarea"
+										onClick={this.goChange.bind(this)}
+									>
 										<div className="imgbox">
 											<img
 												className="img"
@@ -45,7 +76,10 @@ export default class Root extends PureComponent {
 											Change Watch-Wallet to Hot Wallet
 										</div>
 									</div>
-									<div className="hotarea">
+									<div
+										className="hotarea"
+										onClick={this.deleteWatch.bind(this)}
+									>
 										<div className="imgbox">
 											<img
 												className="img"

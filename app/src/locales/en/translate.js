@@ -41,22 +41,26 @@ export default {
 		title: "Keystore",
 		textarea: "Copy and paste the content of the keystore file",
 		input: "Upload the keystore file",
-		next: "Next"
+		next: "Next",
+		changeHot: "Import Hot"
 	},
 	mnemonic: {
 		title: "Mnemonic",
 		textarea: "Please use space to separate the mnemonic words",
-		next: "Next"
+		next: "Next",
+		changeHot: "Import Hot"
 	},
 	private: {
 		title: "Private Key",
 		textarea: "Please input your private key",
-		next: "Next"
+		next: "Next",
+		changeHot: "Import Hot"
 	},
 	private: {
 		title: "Private Key",
 		textarea: "Please input your private key",
-		next: "Next"
+		next: "Next",
+		changeHot: "Import Hot"
 	},
 	watch: {
 		title: "Watch Wallet",
