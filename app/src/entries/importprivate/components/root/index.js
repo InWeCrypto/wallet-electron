@@ -2,6 +2,7 @@ import React, { PureComponent } from "react";
 import { I18n } from "react-i18next";
 import { getQuery } from "../../../../utils/util";
 import Menu from "@/menu";
+import ConfirmPass from "@/confirmpassword";
 import HeaderNav from "@/headernav";
 import "./index.less";
 import { toHref } from "../../../../utils/util";
@@ -13,7 +14,8 @@ export default class Root extends PureComponent {
 			text: "",
 			walletType: "",
 			isChange: false,
-			name: ""
+			name: "",
+			isShowPass: false
 		};
 	}
 	componentDidMount() {
@@ -43,9 +45,43 @@ export default class Root extends PureComponent {
 			}&&type=privatekey`
 		);
 	}
+	openPass() {
+		this.setState({
+			isShowPass: true
+		});
+	}
+	closePass() {
+		this.setState({
+			isShowPass: false
+		});
+	}
+	importHot(res) {
+		let params = {};
+		params.password = res;
+		params.name = this.state.name;
+		if (this.state.walletType == 1) {
+			params.type = "eth";
+		}
+		if (this.state.walletType == 2) {
+			params.type = "neo";
+		}
+		if (this.state.walletType == 3) {
+			params.type = "btc";
+		}
+		if (this.state.text.length <= 0) {
+			Msg.prompt("the key is empty");
+			return;
+		}
+		params.wif = this.state.text;
+		this.props.importPrivate(params).then(res => {
+			if (res.address && res.address.length > 0) {
+				toHref("wallet");
+			}
+		});
+	}
 	render() {
 		let { lng } = this.props;
-		let { text, isChange } = this.state;
+		let { text, isChange, isShowPass } = this.state;
 		return (
 			<I18n>
 				{(t, { i18n }) => (
@@ -87,7 +123,7 @@ export default class Root extends PureComponent {
 												{isChange && (
 													<span
 														className="btn"
-														onClick={this.goEnd.bind(
+														onClick={this.openPass.bind(
 															this
 														)}
 													>
@@ -100,6 +136,13 @@ export default class Root extends PureComponent {
 											</div>
 										</div>
 									</div>
+									{isShowPass && (
+										<ConfirmPass
+											lng={lng}
+											close={this.closePass.bind(this)}
+											confirm={this.importHot.bind(this)}
+										/>
+									)}
 								</div>
 							</div>
 						</div>

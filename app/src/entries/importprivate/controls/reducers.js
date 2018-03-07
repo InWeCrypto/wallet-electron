@@ -5,5 +5,5 @@ export const importPrivate = handleActions(
 	{
 		[IMPORTPRIVATE]: (state, { payload }) => payload
 	},
-	[]
+	null
 );
