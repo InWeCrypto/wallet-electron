@@ -76,17 +76,17 @@ export default class Root extends PureComponent {
 				this.props.walletConversion.list.map((item, index) => {
 					if (item.id == o.id) {
 						let price =
-							item.gnt_category && item.gnt_category.cap
+							item.category && item.category.cap
 								? this.props.lng == "en"
-									? item.gnt_category.cap.price_usd
-									: item.gnt_category.cap.price_cny
+									? item.category.cap.price_usd
+									: item.category.cap.price_cny
 								: 0;
 						num = num - 0 + getEthNum(item.balance) * price - 0;
 					}
 				});
 			}
 			let res = new Number(num) + 0;
-			return typeof res === "number" && !isNaN(res) ? res : 0;
+			return typeof res === "number" && !isNaN(res) ? res.toFixed(4) : 0;
 		}
 		if (o.category_id == 2) {
 			if (list && list.length > 0) {
@@ -97,9 +97,9 @@ export default class Root extends PureComponent {
 								? item.gnt_category.cap.price_usd
 								: item.gnt_category.cap.price_cny
 							: 0;
-					// if (o.id === 51) {
-					// 	console.log(price);
-					// }
+					if (item.id === 51) {
+						console.log(price);
+					}
 					num =
 						num +
 						getNumFromStr(item.balance) /
@@ -116,17 +116,17 @@ export default class Root extends PureComponent {
 				this.props.walletConversion.list.map((item, index) => {
 					if (item.id == o.id) {
 						let price =
-							item.gnt_category && item.gnt_category.cap
+							item.category && item.category.cap
 								? this.props.lng == "en"
-									? item.gnt_category.cap.price_usd
-									: item.gnt_category.cap.price_cny
+									? item.category.cap.price_usd
+									: item.category.cap.price_cny
 								: 0;
-						num += item.balance & price;
+						num += item.balance * price;
 					}
 				});
 			}
 			let res = new Number(num) + 0;
-			return typeof res === "number" && !isNaN(res) ? res : 0;
+			return typeof res === "number" && !isNaN(res) ? res.toFixed(4) : 0;
 		}
 	}
 	getCommonList(server, local) {

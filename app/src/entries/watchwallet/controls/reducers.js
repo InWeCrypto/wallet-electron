@@ -1,9 +1,21 @@
 import { handleActions } from "redux-actions";
-import { GETCODE } from "./actions";
+import { WALLETINFO, CONVERSION, WALLETLIST } from "./actions";
 
-export const code = handleActions(
+export const watchInfo = handleActions(
 	{
-		[GETCODE]: (state, { payload }) => payload
+		[WALLETINFO]: (state, { payload }) => payload
 	},
-	[]
+	null
+);
+export const watchConver = handleActions(
+	{
+		[CONVERSION]: (state, { payload }) => payload
+	},
+	null
+);
+export const walletList = handleActions(
+	{
+		[WALLETLIST]: (state, { payload }) => payload
+	},
+	null
 );

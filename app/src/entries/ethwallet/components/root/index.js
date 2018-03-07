@@ -69,7 +69,13 @@ export default class Root extends PureComponent {
 		}
 	}
 	addAsset(info) {
-		toHref(`addasset?walletid=${info.id}&&wallettype=${info.category.id}`);
+		if (info.list && info.list[0]) {
+			toHref(
+				`addasset?walletid=${info.list[0].id}&&wallettype=${
+					info.list[0].category.id
+				}`
+			);
+		}
 	}
 	sliderChange(res) {
 		this.setState({

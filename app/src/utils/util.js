@@ -243,10 +243,11 @@ export const toHref = (toSit, query) => {
 	}
 };
 window.toHref = toHref;
-export const getNumFromStr = str => {
+export const getNumFromStr = (str, dec) => {
 	if (!str) {
 		return 0;
 	}
+	// var dec = dec ? dec : 8;
 	var Str2Bytes = str => {
 		var pos = 0;
 
@@ -288,17 +289,28 @@ export const getNumFromStr = str => {
 		return 0;
 	}
 	var str16 = Bytes2Str(arr.reverse());
-	var num = parseInt(new Number(`0x${str16}`), 10);
+	if (dec) {
+		var num = parseInt(new Number(`0x${str16}`), 10) / Math.pow(10, dec);
+	} else {
+		var num = parseInt(new Number(`0x${str16}`), 10);
+	}
+
 	return num;
 };
 window.getNumFromStr = getNumFromStr;
-export const getEthNum = num => {
+export const getEthNum = (num, dec) => {
 	if (!num || num.length < 8) {
 		return 0;
 	}
+	var dec = dec ? dec : 18;
 	let res = (
 		parseInt(
-			parseInt(new Number(num), 10) / Math.pow(10, 18) * 10 * 10 * 10 * 10
+			parseInt(new Number(num), 10) /
+				Math.pow(10, dec) *
+				10 *
+				10 *
+				10 *
+				10
 		) /
 		10 /
 		10 /

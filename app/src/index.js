@@ -12,11 +12,17 @@ import { getLocalItem, remFun, addClass } from "./utils/util";
 
 import i18n from "./i18n";
 window.i18n = i18n;
+
 const store = storeFun();
 
 let userinfo = getLocalItem("userInfo");
 window.store = store;
-
+var languageItem = getLocalItem("language");
+if (languageItem && languageItem.data) {
+	store.dispatch(changeLng(languageItem.data));
+} else {
+	store.dispatch(changeLng("zh"));
+}
 if (userinfo && userinfo.data) {
 	store.dispatch(setReduxUserInfo(JSON.parse(userinfo.data)));
 }

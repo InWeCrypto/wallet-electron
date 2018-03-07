@@ -2,13 +2,17 @@ import { connect } from "react-redux";
 import Root from "../components/root";
 import * as actions from "../controls/actions";
 import * as globalActions from "../../../globalactions";
-//({ home: { categoryList } }) => ({
-//    categoryList
-//}),
+
 export default connect(
-	({ globData: { userInfo, lng } }) => ({
+	({
+		globData: { userInfo, lng },
+		watchwallet: { watchInfo, watchConver, walletList }
+	}) => ({
 		userInfo,
-		lng
+		lng,
+		watchInfo,
+		watchConver,
+		walletList
 	}),
 	{
 		...actions,
