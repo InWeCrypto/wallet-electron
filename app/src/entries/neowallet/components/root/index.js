@@ -103,6 +103,58 @@ export default class Root extends PureComponent {
 			password: res
 		});
 	}
+	getCommonMoney() {
+		let num = 0;
+		let {
+			lng,
+			neoWalletDetailInfo,
+			neoWalletAssets,
+			neoConversion
+		} = this.props;
+		if (neoConversion && neoConversion.record) {
+			let r = neoConversion.record;
+			num += new Number(
+				r.balance *
+					(r.cap
+						? lng == "en" ? r.cap.price_usd : r.cap.price_cny
+						: 0)
+			);
+		}
+		if (
+			neoConversion &&
+			neoConversion.record &&
+			neoConversion.record.gnt &&
+			neoConversion.record.gnt.length > 0
+		) {
+			neoConversion.record.gnt.map((item, index) => {
+				num += new Number(
+					item.balance *
+						(item.cap
+							? lng == "en"
+								? item.cap.price_usd
+								: item.cap.price_cny
+							: 0)
+				);
+			});
+		}
+		if (
+			neoConversion &&
+			neoConversion.list &&
+			neoConversion.list.length > 0
+		) {
+			neoConversion.list.map((item, index) => {
+				num += new Number(
+					getNumFromStr(item.balance, item.decimals) *
+						(item.gnt_category && item.gnt_category.cap
+							? lng == "en"
+								? item.gnt_category.cap.price_usd
+								: item.gnt_category.cap.price_cny
+							: 0)
+				);
+			});
+		}
+		return parseInt(num * 10 * 10) / 10 / 10;
+	}
 	render() {
 		let {
 			lng,
@@ -139,7 +191,10 @@ export default class Root extends PureComponent {
 													neoWalletDetailInfo.address}
 											</div>
 										</div>
-										<div className="money">$100.00</div>
+										<div className="money">
+											{lng == "en" ? "$" : "￥"}
+											{`${this.getCommonMoney()}`}
+										</div>
 									</div>
 									<div className="box2 ui center">
 										<div className="navbox f1">
@@ -224,14 +279,9 @@ export default class Root extends PureComponent {
 													{neoConversion &&
 														neoConversion.record && (
 															<div className="t1">
-																{neoConversion
-																	.record
-																	.balance ==
-																0
-																	? "0"
-																	: neoConversion
-																			.record
-																			.balance}
+																{new Number(
+																	neoConversion.record.balance
+																).toFixed(4)}
 															</div>
 														)}
 													{neoConversion &&
@@ -256,7 +306,7 @@ export default class Root extends PureComponent {
 																				.cap
 																				.price_usd
 																		).toFixed(
-																			8
+																			2
 																		)}
 															</div>
 														)}
@@ -282,16 +332,9 @@ export default class Root extends PureComponent {
 														neoConversion.record
 															.gnt[0] && (
 															<div className="t1">
-																{neoConversion
-																	.record
-																	.gnt[0]
-																	.balance ==
-																0
-																	? "0"
-																	: neoConversion
-																			.record
-																			.gnt[0]
-																			.balance}
+																{new Number(
+																	neoConversion.record.gnt[0].balance
+																).toFixed(4)}
 															</div>
 														)}
 
@@ -364,17 +407,17 @@ export default class Root extends PureComponent {
 																	}}
 																>
 																	<div className="t1">
-																		{getNumFromStr(
-																			item.balance
-																		) == 0
-																			? 0
-																			: getNumFromStr(
-																					item.balance
-																				) /
-																				Math.pow(
-																					10,
-																					item.decimals
-																				)}
+																		{(
+																			getNumFromStr(
+																				item.balance
+																			) /
+																			Math.pow(
+																				10,
+																				item.decimals
+																			)
+																		).toFixed(
+																			4
+																		)}
 																	</div>
 																	<div className="t1">
 																		{lng ==
