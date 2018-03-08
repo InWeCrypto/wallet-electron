@@ -58,6 +58,15 @@ export default class Root extends PureComponent {
 			title: this.props.watchInfo.name
 		});
 	}
+	addAsset(info) {
+		if (info) {
+			toHref(
+				`addasset?walletid=${info.id}&wallettype=${
+					info.category.id
+				}&isWatch=true`
+			);
+		}
+	}
 	setQcode(str) {
 		setTimeout(() => {
 			var box = document.getElementById("qrcode");
@@ -68,6 +77,89 @@ export default class Root extends PureComponent {
 			});
 			qrcode.makeCode(str);
 		}, 10);
+	}
+	getCommonMoney() {
+		let { lng, watchInfo, watchConver, walletList } = this.props;
+		let num = 0;
+		if (watchInfo && watchInfo.category_id == 1) {
+			if (watchConver && watchConver.list[0]) {
+				let d = watchConver.list[0];
+				num += new Number(
+					(
+						getEthNum(d.balance) *
+						(d.category && d.category.cap
+							? lng == "en"
+								? d.category.cap.price_usd
+								: d.category.cap.price_cny
+							: 0)
+					).toFixed(4)
+				);
+			}
+			if (walletList && walletList.list && walletList.list.length > 0) {
+				walletList.list.map((item, index) => {
+					num += new Number(
+						(
+							getEthNum(item.balance, item.decimals) *
+							(item.gnt_category && item.gnt_category.cap
+								? lng == "en"
+									? item.gnt_category.cap.price_usd
+									: item.gnt_category.cap.price_cny
+								: 0)
+						).toFixed(4)
+					);
+				});
+			}
+		}
+		if (watchInfo && watchInfo.category_id == 2) {
+			if (watchConver && watchConver.list[0]) {
+				num += new Number(
+					(
+						watchConver.list[0].balance *
+						(watchConver.list[0].category &&
+						watchConver.list[0].category.cap
+							? lng == "en"
+								? watchConver.list[0].category.cap.price_usd
+								: watchConver.list[0].category.cap.price_cny
+							: 0)
+					).toFixed(4)
+				);
+			}
+			if (
+				walletList &&
+				walletList.record &&
+				walletList.record.gnt &&
+				walletList.record.gnt.length > 0
+			) {
+				walletList.record.gnt.map((item, index) => {
+					num += new Number(
+						(
+							item.balance *
+							(item.cap
+								? lng == "en"
+									? item.cap.price_usd
+									: item.cap.price_cny
+								: 0)
+						).toFixed(4)
+					);
+				});
+			}
+			if (walletList && walletList.list && walletList.list.length > 0) {
+				walletList.list.map((item, index) => {
+					num += new Number(
+						(
+							getNumFromStr(item.balance, item.decimals) *
+							(item.gnt_category && item.gnt_category.cap
+								? lng == "en"
+									? item.gnt_category.cap.price_usd
+									: item.gnt_category.cap.price_cny
+								: 0)
+						).toFixed(4)
+					);
+				});
+			}
+		}
+
+		return num;
 	}
 	render() {
 		let { lng, watchInfo, watchConver, walletList } = this.props;
@@ -105,7 +197,10 @@ export default class Root extends PureComponent {
 												{watchInfo && watchInfo.address}
 											</div>
 										</div>
-										<div className="money">$100.00</div>
+										<div className="money">
+											{lng == "en" ? "$" : "￥"}
+											{`${this.getCommonMoney()}`}
+										</div>
 									</div>
 									<div className="box2 ui center">
 										<div className="navbox f1">
@@ -150,7 +245,13 @@ export default class Root extends PureComponent {
 											<div className="t1">Claim</div>
 											<div className="t2">2000.00GAS</div>
 										</div>
-										<div className="box-btn line-orange">
+										<div
+											className="box-btn line-orange"
+											onClick={this.addAsset.bind(
+												this,
+												watchInfo
+											)}
+										>
 											Add Asset
 										</div>
 									</div>
@@ -232,27 +333,79 @@ export default class Root extends PureComponent {
 															</div>
 														</div>
 													)}
-												<div className="wallet-item ui center">
-													<img
-														className="icon"
-														src="https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=703596290,1200042368&fm=173&s=05105F955E20468E2A8D7D610300E0F0&w=218&h=146&img.JPEG"
-													/>
-													<div className="f1 name">
-														22
-													</div>
-													<div
-														style={{
-															textAlign: "right"
-														}}
-													>
-														<div className="t1">
-															2
-														</div>
-														<div className="t1">
-															2
-														</div>
-													</div>
-												</div>
+
+												{walletList &&
+													walletList.list &&
+													walletList.list.length >
+														0 &&
+													walletList.list.map(
+														(item, index) => {
+															return (
+																<div
+																	key={index}
+																	className="wallet-item ui center"
+																>
+																	<img
+																		className="icon"
+																		src={
+																			item.gnt_category &&
+																			item
+																				.gnt_category
+																				.icon
+																		}
+																	/>
+																	<div className="f1 name">
+																		{item.gnt_category &&
+																			item
+																				.gnt_category
+																				.name}
+																	</div>
+																	<div
+																		style={{
+																			textAlign:
+																				"right"
+																		}}
+																	>
+																		<div className="t1">
+																			{getEthNum(
+																				item.balance,
+																				item.decimals
+																			)}
+																		</div>
+																		<div className="t1">
+																			{lng ==
+																			"en"
+																				? "$"
+																				: "￥"}
+																			{(
+																				getEthNum(
+																					item.balance,
+																					item.decimals
+																				) *
+																				(item.gnt_category &&
+																				item
+																					.gnt_category
+																					.cap
+																					? lng ==
+																						"en"
+																						? item
+																								.gnt_category
+																								.cap
+																								.price_usd
+																						: item
+																								.gnt_category
+																								.cap
+																								.price_usd
+																					: 0)
+																			).toFixed(
+																				4
+																			)}
+																		</div>
+																	</div>
+																</div>
+															);
+														}
+													)}
 											</div>
 										)}
 									{type === 1 &&

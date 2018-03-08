@@ -18,16 +18,21 @@ export default class Root extends PureComponent {
 	}
 	componentDidMount() {
 		let q = getQuery(window.location.href);
+		let set = {};
 		if (q && q.walletid && q.wallettype) {
 			this.props.getAssetsList({
 				wallet_category_id: q.wallettype,
 				wallet_id: q.walletid
 			});
-			this.setState({
-				wallet_id: q.walletid,
-				wallet_category_id: q.wallettype
-			});
+			(set.wallet_id = q.walletid),
+				(set.wallet_category_id = q.wallettype);
 		}
+		if (q.isWatch) {
+			set.isWatch = q.isWatch;
+		}
+		this.setState({
+			...set
+		});
 	}
 	checkAsset(item) {
 		this.props.checkChange({
@@ -48,13 +53,17 @@ export default class Root extends PureComponent {
 		};
 		this.props.submitAddAsset(params).then(res => {
 			if (res.code === 4000) {
-				console.log(this.state.wallet_category_id);
-				if (this.state.wallet_category_id == 1) {
-					toHref(`ethwallet?id=${this.state.wallet_id}`);
+				if (this.state.isWatch) {
+					toHref(`watchwallet?id=${this.state.wallet_id}`);
+					return;
 				}
-				if (this.state.wallet_category_id == 2) {
-					console.log(11);
+				if (this.state.wallet_category_id == 1 && !this.state.isWatch) {
+					toHref(`ethwallet?id=${this.state.wallet_id}`);
+					return;
+				}
+				if (this.state.wallet_category_id == 2 && !this.state.isWatch) {
 					toHref(`neowallet?id=${this.state.wallet_id}`);
+					return;
 				}
 			}
 		});
