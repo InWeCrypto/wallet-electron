@@ -46,6 +46,7 @@
 	"dependencies": {
 		"antd": "^3.1.1",
 		"babel-plugin-react-html-attrs": "^2.1.0",
+		"bignumber.js": "^6.0.0",
 		"concurrently": "^3.5.1",
 		"dsmorse-gridster": "^0.7.0",
 		"echarts": "^3.8.5",

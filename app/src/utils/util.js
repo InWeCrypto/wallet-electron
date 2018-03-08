@@ -1,5 +1,5 @@
 import Alert from "antd";
-
+import { BigNumber } from "bignumber.js";
 export const getQuery = query => {
 	let res = {};
 	if (query.indexOf("?") == -1) {
@@ -247,7 +247,6 @@ export const getNumFromStr = (str, dec) => {
 	if (!str) {
 		return 0;
 	}
-	// var dec = dec ? dec : 8;
 	var Str2Bytes = str => {
 		var pos = 0;
 
@@ -298,25 +297,25 @@ export const getNumFromStr = (str, dec) => {
 	return num;
 };
 window.getNumFromStr = getNumFromStr;
-export const getEthNum = (num, dec) => {
-	if (!num || num.length < 8) {
+export const getEthNum = (str, dec) => {
+	if (!str || str.length < 8) {
 		return 0;
 	}
 	var dec = dec ? dec : 18;
-	let res = (
-		parseInt(
-			parseInt(new Number(num), 10) /
-				Math.pow(10, dec) *
-				10 *
-				10 *
-				10 *
-				10
-		) /
-		10 /
-		10 /
-		10 /
-		10
-	).toFixed(4);
-	return res == 0 ? "0" : res;
+	var reg = /(?:0x)0*/gi;
+	var st = "0x" + str.replace(reg, "");
+	var int10 = parseInt(st);
+	var s = int10.toLocaleString();
+	var n = s.replace(/\,/gi, "");
+	if (n.length < dec) {
+		var l = dec - n.length;
+		for (let i = 0; i < l + 1; i++) {
+			n = "0" + n;
+		}
+	}
+	var p = n.substr(0, n.length - dec);
+	var r = n.substring(n.length - dec);
+	var res = Number(Number(p + "." + r).toFixed(4));
+	return res;
 };
 window.getEthNum = getEthNum;
