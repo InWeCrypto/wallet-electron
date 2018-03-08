@@ -55,13 +55,14 @@ export default class Root extends PureComponent {
 		}
 	}
 	getChildMoney(list, o) {
+		let { lng } = this.props;
 		let num = 0;
 		if (o.category_id == 1) {
-			if (list && list.length > 0) {
-				list.map((item, index) => {
+			if (list && list.list && list.list.length > 0) {
+				list.list.map((item, index) => {
 					let price =
 						item.gnt_category && item.gnt_category.cap
-							? this.props.lng == "en"
+							? lng == "en"
 								? item.gnt_category.cap.price_usd
 								: item.gnt_category.cap.price_cny
 							: 0;
@@ -77,7 +78,7 @@ export default class Root extends PureComponent {
 					if (item.id == o.id) {
 						let price =
 							item.category && item.category.cap
-								? this.props.lng == "en"
+								? lng == "en"
 									? item.category.cap.price_usd
 									: item.category.cap.price_cny
 								: 0;
@@ -86,26 +87,42 @@ export default class Root extends PureComponent {
 				});
 			}
 			let res = new Number(num) + 0;
-			return typeof res === "number" && !isNaN(res) ? res.toFixed(4) : 0;
+			return typeof res === "number" && !isNaN(res) ? res.toFixed(2) : 0;
 		}
 		if (o.category_id == 2) {
-			if (list && list.length > 0) {
-				list.map((item, index) => {
+			if (list && list.list && list.list.length > 0) {
+				list.list.map((item, index) => {
 					let price =
 						item.gnt_category && item.gnt_category.cap
-							? this.props.lng == "en"
+							? lng == "en"
 								? item.gnt_category.cap.price_usd
 								: item.gnt_category.cap.price_cny
 							: 0;
-					if (item.id === 51) {
-						console.log(price);
-					}
+
 					num =
 						num +
 						getNumFromStr(item.balance) /
 							Math.pow(10, item.decimals) *
 							price -
 						0;
+				});
+			}
+
+			if (
+				list &&
+				list.record &&
+				list.record.gnt &&
+				list.record.gnt.length > 0
+			) {
+				list.record.gnt.map((item, index) => {
+					num += Number(
+						item.balance *
+							(item.cap
+								? lng == "en"
+									? item.cap.price_usd
+									: item.cap.price_cny
+								: 0)
+					);
 				});
 			}
 			if (
@@ -117,7 +134,7 @@ export default class Root extends PureComponent {
 					if (item.id == o.id) {
 						let price =
 							item.category && item.category.cap
-								? this.props.lng == "en"
+								? lng == "en"
 									? item.category.cap.price_usd
 									: item.category.cap.price_cny
 								: 0;
@@ -126,7 +143,7 @@ export default class Root extends PureComponent {
 				});
 			}
 			let res = new Number(num) + 0;
-			return typeof res === "number" && !isNaN(res) ? res.toFixed(4) : 0;
+			return typeof res === "number" && !isNaN(res) ? res.toFixed(2) : 0;
 		}
 	}
 	getCommonList(server, local) {

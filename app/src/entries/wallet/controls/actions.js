@@ -54,7 +54,7 @@ export const getWalletDetail = createAction(GETWALLETDETAIL, params => {
 					code: 4000,
 					data: {
 						id: params.id,
-						data: res.data.list
+						data: res.data
 					},
 					msg: res.msg
 				};

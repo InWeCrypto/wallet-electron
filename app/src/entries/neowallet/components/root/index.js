@@ -153,7 +153,7 @@ export default class Root extends PureComponent {
 				);
 			});
 		}
-		return parseInt(num * 10 * 10) / 10 / 10;
+		return parseInt(num.toFixed(2) * 10 * 10) / 10 / 10;
 	}
 	render() {
 		let {

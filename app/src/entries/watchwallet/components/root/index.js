@@ -159,7 +159,7 @@ export default class Root extends PureComponent {
 			}
 		}
 
-		return num;
+		return num.toFixed(2);
 	}
 	render() {
 		let { lng, watchInfo, watchConver, walletList } = this.props;
@@ -327,7 +327,7 @@ export default class Root extends PureComponent {
 																						.price_cny
 																			: 0)
 																	).toFixed(
-																		4
+																		2
 																	)}
 																</div>
 															</div>
@@ -398,7 +398,7 @@ export default class Root extends PureComponent {
 																								.price_usd
 																					: 0)
 																			).toFixed(
-																				4
+																				2
 																			)}
 																		</div>
 																	</div>
@@ -478,7 +478,7 @@ export default class Root extends PureComponent {
 																						.price_cny
 																			: 0)
 																	).toFixed(
-																		4
+																		2
 																	)}
 																</div>
 															</div>
