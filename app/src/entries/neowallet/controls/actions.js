@@ -4,20 +4,16 @@ const PRE_FIX = "NEOWALLET_";
 export const WALLETINFO = `${PRE_FIX}WALLETINFO`;
 export const GETWALLETASSETS = `${PRE_FIX}GETWALLETASSETS`;
 export const GETWALLETCONVERSION = `${PRE_FIX}GETWALLETCONVERSION`;
+
 export const setNeoWalletInfo = createAction(WALLETINFO, params => {
 	return params;
 });
 export const getWalletAssets = createAction(GETWALLETASSETS, params => {
-	return http.get({
-		url: "user-gnt",
-		params
-	});
+	return http.get({ url: "user-gnt", params });
 });
 export const getNeoWalletConversion = createAction(
 	GETWALLETCONVERSION,
 	params => {
-		return http.get({
-			url: `conversion/${params.id}`
-		});
+		return http.get({ url: `conversion/${params.id}` });
 	}
 );

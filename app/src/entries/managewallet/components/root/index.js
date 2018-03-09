@@ -1,6 +1,5 @@
 import React, { PureComponent } from "react";
 import { NavLink, Link } from "react-router-dom";
-import { Modal, Button } from "antd";
 import { I18n } from "react-i18next";
 import Menu from "@/menu/index.js";
 import HeaderNav from "@/headernav/index.js";
@@ -8,8 +7,7 @@ import icon1 from "#/mnemonic_ico.png";
 import icon2 from "#/key.png";
 import icon3 from "#/delet.png";
 import searchimg from "#/search_ico.png";
-import { toHref } from "../../../../utils/util.js";
-
+import { getQuery } from "../../../../utils/util";
 import "./index.less";
 
 export default class Root extends PureComponent {
@@ -17,7 +15,23 @@ export default class Root extends PureComponent {
 		super(props);
 		this.state = {};
 	}
-	componentDidMount() {}
+	componentDidMount() {
+		let q = getQuery(window.location.href);
+		let set = {};
+		if (q.id) {
+			set.id = q.id;
+		}
+		if (q.address) {
+			set.address = q.address;
+		}
+		if (q.name) {
+			set.name = q.name;
+		}
+		this.setState({
+			...set
+		});
+	}
+
 	showInputBox() {
 		this.setState({
 			isShowInputBox: true
@@ -34,7 +48,27 @@ export default class Root extends PureComponent {
 		toHref("mnemonic");
 	}
 	toKeystroe() {
-		toHref("keystore");
+		toHref("keystore", `address=${this.state.address}`);
+	}
+	deleteWallet() {
+		let { address, name, id } = this.state;
+		this.props
+			.deleteLocal({
+				address: address
+			})
+			.then(res => {
+				if (res == null) {
+					this.props
+						.deleteSever({
+							id: id
+						})
+						.then(res1 => {
+							if (res1.code === 4000) {
+								toHref("wallet");
+							}
+						});
+				}
+			});
 	}
 	render() {
 		let { lng } = this.props;
@@ -105,7 +139,10 @@ export default class Root extends PureComponent {
 										</div>
 										<div className="name">Keystore</div>
 									</div>
-									<div className="hotarea">
+									<div
+										className="hotarea"
+										onClick={this.deleteWallet.bind(this)}
+									>
 										<div className="imgbox">
 											<img
 												className="img"

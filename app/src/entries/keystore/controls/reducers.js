@@ -1,9 +1,9 @@
 import { handleActions } from "redux-actions";
-import { GETCODE } from "./actions";
+import { GETWALLETDETAIL } from "./actions";
 
-export const code = handleActions(
+export const walletDetail = handleActions(
 	{
-		[GETCODE]: (state, { payload }) => payload
+		[GETWALLETDETAIL]: (state, { payload }) => payload
 	},
-	[]
+	null
 );

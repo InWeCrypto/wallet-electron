@@ -1,14 +1,20 @@
 import { createAction } from "redux-actions";
 import http from "../../../utils/ajax";
 
-import { Modal } from "antd";
-
 const PRE_FIX = "MANAGER_";
 export const DELETEWALLET = `${PRE_FIX}DELETEWALLET`;
+export const DELETEWALLETSERVER = `${PRE_FIX}DELETEWALLETSERVER`;
 
-export const getCode = createAction(DELETEWALLET, params => {
-	return http.post({
-		url: "get_code",
-		params
+export const deleteLocal = createAction(DELETEWALLET, params => {
+	return http.delete(
+		{
+			url: `wallet/${params.address}`
+		},
+		2
+	);
+});
+export const deleteSever = createAction(DELETEWALLETSERVER, params => {
+	return http.delete({
+		url: `wallet/${params.id}`
 	});
 });

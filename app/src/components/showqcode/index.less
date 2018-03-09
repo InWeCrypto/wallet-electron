@@ -1,0 +1,50 @@
+.showQcode {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.7);
+	z-index: 100;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	.close {
+		background: url("../../assets/images/close1.png") left top no-repeat;
+		display: inline-block;
+		width: 0.3rem;
+		height: 0.3rem;
+		background-size: 100% 100%;
+		position: absolute;
+		right: 0.1rem;
+		top: 0.1rem;
+		cursor: pointer;
+		animation: rotate0 0.3s ease-in-out;
+		&:hover {
+			animation: rotate180 0.3s ease-in-out;
+		}
+	}
+	.imgBox {
+		width: 4rem;
+		height: 4rem;
+		border: 0.1rem solid #fff;
+		box-sizing: border-box;
+		border-radius: 0.08rem;
+	}
+}
+@keyframes rotate180 {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(180deg);
+	}
+}
+@keyframes rotate0 {
+	100% {
+		transform: rotate(0deg);
+	}
+	0% {
+		transform: rotate(180deg);
+	}
+}

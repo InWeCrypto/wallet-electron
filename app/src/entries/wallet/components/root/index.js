@@ -35,22 +35,24 @@ export default class Root extends PureComponent {
 					});
 			}
 		});
-		this.props.getLocalList();
+		this.props.getLocalList().then(res => {
+			console.log(res);
+		});
 	}
 	goDetail(item) {
 		if (!item) {
 			return;
 		}
 		if (item.isWatch) {
-			toHref(`watchwallet?id=${item.id}`);
+			toHref(`watchwallet?id=${item.id}&type=${item.category_id}`);
 			return;
 		}
 		if (item.category.id === 1 && !item.isWatch) {
-			toHref(`ethwallet?id=${item.id}`);
+			toHref(`ethwallet?id=${item.id}&type=${item.category_id}`);
 			return;
 		}
 		if (item.category.id === 2 && !item.isWatch) {
-			toHref(`neowallet?id=${item.id}`);
+			toHref(`neowallet?id=${item.id}&type=${item.category_id}`);
 			return;
 		}
 	}
@@ -176,7 +178,11 @@ export default class Root extends PureComponent {
 				}&name=${item.name}`
 			);
 		} else {
-			toHref(`managewallet?id=${item.id}`);
+			toHref(
+				`managewallet?id=${item.id}&address=${item.address}&name=${
+					item.name
+				}`
+			);
 		}
 	}
 	render() {

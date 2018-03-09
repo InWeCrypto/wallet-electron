@@ -2,7 +2,10 @@ import React, { PureComponent } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { Modal, Button } from "antd";
 import { I18n } from "react-i18next";
+import { getQuery } from "../../../../utils/util";
+import QRCode from "../../../../assets/js/qcode";
 import Menu from "@/menu/index.js";
+import ShowQCode from "@/showqcode";
 import HeaderNav from "@/headernav/index.js";
 import imgfile from "#/file_ico_s.png";
 import imgcopy from "#/copy_ico_s.png";
@@ -13,11 +16,58 @@ import { link } from "fs";
 export default class Root extends PureComponent {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			address: null,
+			isShowBig: false
+		};
 	}
-	componentDidMount() {}
+	componentDidMount() {
+		let q = getQuery(window.location.href);
+		if (q.address) {
+			this.setState({
+				address: q.address
+			});
+			this.props.getWalletDetail({
+				address: q.address
+			});
+		}
+	}
+	setCopy(str) {
+		clipboard.writeText(str);
+		Msg.prompt("copy success");
+	}
+	setQcode(str) {
+		if (!str || str.length <= 0) {
+			return;
+		}
+		setTimeout(() => {
+			var box = document.getElementById("qrcode");
+			box.innerHTML = "";
+			var n = box.offsetWidth - 10;
+			var qrcode = new QRCode(box, {
+				width: n, //设置宽高
+				height: n,
+				correctLevel: QRCode.CorrectLevel.L
+			});
+			qrcode.makeCode(str);
+		}, 10);
+	}
+	showBig() {
+		this.setState({
+			isShowBig: true
+		});
+	}
+	closeBig() {
+		this.setState({
+			isShowBig: false
+		});
+	}
 	render() {
-		let { lng } = this.props;
+		let { lng, walletDetail } = this.props;
+		let { isShowBig } = this.state;
+		if (walletDetail) {
+			this.setQcode(walletDetail.json);
+		}
 
 		return (
 			<I18n>
@@ -29,10 +79,13 @@ export default class Root extends PureComponent {
 							<div className="content keystore-content">
 								<div className="title">Keystore</div>
 								<div className="cokBox">
-									<div className="titleImg " />
+									<div
+										className="titleImg "
+										id="qrcode"
+										onClick={this.showBig.bind(this)}
+									/>
 									<div className="showWordBox">
-										1、备份助记词能让您丢失钱包的时候快速找回
-										addressALDJhwgptv1cmWkh613-4002-9cffc0c91f75810f","version":3
+										{walletDetail && walletDetail.json}
 									</div>
 									<div className="btnBox">
 										<div className="left btn-cell">
@@ -46,7 +99,14 @@ export default class Root extends PureComponent {
 											</div>
 										</div>
 										<div className="right btn-cell">
-											<div className="img">
+											<div
+												className="img"
+												onClick={this.setCopy.bind(
+													this,
+													walletDetail &&
+														walletDetail.json
+												)}
+											>
 												<img
 													className="img"
 													src={imgcopy}
@@ -58,6 +118,12 @@ export default class Root extends PureComponent {
 									</div>
 								</div>
 							</div>
+							{isShowBig && (
+								<ShowQCode
+									codestr={walletDetail && walletDetail.json}
+									close={this.closeBig.bind(this)}
+								/>
+							)}
 						</div>
 					</div>
 				)}

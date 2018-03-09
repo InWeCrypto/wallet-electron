@@ -1,9 +1,15 @@
 import { handleActions } from "redux-actions";
-import { GETCODE } from "./actions";
+import { DELETEWALLET, DELETEWALLETSERVER } from "./actions";
 
-export const code = handleActions(
+export const deleteLocal = handleActions(
 	{
-		[GETCODE]: (state, { payload }) => payload
+		[DELETEWALLET]: (state, { payload }) => payload
 	},
-	[]
+	null
+);
+export const deleteServer = handleActions(
+	{
+		[DELETEWALLETSERVER]: (state, { payload }) => payload
+	},
+	null
 );

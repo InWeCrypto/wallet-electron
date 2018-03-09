@@ -6,9 +6,14 @@ import * as globalActions from "../../../globalactions";
 //    categoryList
 //}),
 export default connect(
-	({ globData: { userInfo, lng }, managerWallet: {} }) => ({
+	({
+		globData: { userInfo, lng },
+		managerWallet: { deleteLocal, deleteServer }
+	}) => ({
 		userInfo,
-		lng
+		lng,
+		deleteLocal,
+		deleteServer
 	}),
 	{
 		...actions,

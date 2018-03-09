@@ -31,9 +31,7 @@ export default class Root extends PureComponent {
 				wallet_id: q.id,
 				wallet_category_id: 2
 			});
-			this.props.getNeoWalletConversion({
-				id: q.id
-			});
+			this.props.getNeoWalletConversion({ id: q.id });
 		}
 	}
 	setCopy() {
@@ -54,16 +52,14 @@ export default class Root extends PureComponent {
 				width: n, //设置宽高
 				height: n
 			});
-			qrcode.makeCode(str);
+			qrcode.makeCode(JSON.stringify(str));
 		}, 10);
 	}
 	navCur(idx) {
 		return idx === this.state.type ? "nav-item cur" : "nav-item";
 	}
 	changeNav(idx) {
-		this.setState({
-			type: idx
-		});
+		this.setState({ type: idx });
 		if (idx === 3) {
 			this.setQcode(this.props.neoWalletDetailInfo.address);
 		}
@@ -72,36 +68,23 @@ export default class Root extends PureComponent {
 		toHref(`addasset?walletid=${info.id}&&wallettype=${info.category.id}`);
 	}
 	sendAddress(e) {
-		this.setState({
-			sendAddress: e.target.value
-		});
+		this.setState({ sendAddress: e.target.value });
 	}
 	sendAmount(e) {
-		this.setState({
-			sendAmount: e.target.value
-		});
+		this.setState({ sendAmount: e.target.value });
 	}
 	sendKeyChange(e) {
-		this.setState({
-			sendKey: e
-		});
+		this.setState({ sendKey: e });
 	}
 	sendClick() {
-		this.setState({
-			isShowPass: true
-		});
+		this.setState({ isShowPass: true });
 	}
 	closePasss() {
-		this.setState({
-			isShowPass: false
-		});
+		this.setState({ isShowPass: false });
 	}
 	confirmPass(res) {
 		console.log(res);
-		this.setState({
-			isShowPass: false,
-			password: res
-		});
+		this.setState({ isShowPass: false, password: res });
 	}
 	getCommonMoney() {
 		let num = 0;
@@ -153,14 +136,15 @@ export default class Root extends PureComponent {
 				);
 			});
 		}
-		return parseInt(num.toFixed(2) * 10 * 10) / 10 / 10;
+		return (parseInt(num * 10 * 10) / 10 / 10).toFixed(2);
 	}
 	render() {
 		let {
 			lng,
 			neoWalletDetailInfo,
 			neoWalletAssets,
-			neoConversion
+			neoConversion,
+			walletOrderList
 		} = this.props;
 		let { type, sendAddress, sendAmount, sendKey, isShowPass } = this.state;
 		return (
@@ -305,9 +289,9 @@ export default class Root extends PureComponent {
 																				.record
 																				.cap
 																				.price_usd
-																		).toFixed(
+																	  ).toFixed(
 																			2
-																		)}
+																	  )}
 															</div>
 														)}
 												</div>
@@ -371,9 +355,9 @@ export default class Root extends PureComponent {
 																				.gnt[0]
 																				.cap
 																				.price_usd
-																		).toFixed(
+																	  ).toFixed(
 																			2
-																		)}
+																	  )}
 															</div>
 														)}
 												</div>
@@ -437,14 +421,14 @@ export default class Root extends PureComponent {
 																				? item
 																						.gnt_category
 																						.cap &&
-																					item
+																				  item
 																						.gnt_category
 																						.cap
 																						.price_usd
 																				: item
 																						.gnt_category
 																						.cap &&
-																					item
+																				  item
 																						.gnt_category
 																						.cap
 																						.price_cny)
@@ -482,7 +466,7 @@ export default class Root extends PureComponent {
 														Amount
 													</div>
 													<div className="t1">
-														Available：
+														Available：{" "}
 														{sendKey == 0 && (
 															<span>
 																{neoConversion &&
@@ -536,8 +520,8 @@ export default class Root extends PureComponent {
 																					2
 																			]
 																				.balance
-																		) /
-																		Math.pow(
+																	  ) /
+																	  Math.pow(
 																			10,
 																			neoConversion
 																				.list[
@@ -545,7 +529,7 @@ export default class Root extends PureComponent {
 																					2
 																			]
 																				.decimals
-																		)}
+																	  )}
 															</span>
 														)}{" "}
 														{sendKey == 0 && "NEO"}

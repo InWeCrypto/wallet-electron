@@ -15,7 +15,7 @@ export default function promiseMiddleware({ dispatch }) {
 		promise.then(res => {
 			return next({
 				...action,
-				payload: res.data ? res.data : res
+				payload: res && res.data ? res.data : res
 			});
 		});
 
