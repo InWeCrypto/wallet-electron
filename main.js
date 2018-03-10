@@ -133,13 +133,18 @@ ipc.on("print-to-pdf", function(event, arg) {
 	const win = BrowserWindow.fromWebContents(event.sender);
 	win.webContents.printToPDF({}, function(error, data) {
 		if (error) throw error;
-		fs.writeFile(pdfPath, data, function(error) {
-			if (error) {
-				throw error;
+		dialog.showSaveDialog(
+			{
+				title: "save",
+				defaultPath: pdfPath
+			},
+			function(res) {
+				if (res && res.length > 0) {
+					fs.writeFileSync(res, data);
+					shell.openExternal("file://" + pdfPath);
+				}
 			}
-			shell.openExternal("file://" + pdfPath);
-			event.sender.send("wrote-pdf", pdfPath);
-		});
+		);
 	});
 });
 ipc.on("exportJSON", function(event, arg) {
@@ -153,6 +158,7 @@ ipc.on("exportJSON", function(event, arg) {
 		function(res) {
 			if (res && res.length > 0) {
 				fs.writeFileSync(res, arg.data);
+				shell.openExternal("file://" + res);
 			}
 		}
 	);
