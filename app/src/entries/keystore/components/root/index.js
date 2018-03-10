@@ -18,6 +18,7 @@ export default class Root extends PureComponent {
 		super(props);
 		this.state = {
 			address: null,
+			name: null,
 			isShowBig: false
 		};
 	}
@@ -25,7 +26,8 @@ export default class Root extends PureComponent {
 		let q = getQuery(window.location.href);
 		if (q.address) {
 			this.setState({
-				address: q.address
+				address: q.address,
+				name: q.name
 			});
 			this.props.getWalletDetail({
 				address: q.address
@@ -62,6 +64,12 @@ export default class Root extends PureComponent {
 			isShowBig: false
 		});
 	}
+	exportFile() {
+		ipc.send("exportJSON", {
+			title: this.state.name,
+			data: this.props.walletDetail.json
+		});
+	}
 	render() {
 		let { lng, walletDetail } = this.props;
 		let { isShowBig } = this.state;
@@ -88,7 +96,10 @@ export default class Root extends PureComponent {
 										{walletDetail && walletDetail.json}
 									</div>
 									<div className="btnBox">
-										<div className="left btn-cell">
+										<div
+											className="left btn-cell"
+											onClick={this.exportFile.bind(this)}
+										>
 											<div className="img">
 												<img
 													className="img"

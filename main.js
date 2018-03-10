@@ -1,32 +1,17 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, shell, dialog } = require("electron");
 const electron = require("electron");
 const cp = require("child_process");
 const os = require("os");
 const fs = require("fs");
 const ipc = electron.ipcMain;
-const dialog = electron.dialog;
 const Menu = electron.Menu;
 const Tray = electron.Tray;
 const path = require("path");
 const url = require("url");
-const shell = electron.shell;
+//const shell = electron.shell;
 let win;
 
 const isDev = process.mainModule.filename.indexOf("app.asar") === -1;
-
-const p = path.join(__dirname, "resources/server/appdata");
-cp.exec(
-	path.join(__dirname, `resources/server/wallet-service -appdir ${p}`),
-	function(e, stdout, stderr) {
-		if (!e) {
-			console.log(stdout);
-			console.log(stderr);
-		}
-		if (e) {
-			console.log("23232");
-		}
-	}
-);
 
 if (isDev) {
 	//require("electron-reload")(__dirname);
@@ -45,7 +30,19 @@ function createWindow() {
 		}
 		// titleBarStyle: "hiddenInset"
 	});
-
+	const p = path.join(__dirname, "resources/server/appdata");
+	cp.exec(
+		path.join(__dirname, `resources/server/wallet-service -appdir ${p}`),
+		function(e, stdout, stderr) {
+			if (!e) {
+				console.log(stdout);
+				console.log(stderr);
+			}
+			if (e) {
+				console.log("23232");
+			}
+		}
+	);
 	if (!isDev) {
 		win.loadURL(
 			url.format({
@@ -144,4 +141,17 @@ ipc.on("print-to-pdf", function(event, arg) {
 			event.sender.send("wrote-pdf", pdfPath);
 		});
 	});
+});
+ipc.on("exportJSON", function(event, arg) {
+	let name = `${arg.title}_${parseInt(Math.random() * 100000000, 10)}`;
+	dialog.showSaveDialog(
+		{
+			title: "save",
+			defaultPath: path.join(os.tmpdir(), `${name}.json`),
+			nameFieldLabel: `${name}.json`
+		},
+		function(res) {
+			fs.writeFileSync(res, arg.data);
+		}
+	);
 });

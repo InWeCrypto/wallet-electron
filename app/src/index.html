@@ -12,11 +12,16 @@
 
     <script type="text/javascript" src="./mainfest/vendor.dll.js"></script>
     <script>
-        window.ipc = require("electron").ipcRenderer;
+        var electron = require("electron")
+        var path = require('path')
+        window.ipc = electron.ipcRenderer;
+        window.shell = electron.shell;
+        window.dialog = electron.remote.dialog;
         // window.clipboard = require('electron').clipboard;
-        var electron = require('electron')
         window.clipboard = electron.clipboard;
         var fs = require('fs');
+        var os = require('os');
+
     </script>
 
 

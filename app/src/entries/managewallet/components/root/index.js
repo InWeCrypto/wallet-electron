@@ -48,7 +48,10 @@ export default class Root extends PureComponent {
 		toHref("mnemonic");
 	}
 	toKeystroe() {
-		toHref("keystore", `address=${this.state.address}`);
+		toHref(
+			"keystore",
+			`address=${this.state.address}&name=${this.state.name}`
+		);
 	}
 	deleteWallet() {
 		let { address, name, id } = this.state;
