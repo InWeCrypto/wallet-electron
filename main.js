@@ -151,7 +151,9 @@ ipc.on("exportJSON", function(event, arg) {
 			nameFieldLabel: `${name}.json`
 		},
 		function(res) {
-			fs.writeFileSync(res, arg.data);
+			if (res && res.length > 0) {
+				fs.writeFileSync(res, arg.data);
+			}
 		}
 	);
 });
