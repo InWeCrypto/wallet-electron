@@ -1,14 +1,12 @@
-const { app, BrowserWindow, shell, dialog } = require("electron");
+const { app, BrowserWindow, shell, dialog, Menu, Tray } = require("electron");
 const electron = require("electron");
 const cp = require("child_process");
 const os = require("os");
 const fs = require("fs");
 const ipc = electron.ipcMain;
-const Menu = electron.Menu;
-const Tray = electron.Tray;
+
 const path = require("path");
 const url = require("url");
-//const shell = electron.shell;
 let win;
 
 const isDev = process.mainModule.filename.indexOf("app.asar") === -1;
