@@ -6,9 +6,10 @@ import * as globalActions from "../../../globalactions";
 //    categoryList
 //}),
 export default connect(
-	({ globData: { userInfo, lng } }) => ({
+	({ globData: { userInfo, lng }, mnemonic: { walletInfo } }) => ({
 		userInfo,
-		lng
+		lng,
+		walletInfo
 	}),
 	{
 		...actions,

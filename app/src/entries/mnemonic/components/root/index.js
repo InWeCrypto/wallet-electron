@@ -1,6 +1,5 @@
 import React, { PureComponent } from "react";
-import { NavLink, Link } from "react-router-dom";
-import { Modal, Button } from "antd";
+import { getquery, getQuery } from "../../../../utils/util";
 import { I18n } from "react-i18next";
 import Menu from "@/menu/index.js";
 import HeaderNav from "@/headernav/index.js";
@@ -17,13 +16,26 @@ export default class Root extends PureComponent {
 			isfirstPage: true
 		};
 	}
-	componentDidMount() {}
+	componentDidMount() {
+		let q = getQuery(window.location.href);
+		if (q.address) {
+			this.setState({
+				address: q.address,
+				name: q.name,
+				password: q.pass
+			});
+			this.props.getWalletInfo({
+				address: q.address,
+				pass: q.pass
+			});
+		}
+	}
 	//下一步
 	nextPage() {
 		toHref("mnemonicsure");
 	}
 	render() {
-		let { lng } = this.props;
+		let { lng, walletInfo } = this.props;
 		let { isfirstPage } = this.state;
 		let arr = [
 			"you1",

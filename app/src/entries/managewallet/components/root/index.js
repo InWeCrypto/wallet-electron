@@ -13,7 +13,9 @@ import "./index.less";
 export default class Root extends PureComponent {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			password: ""
+		};
 	}
 	componentDidMount() {
 		let q = getQuery(window.location.href);
@@ -45,7 +47,22 @@ export default class Root extends PureComponent {
 		});
 	}
 	surePassword() {
-		toHref("mnemonic");
+		let { password } = this.state;
+		if (!password || password.length < 6) {
+			Msg.prompt(i18n.t("error.passLength", this.props.lng));
+			return;
+		}
+		toHref(
+			"mnemonic",
+			`address=${this.state.address}&name=${
+				this.state.name
+			}&pass=${password}`
+		);
+	}
+	passwordChange(e) {
+		this.setState({
+			password: e.target.value
+		});
 	}
 	toKeystroe() {
 		toHref(
@@ -54,7 +71,7 @@ export default class Root extends PureComponent {
 		);
 	}
 	deleteWallet() {
-		let { address, name, id } = this.state;
+		let { address, name, id, password } = this.state;
 		this.props
 			.deleteLocal({
 				address: address
@@ -75,7 +92,7 @@ export default class Root extends PureComponent {
 	}
 	render() {
 		let { lng } = this.props;
-		let { isShowInputBox } = this.state;
+		let { isShowInputBox, password } = this.state;
 
 		return (
 			<I18n>
@@ -95,11 +112,7 @@ export default class Root extends PureComponent {
 										onClick={this.showInputBox.bind(this)}
 									>
 										<div className="imgbox">
-											<img
-												className="img"
-												src={icon1}
-												alt=""
-											/>
+											<img className="img" src={icon1} />
 										</div>
 										<div className="name">Mnemonic</div>
 										{isShowInputBox && (
@@ -107,6 +120,10 @@ export default class Root extends PureComponent {
 												<input
 													placeholder="Enter your password"
 													type="password"
+													value={password}
+													onChange={this.passwordChange.bind(
+														this
+													)}
 												/>
 												<div className="btnBox">
 													<button
