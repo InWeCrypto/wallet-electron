@@ -5,6 +5,11 @@ export const WALLETINFO = `${PRE_FIX}WALLETINFO`;
 export const GETWALLETASSETS = `${PRE_FIX}GETWALLETASSETS`;
 export const GETWALLETCONVERSION = `${PRE_FIX}GETWALLETCONVERSION`;
 
+export const GETASSETORDERLIST = `${PRE_FIX}GETASSETLIST`;
+export const GETNEOUTXO = `${PRE_FIX}GETNEOUTXO`;
+export const GETGASUTXO = `${PRE_FIX}GETGASUTXO`;
+export const SENDNEOORDER = `${PRE_FIX}SENDNEOORDER`;
+
 export const setNeoWalletInfo = createAction(WALLETINFO, params => {
 	return params;
 });
@@ -17,3 +22,31 @@ export const getNeoWalletConversion = createAction(
 		return http.get({ url: `conversion/${params.id}` });
 	}
 );
+
+export const getAssetsOrderList = createAction(GETASSETORDERLIST, params => {
+	return http.get({
+		url: "wallet-order",
+		params
+	});
+});
+export const getNeoUtxo = createAction(GETNEOUTXO, params => {
+	return http.get({
+		url: `extend/getNeoUtxo?address=${params.address}&type=neo-asset-id`
+	});
+});
+export const getGasUtxo = createAction(GETGASUTXO, params => {
+	return http.get({
+		url: `extend/getNeoClaimUtxo?address=${
+			params.address
+		}&type=neo-gas-asset-id`
+	});
+});
+export const sendNeoOrader = createAction(SENDNEOORDER, params => {
+	return http.post(
+		{
+			url: "neo/tx/",
+			params
+		},
+		2
+	);
+});

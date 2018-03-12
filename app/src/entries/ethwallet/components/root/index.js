@@ -49,6 +49,7 @@ export default class Root extends PureComponent {
 	setQcode(str) {
 		setTimeout(() => {
 			var box = document.getElementById("qrcode");
+			box.innerHTML = "";
 			var n = box.offsetWidth - 10;
 			var qrcode = new QRCode(box, {
 				width: n, //设置宽高
@@ -296,18 +297,18 @@ export default class Root extends PureComponent {
 																			(lng ==
 																			"en"
 																				? item.gnt_category &&
-																					item
+																				  item
 																						.gnt_category
 																						.cap &&
-																					item
+																				  item
 																						.gnt_category
 																						.cap
 																						.price_usd
 																				: item.gnt_category &&
-																					item
+																				  item
 																						.gnt_category
 																						.cap &&
-																					item
+																				  item
 																						.gnt_category
 																						.cap
 																						.price_cny)}

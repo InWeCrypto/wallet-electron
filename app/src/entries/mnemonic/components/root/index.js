@@ -26,7 +26,8 @@ export default class Root extends PureComponent {
 			});
 			this.props.getWalletInfo({
 				address: q.address,
-				pass: q.pass
+				pass: q.pass,
+				lang: this.props.lng == "en" ? "en_US" : "zh_CN"
 			});
 		}
 	}
@@ -37,19 +38,11 @@ export default class Root extends PureComponent {
 	render() {
 		let { lng, walletInfo } = this.props;
 		let { isfirstPage } = this.state;
-		let arr = [
-			"you1",
-			"you2",
-			"you3",
-			"you4",
-			"you5",
-			"you6",
-			"you7",
-			"you8",
-			"you9",
-			"you0",
-			"you00"
-		];
+		let arr = [];
+		if (walletInfo && walletInfo.length > 0) {
+			arr = walletInfo.split(" ");
+		}
+
 		return (
 			<I18n>
 				{(t, { i18n }) => (

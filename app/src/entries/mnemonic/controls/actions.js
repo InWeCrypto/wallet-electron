@@ -9,7 +9,7 @@ export const GETWALLETINFO = `${PRE_FIX}GETWALLETINFO`;
 export const getWalletInfo = createAction(GETWALLETINFO, params => {
 	return http.get(
 		{
-			url: `wallet/${params.address}/${params.pass}`
+			url: `mnemonic/${params.address}/${params.pass}/${params.lang}`
 		},
 		2
 	);

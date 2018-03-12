@@ -83,8 +83,8 @@ var webpackConfig = {
 
 			{
 				test: /\.(js|jsx|mjs)$/,
-				include: /node_modules/,
-				loader: require.resolve("babel-loader"),
+				include: /node_modules\/antd/,
+				loader: "babel-loader",
 				options: {
 					cacheDirectory: true,
 					plugins: [
@@ -102,10 +102,6 @@ var webpackConfig = {
 						options: {
 							limit: 10000,
 							name: "assets/img/[name].[hash:9].[ext]"
-							// publicPath:
-							// 	process.env.NODE_ENV === "development"
-							// 		? config.dev.assetsPublicPath
-							// 		: config.build.assetsPublicPath
 						}
 					}
 				]

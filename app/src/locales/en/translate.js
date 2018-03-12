@@ -96,7 +96,10 @@ export default {
 		passLength: "The entered passwords are inconsistent ",
 		passError: "The entered passwords are inconsistent ",
 		codeEmpty: "Verification code cannot be empty",
-		followError: "you know the math"
+		followError: "you know the math",
+		addressEmpty: "address cannot be empty",
+		amountEmpty: "amount cannot be empty",
+		amountError: "Amount cannot be greater than the balance "
 	},
 	success: {
 		login: "Log in successfully",

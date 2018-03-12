@@ -47,6 +47,7 @@ export default class Root extends PureComponent {
 	setQcode(str) {
 		setTimeout(() => {
 			var box = document.getElementById("qrcode");
+			box.innerHTML = "";
 			var n = box.offsetWidth - 10;
 			var qrcode = new QRCode(box, {
 				width: n, //设置宽高
@@ -77,14 +78,148 @@ export default class Root extends PureComponent {
 		this.setState({ sendKey: e });
 	}
 	sendClick() {
-		this.setState({ isShowPass: true });
+		let key = this.state.sendKey;
+		var params = {};
+
+		params.wallet_id = this.props.neoWalletDetailInfo.id;
+		params.flag = "neo";
+		if (this.state.sendAddress.length <= 0) {
+			Msg.prompt(i18n.t("error.addressEmpty", this.props.lng));
+			return;
+		}
+		if (this.state.sendAmount.length <= 0) {
+			Msg.prompt(i18n.t("error.amountEmpty", this.props.lng));
+			return;
+		}
+		if (key == 0) {
+			params.asset_id =
+				"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b";
+
+			if (
+				this.state.sendAmount -
+					this.props.neoConversion.record.balance >
+				0
+			) {
+				Msg.prompt(i18n.t("error.amountError", this.props.lng));
+				return;
+			}
+		}
+		if (key == 1) {
+			params.asset_id =
+				"0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7";
+			if (
+				this.state.sendAmount -
+					this.props.neoConversion.record.gnt[0].balance >
+				0
+			) {
+				Msg.prompt(i18n.t("error.amountError", this.props.lng));
+				return;
+			}
+		}
+		if (
+			key > 1 &&
+			this.props.neoConversion.list &&
+			this.props.neoConversion.list[key - 2] &&
+			this.props.neoConversion.list[key - 2].gnt_category
+		) {
+			params.asset_id = this.props.neoConversion.list[
+				key - 2
+			].gnt_category.address;
+
+			if (
+				this.state.sendAmount -
+					getNumFromStr(
+						this.props.neoConversion.list[key - 2].balance
+					) >
+				0
+			) {
+				Msg.prompt(i18n.t("error.amountError", this.props.lng));
+				return;
+			}
+		}
+		this.props
+			.getAssetsOrderList({
+				...params
+			})
+			.then(res => {
+				if (res.code === 4000 && res.data) {
+					let isSending = false;
+					if (res.data.list && res.data.list.length > 0) {
+						let list = res.data.list;
+						list.map((item, index) => {
+							if (
+								!item.confirmTime ||
+								item.confirmTime.length <= 0
+							) {
+								isSending = true;
+							}
+						});
+					}
+					if (!isSending) {
+						this.setState({ isShowPass: true });
+					}
+				}
+			});
 	}
 	closePasss() {
 		this.setState({ isShowPass: false });
 	}
-	confirmPass(res) {
-		console.log(res);
+	async confirmPass(res) {
 		this.setState({ isShowPass: false, password: res });
+		let {
+			neoWalletDetailInfo,
+			neoConversion,
+			neoUtxo,
+			gasUtxo
+		} = this.props;
+		let { sendKey } = this.state;
+		let params = {};
+		params.Wallet = neoWalletDetailInfo.address;
+		let address = neoWalletDetailInfo.address;
+		params.To = this.state.sendAddress;
+		params.Amount = this.state.sendAmount;
+		params.Password = res;
+		params.Gas = 0 + "";
+		if (sendKey === 0) {
+			params.Asset = "neo";
+			let res = await this.props.getNeoUtxo({
+				address: address
+			});
+
+			if (res.code === 4000 && res.data && res.data.result) {
+				params.Unspent = JSON.stringify(res.data.result);
+			}
+		}
+		if (sendKey === 1) {
+			params.Asset = "gas";
+			let res = await this.props.getGasUtxo({
+				address: address
+			});
+			if (res.code === 4000 && res.data && res.data.result) {
+				params.Unspent = JSON.stringify(res.data.result);
+			}
+		}
+		if (
+			sendKey > 1 &&
+			neoConversion &&
+			neoConversion.list &&
+			neoConversion.list.length > 0
+		) {
+			params.Asset = neoConversion.list[sendKey - 2].name.toLowerCase();
+			let n = await this.props.getNeoUtxo({
+				address: address
+			});
+			let g = await this.props.getGasUtxo({
+				address: address
+			});
+			if (n.code === 4000 && g.code === 4000 && n.data && g.data) {
+				params.Unspent = JSON.stringify([
+					...n.data.result,
+					...g.data.result
+				]);
+			}
+		}
+		this.props.sendNeoOrader(params);
 	}
 	getCommonMoney() {
 		let num = 0;
@@ -543,7 +678,7 @@ export default class Root extends PureComponent {
 												</div>
 												<div className="ui input-box">
 													<input
-														type="text"
+														type="number"
 														className="input"
 														value={sendAmount}
 														onChange={this.sendAmount.bind(
