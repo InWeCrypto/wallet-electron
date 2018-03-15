@@ -157,6 +157,8 @@ export default class Root extends PureComponent {
 					}
 					if (!isSending) {
 						this.setState({ isShowPass: true });
+					} else {
+						Msg.prompt(i18n.t("error.isSend", this.props.lng));
 					}
 				}
 			});
@@ -172,16 +174,19 @@ export default class Root extends PureComponent {
 			neoUtxo,
 			gasUtxo
 		} = this.props;
-		let { sendKey } = this.state;
+		let { sendKey, sendAmount, sendAddress } = this.state;
 		let params = {};
 		params.Wallet = neoWalletDetailInfo.address;
 		let address = neoWalletDetailInfo.address;
 		params.To = this.state.sendAddress;
-		params.Amount = this.state.sendAmount;
+		params.Amount =
+			"0x" + (this.state.sendAmount * Math.pow(10, 8)).toString(16);
 		params.Password = res;
-		params.Gas = 0 + "";
+		params.Gas = "0x" + 0 + "0";
+		let fee = (fee = sendAmount * Math.pow(10, 8));
 		if (sendKey === 0) {
-			params.Asset = "neo";
+			params.Asset =
+				"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b";
 			let res = await this.props.getNeoUtxo({
 				address: address
 			});
@@ -191,7 +196,8 @@ export default class Root extends PureComponent {
 			}
 		}
 		if (sendKey === 1) {
-			params.Asset = "gas";
+			params.Asset =
+				"0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7";
 			let res = await this.props.getGasUtxo({
 				address: address
 			});
@@ -205,10 +211,19 @@ export default class Root extends PureComponent {
 			neoConversion.list &&
 			neoConversion.list.length > 0
 		) {
-			params.Asset = neoConversion.list[sendKey - 2].name.toLowerCase();
+			params.Asset = neoConversion.list[sendKey - 2].gnt_category.address;
+			params.Amount =
+				"0x" +
+				(
+					this.state.sendAmount *
+					Math.pow(10, neoConversion.list[sendKey - 2].decimals)
+				).toString(16);
 			let n = await this.props.getNeoUtxo({
 				address: address
 			});
+			fee =
+				sendAmount *
+				Math.pow(10, neoConversion.list[sendKey - 2].decimals);
 			let g = await this.props.getGasUtxo({
 				address: address
 			});
@@ -219,7 +234,21 @@ export default class Root extends PureComponent {
 				]);
 			}
 		}
-		this.props.sendNeoOrader(params);
+		let l = await this.props.sendNeoOrader(params);
+		if (l && l.data && l.txid) {
+			this.props.createOrder({
+				wallet_id: neoWalletDetailInfo.id,
+				data: l.data,
+				trade_no: sendKey > 1 ? l.txid : "0x" + l.txid,
+				pay_address: neoWalletDetailInfo.address,
+				receive_address: sendAddress,
+				remark: "",
+				fee: fee,
+				handle_fee: "0",
+				flag: sendKey === 1 ? "GAS" : "NEO",
+				asset_id: params.Asset
+			});
+		}
 	}
 	getCommonMoney() {
 		let num = 0;
@@ -272,6 +301,33 @@ export default class Root extends PureComponent {
 			});
 		}
 		return (parseInt(num * 10 * 10) / 10 / 10).toFixed(2);
+	}
+	goOrderList(key) {
+		let { neoWalletDetailInfo, neoConversion } = this.props;
+		let asset_id = "";
+		let name = "";
+		if (key == 0) {
+			asset_id =
+				"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b";
+			name = "NEO";
+		}
+		if (key == 1) {
+			asset_id =
+				"0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7";
+			name = "GAS";
+		}
+		if (key > 1 && neoConversion && neoConversion.list) {
+			asset_id = neoConversion.list[key - 2].gnt_category.address;
+			name = neoConversion.list[key - 2].gnt_category.name;
+		}
+		toHref(
+			"orderlist",
+			`wallet_id=${
+				neoWalletDetailInfo.id
+			}&flag=neo&asset_id=${asset_id}&address=${
+				neoWalletDetailInfo.address
+			}&name=${name}`
+		);
 	}
 	render() {
 		let {
@@ -382,7 +438,13 @@ export default class Root extends PureComponent {
 									</div>
 									{type === 1 && (
 										<div className="box3">
-											<div className="wallet-item ui center">
+											<div
+												onClick={this.goOrderList.bind(
+													this,
+													0
+												)}
+												className="wallet-item ui center"
+											>
 												<img
 													className="icon"
 													src={neoicon}
@@ -431,7 +493,13 @@ export default class Root extends PureComponent {
 														)}
 												</div>
 											</div>
-											<div className="wallet-item ui center">
+											<div
+												className="wallet-item ui center"
+												onClick={this.goOrderList.bind(
+													this,
+													1
+												)}
+											>
 												<img
 													className="icon"
 													src={neoicon}
@@ -505,6 +573,10 @@ export default class Root extends PureComponent {
 														return (
 															<div
 																key={index}
+																onClick={this.goOrderList.bind(
+																	this,
+																	index + 2
+																)}
 																className="wallet-item ui center"
 															>
 																<img

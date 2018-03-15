@@ -9,6 +9,7 @@ export const GETASSETORDERLIST = `${PRE_FIX}GETASSETLIST`;
 export const GETNEOUTXO = `${PRE_FIX}GETNEOUTXO`;
 export const GETGASUTXO = `${PRE_FIX}GETGASUTXO`;
 export const SENDNEOORDER = `${PRE_FIX}SENDNEOORDER`;
+export const CREATEORDER = `${PRE_FIX}CREATEORDER`;
 
 export const setNeoWalletInfo = createAction(WALLETINFO, params => {
 	return params;
@@ -49,4 +50,10 @@ export const sendNeoOrader = createAction(SENDNEOORDER, params => {
 		},
 		2
 	);
+});
+export const createOrder = createAction(CREATEORDER, params => {
+	return http.post({
+		url: "wallet-order",
+		params
+	});
 });

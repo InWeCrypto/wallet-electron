@@ -6,7 +6,8 @@ import {
 	GETASSETORDERLIST,
 	GETNEOUTXO,
 	GETGASUTXO,
-	SENDNEOORDER
+	SENDNEOORDER,
+	CREATEORDER
 } from "./actions";
 
 export const neoWalletDetailInfo = handleActions(
@@ -49,6 +50,12 @@ export const gasUtxo = handleActions(
 export const sendOrder = handleActions(
 	{
 		[SENDNEOORDER]: (state, { payload }) => payload
+	},
+	null
+);
+export const createOrder = handleActions(
+	{
+		[CREATEORDER]: (state, { payload }) => payload
 	},
 	null
 );

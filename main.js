@@ -28,19 +28,19 @@ function createWindow() {
 		}
 		// titleBarStyle: "hiddenInset"
 	});
-	const p = path.join(__dirname, "resources/server/appdata");
-	cp.exec(
-		path.join(__dirname, `resources/server/wallet-service -appdir ${p}`),
-		function(e, stdout, stderr) {
-			if (!e) {
-				console.log(stdout);
-				console.log(stderr);
-			}
-			if (e) {
-				console.log("23232");
-			}
-		}
-	);
+	// const p = path.join(__dirname, "resources/server/appdata");
+	// cp.exec(
+	// 	path.join(__dirname, `resources/server/wallet-service -appdir ${p}`),
+	// 	function(e, stdout, stderr) {
+	// 		if (!e) {
+	// 			console.log(stdout);
+	// 			console.log(stderr);
+	// 		}
+	// 		if (e) {
+	// 			console.log("23232");
+	// 		}
+	// 	}
+	// );
 	if (!isDev) {
 		win.loadURL(
 			url.format({

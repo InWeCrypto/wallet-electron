@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import { I18n } from "react-i18next";
 import { getQuery } from "../../../../utils/util";
+import ConfirmPassword from "../../../../components/confirmpassword";
 import QRCode from "../../../../assets/js/qcode";
 import { Select, Slider } from "antd";
 import Menu from "@/menu";
@@ -16,7 +17,10 @@ export default class Root extends PureComponent {
 			selectKey: 0,
 			sendAddress: "",
 			sendAmount: "",
-			minNumber: 0
+			isShowPass: false,
+			limit: "",
+			most: "",
+			gasNum: ""
 		};
 	}
 	componentDidMount() {
@@ -24,10 +28,6 @@ export default class Root extends PureComponent {
 		let obj = JSON.parse(localStorage.getItem("walletObject"));
 		if (q && q.id) {
 			this.props.setEthWalletInfo(obj[q.id]);
-			// this.props.getWalletAssets({
-			// 	wallet_id: q.id,
-			// 	wallet_category_id: 2
-			// }); d
 			this.props.getEthWalletConversion({
 				id: q.id
 			});
@@ -35,6 +35,33 @@ export default class Root extends PureComponent {
 				ids: `[${q.id}]`
 			});
 		}
+		this.commitLimit();
+		this.commitMost();
+		this.props.getEthGas().then(res => {
+			if (res.code === 4000) {
+				this.changeGastoNum(res.data.gasPrice);
+			}
+		});
+	}
+	changeGastoNum(num) {
+		let n10 = (
+			parseInt(Number(num), 10) *
+			90000 /
+			Math.pow(10, 18)
+		).toFixed(8);
+		this.setState({
+			gasNum: this.isNorMal(n10)
+		});
+	}
+	isNorMal(num) {
+		let r = num;
+		if (num < this.state.limit) {
+			r = this.state.limit;
+		}
+		if (num > this.state.most) {
+			r = this.state.most;
+		}
+		return r;
 	}
 	setCopy() {
 		clipboard.writeText(this.props.ethWalletDetailInfo.address);
@@ -70,18 +97,20 @@ export default class Root extends PureComponent {
 		}
 	}
 	addAsset(info) {
-		if (info.list && info.list[0]) {
+		console.log(info);
+		if (info) {
 			toHref(
-				`addasset?walletid=${info.list[0].id}&&wallettype=${
-					info.list[0].category.id
-				}`
+				`addasset?walletid=${info.id}&&wallettype=${info.category.id}`
 			);
 		}
 	}
 	sliderChange(res) {
 		this.setState({
-			minNumber: res
+			gasNum: this.getNumFromDec(res)
 		});
+	}
+	getFormatter() {
+		return this.state.gasNum;
 	}
 	selectChange(res) {
 		this.setState({
@@ -93,6 +122,141 @@ export default class Root extends PureComponent {
 			[type]: e.target.value
 		});
 	}
+	async sendClick() {
+		let key = this.state.selectKey;
+		// let params = {};
+		// params.wallet_id = this.props.ethWalletConversion.record.id;
+		// params.flag = "eth";
+		if (this.state.sendAddress.length <= 0) {
+			Msg.prompt(i18n.t("error.addressEmpty", this.props.lng));
+			return;
+		}
+		if (this.state.sendAmount.length <= 0) {
+			Msg.prompt(i18n.t("error.amountEmpty", this.props.lng));
+			return;
+		}
+		if (key == 0) {
+			//params.asset_id = "0x0000000000000000000000000000000000000000";
+			if (
+				this.state.sendAmount +
+					this.state.gasNum -
+					getEthNum(this.props.ethConversion.list[0].balance) >
+				0
+			) {
+				Msg.prompt(i18n.t("error.amountError", this.props.lng));
+				return;
+			}
+		}
+		if (key > 0) {
+			// params.asset_id = this.props.ethWalletConversion.list[
+			// 	key - 1
+			// ].gnt_category.address;
+			if (
+				this.state.sendAmount -
+					getEthNum(
+						this.props.ethWalletConversion.list[key - 1].balance,
+						this.props.ethWalletConversion.list[key - 1].decimals
+					) >
+				0
+			) {
+				Msg.prompt(i18n.t("error.amountError", this.props.lng));
+				return;
+			}
+			if (
+				this.state.gasNum -
+					getEthNum(this.props.ethConversion.list[0].balance) >
+				0
+			) {
+				Msg.prompt(i18n.t("error.MiningError", this.props.lng));
+				return;
+			}
+		}
+		this.setState({ isShowPass: true });
+	}
+	async confirmPass(res) {
+		let { selectKey, sendAddress, sendAmount, gasNum } = this.state;
+		let {
+			ethWalletDetailInfo,
+			ethWalletConversion,
+			ethConversion
+		} = this.props;
+		let params = {};
+		let n = await this.props.getEthNonce({
+			address: ethWalletDetailInfo.address
+		});
+		params.Wallet = ethWalletDetailInfo.address;
+		params.To = sendAddress;
+		params.Password = res;
+		params.GasPrice =
+			"0x" + (gasNum * Math.pow(10, 18) / 90000).toString(16);
+		params.GasLimits = "0x" + Number(90000).toString(16);
+		if (n.code === 4000 && n.data) {
+			params.Nonce = n.data.count;
+		}
+		if (selectKey == 0) {
+			params.Asset = "0x0000000000000000000000000000000000000000";
+			params.Amount = "0x" + (sendAmount * Math.pow(10, 18)).toString(16);
+		}
+
+		if (selectKey > 0) {
+			let dec = ethWalletConversion.list[selectKey - 1].decimals;
+			params.Asset =
+				ethWalletConversion.list[selectKey - 1].gnt_category.address;
+			params.Amount =
+				"0x" + (sendAmount * Math.pow(10, dec)).toString(16);
+			// params.GasLimits = "0x0" + Number(90000).toString(16);
+		}
+
+		let l = await this.props.setEthOrder(params);
+		if (l.length > 0) {
+			this.props.createOrder({
+				wallet_id: ethWalletDetailInfo.id,
+				data: l,
+				pay_address: ethWalletDetailInfo.address,
+				receive_address: sendAddress,
+				remark: "",
+				fee: params.Amount,
+				handle_fee: params.GasPrice,
+				flag: "eth",
+				asset_id: params.Asset
+			});
+		}
+		this.setState({ isShowPass: false, password: res });
+	}
+	closePasss() {
+		this.setState({
+			isShowPass: false
+		});
+	}
+	commitLimit() {
+		let l = (25200000000000 * 90000 / 21000 / Math.pow(10, 18)).toFixed(8);
+		this.setState({
+			limit: l
+		});
+	}
+	commitMost() {
+		let m = (2520120000000000 * 90000 / 21000 / Math.pow(10, 18)).toFixed(
+			8
+		);
+		this.setState({
+			most: m
+		});
+	}
+	getDecFromNum(num) {
+		let l = this.state.limit;
+		let m = this.state.most;
+		let t = m - l;
+		let r = (num - l) / t;
+		return r * 100;
+	}
+	getNumFromDec(dec) {
+		let l = this.state.limit;
+		let m = this.state.most;
+		let t = m - l;
+		let r = Number(t * (dec / 100)) + Number(l);
+		return r.toFixed(8);
+	}
+
 	render() {
 		let {
 			lng,
@@ -105,7 +269,11 @@ export default class Root extends PureComponent {
 			selectKey,
 			sendAddress,
 			sendAmount,
-			minNumber
+			minNumber,
+			isShowPass,
+			limit,
+			most,
+			gasNum
 		} = this.state;
 		return (
 			<I18n>
@@ -249,7 +417,47 @@ export default class Root extends PureComponent {
 																</span>
 															)}
 													</div>
-													<div className="t1">2</div>
+													<div className="t1">
+														{lng == "en"
+															? "$"
+															: "￥"}
+														{ethConversion &&
+															ethConversion.list &&
+															ethConversion
+																.list[0] && (
+																<span>
+																	{(
+																		getEthNum(
+																			ethConversion
+																				.list[0]
+																				.balance
+																		) *
+																		(ethConversion
+																			.list[0]
+																			.category &&
+																		ethConversion
+																			.list[0]
+																			.category
+																			.cap
+																			? lng ==
+																			  "en"
+																				? ethConversion
+																						.list[0]
+																						.category
+																						.cap
+																						.price_usd
+																				: ethConversion
+																						.list[0]
+																						.category
+																						.cap
+																						.price_cny
+																			: 0)
+																	).toFixed(
+																		2
+																	)}
+																</span>
+															)}
+													</div>
 												</div>
 											</div>
 											{ethWalletConversion &&
@@ -344,7 +552,31 @@ export default class Root extends PureComponent {
 														Amount
 													</div>
 													<div className="t1">
-														Available：10.0000
+														Available：
+														{selectKey == 0 &&
+															ethConversion &&
+															ethConversion.list &&
+															ethConversion
+																.list[0] &&
+															getEthNum(
+																ethConversion
+																	.list[0]
+																	.balance
+															)}
+														{selectKey > 0 &&
+															ethWalletConversion &&
+															ethWalletConversion.list &&
+															ethWalletConversion
+																.list[
+																selectKey - 1
+															] &&
+															getEthNum(
+																ethWalletConversion
+																	.list[
+																	selectKey -
+																		1
+																].balance
+															)}
 														{selectKey == 0 && (
 															<span>
 																{ethWalletConversion &&
@@ -454,7 +686,7 @@ export default class Root extends PureComponent {
 														Mining Fee
 													</div>
 													<div className="t2">
-														0.000029384 ETH
+														{gasNum} ETH
 													</div>
 												</div>
 												<div className="ui center slideritem">
@@ -464,16 +696,24 @@ export default class Root extends PureComponent {
 															onChange={this.sliderChange.bind(
 																this
 															)}
-															defaultValue={
-																minNumber
-															}
+															value={this.getDecFromNum(
+																gasNum
+															)}
+															tipFormatter={this.getFormatter.bind(
+																this
+															)}
 														/>
 													</div>
 													<div>Quick</div>
 												</div>
 											</div>
 											<div className="btn-box">
-												<span className="button-green">
+												<span
+													className="button-green"
+													onClick={this.sendClick.bind(
+														this
+													)}
+												>
 													Send
 												</span>
 											</div>
@@ -534,6 +774,13 @@ export default class Root extends PureComponent {
 									)}
 								</div>
 							</div>
+							{isShowPass && (
+								<ConfirmPassword
+									lng={lng}
+									close={this.closePasss.bind(this)}
+									confirm={this.confirmPass.bind(this)}
+								/>
+							)}
 						</div>
 					</div>
 				)}

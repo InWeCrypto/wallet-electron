@@ -99,7 +99,9 @@ export default {
 		followError: "you know the math",
 		addressEmpty: "address cannot be empty",
 		amountEmpty: "amount cannot be empty",
-		amountError: "Amount cannot be greater than the balance "
+		amountError: "Amount cannot be greater than the balance ",
+		MiningError: "Insufficient fuel costs",
+		isSend: "You have an unfinished order"
 	},
 	success: {
 		login: "Log in successfully",

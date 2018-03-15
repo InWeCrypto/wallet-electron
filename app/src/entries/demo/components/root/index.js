@@ -14,9 +14,7 @@ export default class Root extends PureComponent {
 		super(props);
 		this.state = {};
 	}
-	componentDidMount() {
-		this.test();
-	}
+	componentDidMount() {}
 	render() {
 		let { lng } = this.props;
 

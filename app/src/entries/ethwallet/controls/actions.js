@@ -5,8 +5,14 @@ import { Modal } from "antd";
 
 const PRE_FIX = "ETHWALLET_";
 export const GETETHWALLETCONVERSION = `${PRE_FIX}GETETHWALLETCONVERSION`;
-export const WALLETINFO = `${PRE_FIX}GETETHWALLETDETAIL`;
-export const ETHINFO = `${PRE_FIX}GETETHWALLETDETAIL`;
+export const WALLETINFO = `${PRE_FIX}WALLETINFO`;
+export const ETHINFO = `${PRE_FIX}ETHINFO`;
+export const GETETHGAS = `${PRE_FIX}GETETHGAS`;
+export const GETASSETORDERLIST = `${PRE_FIX}GETASSETORDERLIST`;
+export const GETETHUTXO = `${PRE_FIX}GETETHUTXO`;
+export const ETHORDER = `${PRE_FIX}ETHORDER`;
+export const GETETHNONCE = `${PRE_FIX}GETETHNONCE`;
+export const CREATEORDER = `${PRE_FIX}CREATEORDER`;
 
 export const setEthWalletInfo = createAction(WALLETINFO, params => {
 	return params;
@@ -26,5 +32,37 @@ export const getEthConversion = createAction(ETHINFO, params => {
 		params: {
 			wallet_ids: params.ids
 		}
+	});
+});
+export const getEthGas = createAction(GETETHGAS, params => {
+	return http.get({
+		url: `extend/getGasPrice`
+	});
+});
+export const getAssetsOrderList = createAction(GETASSETORDERLIST, params => {
+	return http.get({
+		url: "wallet-order",
+		params
+	});
+});
+export const setEthOrder = createAction(ETHORDER, params => {
+	return http.post(
+		{
+			url: "eth/tx/",
+			params
+		},
+		2
+	);
+});
+export const getEthNonce = createAction(GETETHNONCE, params => {
+	return http.post({
+		url: "extend/getTransactionCount",
+		params
+	});
+});
+export const createOrder = createAction(CREATEORDER, params => {
+	return http.post({
+		url: "wallet-order",
+		params
 	});
 });
