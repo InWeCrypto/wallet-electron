@@ -209,17 +209,25 @@ export default class Root extends PureComponent {
 
 		let l = await this.props.setEthOrder(params);
 		if (l.length > 0) {
-			this.props.createOrder({
-				wallet_id: ethWalletDetailInfo.id,
-				data: l,
-				pay_address: ethWalletDetailInfo.address,
-				receive_address: sendAddress,
-				remark: "",
-				fee: params.Amount,
-				handle_fee: params.GasPrice,
-				flag: "eth",
-				asset_id: params.Asset
-			});
+			this.props
+				.createOrder({
+					wallet_id: ethWalletDetailInfo.id,
+					data: l,
+					pay_address: ethWalletDetailInfo.address,
+					receive_address: sendAddress,
+					remark: "",
+					fee: params.Amount,
+					handle_fee: params.GasPrice,
+					flag: "eth",
+					asset_id: params.Asset
+				})
+				.then(res => {
+					if (res.code === 4000) {
+						Msg.prompt(
+							i18n.t("success.transferSuccess", this.props.lng)
+						);
+					}
+				});
 		}
 		this.setState({ isShowPass: false, password: res });
 	}
@@ -256,7 +264,71 @@ export default class Root extends PureComponent {
 		let r = Number(t * (dec / 100)) + Number(l);
 		return r.toFixed(8);
 	}
-
+	goOrderList(key) {
+		let {
+			lng,
+			ethWalletDetailInfo,
+			ethWalletConversion,
+			ethConversion
+		} = this.props;
+		let asset_id = "",
+			name = "",
+			number = "",
+			price_cny = "",
+			price_usd = "",
+			img = "";
+		if (key == 0 && ethWalletDetailInfo) {
+			asset_id = "0x0000000000000000000000000000000000000000";
+			img = ethWalletDetailInfo.category.img;
+			name = ethWalletDetailInfo.category.name;
+			number = getEthNum(ethConversion.list[0].balance);
+			price_cny =
+				ethConversion.list[0].category &&
+				ethConversion.list[0].category.cap
+					? ethConversion.list[0].category.cap.price_cny
+					: 0;
+			price_usd =
+				ethConversion.list[0].category &&
+				ethConversion.list[0].category.cap
+					? ethConversion.list[0].category.cap.price_usd
+					: 0;
+		}
+		if (
+			key > 0 &&
+			ethWalletConversion &&
+			ethWalletConversion.list &&
+			ethWalletConversion.list.length > 0
+		) {
+			let item = ethWalletConversion.list[key - 1];
+			asset_id = item.gnt_category.address;
+			img = item.gnt_category.icon;
+			name = item.gnt_category.name;
+			number = getEthNum(item.balance);
+			price_cny = item.gnt_category.cap
+				? item.gnt_category.cap.price_cny
+				: 0;
+			price_usd = item.gnt_category.cap
+				? item.gnt_category.cap.price_usd
+				: 0;
+		}
+		let time = new Date().getTime();
+		let p = {
+			name: name,
+			number: number,
+			price_cny: price_cny,
+			price_usd: price_usd,
+			img: img
+		};
+		sessionStorage.setItem(`orderlist_${time}`, JSON.stringify(p));
+		toHref(
+			"orderlist",
+			`wallet_id=${
+				ethWalletDetailInfo.id
+			}&flag=eth&asset_id=${asset_id}&address=${
+				ethWalletDetailInfo.address
+			}&timetamp=orderlist_${time}`
+		);
+	}
 	render() {
 		let {
 			lng,
@@ -289,30 +361,18 @@ export default class Root extends PureComponent {
 											className="icon"
 											src={
 												ethWalletDetailInfo &&
-												ethWalletDetailInfo.list &&
-												ethWalletDetailInfo.list[0] &&
-												ethWalletDetailInfo.list[0]
-													.category &&
-												ethWalletDetailInfo.list[0]
-													.category.img
+												ethWalletDetailInfo.category &&
+												ethWalletDetailInfo.category.img
 											}
 										/>
 										<div className="f1">
 											<div className="name">
 												{ethWalletDetailInfo &&
-													ethWalletDetailInfo.list &&
-													ethWalletDetailInfo
-														.list[0] &&
-													ethWalletDetailInfo.list[0]
-														.name}
+													ethWalletDetailInfo.name}
 											</div>
 											<div className="address">
 												{ethWalletDetailInfo &&
-													ethWalletDetailInfo.list &&
-													ethWalletDetailInfo
-														.list[0] &&
-													ethWalletDetailInfo.list[0]
-														.address}
+													ethWalletDetailInfo.address}
 											</div>
 										</div>
 										<div className="money">$100.00</div>
@@ -355,7 +415,7 @@ export default class Root extends PureComponent {
 											>
 												Receive
 											</div>
-											<div
+											{/* <div
 												onClick={this.changeNav.bind(
 													this,
 													4
@@ -366,7 +426,7 @@ export default class Root extends PureComponent {
 												)()}
 											>
 												Record
-											</div>
+											</div> */}
 										</div>
 										<div
 											className="box-btn line-orange"
@@ -380,7 +440,13 @@ export default class Root extends PureComponent {
 									</div>
 									{type === 1 && (
 										<div className="box3">
-											<div className="wallet-item ui center">
+											<div
+												className="wallet-item ui center"
+												onClick={this.goOrderList.bind(
+													this,
+													0
+												)}
+											>
 												<img
 													className="icon"
 													src={
@@ -470,6 +536,10 @@ export default class Root extends PureComponent {
 															<div
 																key={index}
 																className="wallet-item ui center"
+																onClick={this.goOrderList.bind(
+																	this,
+																	index + 1
+																)}
 															>
 																<img
 																	className="icon"

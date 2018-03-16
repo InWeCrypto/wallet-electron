@@ -108,6 +108,7 @@ export default {
 		resetPass: "Your password has been reset, please sign in again. ",
 		emailSend: "The email is send successfully. ",
 		resetPass: "Your password has been revised successfully. ",
-		registerSuccess: "register success"
+		registerSuccess: "register success",
+		transferSuccess: "Transfer success"
 	}
 };

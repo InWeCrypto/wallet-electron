@@ -1,6 +1,11 @@
 import React, { PureComponent } from "react";
 import { I18n } from "react-i18next";
-import { getQuery, getLocalTime } from "../../../../utils/util";
+import {
+	getQuery,
+	getLocalTime,
+	getNumFromStr,
+	getEthNum
+} from "../../../../utils/util";
 import Menu from "@/menu/index.js";
 import HeaderNav from "@/headernav/index.js";
 import img from "#/zhuye_ico.png";
@@ -16,7 +21,9 @@ export default class Root extends PureComponent {
 			wallet_id: null,
 			asset_id: null,
 			address: null,
-			name: null
+			info: null,
+			page: 0,
+			isGetting: false
 		};
 	}
 	componentDidMount() {
@@ -34,25 +41,65 @@ export default class Root extends PureComponent {
 		if (q.address) {
 			set.address = q.address;
 		}
-		if (q.name) {
-			set.name = q.name;
+		if (q.timetamp) {
+			set.info = JSON.parse(sessionStorage.getItem(`${q.timetamp}`));
 		}
 		if (q.wallet_id && q.flag && q.asset_id) {
-			this.props.getOrderList({
-				flag: q.flag,
-				wallet_id: q.wallet_id,
-				asset_id: q.asset_id
-			});
+			this.props
+				.getStartOrderList({
+					flag: q.flag,
+					wallet_id: q.wallet_id,
+					asset_id: q.asset_id,
+					size: 20,
+					page: this.state.page
+				})
+				.then(res => {
+					if (res.code === 4000) {
+						this.setState({
+							page: this.state.page + 1
+						});
+					}
+				});
 		}
 		this.setState(set);
+		let box = document.querySelector("#listBox");
+		box.addEventListener(
+			"scroll",
+			() => {
+				this.getPageData();
+			},
+			false
+		);
+	}
+	getPageData() {
+		let box = document.querySelector("#listBox");
+		let st = box.scrollTop;
+		let h = box.offsetHeight;
+		let sh = box.scrollHeight;
+		if (h + st >= sh) {
+			this.props
+				.getOrderList({
+					flag: this.state.flag,
+					wallet_id: this.state.wallet_id,
+					asset_id: this.state.asset_id,
+					size: 20,
+					page: this.state.page
+				})
+				.then(res => {
+					if (res.code === 4000) {
+						this.setState({
+							page: this.state.page + 1
+						});
+					}
+				});
+		}
 	}
 	showMoreClick(idx) {
 		this.props.changeShow(idx);
 	}
 	render() {
 		let { lng, orderList } = this.props;
-		let { flag, name, address } = this.state;
-
+		let { flag, info, address } = this.state;
 		return (
 			<I18n>
 				{(t, { i18n }) => (
@@ -65,18 +112,37 @@ export default class Root extends PureComponent {
 									<div className="t1">
 										<img
 											className="img"
-											src="https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=3407680589,3409634802&fm=173&app=25&f=JPEG?w=218&h=146&s=0F9068854A1824C2DCA9950B0300F091"
-											alt=""
+											src={info && info.img}
 										/>
-										<span>NEO</span>
-										<span>(NEO)</span>
+										<span>{info && info.name}</span>
+										<span>({info && info.name})</span>
 									</div>
 									<div className="t2">
-										<span>sdas</span>
-										<span className="t3">222</span>
+										{info &&
+											info.number != "undefined" && (
+												<span>
+													{Number(
+														Number(
+															info.number
+														).toFixed(4)
+													)}
+												</span>
+											)}
+
+										<span className="t3">
+											({lng == "en" ? "$" : "￥"}
+											{(
+												(info && info.number) *
+												(info
+													? lng == "en"
+														? info.price_usd
+														: info.price_cny
+													: 0)
+											).toFixed(2)})
+										</span>
 									</div>
 								</div>
-								<div className="list-box">
+								<div className="list-box" id="listBox">
 									{flag == "neo" &&
 										orderList &&
 										orderList.list &&
@@ -90,10 +156,10 @@ export default class Root extends PureComponent {
 													<div className="list-base ui">
 														<div className="state">
 															{item.confirmTime &&
-																item.confirmTime
-																	.length >
-																	0 &&
-																"Success"}
+															item.confirmTime
+																.length > 0
+																? "Success"
+																: "Pending"}
 														</div>
 														<div className="f1">
 															Txid:{item.tx}
@@ -108,7 +174,12 @@ export default class Root extends PureComponent {
 															item.from
 																? "-"
 																: "+"}
-															{item.value} {name}
+															{Number(
+																Number(
+																	item.value
+																).toFixed(4)
+															)}{" "}
+															{info && info.name}
 														</div>
 														<div
 															onClick={this.showMoreClick.bind(
@@ -136,12 +207,92 @@ export default class Root extends PureComponent {
 															To:{item.to}
 														</div>
 														<div className="more-item">
-															Memo:
+															Memo:{item.remark}
 														</div>
 													</div>
-													<div className="confirm-line">
+													{/* <div className="confirm-line">
 														<div className="confirm-inline" />
+													</div> */}
+												</div>
+											);
+										})}
+
+									{flag == "eth" &&
+										orderList &&
+										orderList.list &&
+										orderList.list.length > 0 &&
+										orderList.list.map((item, index) => {
+											return (
+												<div
+													key={index}
+													className="list-group"
+												>
+													<div className="list-base ui">
+														<div className="state">
+															{item.confirm_at &&
+															item.confirm_at
+																.length > 0
+																? "Success"
+																: "Pending"}
+														</div>
+														<div className="f1">
+															Txid:{item.hash}
+														</div>
+														<div className="time">
+															{getLocalTime(
+																item.created_at
+															)}
+														</div>
+														<div className="order">
+															{address ==
+															item.pay_address
+																? "-"
+																: "+"}
+															{Number(
+																Number(
+																	getEthNum(
+																		item.fee
+																	)
+																).toFixed(4)
+															)}{" "}
+															{info && info.name}
+														</div>
+														<div
+															onClick={this.showMoreClick.bind(
+																this,
+																index
+															)}
+															className={
+																item.isShowMore
+																	? "arrow"
+																	: "arrow close"
+															}
+														/>
 													</div>
+													<div
+														className={
+															item.isShowMore
+																? "list-more"
+																: "list-more close"
+														}
+													>
+														<div className="more-item">
+															From:{
+																item.pay_address
+															}
+														</div>
+														<div className="more-item">
+															To:{
+																item.receive_address
+															}
+														</div>
+														<div className="more-item">
+															Memo:{item.remark}
+														</div>
+													</div>
+													{/* <div className="confirm-line">
+														<div className="confirm-inline" />
+													</div> */}
 												</div>
 											);
 										})}

@@ -162,6 +162,80 @@ export default class Root extends PureComponent {
 
 		return num.toFixed(2);
 	}
+	goOrderList(key) {
+		let { type, walletType } = this.state;
+		let { lng, watchInfo, watchConver, walletList } = this.props;
+		let asset_id = "",
+			name = "",
+			number = "",
+			price_cny = "",
+			price_usd = "",
+			img = "";
+		if (walletType == 1) {
+			if (key == 0) {
+				asset_id = "0x0000000000000000000000000000000000000000";
+				img = watchInfo.category.img;
+				name = watchInfo.category.name;
+				number = getEthNum(watchConver.list[0].balance);
+				price_cny =
+					watchConver.list[0].category &&
+					watchConver.list[0].category.cap
+						? watchConver.list[0].category.cap.price_cny
+						: 0;
+				price_usd =
+					watchConver.list[0].category &&
+					watchConver.list[0].category.cap
+						? watchConver.list[0].category.cap.price_usd
+						: 0;
+			}
+			if (
+				key > 0 &&
+				walletList &&
+				walletList.list &&
+				walletList.list.length > 0
+			) {
+				asset_id = walletList.list[key - 1].gnt_category.address;
+				img = walletList.list[key - 1].gnt_category.icon;
+				name = walletList.list[key - 1].gnt_category.name;
+				number = getEthNum(walletList.list[key - 1].balance);
+				price_cny =
+					walletList.list[key - 1].gnt_category &&
+					walletList.list[key - 1].gnt_category.cap
+						? walletList.list[key - 1].gnt_category.cap.price_cny
+						: 0;
+				price_usd =
+					walletList.list[key - 1].gnt_category &&
+					walletList.list[key - 1].gnt_category.cap
+						? walletList.list[key - 1].gnt_category.cap.price_usd
+						: 0;
+			}
+		}
+		let time = new Date().getTime();
+		let p = {
+			name: name,
+			number: number,
+			price_cny: price_cny,
+			price_usd: price_usd,
+			img: img
+		};
+		sessionStorage.setItem(`orderlist_${time}`, JSON.stringify(p));
+		let flag = "eth";
+		if (walletType == 2) {
+			flag = "neo";
+		}
+		if (walletType == 3) {
+			flag = "btc";
+		}
+		toHref(
+			"orderlist",
+			`wallet_id=${
+				watchInfo.id
+			}&flag=${flag}&asset_id=${asset_id}&address=${
+				watchInfo.address
+			}&timetamp=orderlist_${time}`
+		);
+	}
+
 	render() {
 		let { lng, watchInfo, watchConver, walletList } = this.props;
 		let { type, walletType } = this.state;
@@ -262,7 +336,13 @@ export default class Root extends PureComponent {
 												{watchConver &&
 													watchConver.list &&
 													watchConver.list[0] && (
-														<div className="wallet-item ui center">
+														<div
+															className="wallet-item ui center"
+															onClick={this.goOrderList.bind(
+																this,
+																0
+															)}
+														>
 															<img
 																className="icon"
 																src={

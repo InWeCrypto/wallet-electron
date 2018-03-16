@@ -10,11 +10,16 @@ if (!Promise) {
 	window.Promise = Promise;
 }
 
-function checkStatus(response) {
+async function checkStatus(response) {
 	if (response.status >= 200 && response.status < 300) {
 		return response;
 	} else {
-		Msg.alert("服务器错误：" + response.status + "" + response.statusText);
+		let json = await response.json();
+		Msg.alert(
+			`Service Error：${response.status} ${response.statusText} ${
+				json.error ? "<br />" + json.error : ""
+			}`
+		);
 		var error = new Error(response.statusText);
 		error.response = response;
 		throw error;

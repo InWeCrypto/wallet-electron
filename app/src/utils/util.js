@@ -300,6 +300,9 @@ export const getEthNum = (str, dec) => {
 	var dec = dec ? dec : 18;
 	var reg = /(?:0x)0*/gi;
 	var st = "0x" + str.replace(reg, "");
+	if (st.length <= 2) {
+		return 0;
+	}
 	var int10 = parseInt(st);
 	var s = int10.toLocaleString();
 	var n = s.replace(/\,/gi, "");

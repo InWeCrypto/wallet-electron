@@ -52,6 +52,11 @@
 			width: 2rem;
 			text-align: center;
 		}
+		.f1 {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
 		.order {
 			width: 1.5rem;
 			margin-right: 0.1rem;
@@ -89,13 +94,16 @@
 			.more-item {
 				padding: 0.07rem 0;
 				width: 50%;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
 			}
 			&.close {
 				height: 0;
 				overflow: hidden;
 			}
 		}
-		\ .confirm-line {
+		.confirm-line {
 			margin: 0 0.5rem 0.14rem 0.14rem;
 			height: 0.04rem;
 			border-radius: 0.02rem;

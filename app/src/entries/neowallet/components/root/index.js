@@ -243,7 +243,7 @@ export default class Root extends PureComponent {
 				pay_address: neoWalletDetailInfo.address,
 				receive_address: sendAddress,
 				remark: "",
-				fee: fee,
+				fee: fee + "",
 				handle_fee: "0",
 				flag: sendKey === 1 ? "GAS" : "NEO",
 				asset_id: params.Asset
@@ -304,29 +304,69 @@ export default class Root extends PureComponent {
 	}
 	goOrderList(key) {
 		let { neoWalletDetailInfo, neoConversion } = this.props;
-		let asset_id = "";
-		let name = "";
+		let asset_id = "",
+			name = "",
+			number = "",
+			price_cny = "",
+			price_usd = "",
+			img = "";
 		if (key == 0) {
 			asset_id =
 				"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b";
 			name = "NEO";
+			number = neoConversion.record.balance;
+			img = neoConversion.record.category.img;
+			price_cny = neoConversion.record.cap
+				? neoConversion.record.cap.price_cny
+				: 0;
+			price_usd = neoConversion.record.cap
+				? neoConversion.record.cap.price_usd
+				: 0;
 		}
 		if (key == 1) {
 			asset_id =
 				"0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7";
 			name = "GAS";
+			img = neoConversion.record.category.img;
+			number = neoConversion.record.gnt[0].balance;
+			price_cny = neoConversion.record.gnt[0].cap
+				? neoConversion.record.gnt[0].cap.price_cny
+				: 0;
+			price_usd = neoConversion.record.gnt[0].cap
+				? neoConversion.record.gnt[0].cap.price_usd
+				: 0;
 		}
 		if (key > 1 && neoConversion && neoConversion.list) {
 			asset_id = neoConversion.list[key - 2].gnt_category.address;
 			name = neoConversion.list[key - 2].gnt_category.name;
+			img = neoConversion.list[key - 2].gnt_category.icon;
+			number = getNumFromStr(
+				neoConversion.list[key - 2].balance,
+				neoConversion.list[key - 2].decimals
+			);
+			price_cny = neoConversion.list[key - 2].gnt_category.cap
+				? neoConversion.list[key - 2].gnt_category.cap.price_cny
+				: 0;
+			price_usd = neoConversion.list[key - 2].gnt_category.cap
+				? neoConversion.list[key - 2].gnt_category.cap.price_usd
+				: 0;
 		}
+		let time = new Date().getTime();
+		let p = {
+			name: name,
+			number: number,
+			price_cny: price_cny,
+			price_usd: price_usd,
+			img: img
+		};
+		sessionStorage.setItem(`orderlist_${time}`, JSON.stringify(p));
 		toHref(
 			"orderlist",
 			`wallet_id=${
 				neoWalletDetailInfo.id
 			}&flag=neo&asset_id=${asset_id}&address=${
 				neoWalletDetailInfo.address
-			}&name=${name}`
+			}&timetamp=orderlist_${time}`
 		);
 	}
 	render() {
@@ -409,7 +449,7 @@ export default class Root extends PureComponent {
 											>
 												Receive
 											</div>
-											<div
+											{/* <div
 												onClick={this.changeNav.bind(
 													this,
 													4
@@ -420,7 +460,7 @@ export default class Root extends PureComponent {
 												)()}
 											>
 												Record
-											</div>
+											</div> */}
 										</div>
 										<div className="box-btn line-orange">
 											<div className="t1">Claim</div>
