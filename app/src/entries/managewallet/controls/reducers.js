@@ -1,5 +1,5 @@
 import { handleActions } from "redux-actions";
-import { DELETEWALLET, DELETEWALLETSERVER } from "./actions";
+import { DELETEWALLET, DELETEWALLETSERVER, VAILPASS } from "./actions";
 
 export const deleteLocal = handleActions(
 	{
@@ -10,6 +10,12 @@ export const deleteLocal = handleActions(
 export const deleteServer = handleActions(
 	{
 		[DELETEWALLETSERVER]: (state, { payload }) => payload
+	},
+	null
+);
+export const vailPass = handleActions(
+	{
+		[VAILPASS]: (state, { payload }) => payload
 	},
 	null
 );

@@ -7,10 +7,16 @@ const PRE_FIX = "MNEMONIC_";
 export const GETWALLETINFO = `${PRE_FIX}GETWALLETINFO`;
 
 export const getWalletInfo = createAction(GETWALLETINFO, params => {
-	return http.get(
-		{
-			url: `mnemonic/${params.address}/${params.pass}/${params.lang}`
-		},
-		2
-	);
+	return http
+		.get(
+			{
+				url: `mnemonic/${params.address}/${params.pass}/${params.lang}`
+			},
+			2
+		)
+		.then(res => {
+			if (res.length > 0) {
+				return res.split(" ");
+			}
+		});
 });

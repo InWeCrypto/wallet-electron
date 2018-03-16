@@ -13,7 +13,9 @@ export default class Root extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isfirstPage: true
+			isfirstPage: true,
+			chooseArray: [],
+			showArr: []
 		};
 	}
 	componentDidMount() {
@@ -24,71 +26,144 @@ export default class Root extends PureComponent {
 				name: q.name,
 				password: q.pass
 			});
-			this.props.getWalletInfo({
-				address: q.address,
-				pass: q.pass,
-				lang: this.props.lng == "en" ? "en_US" : "zh_CN"
+			this.props
+				.getWalletInfo({
+					address: q.address,
+					pass: q.pass,
+					lang: this.props.lng == "en" ? "en_US" : "zh_CN"
+				})
+				.then(res => {
+					if (res.length > 0) {
+						this.setState({
+							showArr: this.shuffle(res)
+						});
+					}
+				});
+		}
+	}
+	chooseItem(idx) {
+		let list = this.state.chooseArray;
+		let arr = this.props.walletInfo;
+		if (arr && arr.length > 0) {
+			this.setState({
+				chooseArray: [...list, arr[idx]]
 			});
 		}
 	}
 	//下一步
 	nextPage() {
-		toHref("mnemonicsure");
+		this.setState({
+			isfirstPage: false
+		});
 	}
+	confirmClick() {
+		let c = this.state.chooseArray;
+		let a = this.props.walletInfo;
+		if (JSON.stringify(a) == JSON.stringify(c)) {
+			Msg.prompt(i18n.t("success.valiSuccess", this.props.lng));
+			setTimeout(() => {
+				toHref("wallet");
+			}, 2000);
+		} else {
+			Msg.prompt(i18n.t("error.valiError", this.props.lng));
+			this.setState({
+				chooseArray: []
+			});
+		}
+	}
+	removeChoose(idx) {
+		let arr = JSON.parse(JSON.stringify(this.state.chooseArray));
+		arr.splice(idx, 1);
+		this.setState({
+			chooseArray: arr
+		});
+	}
+	shuffle(input) {
+		const length = input.length;
+		let index;
+		for (let i = length - 1; i; i--) {
+			index = Math.floor(Math.random() * i);
+			input[i] = input.splice(index, 1, input[i])[0];
+		}
+		return input;
+	}
+
 	render() {
 		let { lng, walletInfo } = this.props;
-		let { isfirstPage } = this.state;
-		let arr = [];
-		if (walletInfo && walletInfo.length > 0) {
-			arr = walletInfo.split(" ");
-		}
+		let { isfirstPage, chooseArray, showArr } = this.state;
 
 		return (
 			<I18n>
 				{(t, { i18n }) => (
-					<div className="main-box mnemonic">
+					<div className="main-box mnemonic mnemonic1">
 						<Menu curmenu="wallet" />
 						<div className="content-container">
 							<HeaderNav />
 							<div className="content mnemonic-content">
 								<div className="title">
-									Manager wallet setting
+									{t("backupMnemonic.title", lng)}
 								</div>
 								<div className="cokBox">
 									{isfirstPage && (
 										<div className="titleImg">
-											<img
-												className="img"
-												src={imgico}
-												alt=""
-											/>
+											<img className="img" src={imgico} />
+										</div>
+									)}
+									{isfirstPage && (
+										<div className="showWordBox">
+											<ul className="wordUl">
+												{walletInfo &&
+													walletInfo.length > 0 &&
+													walletInfo.map(
+														(val, idx) => {
+															return (
+																<li
+																	key={idx}
+																	className="word"
+																>
+																	{val}
+																</li>
+															);
+														}
+													)}
+											</ul>
+										</div>
+									)}
+									{!isfirstPage && (
+										<div className="showWordBox">
+											<ul className="wordUl">
+												{chooseArray &&
+													chooseArray.length > 0 &&
+													chooseArray.map(
+														(val, idx) => {
+															return (
+																<li
+																	key={idx}
+																	className="word"
+																	onClick={this.removeChoose.bind(
+																		this,
+																		idx
+																	)}
+																>
+																	{val}
+																</li>
+															);
+														}
+													)}
+											</ul>
 										</div>
 									)}
 
-									<div className="showWordBox">
-										<ul className="wordUl">
-											{arr.map((val, idx) => {
-												return (
-													<li
-														key={idx}
-														className="word"
-													>
-														{val}
-													</li>
-												);
-											})}
-										</ul>
-									</div>
 									{isfirstPage ? (
 										<div className="boxq1">
 											<p className="mess">
-												1、备份助记词能让您丢失钱包的时候快速找回
+												{t("backupMnemonic.step1", lng)}
 											</p>
 											<p className="mess">
-												2、请务必将以下助记词抄录下来，并且保存在安全的地方
+												{t("backupMnemonic.step2", lng)}
 											</p>
 											<p className="mess">
-												3、助记词一旦备份成功，此备份步骤不会再出现
+												{t("backupMnemonic.step3", lng)}
 											</p>
 											<button
 												className="next"
@@ -96,7 +171,7 @@ export default class Root extends PureComponent {
 													this
 												)}
 											>
-												Next
+												{t("backupMnemonic.next", lng)}
 											</button>
 										</div>
 									) : (
@@ -105,16 +180,33 @@ export default class Root extends PureComponent {
 												待选助记词
 											</div>
 											<ul className="helpList">
-												{arr.map((val, idx) => {
-													return (
-														<li className="helpWord">
-															{val}
-														</li>
-													);
-												})}
+												{showArr &&
+													showArr.length > 0 &&
+													showArr.map((val, idx) => {
+														return (
+															<li
+																key={idx}
+																className="helpWord"
+																onClick={this.chooseItem.bind(
+																	this,
+																	idx
+																)}
+															>
+																{val}
+															</li>
+														);
+													})}
 											</ul>
-											<button className="next">
-												Comfirm
+											<button
+												className="next"
+												onClick={this.confirmClick.bind(
+													this
+												)}
+											>
+												{t(
+													"backupMnemonic.confirm",
+													lng
+												)}
 											</button>
 										</div>
 									)}

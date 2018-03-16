@@ -101,7 +101,8 @@ export default {
 		amountEmpty: "amount cannot be empty",
 		amountError: "Amount cannot be greater than the balance ",
 		MiningError: "Insufficient fuel costs",
-		isSend: "You have an unfinished order"
+		isSend: "You have an unfinished order",
+		valiError: "Verification fail"
 	},
 	success: {
 		login: "Log in successfully",
@@ -109,6 +110,15 @@ export default {
 		emailSend: "The email is send successfully. ",
 		resetPass: "Your password has been revised successfully. ",
 		registerSuccess: "register success",
-		transferSuccess: "Transfer success"
+		transferSuccess: "Transfer success",
+		valiSuccess: "Verification success"
+	},
+	backupMnemonic: {
+		title: "Manager wallet setting",
+		step1: "1、备份助记词能让您丢失钱包的时候快速找回",
+		step2: "2、请务必将以下助记词抄录下来，并且保存在安全的地方",
+		step3: "3、助记词一旦备份成功，此备份步骤不会再出现",
+		next: "Next",
+		confirm: "Comfirm"
 	}
 };

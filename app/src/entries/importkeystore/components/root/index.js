@@ -62,27 +62,35 @@ export default class Root extends PureComponent {
 		});
 	}
 	goNext() {
+		let str = null;
 		if (this.state.type == 0) {
-			let str = this.state.textValue;
-			let reg = /^\{.*?\}$/;
-			if (!reg.test(str)) {
-				Msg.prompt("Key store type is error");
-				return;
-			}
-			toHref(
-				"importend",
-				`typeid=${this.state.walletType}&type=keystore&value=${str}`
-			);
+			str = this.state.textValue;
 		}
+		if (this.state.type == 1) {
+			str = this.state.readFileText;
+		}
+		let reg = /^\{.*?\}$/;
+		if (!reg.test(str)) {
+			Msg.prompt("Key store type is error");
+			return;
+		}
+		toHref(
+			"importend",
+			`typeid=${this.state.walletType}&type=keystore&value=${str}`
+		);
 	}
 	opPass() {
+		let str = null;
 		if (this.state.type == 0) {
-			var str = this.state.textValue;
-			let reg = /^\{.*?\}$/;
-			if (!reg.test(str)) {
-				Msg.prompt("Key store type is error");
-				return;
-			}
+			str = this.state.textValue;
+		}
+		if (this.state.type == 1) {
+			str = this.state.readFileText;
+		}
+		let reg = /^\{.*?\}$/;
+		if (!reg.test(str)) {
+			Msg.prompt("Key store type is error");
+			return;
 		}
 		this.setState({
 			isShowPass: true
@@ -104,11 +112,18 @@ export default class Root extends PureComponent {
 		if (this.state.walletType == 3) {
 			type = "btc";
 		}
+		let json = null;
+		if (this.state.type == 0) {
+			json = this.state.textValue;
+		}
+		if (this.state.type == 1) {
+			json = this.state.readFileText;
+		}
 		this.props
 			.changeToHot({
 				name: this.state.name,
 				type: type,
-				json: this.state.textValue,
+				json: json,
 				password: res
 			})
 			.then(res => {

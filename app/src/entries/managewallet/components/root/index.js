@@ -47,17 +47,27 @@ export default class Root extends PureComponent {
 		});
 	}
 	surePassword() {
-		let { password } = this.state;
+		let { password, address, name } = this.state;
 		if (!password || password.length < 6) {
 			Msg.prompt(i18n.t("error.passLength", this.props.lng));
 			return;
 		}
-		toHref(
-			"mnemonic",
-			`address=${this.state.address}&name=${
-				this.state.name
-			}&pass=${password}`
-		);
+		this.props
+			.vailPass({
+				address: address,
+				pass: password,
+				lang: this.props.lng == "en" ? "en_US" : "zh_CN"
+			})
+			.then(res => {
+				if (res.length > 0) {
+					toHref(
+						"mnemonic",
+						`address=${address}&name=${
+							this.state.name
+						}&pass=${password}`
+					);
+				}
+			});
 	}
 	passwordChange(e) {
 		this.setState({
