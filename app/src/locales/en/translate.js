@@ -120,5 +120,15 @@ export default {
 		step3: "3、助记词一旦备份成功，此备份步骤不会再出现",
 		next: "Next",
 		confirm: "Comfirm"
+	},
+	language: {
+		current: "Language",
+		en: "English",
+		cn: "中文"
+	},
+	network: {
+		network: "Network",
+		formal: "Formal",
+		test: "Test"
 	}
 };

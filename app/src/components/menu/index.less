@@ -3,6 +3,7 @@
 	width: 2.24rem;
 	overflow: scroll;
 	background: #2e2e4c;
+	position: relative;
 	.title {
 		margin-top: 0.93rem;
 		line-height: 0.34rem;
@@ -132,6 +133,23 @@
 			.menu-follow {
 				background: url("../../assets/images/follow_ico.png") no-repeat
 					center center / contain;
+			}
+		}
+	}
+	.setting {
+		color: #fff;
+		position: absolute;
+		left: 0.1rem;
+		bottom: 0;
+		color: #a4a4a4;
+		.name {
+			display: inline-block;
+			width: 0.7rem;
+		}
+		.languagebtn {
+			&:hover {
+				color: #44cb82;
+				cursor: pointer;
 			}
 		}
 	}

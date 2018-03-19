@@ -9,5 +9,14 @@ export const requestUrl = isLocal => {
 			case 3:
 				return "https://dev.inwecrypto.com:4431/v2/";
 		}
+	} else {
+		switch (isLocal) {
+			case 1:
+				return "https://china.inwecrypto.com:4431/v2/api/";
+			case 2:
+				return "http://localhost:14019/";
+			case 3:
+				return "https://china.inwecrypto.com:4431/v2/";
+		}
 	}
 };

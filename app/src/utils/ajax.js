@@ -32,18 +32,22 @@ function parseJSON(response) {
 
 function checkRight(response) {
 	//cdy
-	if (response.code !== 4000) {
-		Modal.warning({
-			title: "请求错误",
-			content: response.msg
-		});
-	}
+	// if (response.code !== 4000) {
+	// 	Modal.warning({
+	// 		title: "请求错误",
+	// 		content: response.msg
+	// 	});
+	// }
 	if (response.code === 4000) {
 		return response;
-	} else if (response.code === 4001 || response.code === 4010) {
+	} else if (
+		response.code === 4001 ||
+		response.code === 4010 ||
+		response.code === 4009
+	) {
 		localStorage.removeItem("userInfo");
-		toHref("/");
 		store.dispatch(setReduxUserInfo(null));
+		toHref("/");
 		return {
 			msg: response.msg,
 			data: null,

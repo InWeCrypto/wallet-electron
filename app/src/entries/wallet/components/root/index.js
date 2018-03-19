@@ -194,12 +194,12 @@ export default class Root extends PureComponent {
 			localWalletList
 		} = this.props;
 		let list = this.getCommonList(walletList, localWalletList);
-		//console.log(list);
+
 		return (
 			<I18n>
 				{(t, { i18n }) => (
 					<div className="main-box">
-						<Menu curmenu="wallet" />
+						<Menu curmenu="wallet" lng={lng} />
 						<div className="content-container">
 							<div className="content">
 								<div className="wallet">

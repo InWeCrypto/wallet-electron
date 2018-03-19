@@ -149,7 +149,7 @@ export default class Root extends PureComponent {
 			<I18n>
 				{(t, { i18n }) => (
 					<div className="main-box">
-						<Menu curmenu="wallet" />
+						<Menu curmenu="wallet" lng={lng} />
 						<div className="content-container">
 							<HeaderNav />
 							<div className="content">

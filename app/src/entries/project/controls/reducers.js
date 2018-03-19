@@ -1,9 +1,15 @@
 import { handleActions } from "redux-actions";
-import { GETCODE } from "./actions";
+import { GETSEARCHHISTORY, GETSEARCHRESULT } from "./actions";
 
-export const code = handleActions(
+export const searchHistory = handleActions(
 	{
-		[GETCODE]: (state, { payload }) => payload
+		[GETSEARCHHISTORY]: (state, { payload }) => payload
 	},
-	[]
+	null
+);
+export const searchResult = handleActions(
+	{
+		[GETSEARCHRESULT]: (state, { payload }) => payload
+	},
+	null
 );

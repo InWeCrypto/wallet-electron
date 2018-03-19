@@ -12,16 +12,59 @@ import "./index.less";
 export default class Root extends PureComponent {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			keyword: "",
+			isFocus: false,
+			isShowResult: false
+		};
 	}
-	componentDidMount() {}
+	componentDidMount() {
+		this.props.getSearchHistory();
+		document.addEventListener("keypress", e => {
+			if (e.keyCode === 13 && this.state.isFocus) {
+				this.getData(this.state.keyword);
+			}
+		});
+	}
+	async getData(word) {
+		if (!word || word.length <= 0) {
+			this.setState({
+				isShowResult: false
+			});
+			reutrn;
+		}
+		let r = await this.props.getSearchResult({
+			keywords: word
+		});
+		if (r.code === 4000) {
+			this.setState({
+				isShowResult: true
+			});
+		}
+	}
+	inputChange(e) {
+		this.setState({
+			keyword: e.target.value
+		});
+	}
+	changeFocus() {
+		this.setState({
+			isFocus: true
+		});
+	}
+	changeBlur() {
+		this.setState({
+			isFocus: false
+		});
+	}
 	render() {
-		let { lng } = this.props;
+		let { lng, searchHistory, searchResult } = this.props;
+		let { keyword, isShowResult } = this.state;
 		return (
 			<I18n>
 				{(t, { i18n }) => (
 					<div className="main-box project">
-						<Menu curmenu="project" />
+						<Menu curmenu="project" lng={lng} />
 						<div className="content-container">
 							<HeaderNav />
 							<div className="content project-content">
@@ -30,23 +73,83 @@ export default class Root extends PureComponent {
 								</div>
 								<div className="search-box">
 									<img src={searchimg} alt="" />
-									<input type="text" />
+									<input
+										type="text"
+										value={keyword}
+										onChange={this.inputChange.bind(this)}
+										onFocus={this.changeFocus.bind(this)}
+										onBlur={this.changeBlur.bind(this)}
+									/>
 								</div>
-								<div className="tags-box">
-									<div className="tagsname">
-										Everyone in the search
+								{!isShowResult && (
+									<div className="tags-box">
+										<div className="tagsname">
+											Everyone in the search
+										</div>
+										<ul className="tags">
+											{searchHistory &&
+												searchHistory.length > 0 &&
+												searchHistory.map(
+													(item, index) => {
+														return (
+															<li
+																key={index}
+																className="tags-cell"
+																onClick={this.getData.bind(
+																	this,
+																	item.name
+																)}
+															>
+																{item.name}
+															</li>
+														);
+													}
+												)}
+										</ul>
 									</div>
-									<ul className="tags">
-										<li className="tags-cell">Trinity</li>
-										<li className="tags-cell">
-											TrinityTrinitynity
-										</li>
-										<li className="tags-cell">
-											Trinitynity
-										</li>
-										<li className="tags-cell">Tri</li>
-									</ul>
-								</div>
+								)}
+								{isShowResult && (
+									<div className="search-list">
+										<ul className="search-list-ul">
+											{searchResult &&
+												searchResult.data &&
+												searchResult.data.length > 0 &&
+												searchResult.data.map(
+													(item, idex) => {
+														return (
+															<li
+																key={idex}
+																className="search-cell"
+															>
+																<div className="imgbox">
+																	<img
+																		src={
+																			item.img
+																		}
+																	/>
+																</div>
+																<div className="messBox">
+																	<div className="name">
+																		{
+																			item.name
+																		}
+																		&nbsp; ({
+																			item.long_name
+																		})
+																	</div>
+																	<div className="mess">
+																		{
+																			item.desc
+																		}
+																	</div>
+																</div>
+															</li>
+														);
+													}
+												)}
+										</ul>
+									</div>
+								)}
 							</div>
 						</div>
 					</div>
