@@ -170,7 +170,8 @@ export default class Root extends PureComponent {
 			number = "",
 			price_cny = "",
 			price_usd = "",
-			img = "";
+			img = "",
+			decimals = null;
 		if (walletType == 1) {
 			if (key == 0) {
 				asset_id = "0x0000000000000000000000000000000000000000";
@@ -210,13 +211,42 @@ export default class Root extends PureComponent {
 						: 0;
 			}
 		}
+		if (walletType == 2) {
+			if (key == 0) {
+				asset_id =
+					"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b";
+				img = walletList.record.category.img;
+				name = "NEO";
+				number = walletList.record.balance;
+				price_cny = walletList.record.cap.price_cny;
+				price_usd = walletList.record.cap.price_usd;
+			}
+			if (key == 1) {
+				asset_id =
+					"0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7";
+				img = walletList.record.category.img;
+				name = "GAS";
+				number = walletList.record.gnt[0].balance;
+				price_cny = walletList.record.gnt[0].cap.price_cny;
+				price_usd = walletList.record.gnt[0].cap.price_usd;
+			}
+			if (key > 1) {
+				let item = walletList.list[key - 2];
+				asset_id = item.gnt_category.address;
+				img = item.gnt_category.icon;
+				name = item.gnt_category.name;
+				number = getNumFromStr(item.balance);
+				decimals = item.decimals;
+			}
+		}
 		let time = new Date().getTime();
 		let p = {
 			name: name,
 			number: number,
 			price_cny: price_cny,
 			price_usd: price_usd,
-			img: img
+			img: img,
+			decimals: decimals
 		};
 		sessionStorage.setItem(`orderlist_${time}`, JSON.stringify(p));
 		let flag = "eth";
@@ -316,10 +346,35 @@ export default class Root extends PureComponent {
 												Record
 											</div>
 										</div>
-										<div className="box-btn disabled">
-											<div className="t1">Claim</div>
-											<div className="t2">2000.00GAS</div>
-										</div>
+										{walletType &&
+											walletType == 2 && (
+												<div className="box-btn disabled">
+													<div className="t1">
+														Claim
+													</div>
+													<div className="t2">
+														{walletList &&
+															walletList.record &&
+															walletList.record
+																.gnt &&
+															walletList.record
+																.gnt[0] &&
+															walletList.record
+																.gnt[0]
+																.available &&
+															Number(
+																Number(
+																	walletList
+																		.record
+																		.gnt[0]
+																		.available
+																).toFixed(4)
+															)}{" "}
+														GAS
+													</div>
+												</div>
+											)}
+
 										<div
 											className="box-btn line-orange"
 											onClick={this.addAsset.bind(
@@ -495,7 +550,13 @@ export default class Root extends PureComponent {
 												{watchConver &&
 													watchConver.list &&
 													watchConver.list[0] && (
-														<div className="wallet-item ui center">
+														<div
+															className="wallet-item ui center"
+															onClick={this.goOrderList.bind(
+																this,
+																0
+															)}
+														>
 															<img
 																className="icon"
 																src={
@@ -534,32 +595,34 @@ export default class Root extends PureComponent {
 																	{lng == "en"
 																		? "$"
 																		: "￥"}
-																	{(
-																		watchConver
-																			.list[0]
-																			.balance *
-																		(watchConver
-																			.list[0]
-																			.category &&
-																		watchConver
-																			.list[0]
-																			.category
-																			.cap
-																			? lng ==
-																			  "en"
-																				? watchConver
-																						.list[0]
-																						.category
-																						.cap
-																						.price_usd
-																				: watchConver
-																						.list[0]
-																						.category
-																						.cap
-																						.price_cny
-																			: 0)
-																	).toFixed(
-																		2
+																	{Number(
+																		(
+																			watchConver
+																				.list[0]
+																				.balance *
+																			(watchConver
+																				.list[0]
+																				.category &&
+																			watchConver
+																				.list[0]
+																				.category
+																				.cap
+																				? lng ==
+																				  "en"
+																					? watchConver
+																							.list[0]
+																							.category
+																							.cap
+																							.price_usd
+																					: watchConver
+																							.list[0]
+																							.category
+																							.cap
+																							.price_cny
+																				: 0)
+																		).toFixed(
+																			2
+																		)
 																	)}
 																</div>
 															</div>
@@ -576,6 +639,10 @@ export default class Root extends PureComponent {
 																<div
 																	key={index}
 																	className="wallet-item ui center"
+																	onClick={this.goOrderList.bind(
+																		this,
+																		1
+																	)}
 																>
 																	<img
 																		className="icon"
@@ -598,10 +665,12 @@ export default class Root extends PureComponent {
 																		}}
 																	>
 																		<div className="t1">
-																			{new Number(
-																				item.balance
-																			).toFixed(
-																				4
+																			{Number(
+																				Number(
+																					item.balance
+																				).toFixed(
+																					4
+																				)
 																			)}
 																		</div>
 																		<div className="t1">
@@ -609,20 +678,22 @@ export default class Root extends PureComponent {
 																			"en"
 																				? "$"
 																				: "￥"}
-																			{(
-																				item.balance *
-																				(item.cap
-																					? lng ==
-																					  "en"
-																						? item
-																								.cap
-																								.price_usd
-																						: item
-																								.cap
-																								.price_cny
-																					: 0)
-																			).toFixed(
-																				4
+																			{Number(
+																				(
+																					item.balance *
+																					(item.cap
+																						? lng ==
+																						  "en"
+																							? item
+																									.cap
+																									.price_usd
+																							: item
+																									.cap
+																									.price_cny
+																						: 0)
+																				).toFixed(
+																					4
+																				)
 																			)}
 																		</div>
 																	</div>
@@ -640,6 +711,11 @@ export default class Root extends PureComponent {
 																<div
 																	key={index}
 																	className="wallet-item ui center"
+																	onClick={this.goOrderList.bind(
+																		this,
+																		index +
+																			2
+																	)}
 																>
 																	<img
 																		className="icon"
@@ -663,11 +739,13 @@ export default class Root extends PureComponent {
 																		}}
 																	>
 																		<div className="t1">
-																			{getNumFromStr(
-																				item.balance,
-																				item.decimals
-																			).toFixed(
-																				4
+																			{Number(
+																				getNumFromStr(
+																					item.balance,
+																					item.decimals
+																				).toFixed(
+																					4
+																				)
 																			)}
 																		</div>
 																		<div className="t1">
@@ -675,28 +753,30 @@ export default class Root extends PureComponent {
 																			"en"
 																				? "$"
 																				: "￥"}
-																			{(
-																				getNumFromStr(
-																					item.balance,
-																					item.decimals
-																				) *
-																				(item.gnt_category &&
-																				item
-																					.gnt_category
-																					.cap
-																					? lng ==
-																					  "en"
-																						? item
-																								.gnt_category
-																								.cap
-																								.price_usd
-																						: item
-																								.gnt_category
-																								.cap
-																								.price_cny
-																					: 0)
-																			).toFixed(
-																				4
+																			{Number(
+																				(
+																					getNumFromStr(
+																						item.balance,
+																						item.decimals
+																					) *
+																					(item.gnt_category &&
+																					item
+																						.gnt_category
+																						.cap
+																						? lng ==
+																						  "en"
+																							? item
+																									.gnt_category
+																									.cap
+																									.price_usd
+																							: item
+																									.gnt_category
+																									.cap
+																									.price_cny
+																						: 0)
+																				).toFixed(
+																					4
+																				)
 																			)}
 																		</div>
 																	</div>

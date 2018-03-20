@@ -15,7 +15,8 @@ export default class Root extends PureComponent {
 		this.state = {
 			isfirstPage: true,
 			chooseArray: [],
-			showArr: []
+			showArr: [],
+			address: ""
 		};
 	}
 	componentDidMount() {
@@ -25,6 +26,9 @@ export default class Root extends PureComponent {
 				address: q.address,
 				name: q.name,
 				password: q.pass
+			});
+			this.setState({
+				address: q.address
 			});
 			this.props
 				.getWalletInfo({
@@ -64,6 +68,7 @@ export default class Root extends PureComponent {
 			setTimeout(() => {
 				toHref("wallet");
 			}, 2000);
+			setBackUp(this.state.address);
 		} else {
 			Msg.prompt(i18n.t("error.valiError", this.props.lng));
 			this.setState({

@@ -140,12 +140,15 @@ export const getLocalTime = time => {
 		return "";
 	}
 	let time1 = time;
+	let localTime = "";
 	if (time1.indexOf("-") != -1 && time1.indexOf("T") == -1) {
 		time1 = time.replace(/\-/gi, "/");
+		const def = new Date().getTimezoneOffset();
+		localTime = new Date(time1).getTime() - def * 60 * 1000;
 	}
-
-	const def = new Date().getTimezoneOffset();
-	let localTime = new Date(time1).getTime() - def * 60 * 1000;
+	if (time1.indexOf("T") != -1) {
+		localTime = time1;
+	}
 	let d = new Date(localTime);
 	let year = d.getFullYear();
 	let month = d.getMonth() + 1;
@@ -318,3 +321,13 @@ export const getEthNum = (str, dec) => {
 	return res;
 };
 window.getEthNum = getEthNum;
+export const setBackUp = address => {
+	let backUp = localStorage.getItem("backUp");
+	let arr = [];
+	if (backUp) {
+		arr = [...JSON.parse(backUp)];
+	}
+	arr.push(address);
+	localStorage.setItem("backUp", JSON.stringify(arr));
+};
+window.setBackUp = setBackUp;

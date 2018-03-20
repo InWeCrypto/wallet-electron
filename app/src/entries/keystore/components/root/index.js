@@ -37,6 +37,7 @@ export default class Root extends PureComponent {
 	setCopy(str) {
 		clipboard.writeText(str);
 		Msg.prompt("copy success");
+		setBackUp(this.props.walletDetail.address);
 	}
 	setQcode(str) {
 		if (!str || str.length <= 0) {
@@ -69,6 +70,7 @@ export default class Root extends PureComponent {
 			title: this.state.name,
 			data: this.props.walletDetail.json
 		});
+		setBackUp(this.props.walletDetail.address);
 	}
 	render() {
 		let { lng, walletDetail } = this.props;

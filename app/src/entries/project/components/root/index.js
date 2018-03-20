@@ -31,7 +31,7 @@ export default class Root extends PureComponent {
 			this.setState({
 				isShowResult: false
 			});
-			reutrn;
+			return;
 		}
 		let r = await this.props.getSearchResult({
 			keywords: word

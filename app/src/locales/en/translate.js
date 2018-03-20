@@ -111,7 +111,9 @@ export default {
 		resetPass: "Your password has been revised successfully. ",
 		registerSuccess: "register success",
 		transferSuccess: "Transfer success",
-		valiSuccess: "Verification success"
+		valiSuccess: "Verification success",
+		unfreeze: "Unfreeze Success",
+		totalClaims: "Total Claim Success"
 	},
 	backupMnemonic: {
 		title: "Manager wallet setting",
@@ -130,5 +132,13 @@ export default {
 		network: "Network",
 		formal: "Formal",
 		test: "Test"
+	},
+	gas: {
+		title: "Claim Gas",
+		withdraw: "Withdraw Gas Limit",
+		btn1: "Total Claim",
+		frozen: "Frozen Gas",
+		btn2: "Unfreeze",
+		place: "Enter your password"
 	}
 };

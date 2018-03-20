@@ -1,4 +1,12 @@
-const { app, BrowserWindow, shell, dialog, Menu, Tray } = require("electron");
+const {
+	app,
+	BrowserWindow,
+	shell,
+	dialog,
+	Menu,
+	Tray,
+	autoUpdater
+} = require("electron");
 const electron = require("electron");
 const cp = require("child_process");
 const os = require("os");
@@ -15,7 +23,7 @@ if (isDev) {
 	//require("electron-reload")(__dirname);
 }
 
-function createWindow() {
+function createWindow(dbdir) {
 	// Create the browser window.
 	win = new BrowserWindow({
 		show: false,
@@ -28,19 +36,22 @@ function createWindow() {
 		}
 		// titleBarStyle: "hiddenInset"
 	});
-	// const p = path.join(__dirname, "resources/server/appdata");
-	// cp.exec(
-	// 	path.join(__dirname, `resources/server/wallet-service -appdir ${p}`),
-	// 	function(e, stdout, stderr) {
-	// 		if (!e) {
-	// 			console.log(stdout);
-	// 			console.log(stderr);
-	// 		}
-	// 		if (e) {
-	// 			console.log("23232");
-	// 		}
-	// 	}
-	// );
+	//const p = path.join(__dirname, "resources/server/appdata");
+	cp.exec(
+		path.join(
+			__dirname,
+			`resources/server/wallet-service -appdir ${dbdir}`
+		),
+		function(e, stdout, stderr) {
+			if (!e) {
+				console.log(stdout);
+				console.log(stderr);
+			}
+			if (e) {
+				console.log("23232");
+			}
+		}
+	);
 	if (!isDev) {
 		win.loadURL(
 			url.format({
@@ -80,11 +91,52 @@ function createWindow() {
 		win.show();
 	});
 }
-
+var createFolder = function(to) {
+	var sep = path.sep;
+	var folders = path.dirname(to).split(sep);
+	var p = "";
+	while (folders.length) {
+		p += folders.shift() + sep;
+		if (!fs.existsSync(p)) {
+			fs.mkdirSync(p);
+		}
+	}
+};
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on("ready", createWindow);
+app.on("ready", function() {
+	const tmdir = os.tmpdir();
+	const dbdir = tmdir + `/appdata/localdb/wallet.db`;
+	const cdir = tmdir + `/appdata/wallet.json`;
+	const dbf = tmdir + `/appdata`;
+	const isExit = fs.existsSync(dbdir);
+
+	if (!isExit) {
+		let db = fs.readFileSync(
+			path.join(__dirname, "resources/server/appdata/localdb/wallet.db")
+		);
+		let cf = fs.readFileSync(
+			path.join(__dirname, "resources/server/appdata/wallet.json")
+		);
+		createFolder(dbdir);
+
+		let wdb = fs.writeFileSync(dbdir, db);
+	}
+	let cf = fs.readFileSync(
+		path.join(__dirname, "resources/server/appdata/wallet.json")
+	);
+	if (!fs.existsSync(cdir)) {
+		createFolder(cdir);
+		let cfj = fs.writeFileSync(cdir, cf);
+	} else {
+		let lcf = fs.readFileSync(cdir);
+		if (cf != lcf) {
+			let cfj = fs.writeFileSync(cdir, cf);
+		}
+	}
+	createWindow(dbf);
+});
 
 // Quit when all windows are closed.
 app.on("window-all-closed", () => {

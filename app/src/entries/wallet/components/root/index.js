@@ -152,9 +152,12 @@ export default class Root extends PureComponent {
 		if (!(server && local)) {
 			return null;
 		}
+		let backUp = localStorage.getItem("backUp");
+
 		let l = [];
 		server.list.map((item, index) => {
 			item.isWatch = true;
+			item.isBackup = false;
 			local.map((i, m) => {
 				if (
 					item.address &&
@@ -165,6 +168,14 @@ export default class Root extends PureComponent {
 					item.isWatch = false;
 				}
 			});
+			if (backUp && JSON.parse(backUp).length > 0) {
+				JSON.parse(backUp).map((i, m) => {
+					if (item.address && i === item.address) {
+						item.isBackup = true;
+					}
+				});
+			}
+
 			l.push(item);
 		});
 		return l;
@@ -307,6 +318,12 @@ export default class Root extends PureComponent {
 																	) : (
 																		""
 																	)}
+																	{!item.isWatch &&
+																		!item.isBackup && (
+																			<span className="unback">
+																				unbackup
+																			</span>
+																		)}
 																</div>
 																<div className="wallet-address">
 																	{

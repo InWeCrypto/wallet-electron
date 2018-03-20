@@ -44,20 +44,32 @@ class Menu extends PureComponent {
 		const { curmenu, curchildmenu, lng } = this.props;
 		const language = (
 			<div>
-				<div onClick={this.changeLanguage.bind(this, "en")}>
+				<div
+					className="prov-menu"
+					onClick={this.changeLanguage.bind(this, "en")}
+				>
 					{i18n.t("language.en", lng)}
 				</div>
-				<div onClick={this.changeLanguage.bind(this, "zh")}>
+				<div
+					className="prov-menu"
+					onClick={this.changeLanguage.bind(this, "zh")}
+				>
 					{i18n.t("language.cn", lng)}
 				</div>
 			</div>
 		);
 		const netWork = (
 			<div>
-				<div onClick={this.changeNetWork.bind(this, false)}>
+				<div
+					className="prov-menu"
+					onClick={this.changeNetWork.bind(this, false)}
+				>
 					{i18n.t("network.formal", lng)}
 				</div>
-				<div onClick={this.changeNetWork.bind(this, true)}>
+				<div
+					className="prov-menu"
+					onClick={this.changeNetWork.bind(this, true)}
+				>
 					{i18n.t("network.test", lng)}
 				</div>
 			</div>
@@ -127,9 +139,11 @@ class Menu extends PureComponent {
 									{t("network.network", lng)}:
 								</span>
 								<Popover content={netWork} trigger="click">
-									{isDev
-										? t("network.test", lng)
-										: t("network.formal", lng)}
+									<span style={{ cursor: "pointer" }}>
+										{isDev
+											? t("network.test", lng)
+											: t("network.formal", lng)}
+									</span>
 								</Popover>
 							</div>
 							<div>
@@ -137,9 +151,11 @@ class Menu extends PureComponent {
 									{t("language.current", lng)}:
 								</span>
 								<Popover content={language} trigger="click">
-									{lng == "en"
-										? t("language.en", lng)
-										: t("language.cn", lng)}
+									<span style={{ cursor: "pointer" }}>
+										{lng == "en"
+											? t("language.en", lng)
+											: t("language.cn", lng)}
+									</span>
 								</Popover>
 							</div>
 						</div>

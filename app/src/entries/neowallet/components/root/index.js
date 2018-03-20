@@ -19,7 +19,8 @@ export default class Root extends PureComponent {
 			sendAmount: "",
 			sendKey: 0,
 			isShowPass: false,
-			password: ""
+			password: "",
+			backList: null
 		};
 	}
 	componentDidMount() {
@@ -33,6 +34,10 @@ export default class Root extends PureComponent {
 			});
 			this.props.getNeoWalletConversion({ id: q.id });
 		}
+		let backUp = localStorage.getItem("backUp");
+		this.setState({
+			backList: backUp ? JSON.parse(backUp) : null
+		});
 	}
 	setCopy() {
 		clipboard.writeText(this.props.neoWalletDetailInfo.address);
@@ -183,12 +188,13 @@ export default class Root extends PureComponent {
 			"0x" + (this.state.sendAmount * Math.pow(10, 8)).toString(16);
 		params.Password = res;
 		params.Gas = "0x" + 0 + "0";
-		let fee = (fee = sendAmount * Math.pow(10, 8));
+		let fee = sendAmount;
 		if (sendKey === 0) {
 			params.Asset =
 				"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b";
 			let res = await this.props.getNeoUtxo({
-				address: address
+				address: address,
+				type: "neo-asset-id"
 			});
 
 			if (res.code === 4000 && res.data && res.data.result) {
@@ -198,8 +204,9 @@ export default class Root extends PureComponent {
 		if (sendKey === 1) {
 			params.Asset =
 				"0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7";
-			let res = await this.props.getGasUtxo({
-				address: address
+			let res = await this.props.getNeoUtxo({
+				address: address,
+				type: "neo-gas-asset-id"
 			});
 			if (res.code === 4000 && res.data && res.data.result) {
 				params.Unspent = JSON.stringify(res.data.result);
@@ -219,7 +226,8 @@ export default class Root extends PureComponent {
 					Math.pow(10, neoConversion.list[sendKey - 2].decimals)
 				).toString(16);
 			let n = await this.props.getNeoUtxo({
-				address: address
+				address: address,
+				type: "neo-asset-id"
 			});
 			fee =
 				sendAmount *
@@ -236,18 +244,21 @@ export default class Root extends PureComponent {
 		}
 		let l = await this.props.sendNeoOrader(params);
 		if (l && l.data && l.txid) {
-			this.props.createOrder({
+			let order = await this.props.createOrder({
 				wallet_id: neoWalletDetailInfo.id,
 				data: l.data,
-				trade_no: sendKey > 1 ? l.txid : "0x" + l.txid,
+				trade_no: "0x".indexOf(l.txid) == -1 ? "0x" + l.txid : l.txid,
 				pay_address: neoWalletDetailInfo.address,
 				receive_address: sendAddress,
 				remark: "",
 				fee: fee + "",
 				handle_fee: "0",
-				flag: sendKey === 1 ? "GAS" : "NEO",
+				flag: "NEO",
 				asset_id: params.Asset
 			});
+			if (order && order.code === 4000) {
+				Msg.prompt(i18n.t("success.transferSuccess", this.props.lng));
+			}
 		}
 	}
 	getCommonMoney() {
@@ -309,7 +320,8 @@ export default class Root extends PureComponent {
 			number = "",
 			price_cny = "",
 			price_usd = "",
-			img = "";
+			img = "",
+			decimals = null;
 		if (key == 0) {
 			asset_id =
 				"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b";
@@ -350,6 +362,7 @@ export default class Root extends PureComponent {
 			price_usd = neoConversion.list[key - 2].gnt_category.cap
 				? neoConversion.list[key - 2].gnt_category.cap.price_usd
 				: 0;
+			decimals = neoConversion.list[key - 2].decimals;
 		}
 		let time = new Date().getTime();
 		let p = {
@@ -357,8 +370,10 @@ export default class Root extends PureComponent {
 			number: number,
 			price_cny: price_cny,
 			price_usd: price_usd,
-			img: img
+			img: img,
+			decimals: decimals
 		};
+
 		sessionStorage.setItem(`orderlist_${time}`, JSON.stringify(p));
 		toHref(
 			"orderlist",
@@ -369,6 +384,9 @@ export default class Root extends PureComponent {
 			}&timetamp=orderlist_${time}`
 		);
 	}
+	goGas() {
+		toHref("gas", `walletid=${this.props.neoWalletDetailInfo.id}`);
+	}
 	render() {
 		let {
 			lng,
@@ -377,7 +395,14 @@ export default class Root extends PureComponent {
 			neoConversion,
 			walletOrderList
 		} = this.props;
-		let { type, sendAddress, sendAmount, sendKey, isShowPass } = this.state;
+		let {
+			type,
+			sendAddress,
+			sendAmount,
+			sendKey,
+			isShowPass,
+			backList
+		} = this.state;
 		return (
 			<I18n>
 				{(t, { i18n }) => (
@@ -400,6 +425,15 @@ export default class Root extends PureComponent {
 											<div className="name">
 												{neoWalletDetailInfo &&
 													neoWalletDetailInfo.name}
+												{neoWalletDetailInfo &&
+													neoWalletDetailInfo.address &&
+													neoWalletDetailInfo.address.indexOf(
+														backList
+													) == -1 && (
+														<span className="backup">
+															unbackup
+														</span>
+													)}
 											</div>
 											<div className="address">
 												{neoWalletDetailInfo &&
@@ -462,9 +496,27 @@ export default class Root extends PureComponent {
 												Record
 											</div> */}
 										</div>
-										<div className="box-btn line-orange">
+										<div
+											className="box-btn line-orange"
+											onClick={this.goGas.bind(this)}
+										>
 											<div className="t1">Claim</div>
-											<div className="t2">2000.00GAS</div>
+											<div className="t2">
+												{neoConversion &&
+													neoConversion.record &&
+													neoConversion.record.gnt &&
+													neoConversion.record
+														.gnt[0] &&
+													neoConversion.record.gnt[0]
+														.available &&
+													Number(
+														Number(
+															neoConversion.record
+																.gnt[0]
+																.available
+														).toFixed(4)
+													)}GAS
+											</div>
 										</div>
 										<div
 											onClick={this.addAsset.bind(

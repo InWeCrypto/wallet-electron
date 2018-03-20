@@ -20,7 +20,8 @@ export default class Root extends PureComponent {
 			isShowPass: false,
 			limit: "",
 			most: "",
-			gasNum: ""
+			gasNum: "",
+			backList: null
 		};
 	}
 	componentDidMount() {
@@ -41,6 +42,10 @@ export default class Root extends PureComponent {
 			if (res.code === 4000) {
 				this.changeGastoNum(res.data.gasPrice);
 			}
+		});
+		let backUp = localStorage.getItem("backUp");
+		this.setState({
+			backList: backUp ? JSON.parse(backUp) : null
 		});
 	}
 	changeGastoNum(num) {
@@ -345,7 +350,8 @@ export default class Root extends PureComponent {
 			isShowPass,
 			limit,
 			most,
-			gasNum
+			gasNum,
+			backList
 		} = this.state;
 		return (
 			<I18n>
@@ -369,6 +375,15 @@ export default class Root extends PureComponent {
 											<div className="name">
 												{ethWalletDetailInfo &&
 													ethWalletDetailInfo.name}
+												{ethWalletDetailInfo &&
+													ethWalletDetailInfo.address &&
+													ethWalletDetailInfo.address.indexOf(
+														backList
+													) == -1 && (
+														<span className="backup">
+															unbackup
+														</span>
+													)}
 											</div>
 											<div className="address">
 												{ethWalletDetailInfo &&

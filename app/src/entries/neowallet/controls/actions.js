@@ -32,7 +32,7 @@ export const getAssetsOrderList = createAction(GETASSETORDERLIST, params => {
 });
 export const getNeoUtxo = createAction(GETNEOUTXO, params => {
 	return http.get({
-		url: `extend/getNeoUtxo?address=${params.address}&type=neo-asset-id`
+		url: `extend/getNeoUtxo?address=${params.address}&type=${params.type}`
 	});
 });
 export const getGasUtxo = createAction(GETGASUTXO, params => {

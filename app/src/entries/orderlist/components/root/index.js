@@ -100,6 +100,7 @@ export default class Root extends PureComponent {
 	render() {
 		let { lng, orderList } = this.props;
 		let { flag, info, address } = this.state;
+
 		return (
 			<I18n>
 				{(t, { i18n }) => (
@@ -174,11 +175,24 @@ export default class Root extends PureComponent {
 															item.from
 																? "-"
 																: "+"}
-															{Number(
+															{info &&
+																info.decimals &&
 																Number(
-																	item.value
-																).toFixed(4)
-															)}{" "}
+																	Number(
+																		item.value /
+																			Math.pow(
+																				10,
+																				info.decimals
+																			)
+																	).toFixed(4)
+																)}
+															{(!info ||
+																!info.decimals) &&
+																Number(
+																	Number(
+																		item.value
+																	).toFixed(4)
+																)}{" "}
 															{info && info.name}
 														</div>
 														<div
