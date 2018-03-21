@@ -10,7 +10,7 @@
 		"watch": "webpack --watch",
 		"postinstall":
 			"electron-builder install-app-dep && webpack  --progress --profile --config webpack.dll.config.js",
-		"pack": "electron-builder",
+		"pack": "electron-builder --dir",
 		"dist":
 			"webpack --config webpack.dll.config.js&& webpack && electron-builder"
 	},

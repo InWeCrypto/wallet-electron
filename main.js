@@ -16,14 +16,13 @@ const ipc = electron.ipcMain;
 const path = require("path");
 const url = require("url");
 let win;
-
 const isDev = process.mainModule.filename.indexOf("app.asar") === -1;
 
 if (isDev) {
 	//require("electron-reload")(__dirname);
 }
 
-function createWindow(dbdir) {
+function createWindow() {
 	// Create the browser window.
 	win = new BrowserWindow({
 		show: false,
@@ -36,25 +35,7 @@ function createWindow(dbdir) {
 		}
 		// titleBarStyle: "hiddenInset"
 	});
-
-	let l = path.join(__dirname, "resources/server/wallet-service");
-
-	cp.exec(`chmod +x ${l}`);
-	cp.exec(
-		path.join(
-			__dirname,
-			`resources/server/wallet-service -appdir ${dbdir}`
-		),
-		function(e, stdout, stderr) {
-			if (!e) {
-				console.log(stdout);
-				console.log(stderr);
-			}
-			if (e) {
-				console.log(e);
-			}
-		}
-	);
+	setServer();
 	if (!isDev) {
 		win.loadURL(
 			url.format({
@@ -83,6 +64,9 @@ function createWindow(dbdir) {
 			.then(name => console.log(`Added Extension:  ${name}`))
 			.catch(err => console.log("An error occurred: ", err));
 	}
+	win.once("ready-to-show", () => {
+		win.show();
+	});
 	// Emitted when the window is closed.
 	win.on("closed", () => {
 		// Dereference the window object, usually you would store windows
@@ -90,11 +74,8 @@ function createWindow(dbdir) {
 		// when you should delete the corresponding element.
 		win = null;
 	});
-
-	win.once("ready-to-show", () => {
-		win.show();
-	});
 }
+//创建文件路径
 var createFolder = function(to) {
 	var sep = path.sep;
 	var folders = path.dirname(to).split(sep);
@@ -106,40 +87,60 @@ var createFolder = function(to) {
 		}
 	}
 };
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on("ready", function() {
-	const tmdir = os.tmpdir();
-	const dbdir = tmdir + `/appdata/localdb/wallet.db`;
-	const cdir = tmdir + `/appdata/wallet.json`;
-	const dbf = tmdir + `/appdata`;
-	const isExit = fs.existsSync(dbdir);
 
+var setServer = function() {
+	const tmdir = os.tmpdir();
+	const dbdir = tmdir + `/inwecryptowallet/appdata/localdb/wallet.db`;
+	const sdir = tmdir + `/inwecryptowallet/wallet-service`;
+	const cdir = tmdir + `/inwecryptowallet/appdata/wallet.json`;
+	const dbf = tmdir + `/inwecryptowallet/appdata`;
+	const isExit = fs.existsSync(dbdir);
 	if (!isExit) {
 		let db = fs.readFileSync(
 			path.join(__dirname, "resources/server/appdata/localdb/wallet.db")
 		);
-		let cf = fs.readFileSync(
-			path.join(__dirname, "resources/server/appdata/wallet.json")
-		);
 		createFolder(dbdir);
-
 		let wdb = fs.writeFileSync(dbdir, db);
 	}
+	//复制JSON到本地目录
 	let cf = fs.readFileSync(
 		path.join(__dirname, "resources/server/appdata/wallet.json")
 	);
-	if (!fs.existsSync(cdir)) {
-		createFolder(cdir);
-		let cfj = fs.writeFileSync(cdir, cf);
-	} else {
-		let lcf = fs.readFileSync(cdir);
-		if (cf != lcf) {
-			let cfj = fs.writeFileSync(cdir, cf);
+	let cfj = fs.writeFileSync(cdir, cf);
+	//复制service到本地目录
+	let rf = fs.readFileSync(
+		path.join(__dirname, "resources/server/wallet-service")
+	);
+	let sv = fs.writeFileSync(sdir, rf);
+	runServer();
+};
+var runServer = function() {
+	const tmdir = os.tmpdir();
+	//修改文件执行权限
+	var s = fs.chmodSync(tmdir + "/inwecryptowallet/wallet-service", 0o777);
+	//数据库目录
+	var db = path.join(tmdir, "inwecryptowallet/appdata");
+	//启动服务
+	cp.exec(tmdir + "/inwecryptowallet/wallet-service -appdir " + db, function(
+		e,
+		stdout,
+		stderr
+	) {
+		if (e) {
+			console.log(e);
 		}
-	}
-	createWindow(dbf);
+		if (!e) {
+			console.log(stdout);
+			console.log(stderr);
+		}
+	});
+};
+
+// This method will be called when Electron has finished
+// initialization and is ready to create browser windows.
+// Some APIs can only be used after this event occurs.
+app.on("ready", function() {
+	createWindow();
 });
 
 // Quit when all windows are closed.
@@ -161,7 +162,10 @@ app.on("activate", () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-
+// ipc.on("test", function(err, text, title) {
+// 	let s = JSON.stringify(fs.readdirSync(path.join(__dirname, "resources")));
+// 	dialog.showErrorBox("title", s);
+// });
 ipc.on("errorMsg", function(event, text, title) {
 	dialog.showErrorBox(text, title);
 });

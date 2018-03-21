@@ -9,18 +9,18 @@
 
 <body>
     <div id="root"></div>
-
     <script type="text/javascript" src="./mainfest/vendor.dll.js"></script>
     <script>
         var electron = require("electron")
+        var fs = require('fs');
+        var os = require('os');
         var path = require('path')
+        var cp = require("child_process");
         window.ipc = electron.ipcRenderer;
         window.shell = electron.shell;
         window.dialog = electron.remote.dialog;
         window.clipboard = electron.clipboard;
-        var fs = require('fs');
-        var os = require('os');
-
+        //ipc.send('test');
     </script>
 
 
