@@ -102,7 +102,8 @@ export default {
 		amountError: "Amount cannot be greater than the balance ",
 		MiningError: "Insufficient fuel costs",
 		isSend: "You have an unfinished order",
-		valiError: "Verification fail"
+		valiError: "Verification fail",
+		hash160: "decode address error"
 	},
 	success: {
 		login: "Log in successfully",

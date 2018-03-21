@@ -41,10 +41,10 @@ var webpackConfig = {
 		rules: [
 			{
 				test: /\.js$/,
+				include: rootPath,
 				use: {
 					loader: "babel-loader"
-				},
-				include: rootPath
+				}
 			},
 			{
 				test: /\.html$/,
@@ -59,28 +59,6 @@ var webpackConfig = {
 					use: ["css-loader", "postcss-loader", "less-loader"]
 				})
 			},
-			//css模块化 暂时不开放使用工作量太大
-			// {
-			// 	test: /\.css|less$/,
-			// 	exclude: /assets/,
-			// 	use: ExtractTextPlugin.extract({
-			// 		fallback: "style-loader",
-			// 		use: [
-			// 			{
-			// 				loader: "css-loader",
-			// 				options: {
-			// 					modules: true,
-			// 					localIdentName:
-			// 						"[name]_[local]--[hash:base64:5]",
-			// 					minimize: false
-			// 				}
-			// 			},
-			// 			"postcss-loader",
-			// 			"less-loader"
-			// 		]
-			// 	})
-			// },
-
 			{
 				test: /\.(js|jsx|mjs)$/,
 				include: /node_modules\/antd/,
@@ -114,10 +92,6 @@ var webpackConfig = {
 						options: {
 							limit: 10000,
 							name: "assets/font/[name].[hash:9].[ext]"
-							// publicPath:
-							// 	process.env.NODE_ENV === "development"
-							// 		? config.dev.assetsPublicPath
-							// 		: config.build.assetsPublicPath
 						}
 					}
 				]
@@ -131,7 +105,8 @@ var webpackConfig = {
 		}),
 		new ExtractTextPlugin("assets/css/[name].css"),
 		new webpack.DllReferencePlugin({
-			manifest: require("../resources/mainfest/vendor-mainfest.json")
+			manifest: require("../resources/mainfest/vendor-mainfest.json"),
+			context: __dirname
 		}),
 		new CopyWebpackPlugin([
 			{

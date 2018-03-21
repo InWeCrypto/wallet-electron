@@ -377,8 +377,8 @@ export default class Root extends PureComponent {
 													ethWalletDetailInfo.name}
 												{ethWalletDetailInfo &&
 													ethWalletDetailInfo.address &&
-													ethWalletDetailInfo.address.indexOf(
-														backList
+													backList.indexOf(
+														ethWalletDetailInfo.address
 													) == -1 && (
 														<span className="backup">
 															unbackup

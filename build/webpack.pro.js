@@ -3,7 +3,7 @@ var config = require("../config");
 var webpackProConfig = {
 	output: {
 		path: config.outputRoot,
-		filename: "assets/js/[name].[chunkhash:9].js",
+		filename: "assets/js/[name].js",
 		chunkFilename: "assets/js/[name].js",
 		publicPath: "./",
 		sourceMapFilename: "[file].map"
@@ -11,14 +11,14 @@ var webpackProConfig = {
 	plugins: [
 		// new webpack.optimize.UglifyJsPlugin({
 		// 	output: {
-		// 		comments: false // remove all comments
+		// 		comments: false
 		// 	},
 		// 	compress: {
 		// 		warnings: false
 		// 	},
 		// 	sourceMap: true
-		// })
-		//new webpack.optimize.CommonsChunkPlugin(["pace", "message", "vendor"])
+		// }),
+		new webpack.optimize.CommonsChunkPlugin(["pace", "message"])
 	]
 };
 

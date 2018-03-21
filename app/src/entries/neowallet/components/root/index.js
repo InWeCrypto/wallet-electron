@@ -403,6 +403,7 @@ export default class Root extends PureComponent {
 			isShowPass,
 			backList
 		} = this.state;
+
 		return (
 			<I18n>
 				{(t, { i18n }) => (
@@ -426,14 +427,16 @@ export default class Root extends PureComponent {
 												{neoWalletDetailInfo &&
 													neoWalletDetailInfo.name}
 												{neoWalletDetailInfo &&
-													neoWalletDetailInfo.address &&
-													neoWalletDetailInfo.address.indexOf(
-														backList
-													) == -1 && (
-														<span className="backup">
-															unbackup
-														</span>
-													)}
+												neoWalletDetailInfo.address &&
+												backList.indexOf(
+													neoWalletDetailInfo.address
+												) == -1 ? (
+													<span className="backup">
+														unbackup
+													</span>
+												) : (
+													""
+												)}
 											</div>
 											<div className="address">
 												{neoWalletDetailInfo &&

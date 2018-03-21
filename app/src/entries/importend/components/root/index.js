@@ -56,11 +56,12 @@ export default class Root extends PureComponent {
 			[type]: e.target.value
 		});
 	}
-	saveClick() {
+	async saveClick() {
 		let params = {};
 		params.name = this.state.name;
 		params.type = this.state.type;
 		params.password = this.state.password;
+
 		if (this.state.importType === "keystore") {
 			params.json = this.state.keystore;
 		}
@@ -70,35 +71,56 @@ export default class Root extends PureComponent {
 		if (this.state.importType === "privatekey") {
 			params.wif = this.state.privatekey;
 		}
+
 		if (this.state.importType === "watch") {
-			this.props
-				.createServerWallet({
-					category_id: this.state.category_id,
-					name: this.state.name,
+			let wp = {
+				category_id: this.state.category_id,
+				name: this.state.name,
+				address: this.state.watchAddress
+			};
+			if (this.state.type == "neo") {
+				let whash = await this.props.decodeNep5({
 					address: this.state.watchAddress
-				})
-				.then(res => {
-					if (res.code === 4000) {
-						toHref("wallet");
-					}
 				});
+				if (whash && whash.length > 0) {
+					wp.address_hash160 = whash;
+				} else {
+					Msg.prompt(i18n.t("error.hash160", this.props.lng));
+					return;
+				}
+			}
+			this.props.createServerWallet(wp).then(res => {
+				if (res.code === 4000) {
+					toHref("wallet");
+				}
+			});
 			return;
 		}
-		this.props.importWallet(params).then(res => {
-			if (res.address) {
-				this.props
-					.createServerWallet({
-						category_id: this.state.category_id,
-						name: this.state.name,
-						address: res.address
-					})
-					.then(res => {
-						if (res.code === 4000) {
-							toHref("wallet");
-						}
-					});
+		let local = await this.props.importWallet(params);
+		if (local && local.address) {
+			console.log(11);
+			let p = {
+				category_id: this.state.category_id,
+				name: this.state.name,
+				address: local.address
+			};
+			if (this.state.type == "neo") {
+				let hash = await this.props.decodeNep5({
+					address: local.address
+				});
+				if (hash && hash.length > 0) {
+					p.address_hash160 = hash;
+				} else {
+					Msg.prompt(i18n.t("error.hash160", this.props.lng));
+					return;
+				}
 			}
-		});
+			this.props.createServerWallet(p).then(res => {
+				if (res.code === 4000) {
+					toHref("wallet");
+				}
+			});
+		}
 	}
 	render() {
 		let { lng } = this.props;

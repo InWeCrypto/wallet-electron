@@ -235,7 +235,7 @@ export default class Root extends PureComponent {
 				asset_id = item.gnt_category.address;
 				img = item.gnt_category.icon;
 				name = item.gnt_category.name;
-				number = getNumFromStr(item.balance);
+				number = getNumFromStr(item.balance, item.decimals);
 				decimals = item.decimals;
 			}
 		}
@@ -480,6 +480,11 @@ export default class Root extends PureComponent {
 																<div
 																	key={index}
 																	className="wallet-item ui center"
+																	onClick={this.goOrderList.bind(
+																		this,
+																		index +
+																			1
+																	)}
 																>
 																	<img
 																		className="icon"

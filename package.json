@@ -4,22 +4,26 @@
 	"description": "inwewallet",
 	"main": "main.js",
 	"scripts": {
-		"dev": "concurrently \"webpack  --config webpack.config.js --progress --profile&& electron .\" \"cross-env NODE_ENV=production webpack --watch\"",
+		"dev":
+			"concurrently \"webpack  --config webpack.config.js --progress --profile&& electron .\" \"webpack --watch\"",
 		"compile": "webpack --config webpack.config.js --progress --profile",
 		"watch": "webpack --watch",
-		"postinstall": "electron-builder install-app-dep && webpack  --progress --profile --config webpack.dll.config.js",
-		"pack": "electron-builder --dir",
-		"dist": "webpack --config webpack.dll.config.js && electron-builder",
-		"dist1": "webpack --config webpack.dll.config.js&& webpack && electron-builder"
+		"postinstall":
+			"electron-builder install-app-dep && webpack  --progress --profile --config webpack.dll.config.js",
+		"pack": "electron-builder",
+		"dist":
+			"webpack --config webpack.dll.config.js&& webpack && electron-builder"
 	},
 	"build": {
 		"appId": "com.electron.inwecrypto",
-		"files": [
-			"./main.js",
-			"resources/index.html",
-			"resources/"
-		],
+		"copyright": "InWe",
+		"files": ["./main.js", "resources/index.html", "resources/"],
+		"mac": {
+			"icon": "./favicon.icns"
+		},
 		"dmg": {
+			"title": "InWeWallet",
+			"icon": "./favicon.icns",
 			"contents": [
 				{
 					"x": 130,
@@ -34,14 +38,11 @@
 			]
 		},
 		"linux": {
-			"target": [
-				"AppImage",
-				"deb"
-			]
+			"target": ["AppImage", "deb"]
 		},
 		"win": {
 			"target": "nsis",
-			"icon": "build/icon.ico"
+			"icon": "/favicon.ico"
 		}
 	},
 	"dependencies": {

@@ -5,7 +5,7 @@ var webpackDevConfig = {
 	output: {
 		path: config.outputRoot,
 		filename: "[name].js",
-		chunkFilename: "[name].[chunkhash:9].chunk.js",
+		chunkFilename: "[name].chunk.js",
 		sourceMapFilename: "[file].map"
 	},
 	plugins: [

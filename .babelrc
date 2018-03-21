@@ -2,7 +2,14 @@
 	"presets": ["env", "react", "es2015", "stage-0"],
 	"ignore": ["./react/dist/ueditor/"],
 	"plugins": [
-		"transform-runtime",
+		[
+			"transform-runtime",
+			{
+				"helpers": false,
+				"polyfill": false,
+				"regenerator": true
+			}
+		],
 		"transform-decorators-legacy",
 		"syntax-dynamic-import",
 		"transform-class-properties",

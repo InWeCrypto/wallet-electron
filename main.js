@@ -27,16 +27,19 @@ function createWindow(dbdir) {
 	// Create the browser window.
 	win = new BrowserWindow({
 		show: false,
-		width: 1440,
-		height: 900,
-		minHeight: 900,
-		minWidth: 1440,
+		width: 1240,
+		height: 700,
+		minHeight: 700,
+		minWidth: 1240,
 		webPreferences: {
 			webSecurity: false
 		}
 		// titleBarStyle: "hiddenInset"
 	});
-	//const p = path.join(__dirname, "resources/server/appdata");
+
+	let l = path.join(__dirname, "resources/server/wallet-service");
+
+	cp.exec(`chmod +x ${l}`);
 	cp.exec(
 		path.join(
 			__dirname,
@@ -48,7 +51,7 @@ function createWindow(dbdir) {
 				console.log(stderr);
 			}
 			if (e) {
-				console.log("23232");
+				console.log(e);
 			}
 		}
 	);
@@ -60,6 +63,7 @@ function createWindow(dbdir) {
 				slashes: true
 			})
 		);
+		win.webContents.openDevTools();
 	} else {
 		win.loadURL(
 			url.format({
