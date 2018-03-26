@@ -1,6 +1,6 @@
 {
 	"name": "InWeCrypto",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "InWeCrypto",
 	"main": "main.js",
 	"scripts": {
@@ -12,7 +12,7 @@
 			"electron-builder install-app-dep && webpack  --progress --profile --config webpack.dll.config.js",
 		"pack:mac": "electron-builder --win",
 		"pack:win": "electron-builder --darwin",
-		"pack": "electron-builder -mw",
+		"pack": "rm -rf ./dist && electron-builder -mw",
 		"pack:all":
 			"webpack --config webpack.dll.config.js&& webpack && electron-builder -mw"
 	},

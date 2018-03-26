@@ -57,6 +57,15 @@ export default class Root extends PureComponent {
 			isFocus: false
 		});
 	}
+	openWeb(item) {
+		let isD = JSON.parse(localStorage.getItem("isDev"));
+		let url = isD
+			? "http://testnet.inwecrypto.com/projectdetail?c_id="
+			: "http://inwecrypto.com/projectdetail?c_id=";
+		ipc.send("openWeb", {
+			url: `${url}${item.id}`
+		});
+	}
 	render() {
 		let { lng, searchHistory, searchResult } = this.props;
 		let { keyword, isShowResult } = this.state;
@@ -120,6 +129,10 @@ export default class Root extends PureComponent {
 															<li
 																key={idex}
 																className="search-cell"
+																onClick={this.openWeb.bind(
+																	this,
+																	item
+																)}
 															>
 																<div className="imgbox">
 																	<img

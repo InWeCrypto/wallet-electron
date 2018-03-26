@@ -73,28 +73,28 @@ class Menu extends PureComponent {
 								</div>
 							</li> */}
 							<li className={curmenu == "wallet" ? "cur" : ""}>
-								<div className="menu-wallet menuicon" />
-								<div className="menu-name">
-									<NavLink
-										to={{
-											pathname: "/wallet"
-										}}
-									>
+								<NavLink
+									to={{
+										pathname: "/wallet"
+									}}
+								>
+									<div className="menu-wallet menuicon" />
+									<div className="menu-name">
 										{t("menu.wallet", lng)}
-									</NavLink>
-								</div>
+									</div>
+								</NavLink>
 							</li>
 							<li className={curmenu == "project" ? "cur" : ""}>
-								<div className="menu-project menuicon" />
-								<div className="menu-name">
-									<NavLink
-										to={{
-											pathname: "/project"
-										}}
-									>
+								<NavLink
+									to={{
+										pathname: "/project"
+									}}
+								>
+									<div className="menu-project menuicon" />
+									<div className="menu-name">
 										{t("menu.project", lng)}
-									</NavLink>
-								</div>
+									</div>
+								</NavLink>
 							</li>
 							{/* <li
 								className={curmenu == "myfollowup" ? "cur" : ""}

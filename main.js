@@ -383,77 +383,6 @@ if (process.platform === "darwin") {
 	});
 }
 
-function createWindow() {
-	var windowParam = {
-		show: false,
-		width: 1240,
-		height: 700,
-		minHeight: 700,
-		minWidth: 1240,
-		webPreferences: {
-			webSecurity: false
-		}
-	};
-	if (!isDev) {
-		windowParam.titleBarStyle = "hiddenInset";
-	}
-	win = new BrowserWindow(windowParam);
-	if (!isDev) {
-		win.loadURL(
-			url.format({
-				pathname: path.join(__dirname, "resources/index.html"),
-				protocol: "file:",
-				slashes: true
-			})
-		);
-	} else {
-		win.loadURL(
-			url.format({
-				pathname: path.join(__dirname, "resources/index.html"),
-				protocol: "file:",
-				slashes: true
-			})
-		);
-		win.webContents.openDevTools();
-
-		const {
-			default: installExtension,
-			REACT_DEVELOPER_TOOLS,
-			REDUX_DEVTOOLS
-		} = require("electron-devtools-installer");
-		installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS])
-			.then(name => console.log(`Added Extension:  ${name}`))
-			.catch(err => console.log("An error occurred: ", err));
-	}
-	//lng = getLanguage();
-
-	win.once("ready-to-show", () => {
-		win.show();
-		if (!isDev) {
-			updateHandler();
-		}
-		win.webContents.send("changeLng", lng);
-		if (lng == "zh") {
-			template[template.length - 2].submenu[0].submenu[0].checked = true;
-			template[template.length - 2].submenu[0].submenu[1].checked = false;
-		} else {
-			template[template.length - 2].submenu[0].submenu[0].checked = false;
-			template[template.length - 2].submenu[0].submenu[1].checked = true;
-		}
-
-		const menu = Menu.buildFromTemplate(template);
-		Menu.setApplicationMenu(menu);
-	});
-	// Emitted when the window is closed.
-	win.on("closed", () => {
-		// Dereference the window object, usually you would store windows
-		// in an array if your app supports multi windows, this is the time
-		// when you should delete the corresponding element.
-		win = null;
-		service.kill();
-	});
-}
-
 var setServer = function() {
 	const tmdir = os.tmpdir();
 	const dbdir = tmdir + `/inwecryptowallet/appdata/localdb/wallet.db`;
@@ -498,23 +427,17 @@ var runServer = async function() {
 	createWindow();
 };
 
-// Some APIs can only be used after this event occurs.
-app.on("ready", function() {
-	setServer();
-});
-// Quit when all windows are closed.
-app.on("window-all-closed", () => {
-	if (process.platform !== "darwin") {
-		app.quit();
-	}
-});
-app.on("activate", () => {
-	if (win === null) {
-		setServer();
-	}
-});
 ipc.on("errorMsg", function(event, text, title) {
 	dialog.showErrorBox(text, title);
+});
+ipc.on("openWeb", function(event, arg) {
+	if (!arg || !arg.url || arg.url.length <= 0) {
+		dislog.showErrorBox(
+			lng == "en" ? "the url is not found" : "没有链接地址"
+		);
+		return;
+	}
+	electron.shell.openExternal(`${arg.url}`);
 });
 //初始化显示正式网络
 ipc.on("loadNetwok", function(event, type) {
@@ -607,7 +530,11 @@ var updateHandler = function() {
 		//sendStatus(`Download progress ${JSON.stringify(progressObj)}`);
 	});
 	autoUpdater.on("update-downloaded", (ev, info) => {
-		sendStatus(`you has an update,the app will restart to update`);
+		sendStatus(
+			lng == "en"
+				? `you has an update,the app will restart to update`
+				: "你有一个更新，请重启"
+		);
 		setTimeout(function() {
 			autoUpdater.quitAndInstall();
 			createWindow();
@@ -618,4 +545,85 @@ var updateHandler = function() {
 		autoUpdater.checkForUpdates();
 	}, 1000);
 };
-//菜单c
+function createWindow() {
+	var windowParam = {
+		show: false,
+		width: 1240,
+		height: 700,
+		minHeight: 700,
+		minWidth: 1240,
+		webPreferences: {
+			webSecurity: false
+		}
+	};
+	if (!isDev) {
+		windowParam.titleBarStyle = "hiddenInset";
+	}
+	win = new BrowserWindow(windowParam);
+	if (!isDev) {
+		win.loadURL(
+			url.format({
+				pathname: path.join(__dirname, "resources/index.html"),
+				protocol: "file:",
+				slashes: true
+			})
+		);
+	} else {
+		win.loadURL(
+			url.format({
+				pathname: path.join(__dirname, "resources/index.html"),
+				protocol: "file:",
+				slashes: true
+			})
+		);
+		win.webContents.openDevTools();
+
+		const {
+			default: installExtension,
+			REACT_DEVELOPER_TOOLS,
+			REDUX_DEVTOOLS
+		} = require("electron-devtools-installer");
+		installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS])
+			.then(name => console.log(`Added Extension:  ${name}`))
+			.catch(err => console.log("An error occurred: ", err));
+	}
+
+	win.once("ready-to-show", () => {
+		win.show();
+		if (!isDev) {
+			updateHandler();
+		}
+		win.webContents.send("changeLng", lng);
+		if (lng == "zh") {
+			template[template.length - 2].submenu[0].submenu[0].checked = true;
+			template[template.length - 2].submenu[0].submenu[1].checked = false;
+		} else {
+			template[template.length - 2].submenu[0].submenu[0].checked = false;
+			template[template.length - 2].submenu[0].submenu[1].checked = true;
+		}
+
+		const menu = Menu.buildFromTemplate(template);
+		Menu.setApplicationMenu(menu);
+	});
+	// Emitted when the window is closed.
+	win.on("closed", () => {
+		win = null;
+		service.kill();
+	});
+}
+
+// Some APIs can only be used after this event occurs.
+app.on("ready", function() {
+	setServer();
+});
+// Quit when all windows are closed.
+app.on("window-all-closed", () => {
+	if (process.platform !== "darwin") {
+		app.quit();
+	}
+});
+app.on("activate", () => {
+	if (win === null) {
+		setServer();
+	}
+});
