@@ -295,7 +295,10 @@ export default class Root extends PureComponent {
 														watchInfo.name}
 												</span>
 												<span className="watch">
-													watch
+													{t(
+														"walletDetail.watch",
+														lng
+													)}
 												</span>
 											</div>
 											<div className="address">
@@ -319,7 +322,7 @@ export default class Root extends PureComponent {
 													1
 												)()}
 											>
-												Asset
+												{t("walletDetail.asset", lng)}
 											</div>
 											<div
 												onClick={this.changeNav.bind(
@@ -331,9 +334,9 @@ export default class Root extends PureComponent {
 													2
 												)()}
 											>
-												Receive
+												{t("walletDetail.receive", lng)}
 											</div>
-											<div
+											{/* <div
 												onClick={this.changeNav.bind(
 													this,
 													3
@@ -343,14 +346,17 @@ export default class Root extends PureComponent {
 													3
 												)()}
 											>
-												Record
-											</div>
+												{t("walletDetail.record", lng)}
+											</div> */}
 										</div>
 										{walletType &&
 											walletType == 2 && (
 												<div className="box-btn disabled">
 													<div className="t1">
-														Claim
+														{t(
+															"walletDetail.claim",
+															lng
+														)}
 													</div>
 													<div className="t2">
 														{walletList &&
@@ -382,7 +388,7 @@ export default class Root extends PureComponent {
 												watchInfo
 											)}
 										>
-											Add Asset
+											{t("walletDetail.addAsset", lng)}
 										</div>
 									</div>
 									{type === 1 &&
@@ -818,7 +824,10 @@ export default class Root extends PureComponent {
 												>
 													<i className="icon-copy" />
 													<span className="t">
-														Copy Address
+														{t(
+															"walletDetail.copy",
+															lng
+														)}
 													</span>
 												</span>
 												<span
@@ -829,13 +838,16 @@ export default class Root extends PureComponent {
 												>
 													<i className="icon-print" />
 													<span className="t">
-														Print Address
+														{t(
+															"walletDetail.print",
+															lng
+														)}
 													</span>
 												</span>
 											</div>
 										</div>
 									)}
-									{type === 3 && (
+									{/* {type === 3 && (
 										<div className="box6">
 											<div className="record-item ui center">
 												<img
@@ -850,7 +862,7 @@ export default class Root extends PureComponent {
 												</div>
 											</div>
 										</div>
-									)}
+									)} */}
 								</div>
 							</div>
 						</div>

@@ -21,7 +21,7 @@ export default class Root extends PureComponent {
 			limit: "",
 			most: "",
 			gasNum: "",
-			backList: null
+			backList: []
 		};
 	}
 	componentDidMount() {
@@ -45,7 +45,7 @@ export default class Root extends PureComponent {
 		});
 		let backUp = localStorage.getItem("backUp");
 		this.setState({
-			backList: backUp ? JSON.parse(backUp) : null
+			backList: backUp ? JSON.parse(backUp) : []
 		});
 	}
 	changeGastoNum(num) {
@@ -377,11 +377,13 @@ export default class Root extends PureComponent {
 													ethWalletDetailInfo.name}
 												{ethWalletDetailInfo &&
 													ethWalletDetailInfo.address &&
+													backList &&
+													backList.length > 0 &&
 													backList.indexOf(
 														ethWalletDetailInfo.address
 													) == -1 && (
 														<span className="backup">
-															unbackup
+															{t("unbackup", lng)}
 														</span>
 													)}
 											</div>
@@ -404,7 +406,7 @@ export default class Root extends PureComponent {
 													1
 												)()}
 											>
-												Asset
+												{t("walletDetail.asset", lng)}
 											</div>
 											<div
 												onClick={this.changeNav.bind(
@@ -416,7 +418,7 @@ export default class Root extends PureComponent {
 													2
 												)()}
 											>
-												Send
+												{t("walletDetail.send", lng)}
 											</div>
 											<div
 												onClick={this.changeNav.bind(
@@ -428,7 +430,7 @@ export default class Root extends PureComponent {
 													3
 												)()}
 											>
-												Receive
+												{t("walletDetail.receive", lng)}
 											</div>
 											{/* <div
 												onClick={this.changeNav.bind(
@@ -450,7 +452,7 @@ export default class Root extends PureComponent {
 												ethWalletDetailInfo
 											)}
 										>
-											Add Asset
+											{t("walletDetail.addAsset", lng)}
 										</div>
 									</div>
 									{type === 1 && (
@@ -617,7 +619,10 @@ export default class Root extends PureComponent {
 										<div className="box4">
 											<div className="send-item">
 												<div className="send-name">
-													Sent to Address
+													{t(
+														"walletDetail.sendTitle",
+														lng
+													)}
 												</div>
 												<div className="input-box">
 													<input
@@ -634,10 +639,16 @@ export default class Root extends PureComponent {
 											<div className="send-item">
 												<div className="send-name ui">
 													<div className="f1">
-														Amount
+														{t(
+															"walletDetail.amount",
+															lng
+														)}
 													</div>
 													<div className="t1">
-														Available：
+														{t(
+															"walletDetail.available",
+															lng
+														)}：
 														{selectKey == 0 &&
 															ethConversion &&
 															ethConversion.list &&
@@ -768,14 +779,22 @@ export default class Root extends PureComponent {
 											<div className="send-item">
 												<div className="send-name ui">
 													<div className="f1">
-														Mining Fee
+														{t(
+															"walletDetail.miniFee",
+															lng
+														)}
 													</div>
 													<div className="t2">
 														{gasNum} ETH
 													</div>
 												</div>
 												<div className="ui center slideritem">
-													<div>Slow</div>
+													<div>
+														{t(
+															"walletDetail.slow",
+															lng
+														)}
+													</div>
 													<div className="f1 sliderbox">
 														<Slider
 															onChange={this.sliderChange.bind(
@@ -789,7 +808,12 @@ export default class Root extends PureComponent {
 															)}
 														/>
 													</div>
-													<div>Quick</div>
+													<div>
+														{t(
+															"walletDetail.quick",
+															lng
+														)}
+													</div>
 												</div>
 											</div>
 											<div className="btn-box">
@@ -799,7 +823,10 @@ export default class Root extends PureComponent {
 														this
 													)}
 												>
-													Send
+													{t(
+														"walletDetail.send",
+														lng
+													)}
 												</span>
 											</div>
 										</div>
@@ -807,7 +834,10 @@ export default class Root extends PureComponent {
 									{type === 3 && (
 										<div className="box5">
 											<div className="receive-title">
-												Recive ETH/ ERC 20 Token
+												{t(
+													"walletDetail.reviceTitleEth",
+													lng
+												)}
 											</div>
 											<div className="qcodebox">
 												<div
@@ -824,7 +854,10 @@ export default class Root extends PureComponent {
 												>
 													<i className="icon-copy" />
 													<span className="t">
-														Copy Address
+														{t(
+															"walletDetail.copy",
+															lng
+														)}
 													</span>
 												</span>
 												<span
@@ -835,13 +868,16 @@ export default class Root extends PureComponent {
 												>
 													<i className="icon-print" />
 													<span className="t">
-														Print Address
+														{t(
+															"walletDetail.print",
+															lng
+														)}
 													</span>
 												</span>
 											</div>
 										</div>
 									)}
-									{type === 4 && (
+									{/* {type === 4 && (
 										<div className="box6">
 											<div className="record-item ui center">
 												<img
@@ -856,7 +892,7 @@ export default class Root extends PureComponent {
 												</div>
 											</div>
 										</div>
-									)}
+									)} */}
 								</div>
 							</div>
 							{isShowPass && (

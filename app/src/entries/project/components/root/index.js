@@ -84,7 +84,7 @@ export default class Root extends PureComponent {
 								{!isShowResult && (
 									<div className="tags-box">
 										<div className="tagsname">
-											Everyone in the search
+											{t("project.t1", lng)}
 										</div>
 										<ul className="tags">
 											{searchHistory &&

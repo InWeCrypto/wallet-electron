@@ -20,7 +20,7 @@ export default class Root extends PureComponent {
 			sendKey: 0,
 			isShowPass: false,
 			password: "",
-			backList: null
+			backList: []
 		};
 	}
 	componentDidMount() {
@@ -36,7 +36,7 @@ export default class Root extends PureComponent {
 		}
 		let backUp = localStorage.getItem("backUp");
 		this.setState({
-			backList: backUp ? JSON.parse(backUp) : null
+			backList: backUp ? JSON.parse(backUp) : []
 		});
 	}
 	setCopy() {
@@ -428,11 +428,13 @@ export default class Root extends PureComponent {
 													neoWalletDetailInfo.name}
 												{neoWalletDetailInfo &&
 												neoWalletDetailInfo.address &&
+												backList &&
+												backList.length > 0 &&
 												backList.indexOf(
 													neoWalletDetailInfo.address
 												) == -1 ? (
 													<span className="backup">
-														unbackup
+														{t("unbackup", lng)}
 													</span>
 												) : (
 													""
@@ -460,7 +462,7 @@ export default class Root extends PureComponent {
 													1
 												)()}
 											>
-												Asset
+												{t("walletDetail.asset", lng)}
 											</div>
 											<div
 												onClick={this.changeNav.bind(
@@ -472,7 +474,7 @@ export default class Root extends PureComponent {
 													2
 												)()}
 											>
-												Send
+												{t("walletDetail.send", lng)}
 											</div>
 											<div
 												onClick={this.changeNav.bind(
@@ -484,7 +486,7 @@ export default class Root extends PureComponent {
 													3
 												)()}
 											>
-												Receive
+												{t("walletDetail.receive", lng)}
 											</div>
 											{/* <div
 												onClick={this.changeNav.bind(
@@ -503,7 +505,9 @@ export default class Root extends PureComponent {
 											className="box-btn line-orange"
 											onClick={this.goGas.bind(this)}
 										>
-											<div className="t1">Claim</div>
+											<div className="t1">
+												{t("walletDetail.claim", lng)}
+											</div>
 											<div className="t2">
 												{neoConversion &&
 													neoConversion.record &&
@@ -528,7 +532,7 @@ export default class Root extends PureComponent {
 											)}
 											className="box-btn line-orange"
 										>
-											Add Asset
+											{t("walletDetail.addAsset", lng)}
 										</div>
 									</div>
 									{type === 1 && (
@@ -749,7 +753,10 @@ export default class Root extends PureComponent {
 										<div className="box4">
 											<div className="send-item">
 												<div className="send-name">
-													Sent to Address
+													{t(
+														"walletDetail.sendTitle",
+														lng
+													)}
 												</div>
 												<div className="input-box">
 													<input
@@ -765,10 +772,16 @@ export default class Root extends PureComponent {
 											<div className="send-item">
 												<div className="send-name ui">
 													<div className="f1">
-														Amount
+														{t(
+															"walletDetail.amount",
+															lng
+														)}
 													</div>
 													<div className="t1">
-														Available：{" "}
+														{t(
+															"walletDetail.available",
+															lng
+														)}：{" "}
 														{sendKey == 0 && (
 															<span>
 																{neoConversion &&
@@ -910,7 +923,10 @@ export default class Root extends PureComponent {
 														this
 													)}
 												>
-													Send
+													{t(
+														"walletDetail.quick",
+														lng
+													)}
 												</span>
 											</div>
 										</div>
@@ -918,7 +934,10 @@ export default class Root extends PureComponent {
 									{type === 3 && (
 										<div className="box5">
 											<div className="receive-title">
-												Recive NEP-5 Token
+												{t(
+													"walletDetail.reviceTitleNeo",
+													lng
+												)}
 											</div>
 											<div className="qcodebox">
 												<div
@@ -935,7 +954,10 @@ export default class Root extends PureComponent {
 												>
 													<i className="icon-copy" />
 													<span className="t">
-														Copy Address
+														{t(
+															"walletDetail.copy",
+															lng
+														)}
 													</span>
 												</span>
 												<span
@@ -946,13 +968,16 @@ export default class Root extends PureComponent {
 												>
 													<i className="icon-print" />
 													<span className="t">
-														Print Address
+														{t(
+															"walletDetail.print",
+															lng
+														)}
 													</span>
 												</span>
 											</div>
 										</div>
 									)}
-									{type === 4 && (
+									{/* {type === 4 && (
 										<div className="box6">
 											<div className="record-item ui center">
 												<img
@@ -967,7 +992,7 @@ export default class Root extends PureComponent {
 												</div>
 											</div>
 										</div>
-									)}
+									)} */}
 								</div>
 							</div>
 						</div>

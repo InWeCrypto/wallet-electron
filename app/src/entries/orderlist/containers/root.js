@@ -5,10 +5,16 @@ import * as actions from "../controls/actions";
 import * as globalActions from "../../../globalactions";
 export default withRouter(
 	connect(
-		({ globData: { userInfo, lng }, orderlist: { orderList } }) => ({
+		({
+			globData: { userInfo, lng },
+			orderlist: { orderList, minBlock, currentBlockNumber, blockSecond }
+		}) => ({
 			userInfo,
 			lng,
-			orderList
+			orderList,
+			minBlock,
+			currentBlockNumber,
+			blockSecond
 		}),
 		{
 			...actions,

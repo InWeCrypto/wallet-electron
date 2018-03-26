@@ -9,7 +9,7 @@
 			"runtimeExecutable":
 				"${workspaceFolder}/node_modules/.bin/electron",
 			"program": "${workspaceFolder}/main.js",
-			"protocol": "legacy"
+			"protocol": "inspector"
 		}
 	]
 }

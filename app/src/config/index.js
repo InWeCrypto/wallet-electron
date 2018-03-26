@@ -1,5 +1,4 @@
 export const requestUrl = isLocal => {
-	console.log(JSON.parse(localStorage.getItem("isDev")));
 	var isDev = JSON.parse(localStorage.getItem("isDev")) ? true : false;
 	if (isDev) {
 		switch (isLocal) {

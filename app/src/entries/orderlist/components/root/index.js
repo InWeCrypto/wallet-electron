@@ -18,6 +18,7 @@ export default class Root extends PureComponent {
 		super(props);
 		this.state = {
 			type: null,
+			flag: null,
 			wallet_id: null,
 			asset_id: null,
 			address: null,
@@ -45,21 +46,7 @@ export default class Root extends PureComponent {
 			set.info = JSON.parse(sessionStorage.getItem(`${q.timetamp}`));
 		}
 		if (q.wallet_id && q.flag && q.asset_id) {
-			this.props
-				.getStartOrderList({
-					flag: q.flag,
-					wallet_id: q.wallet_id,
-					asset_id: q.asset_id,
-					size: 20,
-					page: this.state.page
-				})
-				.then(res => {
-					if (res.code === 4000) {
-						this.setState({
-							page: this.state.page + 1
-						});
-					}
-				});
+			this.rePageLoad(q);
 		}
 		this.setState(set);
 		let box = document.querySelector("#listBox");
@@ -70,6 +57,30 @@ export default class Root extends PureComponent {
 			},
 			false
 		);
+		this.props.getMinBlock();
+		this.props.getBlockSecond();
+	}
+	rePageLoad(obj) {
+		let q = obj ? obj : this.state;
+		this.props
+			.getStartOrderList({
+				flag: q.flag,
+				wallet_id: q.wallet_id,
+				asset_id: q.asset_id,
+				size: this.props.orderList ? this.props.orderList.length : 20,
+				page: this.state.page
+			})
+			.then(res => {
+				if (res.code === 4000) {
+					this.setState({
+						page: this.state.page + 1
+					});
+				}
+			});
+
+		if (q.flag == "eth") {
+			this.props.getBlockNumber();
+		}
 	}
 	getPageData() {
 		let box = document.querySelector("#listBox");
@@ -94,13 +105,57 @@ export default class Root extends PureComponent {
 				});
 		}
 	}
+	getStateEth(item) {
+		let itemB = item.block_number;
+		let confirmAt = item.confirm_at;
+		let curB = this.props.currentBlockNumber
+			? this.props.currentBlockNumber.value
+			: 0;
+
+		let minB = this.props.minBlock ? this.props.minBlock.min_block_num : 0;
+
+		let stateB = itemB + minB - curB;
+
+		if (stateB < 0 && (!confirmAt || confirmAt.length <= 0)) {
+			return "fail";
+		}
+		if (stateB <= 0 && confirmAt && confirmAt.length > 0) {
+			return "success";
+		}
+		if (stateB > 0 && stateB < minB) {
+			return minB - stateB;
+		}
+	}
 	showMoreClick(idx) {
 		this.props.changeShow(idx);
 	}
 	render() {
-		let { lng, orderList } = this.props;
+		let { lng, orderList, minBlock } = this.props;
 		let { flag, info, address } = this.state;
-
+		if (
+			flag == "eth" &&
+			orderList &&
+			orderList.list &&
+			orderList.list.length > 0
+		) {
+			orderList.list.map((item, index) => {
+				item.state = this.getStateEth(item);
+				item.percent = null;
+				if (item.state == "fail") {
+					item.stateText = i18n.t("orderList.fail", lng);
+					return;
+				}
+				if (item.state == "success") {
+					item.stateText = i18n.t("orderList.success", lng);
+					return;
+				}
+				item.stateText = i18n.t("orderList.pending", lng);
+				item.percent =
+					item.state / (minBlock ? minBlock.min_block_num : 0) * 100 +
+					"%";
+				return;
+			});
+		}
 		return (
 			<I18n>
 				{(t, { i18n }) => (
@@ -243,11 +298,16 @@ export default class Root extends PureComponent {
 												>
 													<div className="list-base ui">
 														<div className="state">
-															{item.confirm_at &&
-															item.confirm_at
-																.length > 0
-																? "Success"
-																: "Pending"}
+															{item.stateText}
+															{item.percent !=
+																null && (
+																<span>
+																	&nbsp;({
+																		item.state
+																	}/{minBlock &&
+																		minBlock.min_block_num})
+																</span>
+															)}
 														</div>
 														<div className="f1">
 															Txid:{item.hash}
@@ -304,9 +364,17 @@ export default class Root extends PureComponent {
 															Memo:{item.remark}
 														</div>
 													</div>
-													<div className="confirm-line">
-														<div className="confirm-inline" />
-													</div>
+													{item.percent != null && (
+														<div className="confirm-line">
+															<div
+																style={{
+																	width:
+																		item.percent
+																}}
+																className="confirm-inline"
+															/>
+														</div>
+													)}
 												</div>
 											);
 										})}

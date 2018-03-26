@@ -35,9 +35,7 @@ export default class Root extends PureComponent {
 					});
 			}
 		});
-		this.props.getLocalList().then(res => {
-			console.log(res);
-		});
+		this.props.getLocalList();
 	}
 	goDetail(item) {
 		if (!item) {

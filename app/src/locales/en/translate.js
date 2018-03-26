@@ -44,6 +44,11 @@ export default {
 		next: "Next",
 		changeHot: "Import Hot"
 	},
+	backKey: {
+		title: "Keystore",
+		export: "Export in file",
+		copy: "Copy"
+	},
 	mnemonic: {
 		title: "Mnemonic",
 		textarea: "Please use space to separate the mnemonic words",
@@ -87,6 +92,11 @@ export default {
 		wallet: "Wallet",
 		myfollowup: "My Follow-up"
 	},
+	orderList: {
+		fail: "Fail",
+		success: "Success",
+		pending: "Pending"
+	},
 	error: {
 		emailEmpty: "Email address cannot be empty",
 		passwordEmpty: "Password cannot be empty",
@@ -124,6 +134,16 @@ export default {
 		next: "Next",
 		confirm: "Comfirm"
 	},
+	managerWallet: {
+		title: "Manager wallet setting",
+		h2: "backup your wallet",
+		mnemonic: "Mnemonic",
+		keystore: "Keystore",
+		cancel: "cancel",
+		comfirm: "comfirm",
+		delete: "Delete",
+		place: "Enter your password"
+	},
 	language: {
 		current: "Language",
 		en: "English",
@@ -141,5 +161,29 @@ export default {
 		frozen: "Frozen Gas",
 		btn2: "Unfreeze",
 		place: "Enter your password"
+	},
+	unbackup: "unbackup",
+	walletDetail: {
+		watch: "watch",
+		asset: "Assets",
+		send: "Send",
+		receive: "Receive",
+		record: "Record",
+		claim: "Claim",
+		addAsset: "Add Asset",
+		copy: "Copy Address",
+		print: "Print Address",
+		sendTitle: "Send to Address",
+		amount: "Amount",
+		available: "Available",
+		miniFee: "Mining Fee",
+		slow: "Slow",
+		quick: "Quick",
+		reviceTitleEth: "Recive ETH/ ERC 20 Token",
+		reviceTitleNeo: "Recive NEO/NEP-5 Token",
+		printPDF: "print to PDF"
+	},
+	project: {
+		t1: "Everyone in the search"
 	}
 };

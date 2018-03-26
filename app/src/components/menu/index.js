@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { I18n } from "react-i18next";
 import { Popover } from "antd";
 import memberImg from "#/tou_ico.png";
-import { setLocalItem, toHref } from "../../utils/util";
+import { setLocalItem, getLocalItem, toHref } from "../../utils/util";
 
 import "./index.less";
 
@@ -14,16 +14,19 @@ class Menu extends PureComponent {
 	}
 	componentDidMount() {
 		let isDev = localStorage.getItem("isDev");
-
-		if (isDev && isDev != "false") {
-			this.setState({
-				isDev: true
-			});
-		} else {
-			this.setState({
-				isDev: false
-			});
+		let userInfo = getLocalItem("userInfo");
+		let set = {};
+		if (userInfo) {
+			set.userInfo = JSON.parse(userInfo.data);
 		}
+		if (isDev && isDev != "false") {
+			set.isDev = true;
+		} else {
+			set.isDev = false;
+		}
+		this.setState({
+			...set
+		});
 	}
 	changeLanguage(type) {
 		setLocalItem("language", type);
@@ -40,47 +43,22 @@ class Menu extends PureComponent {
 		}
 	}
 	render() {
-		const { user, isDev } = this.state;
+		const { user, isDev, userInfo } = this.state;
 		const { curmenu, curchildmenu, lng } = this.props;
-		const language = (
-			<div>
-				<div
-					className="prov-menu"
-					onClick={this.changeLanguage.bind(this, "en")}
-				>
-					{i18n.t("language.en", lng)}
-				</div>
-				<div
-					className="prov-menu"
-					onClick={this.changeLanguage.bind(this, "zh")}
-				>
-					{i18n.t("language.cn", lng)}
-				</div>
-			</div>
-		);
-		const netWork = (
-			<div>
-				<div
-					className="prov-menu"
-					onClick={this.changeNetWork.bind(this, false)}
-				>
-					{i18n.t("network.formal", lng)}
-				</div>
-				<div
-					className="prov-menu"
-					onClick={this.changeNetWork.bind(this, true)}
-				>
-					{i18n.t("network.test", lng)}
-				</div>
-			</div>
-		);
 
 		return (
 			<I18n>
 				{(t, { i18n }) => (
 					<div className="menu-left">
 						<p className="title">InWeWallet</p>
-						<img className="user-logo" src={memberImg} alt="" />
+						<img
+							className="user-logo"
+							src={
+								userInfo && userInfo.img
+									? userInfo.img
+									: memberImg
+							}
+						/>
 						<ul className="menuList">
 							{/* <li className={curmenu == "dashboard" ? "cur" : ""}>
 								<div className="menu-dashboard menuicon" />
@@ -133,32 +111,6 @@ class Menu extends PureComponent {
 								</div>
 							</li> */}
 						</ul>
-						<div className="setting">
-							<div>
-								<span className="name">
-									{t("network.network", lng)}:
-								</span>
-								<Popover content={netWork} trigger="click">
-									<span style={{ cursor: "pointer" }}>
-										{isDev
-											? t("network.test", lng)
-											: t("network.formal", lng)}
-									</span>
-								</Popover>
-							</div>
-							<div>
-								<span className="name">
-									{t("language.current", lng)}:
-								</span>
-								<Popover content={language} trigger="click">
-									<span style={{ cursor: "pointer" }}>
-										{lng == "en"
-											? t("language.en", lng)
-											: t("language.cn", lng)}
-									</span>
-								</Popover>
-							</div>
-						</div>
 					</div>
 				)}
 			</I18n>

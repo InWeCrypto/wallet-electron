@@ -87,7 +87,9 @@ export default class Root extends PureComponent {
 						<div className="content-container">
 							<HeaderNav />
 							<div className="content keystore-content">
-								<div className="title">Keystore</div>
+								<div className="title">
+									{t("backKey.title", lng)}
+								</div>
 								<div className="cokBox">
 									<div
 										className="titleImg "
@@ -106,9 +108,10 @@ export default class Root extends PureComponent {
 												<img
 													className="img"
 													src={imgfile}
-													alt=""
 												/>
-												<p>Export in file</p>
+												<p>
+													{t("backKey.export", lng)}
+												</p>
 											</div>
 										</div>
 										<div className="right btn-cell">
@@ -123,9 +126,8 @@ export default class Root extends PureComponent {
 												<img
 													className="img"
 													src={imgcopy}
-													alt=""
 												/>
-												<p>Copy</p>
+												<p>{t("backKey.copy", lng)}</p>
 											</div>
 										</div>
 									</div>

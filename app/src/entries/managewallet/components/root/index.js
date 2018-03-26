@@ -113,9 +113,11 @@ export default class Root extends PureComponent {
 							<HeaderNav />
 							<div className="content managewallet-content">
 								<div className="title">
-									Manager wallet setting
+									{t("managerWallet.title", lng)}
 								</div>
-								<div className="title2">backup your wallet</div>
+								<div className="title2">
+									{t("managerWallet.h2", lng)}
+								</div>
 								<div className="hotarea-box">
 									<div
 										className="hotarea inMnemonic"
@@ -124,11 +126,16 @@ export default class Root extends PureComponent {
 										<div className="imgbox">
 											<img className="img" src={icon1} />
 										</div>
-										<div className="name">Mnemonic</div>
+										<div className="name">
+											{t("managerWallet.mnemonic", lng)}
+										</div>
 										{isShowInputBox && (
 											<div className="hideBox">
 												<input
-													placeholder="Enter your password"
+													placeholder={t(
+														"managerWallet.place",
+														lng
+													)}
 													type="password"
 													value={password}
 													onChange={this.passwordChange.bind(
@@ -142,7 +149,10 @@ export default class Root extends PureComponent {
 															this
 														)}
 													>
-														cancel
+														{t(
+															"managerWallet.cancel",
+															lng
+														)}
 													</button>
 													<button
 														className="comfirm"
@@ -150,7 +160,10 @@ export default class Root extends PureComponent {
 															this
 														)}
 													>
-														comfirm
+														{t(
+															"managerWallet.comfirm",
+															lng
+														)}
 													</button>
 												</div>
 											</div>
@@ -167,20 +180,20 @@ export default class Root extends PureComponent {
 												alt=""
 											/>
 										</div>
-										<div className="name">Keystore</div>
+										<div className="name">
+											{t("managerWallet.keystore", lng)}
+										</div>
 									</div>
 									<div
 										className="hotarea"
 										onClick={this.deleteWallet.bind(this)}
 									>
 										<div className="imgbox">
-											<img
-												className="img"
-												src={icon3}
-												alt=""
-											/>
+											<img className="img" src={icon3} />
 										</div>
-										<div className="name">Delete</div>
+										<div className="name">
+											{t("managerWallet.delete", lng)}
+										</div>
 									</div>
 								</div>
 							</div>

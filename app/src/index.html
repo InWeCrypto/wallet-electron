@@ -20,7 +20,30 @@
         window.shell = electron.shell;
         window.dialog = electron.remote.dialog;
         window.clipboard = electron.clipboard;
-        //ipc.send('test');
+        ipc.on('changeNetwork', function (event, type) {
+            let network = localStorage.getItem('isDev')
+            if (type == 'test' && (!network || !JSON.parse(network))) {
+                localStorage.setItem('isDev', true);
+                toHref('/');
+            }
+            if (type == 'formal' && network && JSON.parse(network)) {
+                localStorage.setItem('isDev', false);
+                toHref('/');
+            }
+        });
+        ipc.on('changeLng', function (event, type) {
+            let lng = getLocalItem('language');
+            if (lng && lng.data != type) {
+                setLocalItem('language', type);
+                window.location.reload();
+            }
+        })
+        let network = localStorage.getItem('isDev')
+        if (!network || !JSON.parse(network)) {
+            ipc.send('loadNetwok', 'formal')
+        } else {
+            ipc.send('loadNetwok', 'test')
+        }
     </script>
 
 

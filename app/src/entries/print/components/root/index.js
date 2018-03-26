@@ -53,13 +53,13 @@ export default class Root extends PureComponent {
 							className="printbtn button-green"
 							onClick={this.printPDFClick.bind(this)}
 						>
-							print to PDF
+							{t("walletDetail.printPDF", lng)}
 						</span>
 						<span
 							className="printbtn button-green"
 							onClick={this.printClick.bind(this)}
 						>
-							print
+							{t("walletDetail.print", lng)}
 						</span>
 					</div>
 				)}

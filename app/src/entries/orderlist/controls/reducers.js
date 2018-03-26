@@ -1,5 +1,12 @@
 import { handleActions } from "redux-actions";
-import { GETORDERLIST, CHANGESHOW, GETSTARTORDER } from "./actions";
+import {
+	GETORDERLIST,
+	CHANGESHOW,
+	GETSTARTORDER,
+	MINBLOCK,
+	GETBLOCKUMBER,
+	GETBLOCKSECOND
+} from "./actions";
 
 export const orderList = handleActions(
 	{
@@ -26,6 +33,24 @@ export const orderList = handleActions(
 			});
 			return { list };
 		}
+	},
+	null
+);
+export const minBlock = handleActions(
+	{
+		[MINBLOCK]: (state, { payload }) => payload
+	},
+	null
+);
+export const currentBlockNumber = handleActions(
+	{
+		[GETBLOCKUMBER]: (state, { payload }) => payload
+	},
+	null
+);
+export const blockSecond = handleActions(
+	{
+		[GETBLOCKSECOND]: (state, { payload }) => payload
 	},
 	null
 );
