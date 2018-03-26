@@ -61,7 +61,11 @@ export default class Root extends PureComponent {
 		params.name = this.state.name;
 		params.type = this.state.type;
 		params.password = this.state.password;
-
+		let reg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{6,16}$/;
+		if (!reg.test(params.password)) {
+			Msg.prompt(i18n.t("error.passError", lng));
+			return;
+		}
 		if (this.state.importType === "keystore") {
 			params.json = this.state.keystore;
 		}
@@ -98,7 +102,6 @@ export default class Root extends PureComponent {
 		}
 		let local = await this.props.importWallet(params);
 		if (local && local.address) {
-			console.log(11);
 			let p = {
 				category_id: this.state.category_id,
 				name: this.state.name,

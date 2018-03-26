@@ -93,8 +93,29 @@ export default class Root extends PureComponent {
 		});
 	}
 	createWalletClick(idx) {
-		let { walletTypes } = this.props;
+		let { walletTypes, lng } = this.props;
 		let { itemList } = this.state;
+		let name = itemList[idx].walletName;
+		let type = walletTypes[idx].name.toLowerCase();
+		let password = itemList[idx].password;
+		let repassword = itemList[idx].repeatPassword;
+		if (!name || name.length <= 0) {
+			Msg.prompt(i18n.t("error.nameEmpty", lng));
+			return;
+		}
+		if (!password || password.length <= 0) {
+			Msg.prompt(i18n.t("error.nameEmpty", lng));
+			return;
+		}
+		let reg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{6,16}$/;
+		if (!reg.test(password)) {
+			Msg.prompt(i18n.t("error.passError", lng));
+			return;
+		}
+		if (password != repassword) {
+			Msg.prompt(i18n.t("error.resetPass", lng));
+			return;
+		}
 		let params = {
 			name: itemList[idx].walletName,
 			type: walletTypes[idx].name.toLowerCase(),

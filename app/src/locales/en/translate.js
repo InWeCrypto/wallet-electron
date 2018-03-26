@@ -98,6 +98,7 @@ export default {
 		pending: "Pending"
 	},
 	error: {
+		nameEmpty: "Name address cannot be empty",
 		emailEmpty: "Email address cannot be empty",
 		passwordEmpty: "Password cannot be empty",
 		rpasswordEmpty: "Repeating password cannot be empty",
