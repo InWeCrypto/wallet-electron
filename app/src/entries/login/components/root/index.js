@@ -25,7 +25,20 @@ export default class Root extends PureComponent {
 			registerTime: 60
 		};
 	}
-	componentDidMount() {}
+	componentDidMount() {
+		document.addEventListener(
+			"keypress",
+			e => {
+				if (e.keyCode == 13 && this.state.type == "signin") {
+					this.signInClick();
+				}
+			},
+			false
+		);
+	}
+	componentWillUnmount() {
+		document.removeEventListener("keypress", () => {}, false);
+	}
 	goFroget() {
 		this.setState({
 			type: "forget"

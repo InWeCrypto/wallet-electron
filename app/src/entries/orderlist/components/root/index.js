@@ -236,9 +236,14 @@ export default class Root extends PureComponent {
 															)}
 														</div>
 														<div className="order">
+															{}
 															{address ==
-															item.from
-																? "-"
+																item.from &&
+															address == item.to
+																? address ==
+																  item.from
+																	? ""
+																	: "-"
 																: "+"}
 															{info &&
 																info.decimals &&
@@ -329,8 +334,13 @@ export default class Root extends PureComponent {
 														</div>
 														<div className="order">
 															{address ==
-															item.pay_address
-																? "-"
+																item.pay_address &&
+															address ==
+																item.receive_address
+																? address ==
+																  item.pay_address
+																	? ""
+																	: "-"
 																: "+"}
 															{Number(
 																Number(

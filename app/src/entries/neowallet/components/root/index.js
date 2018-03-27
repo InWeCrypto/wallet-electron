@@ -58,7 +58,7 @@ export default class Root extends PureComponent {
 				width: n, //设置宽高
 				height: n
 			});
-			qrcode.makeCode(JSON.stringify(str));
+			qrcode.makeCode(str);
 		}, 10);
 	}
 	navCur(idx) {

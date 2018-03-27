@@ -10,7 +10,20 @@ class ConfirmPassword extends PureComponent {
 			password: ""
 		};
 	}
-
+	componentDidMount() {
+		document.addEventListener(
+			"keypress",
+			e => {
+				if (e.keyCode == 13) {
+					this.confirmClick();
+				}
+			},
+			false
+		);
+	}
+	componentWillUnmount() {
+		document.removeEventListener("keypress", () => {}, false);
+	}
 	inputChange(e) {
 		this.setState({
 			password: e.target.value
