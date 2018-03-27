@@ -243,11 +243,12 @@ export default class Root extends PureComponent {
 			}
 		}
 		let l = await this.props.sendNeoOrader(params);
+
 		if (l && l.data && l.txid) {
 			let order = await this.props.createOrder({
 				wallet_id: neoWalletDetailInfo.id,
 				data: l.data,
-				trade_no: "0x".indexOf(l.txid) == -1 ? "0x" + l.txid : l.txid,
+				trade_no: l.txid.indexOf("0x") == -1 ? "0x" + l.txid : l.txid,
 				pay_address: neoWalletDetailInfo.address,
 				receive_address: sendAddress,
 				remark: "",
@@ -410,7 +411,7 @@ export default class Root extends PureComponent {
 					<div className="main-box">
 						<Menu curmenu="wallet" lng={lng} />
 						<div className="content-container">
-							<HeaderNav />
+							<HeaderNav history={this.props.history} />
 							<div className="content">
 								<div className="wallet neowallet">
 									<div className="box1 ui center">
@@ -924,7 +925,7 @@ export default class Root extends PureComponent {
 													)}
 												>
 													{t(
-														"walletDetail.quick",
+														"walletDetail.send",
 														lng
 													)}
 												</span>

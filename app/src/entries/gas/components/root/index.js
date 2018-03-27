@@ -103,7 +103,7 @@ export default class Root extends PureComponent {
 					wallet_id: walletInfo.id,
 					data: l.data,
 					trade_no:
-						"0x".indexOf(l.txid) == -1 ? "0x" + l.txid : l.txid,
+						l.txid.indexOf("0x") == -1 ? "0x" + l.txid : l.txid,
 					pay_address: walletInfo.address,
 					receive_address: walletInfo.address,
 					remark: "",
@@ -178,7 +178,7 @@ export default class Root extends PureComponent {
 			let total = await this.props.createGasOrder({
 				wallet_id: walletInfo.id,
 				data: l.data,
-				trade_no: "0x".indexOf(l.txid) == -1 ? "0x" + l.txid : l.txid,
+				trade_no: l.txid.indexOf("0x") == -1 ? "0x" + l.txid : l.txid,
 				pay_address: walletInfo.address,
 				receive_address: walletInfo.address,
 				remark: "",
@@ -204,7 +204,7 @@ export default class Root extends PureComponent {
 					<div className="main-box gas">
 						<Menu curmenu="wallet" lng={lng} />
 						<div className="content-container">
-							<HeaderNav />
+							<HeaderNav history={this.props.history} />
 							<div className="content gas-content">
 								<div className="title">
 									{t("gas.title", lng)}

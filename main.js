@@ -336,7 +336,7 @@ let template = [
 ];
 
 if (process.platform === "darwin") {
-	const name = "InWe-Wallet";
+	const name = "InWeCrypto";
 	template.unshift({
 		label: name,
 		submenu: [
@@ -577,7 +577,6 @@ function createWindow() {
 			})
 		);
 		win.webContents.openDevTools();
-
 		const {
 			default: installExtension,
 			REACT_DEVELOPER_TOOLS,
@@ -587,7 +586,6 @@ function createWindow() {
 			.then(name => console.log(`Added Extension:  ${name}`))
 			.catch(err => console.log("An error occurred: ", err));
 	}
-
 	win.once("ready-to-show", () => {
 		win.show();
 		if (!isDev) {

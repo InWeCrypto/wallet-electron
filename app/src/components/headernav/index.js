@@ -16,16 +16,16 @@ class Demo extends PureComponent {
 		// console.log(query);
 	}
 	goBack() {
-		window.history.go(-1);
+		this.props.history.go(-1);
 	}
 	goNext() {
-		window.history.go(1);
+		this.props.history.go(1);
 	}
 	goHome() {
 		toHref("wallet");
 	}
 	refreash() {
-		window.location.reload();
+		this.props.history.go(0);
 	}
 	render() {
 		const {} = this.props;

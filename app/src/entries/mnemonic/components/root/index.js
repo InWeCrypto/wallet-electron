@@ -16,6 +16,7 @@ export default class Root extends PureComponent {
 			isfirstPage: true,
 			chooseArray: [],
 			showArr: [],
+			waitChoose: [],
 			address: ""
 		};
 	}
@@ -39,7 +40,10 @@ export default class Root extends PureComponent {
 				.then(res => {
 					if (res.length > 0) {
 						this.setState({
-							showArr: this.shuffle(res)
+							showArr: res,
+							waitChoose: this.shuffle(
+								JSON.parse(JSON.stringify(res))
+							)
 						});
 					}
 				});
@@ -47,10 +51,12 @@ export default class Root extends PureComponent {
 	}
 	chooseItem(idx) {
 		let list = this.state.chooseArray;
-		let arr = this.props.walletInfo;
+		let arr = this.state.waitChoose;
+		let newa = arr.splice(idx, 1);
 		if (arr && arr.length > 0) {
 			this.setState({
-				chooseArray: [...list, arr[idx]]
+				waitChoose: [...arr],
+				chooseArray: [...list, newa]
 			});
 		}
 	}
@@ -78,9 +84,11 @@ export default class Root extends PureComponent {
 	}
 	removeChoose(idx) {
 		let arr = JSON.parse(JSON.stringify(this.state.chooseArray));
-		arr.splice(idx, 1);
+		let waitChoose = this.state.waitChoose;
+		let newa = arr.splice(idx, 1);
 		this.setState({
-			chooseArray: arr
+			chooseArray: arr,
+			waitChoose: [...waitChoose, newa]
 		});
 	}
 	shuffle(input) {
@@ -95,7 +103,7 @@ export default class Root extends PureComponent {
 
 	render() {
 		let { lng, walletInfo } = this.props;
-		let { isfirstPage, chooseArray, showArr } = this.state;
+		let { isfirstPage, chooseArray, showArr, waitChoose } = this.state;
 
 		return (
 			<I18n>
@@ -103,7 +111,7 @@ export default class Root extends PureComponent {
 					<div className="main-box mnemonic mnemonic1">
 						<Menu curmenu="wallet" lng={lng} />
 						<div className="content-container">
-							<HeaderNav />
+							<HeaderNav history={this.props.history} />
 							<div className="content mnemonic-content">
 								<div className="title">
 									{t("backupMnemonic.title", lng)}
@@ -182,25 +190,30 @@ export default class Root extends PureComponent {
 									) : (
 										<div className="boxq2">
 											<div className="q2title">
-												待选助记词
+												{t(
+													"backupMnemonic.waitChoose",
+													lng
+												)}
 											</div>
 											<ul className="helpList">
-												{showArr &&
-													showArr.length > 0 &&
-													showArr.map((val, idx) => {
-														return (
-															<li
-																key={idx}
-																className="helpWord"
-																onClick={this.chooseItem.bind(
-																	this,
-																	idx
-																)}
-															>
-																{val}
-															</li>
-														);
-													})}
+												{waitChoose &&
+													waitChoose.length > 0 &&
+													waitChoose.map(
+														(val, idx) => {
+															return (
+																<li
+																	key={idx}
+																	className="helpWord"
+																	onClick={this.chooseItem.bind(
+																		this,
+																		idx
+																	)}
+																>
+																	{val}
+																</li>
+															);
+														}
+													)}
 											</ul>
 											<button
 												className="next"

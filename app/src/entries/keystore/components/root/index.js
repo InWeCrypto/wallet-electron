@@ -85,7 +85,7 @@ export default class Root extends PureComponent {
 					<div className="main-box keystore">
 						<Menu curmenu="wallet" lng={lng} />
 						<div className="content-container">
-							<HeaderNav />
+							<HeaderNav history={this.props.history} />
 							<div className="content keystore-content">
 								<div className="title">
 									{t("backKey.title", lng)}

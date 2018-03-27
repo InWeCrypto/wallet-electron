@@ -50,7 +50,7 @@ export default class Root extends PureComponent {
 					<div className="main-box mnemonic">
 						<Menu curmenu="wallet" lng={lng} />
 						<div className="content-container">
-							<HeaderNav />
+							<HeaderNav history={this.props.history} />
 							<div className="content mnemonic-content">
 								<div className="title">
 									Manager wallet setting

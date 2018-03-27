@@ -43,7 +43,7 @@ export default class Root extends PureComponent {
 					<div className="main-box">
 						<Menu curmenu="wallet" lng={lng} />
 						<div className="content-container">
-							<HeaderNav />
+							<HeaderNav history={this.props.history} />
 							<div className="content">
 								<div className="importwatch">
 									<div className="title">

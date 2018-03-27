@@ -20,7 +20,7 @@ export default class Root extends PureComponent {
 					<div className="main-box transationdetail">
 						<Menu curmenu="wallet" lng={lng} />
 						<div className="content-container">
-							<HeaderNav />
+							<HeaderNav history={this.props.history} />
 							<div className="content transation-content">
 								<div className="transation-title">
 									Transaction Details

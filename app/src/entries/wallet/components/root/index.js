@@ -311,7 +311,10 @@ export default class Root extends PureComponent {
 																	{item.name}
 																	{item.isWatch ? (
 																		<span className="watch">
-																			watch
+																			{t(
+																				"watch",
+																				lng
+																			)}
 																		</span>
 																	) : (
 																		""
@@ -319,7 +322,10 @@ export default class Root extends PureComponent {
 																	{!item.isWatch &&
 																		!item.isBackup && (
 																			<span className="unback">
-																				unbackup
+																				{t(
+																					"unbackup",
+																					lng
+																				)}
 																			</span>
 																		)}
 																</div>

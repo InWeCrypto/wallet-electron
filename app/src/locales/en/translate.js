@@ -49,6 +49,7 @@ export default {
 		export: "Export in file",
 		copy: "Copy"
 	},
+
 	mnemonic: {
 		title: "Mnemonic",
 		textarea: "Please use space to separate the mnemonic words",
@@ -133,6 +134,7 @@ export default {
 		step2: "2、请务必将以下助记词抄录下来，并且保存在安全的地方",
 		step3: "3、助记词一旦备份成功，此备份步骤不会再出现",
 		next: "Next",
+		waitChoose: "待选助记词",
 		confirm: "Comfirm"
 	},
 	managerWallet: {
@@ -164,6 +166,7 @@ export default {
 		place: "Enter your password"
 	},
 	unbackup: "unbackup",
+	watch: "watch",
 	walletDetail: {
 		watch: "watch",
 		asset: "Assets",

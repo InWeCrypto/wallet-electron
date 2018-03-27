@@ -77,7 +77,7 @@ export default class Root extends PureComponent {
 					<div className="main-box addasset">
 						<Menu curmenu="wallet" lng={lng} />
 						<div className="content-container">
-							<HeaderNav />
+							<HeaderNav history={this.props.history} />
 							<div className="content addasset-content">
 								<div className="title">Add Asset</div>
 								<div className="cokBox">

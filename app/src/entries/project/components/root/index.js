@@ -75,7 +75,7 @@ export default class Root extends PureComponent {
 					<div className="main-box project">
 						<Menu curmenu="project" lng={lng} />
 						<div className="content-container">
-							<HeaderNav />
+							<HeaderNav history={this.props.history} />
 							<div className="content project-content">
 								<div className="title Hide">
 									Search the project you want to know
