@@ -409,14 +409,14 @@ var setServer = function() {
 	let sv = fs.writeFileSync(sdir, rf);
 	runServer();
 };
-var runServer = async function() {
+var runServer = function() {
 	var tmdir = os.tmpdir();
 	//修改文件执行权限
 	var s = fs.chmodSync(tmdir + "/inwecryptowallet/wallet-service", 0o777);
 	//数据库目录
 	var db = path.join(tmdir, "inwecryptowallet/appdata");
 	//启动服务
-	service = await cp.exec(
+	service = cp.exec(
 		tmdir + "/inwecryptowallet/wallet-service -appdir " + db,
 		function(err) {
 			if (err) {
