@@ -1,12 +1,4 @@
-const {
-	app,
-	BrowserWindow,
-	shell,
-	dialog,
-	Menu,
-	Tray
-	//autoUpdater
-} = require("electron");
+const { app, BrowserWindow, shell, dialog, Menu, Tray } = require("electron");
 const autoUpdater = require("electron-updater").autoUpdater;
 const electron = require("electron");
 const cp = require("child_process");
@@ -14,7 +6,6 @@ const os = require("os");
 const fs = require("fs");
 const log = require("electron-log");
 const ipc = electron.ipcMain;
-
 const path = require("path");
 const url = require("url");
 //创建文件路径
@@ -386,7 +377,12 @@ if (process.platform === "darwin") {
 var setServer = function() {
 	const tmdir = os.tmpdir();
 	const dbdir = tmdir + `/inwecryptowallet/appdata/localdb/wallet.db`;
-	const sdir = tmdir + `/inwecryptowallet/wallet-service`;
+	let sdir = "";
+	if (process.platform == "darwin") {
+		sdir = tmdir + `/inwecryptowallet/wallet-service`;
+	} else {
+		sdir = tmdir + `/inwecryptowallet/wallet-service.ext`;
+	}
 	const cdir = tmdir + `/inwecryptowallet/appdata/wallet.json`;
 	const dbf = tmdir + `/inwecryptowallet/appdata`;
 	const isExit = fs.existsSync(dbdir);
@@ -403,9 +399,16 @@ var setServer = function() {
 	);
 	let cfj = fs.writeFileSync(cdir, cf);
 	//复制service到本地目录
-	let rf = fs.readFileSync(
-		path.join(__dirname, "resources/server/wallet-service")
-	);
+	let rf;
+	if (process.platform == "darwin") {
+		rf = fs.readFileSync(
+			path.join(__dirname, "resources/server/wallet-service")
+		);
+	} else {
+		rf = fs.readFileSync(
+			path.join(__dirname, "resources/server/wallet-service.ext")
+		);
+	}
 	let sv = fs.writeFileSync(sdir, rf);
 	runServer();
 };
