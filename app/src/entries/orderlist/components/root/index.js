@@ -26,6 +26,7 @@ export default class Root extends PureComponent {
 			page: 0,
 			isGetting: false
 		};
+		this.timer = null;
 	}
 	componentDidMount() {
 		let q = getQuery(window.location.href);
@@ -60,15 +61,21 @@ export default class Root extends PureComponent {
 		this.props.getMinBlock();
 		this.props.getBlockSecond();
 	}
+	componentWillUnmount() {
+		clearTimeout(this.timer);
+	}
 	rePageLoad(obj) {
 		let q = obj ? obj : this.state;
+		clearTimeout(this.timer);
 		this.props
 			.getStartOrderList({
 				flag: q.flag,
 				wallet_id: q.wallet_id,
 				asset_id: q.asset_id,
-				size: this.props.orderList ? this.props.orderList.length : 20,
-				page: this.state.page
+				size: this.props.orderList
+					? this.props.orderList.list.length
+					: 20,
+				page: 0
 			})
 			.then(res => {
 				if (res.code === 4000) {
@@ -80,6 +87,9 @@ export default class Root extends PureComponent {
 
 		if (q.flag == "eth") {
 			this.props.getBlockNumber();
+			this.timer = setTimeout(() => {
+				this.rePageLoad();
+			}, this.props.blockSecond ? this.props.blockSecond.bps : 30000);
 		}
 	}
 	getPageData() {

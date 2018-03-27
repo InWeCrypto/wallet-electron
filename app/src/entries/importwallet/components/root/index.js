@@ -58,6 +58,9 @@ export default class Root extends PureComponent {
 												walletTypes.length > 0 &&
 												walletTypes.map(
 													(item, index) => {
+														if (index == 2) {
+															return null;
+														}
 														return (
 															<div
 																key={index}
