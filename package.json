@@ -63,10 +63,9 @@
 		"concurrently": "^3.5.1",
 		"dsmorse-gridster": "^0.7.0",
 		"echarts": "^3.8.5",
-
 		"electron-log": "^2.2.14",
 		"electron-packager": "^10.1.2",
-		"electron-updater": "2.20.2",
+		"electron-updater": "^2.20.2",
 		"flux-standard-action": "^2.0.0",
 		"history": "^4.7.2",
 		"i18next": "^10.2.2",
