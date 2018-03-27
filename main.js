@@ -1,12 +1,4 @@
-const {
-	app,
-	BrowserWindow,
-	shell,
-	dialog,
-	Menu,
-	Tray
-	//autoUpdater
-} = require("electron");
+const { app, BrowserWindow, shell, dialog, Menu, Tray } = require("electron");
 const autoUpdater = require("electron-updater").autoUpdater;
 const electron = require("electron");
 const cp = require("child_process");
@@ -14,7 +6,6 @@ const os = require("os");
 const fs = require("fs");
 const log = require("electron-log");
 const ipc = electron.ipcMain;
-
 const path = require("path");
 const url = require("url");
 //创建文件路径
