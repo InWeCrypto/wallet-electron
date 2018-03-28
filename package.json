@@ -7,10 +7,6 @@
 		"dev": "concurrently \"webpack  --config webpack.config.js --progress --profile&& electron .\" \"webpack --watch\"",
 		"compile": "webpack --config webpack.config.js --progress --profile",
 		"watch": "webpack --watch",
-<<<<<<< HEAD
-		"postinstall": "electron-builder install-app-dep && webpack  --progress --profile --config webpack.dll.config.js",
-=======
->>>>>>> 3aff5407dfb4f0021641b34e8902909c6294f8ef
 		"pack:mac": "electron-builder --win",
 		"pack:win": "electron-builder --darwin",
 		"pack": "rm -rf ./dist && electron-builder -mw",
