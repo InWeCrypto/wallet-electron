@@ -376,15 +376,18 @@ if (process.platform === "darwin") {
 
 var setServer = function() {
 	const tmdir = os.tmpdir();
-	const dbdir = tmdir + `/inwecryptowallet/appdata/localdb/wallet.db`;
+	const dbdir = path.join(
+		tmdir,
+		`/inwecryptowallet/appdata/localdb/wallet.db`
+	);
 	let sdir = "";
 	if (process.platform == "darwin") {
-		sdir = tmdir + `/inwecryptowallet/wallet-service`;
+		sdir = path.join(tmdir, `/inwecryptowallet/wallet-service`);
 	} else {
-		sdir = tmdir + `/inwecryptowallet/wallet-service.exe`;
+		sdir = path.join(tmdir, `/inwecryptowallet/wallet-service.exe`);
 	}
-	const cdir = tmdir + `/inwecryptowallet/appdata/wallet.json`;
-	const dbf = tmdir + `/inwecryptowallet/appdata`;
+	const cdir = path.join(tmdir, `/inwecryptowallet/appdata/wallet.json`);
+	const dbf = path.join(tmdir, `/inwecryptowallet/appdata`);
 	const isExit = fs.existsSync(dbdir);
 	if (!isExit) {
 		let db = fs.readFileSync(
@@ -416,10 +419,13 @@ var runServer = async function() {
 	var tmdir = os.tmpdir();
 	//修改文件执行权限
 	if (process.platform == "darwin") {
-		var s = fs.chmodSync(tmdir + "/inwecryptowallet/wallet-service", 0o777);
+		var s = fs.chmodSync(
+			path.join(tmdir, "/inwecryptowallet/wallet-service"),
+			0o777
+		);
 	} else {
 		var s = fs.chmodSync(
-			tmdir + "/inwecryptowallet/wallet-service.exe",
+			path.join(tmdir, "/inwecryptowallet/wallet-service.exe"),
 			0o777
 		);
 	}
