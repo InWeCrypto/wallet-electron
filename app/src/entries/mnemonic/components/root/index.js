@@ -50,15 +50,13 @@ export default class Root extends PureComponent {
 		}
 	}
 	chooseItem(idx) {
-		let list = this.state.chooseArray;
-		let arr = this.state.waitChoose;
+		let list = JSON.parse(JSON.stringify(this.state.chooseArray));
+		let arr = JSON.parse(JSON.stringify(this.state.waitChoose));
 		let newa = arr.splice(idx, 1);
-		if (arr && arr.length > 0) {
-			this.setState({
-				waitChoose: [...arr],
-				chooseArray: [...list, newa]
-			});
-		}
+		this.setState({
+			waitChoose: [...arr],
+			chooseArray: [...list, ...newa]
+		});
 	}
 	//下一步
 	nextPage() {
@@ -88,7 +86,7 @@ export default class Root extends PureComponent {
 		let newa = arr.splice(idx, 1);
 		this.setState({
 			chooseArray: arr,
-			waitChoose: [...waitChoose, newa]
+			waitChoose: [...waitChoose, ...newa]
 		});
 	}
 	shuffle(input) {
@@ -146,7 +144,6 @@ export default class Root extends PureComponent {
 										<div className="showWordBox">
 											<ul className="wordUl">
 												{chooseArray &&
-													chooseArray.length > 0 &&
 													chooseArray.map(
 														(val, idx) => {
 															return (
@@ -197,7 +194,6 @@ export default class Root extends PureComponent {
 											</div>
 											<ul className="helpList">
 												{waitChoose &&
-													waitChoose.length > 0 &&
 													waitChoose.map(
 														(val, idx) => {
 															return (

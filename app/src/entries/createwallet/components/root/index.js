@@ -14,24 +14,11 @@ export default class Root extends PureComponent {
 			itemList: []
 		};
 		this.groupClose = this.groupClose.bind(this);
+		this.createClick = this.createClick.bind(this);
 	}
 	componentDidMount() {
 		document.addEventListener("click", this.groupClose, false);
-		document.addEventListener(
-			"keypress",
-			e => {
-				let idx = null;
-				this.state.itemList.map((item, index) => {
-					if (item.isShow) {
-						idx = index;
-					}
-				});
-				if (e.keyCode == 13 && idx != null) {
-					this.createWalletClick(idx);
-				}
-			},
-			false
-		);
+		document.addEventListener("keypress", this.createClick, false);
 		if (!this.props.walletTypes) {
 			this.props.getWalletType().then(res => {
 				if (res.code === 4000) {
@@ -66,7 +53,18 @@ export default class Root extends PureComponent {
 	}
 	componentWillUnmount() {
 		document.removeEventListener("click", this.groupClose, false);
-		document.removeEventListener("keypress", () => {}, false);
+		document.removeEventListener("keypress", this.createClick, false);
+	}
+	createClick(e) {
+		let idx = null;
+		this.state.itemList.map((item, index) => {
+			if (item.isShow) {
+				idx = index;
+			}
+		});
+		if (e.keyCode == 13 && idx != null) {
+			this.createWalletClick(idx);
+		}
 	}
 	groupClose() {
 		let list = this.state.itemList.map(item => {

@@ -37,7 +37,15 @@ export default class Root extends PureComponent {
 		);
 	}
 	componentWillUnmount() {
-		document.removeEventListener("keypress", () => {}, false);
+		document.removeEventListener(
+			"keypress",
+			e => {
+				if (e.keyCode == 13 && this.state.type == "signin") {
+					this.signInClick();
+				}
+			},
+			false
+		);
 	}
 	goFroget() {
 		this.setState({

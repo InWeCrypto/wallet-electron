@@ -381,7 +381,7 @@ var setServer = function() {
 	if (process.platform == "darwin") {
 		sdir = tmdir + `/inwecryptowallet/wallet-service`;
 	} else {
-		sdir = tmdir + `/inwecryptowallet/wallet-service.ext`;
+		sdir = tmdir + `/inwecryptowallet/wallet-service.exe`;
 	}
 	const cdir = tmdir + `/inwecryptowallet/appdata/wallet.json`;
 	const dbf = tmdir + `/inwecryptowallet/appdata`;
@@ -406,7 +406,7 @@ var setServer = function() {
 		);
 	} else {
 		rf = fs.readFileSync(
-			path.join(__dirname, "resources/server/wallet-service.ext")
+			path.join(__dirname, "resources/server/wallet-service.exe")
 		);
 	}
 	let sv = fs.writeFileSync(sdir, rf);
@@ -415,7 +415,14 @@ var setServer = function() {
 var runServer = async function() {
 	var tmdir = os.tmpdir();
 	//修改文件执行权限
-	var s = fs.chmodSync(tmdir + "/inwecryptowallet/wallet-service", 0o777);
+	if (process.platform == "darwin") {
+		var s = fs.chmodSync(tmdir + "/inwecryptowallet/wallet-service", 0o777);
+	} else {
+		var s = fs.chmodSync(
+			tmdir + "/inwecryptowallet/wallet-service.exe",
+			0o777
+		);
+	}
 	//数据库目录
 	var db = path.join(tmdir, "inwecryptowallet/appdata");
 	//启动服务
@@ -551,10 +558,10 @@ var updateHandler = function() {
 function createWindow() {
 	var windowParam = {
 		show: false,
-		width: 1240,
-		height: 700,
-		minHeight: 700,
-		minWidth: 1240,
+		width: 1080,
+		height: 800,
+		minHeight: 1080,
+		minWidth: 800,
 		webPreferences: {
 			webSecurity: false
 		}
@@ -608,8 +615,8 @@ function createWindow() {
 	});
 	// Emitted when the window is closed.
 	win.on("closed", () => {
-		win = null;
 		service.kill();
+		win = null;
 	});
 }
 
