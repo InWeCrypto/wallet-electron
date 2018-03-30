@@ -275,6 +275,7 @@ let template = [
 							setLanguage("zh");
 							lng = "zh";
 							app.relaunch();
+							win.close();
 							app.exit(0);
 						}
 					},
@@ -287,6 +288,7 @@ let template = [
 							setLanguage("en");
 							lng = "zh";
 							app.relaunch();
+							win.close();
 							app.exit(0);
 						}
 					}
@@ -440,6 +442,7 @@ var runServer = function() {
 			}
 		}
 	);
+
 	createWindow();
 };
 
@@ -551,6 +554,7 @@ var updateHandler = function() {
 				? `you has an update,the app will restart to update`
 				: "你有一个更新，请重启"
 		);
+		win.webContents.send("setLastPage");
 		setTimeout(function() {
 			autoUpdater.quitAndInstall();
 			createWindow();
@@ -619,9 +623,17 @@ function createWindow() {
 		const menu = Menu.buildFromTemplate(template);
 		Menu.setApplicationMenu(menu);
 	});
+	win.on("close", () => {
+		if (process.platform == "win32") {
+			let c = cp.execSync('taskkill /f /im "wallet-service.exe"', {
+				encoding: "utf8"
+			});
+		}
+		service.kill();
+		// win.webContents.send("setLastPage");
+	});
 	// Emitted when the window is closed.
 	win.on("closed", () => {
-		service.kill();
 		win = null;
 	});
 }

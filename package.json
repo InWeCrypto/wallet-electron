@@ -1,34 +1,33 @@
 {
 	"name": "InWeCrypto",
-	"version": "1.0.5",
+	"version": "1.0.9",
 	"description": "InWeCrypto",
 	"main": "main.js",
 	"scripts": {
-		"dev": "concurrently \"webpack  --config webpack.config.js --progress --profile&& electron .\" \"webpack --watch\"",
+		"dev":
+			"concurrently \"webpack  --config webpack.config.js --progress --profile&& electron .\" \"webpack --watch\"",
 		"compile": "webpack --config webpack.config.js --progress --profile",
 		"watch": "webpack --watch",
-		"pack:mac": "electron-builder --win",
-		"pack:win": "electron-builder --darwin",
-		"pack": "rm -rf ./dist && electron-builder -mw",
-		"pack:all": "webpack --config webpack.dll.config.js&& webpack && electron-builder -mw"
+		"postinstall": "webpack --config webpack.dll.config.js",
+		"pack:mac": "webpack &&electron-builder --win",
+		"pack:win": "webpack &&electron-builder --darwin",
+		"pack": "rm -rf ./dist && webpack && electron-builder -mw",
+		"pack:all": "webpack && electron-builder -mw"
 	},
 	"release": "build",
 	"build": {
 		"productName": "InWeCrypto",
 		"appId": "com.raistone.inwecrypto",
 		"copyright": "©InWeCrypto 2018",
-		"files": [
-			"./main.js",
-			"resources/index.html",
-			"resources/"
-		],
+		"files": ["./main.js", "resources/index.html", "resources/"],
 		"mac": {
 			"icon": "./favicon.icns"
 		},
 		"publish": [
 			{
 				"provider": "generic",
-				"url": "https://inwecrypto-china.oss-cn-shanghai.aliyuncs.com/pcwallet/"
+				"url":
+					"https://inwecrypto-china.oss-cn-shanghai.aliyuncs.com/pcwallet/"
 			}
 		],
 		"dmg": {
@@ -48,10 +47,7 @@
 			]
 		},
 		"linux": {
-			"target": [
-				"AppImage",
-				"deb"
-			]
+			"target": ["AppImage", "deb"]
 		},
 		"win": {
 			"target": "nsis",

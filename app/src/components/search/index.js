@@ -8,20 +8,18 @@ class Demo extends PureComponent {
 			keyword: "",
 			isFocus: false
 		};
+		this.pressSearch = this.pressSearch.bind(this);
 	}
 	componentDidMount() {
-		this.refs.searchInput.addEventListener(
-			"keypress",
-			e => {
-				if (e.keyCode === 13 && this.state.isFocus) {
-					this.props.search(this.state.keyword);
-				}
-			},
-			false
-		);
+		this.refs.searchInput.addEventListener("keypress", pressSearch);
 	}
 	componentWillUnmount() {
-		this.refs.searchInput.removeEventListener("keypress", () => {}, false);
+		this.refs.searchInput.removeEventListener("keypress", pressSearch);
+	}
+	pressSearch(e) {
+		if (e.keyCode === 13 && this.state.isFocus) {
+			this.props.search(this.state.keyword);
+		}
 	}
 	searchInput(e) {
 		this.setState({

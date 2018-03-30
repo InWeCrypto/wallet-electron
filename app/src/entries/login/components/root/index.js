@@ -6,6 +6,7 @@ import SendBtn from "../../../../components/sendbtn";
 import "./index.less";
 import loginName from "#/loginname.png";
 import loginHeader from "#/tou_pic.png";
+import { timingSafeEqual } from "crypto";
 export default class Root extends PureComponent {
 	constructor(props) {
 		super(props);
@@ -24,28 +25,18 @@ export default class Root extends PureComponent {
 			forgetRepassword: "",
 			registerTime: 60
 		};
+		this.pressLogin = this.pressLogin.bind(this);
 	}
 	componentDidMount() {
-		document.addEventListener(
-			"keypress",
-			e => {
-				if (e.keyCode == 13 && this.state.type == "signin") {
-					this.signInClick();
-				}
-			},
-			false
-		);
+		document.addEventListener("keypress", this.pressLogin);
 	}
 	componentWillUnmount() {
-		document.removeEventListener(
-			"keypress",
-			e => {
-				if (e.keyCode == 13 && this.state.type == "signin") {
-					this.signInClick();
-				}
-			},
-			false
-		);
+		document.removeEventListener("keypress", this.pressLogin);
+	}
+	pressLogin(e) {
+		if (e.keyCode == 13 && this.state.type == "signin") {
+			this.signInClick();
+		}
 	}
 	goFroget() {
 		this.setState({
@@ -152,7 +143,7 @@ export default class Root extends PureComponent {
 						i18n.t("success.registerSuccess", this.props.lng)
 					);
 					this.setState({
-						type: "register",
+						type: "signin",
 						registerEmail: "",
 						registerCode: "",
 						registerNickname: "",
@@ -313,7 +304,7 @@ export default class Root extends PureComponent {
 											/>
 										</div>
 									</div>
-									<div className="login-item">
+									{/* <div className="login-item">
 										<div className="input-box">
 											<input
 												className="input"
@@ -329,7 +320,7 @@ export default class Root extends PureComponent {
 												)}
 											/>
 										</div>
-									</div>
+									</div> */}
 									<div className="login-item">
 										<div className="input-box">
 											<input

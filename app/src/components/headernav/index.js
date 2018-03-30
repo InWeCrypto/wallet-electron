@@ -11,21 +11,34 @@ class Demo extends PureComponent {
 		super(props);
 		this.state = {};
 	}
-	componentDidMount() {
-		// let query = getRouteQuery(this);
-		// console.log(query);
-	}
+	componentDidMount() {}
 	goBack() {
-		this.props.history.go(-1);
+		if (this.props.back && typeof this.props.back == "function") {
+			this.props.back();
+		} else {
+			this.props.history.goBack();
+		}
 	}
 	goNext() {
-		this.props.history.go(1);
+		if (this.props.go && typeof this.props.go == "function") {
+			typeof this.props.go();
+		} else {
+			this.props.history.go(1);
+		}
 	}
 	goHome() {
 		toHref("wallet");
 	}
 	refreash() {
-		this.props.history.go(0);
+		let location = this.props.history.location;
+		this.props.history.replace(
+			`${location.pathname}refresh${location.search}&refresh=1`
+		);
+		setTimeout(() => {
+			this.props.history.replace(
+				`${location.pathname}${location.search}`
+			);
+		}, 10);
 	}
 	render() {
 		const {} = this.props;

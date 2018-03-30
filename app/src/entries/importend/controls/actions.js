@@ -8,10 +8,10 @@ export const IMPORTWALLET = `${PRE_FIX}IMPORTWALLET`;
 export const CREATEWALLET = `${PRE_FIX}CREATEWALLET`;
 export const ENCODENEP5 = `${PRE_FIX}ENCODENEP5`;
 
-export const importWallet = createAction(IMPORTWALLET, params => {
+export const importWallet = createAction(IMPORTWALLET, (params, ism) => {
 	return http.post(
 		{
-			url: "wallet/import",
+			url: `wallet/import`,
 			params
 		},
 		2

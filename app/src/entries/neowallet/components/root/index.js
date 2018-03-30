@@ -220,20 +220,25 @@ export default class Root extends PureComponent {
 		) {
 			params.Asset = neoConversion.list[sendKey - 2].gnt_category.address;
 			params.Amount =
-				"0x" +
+				"0x0" +
 				(
 					this.state.sendAmount *
 					Math.pow(10, neoConversion.list[sendKey - 2].decimals)
 				).toString(16);
+			if (params.Amount.indexOf(".") != -1) {
+				params.Amount = params.Amount.split(".")[0];
+			}
 			let n = await this.props.getNeoUtxo({
 				address: address,
 				type: "neo-asset-id"
 			});
-			fee =
+			fee = parseInt(
 				sendAmount *
-				Math.pow(10, neoConversion.list[sendKey - 2].decimals);
-			let g = await this.props.getGasUtxo({
-				address: address
+					Math.pow(10, neoConversion.list[sendKey - 2].decimals)
+			);
+			let g = await this.props.getNeoUtxo({
+				address: address,
+				type: "neo-gas-asset-id"
 			});
 			if (n.code === 4000 && g.code === 4000 && n.data && g.data) {
 				params.Unspent = JSON.stringify([
@@ -243,7 +248,6 @@ export default class Root extends PureComponent {
 			}
 		}
 		let l = await this.props.sendNeoOrader(params);
-
 		if (l && l.data && l.txid) {
 			let order = await this.props.createOrder({
 				wallet_id: neoWalletDetailInfo.id,
@@ -547,7 +551,14 @@ export default class Root extends PureComponent {
 											>
 												<img
 													className="icon"
-													src={neoicon}
+													src={
+														neoConversion &&
+														neoConversion.record &&
+														neoConversion.record
+															.category &&
+														neoConversion.record
+															.category.img
+													}
 												/>
 												<div className="f1 name">
 													NEO
@@ -602,7 +613,14 @@ export default class Root extends PureComponent {
 											>
 												<img
 													className="icon"
-													src={neoicon}
+													src={
+														neoConversion &&
+														neoConversion.record &&
+														neoConversion.record
+															.category &&
+														neoConversion.record
+															.category.img
+													}
 												/>
 												<div className="f1 name">
 													GAS

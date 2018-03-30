@@ -3,6 +3,7 @@ import {
 	GETORDERLIST,
 	CHANGESHOW,
 	GETSTARTORDER,
+	CLEARLIST,
 	MINBLOCK,
 	GETBLOCKUMBER,
 	GETBLOCKSECOND
@@ -11,6 +12,10 @@ import {
 export const orderList = handleActions(
 	{
 		[GETSTARTORDER]: (state, { payload }) => payload,
+		[CLEARLIST]: (state, { payload }) => {
+			console.log(payload);
+			return payload;
+		},
 		[GETORDERLIST]: (state, { payload }) => {
 			if (!state) {
 				state = { list: [] };

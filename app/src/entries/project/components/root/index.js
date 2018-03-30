@@ -17,14 +17,19 @@ export default class Root extends PureComponent {
 			isFocus: false,
 			isShowResult: false
 		};
+		this.keyPress = this.keyPress.bind(this);
 	}
 	componentDidMount() {
 		this.props.getSearchHistory();
-		document.addEventListener("keypress", e => {
-			if (e.keyCode === 13 && this.state.isFocus) {
-				this.getData(this.state.keyword);
-			}
-		});
+		document.addEventListener("keypress", this.keyPress);
+	}
+	componentWillUnmount() {
+		document.removeEventListener("keypress", this.keyPress);
+	}
+	keyPress(e) {
+		if (e.keyCode === 13 && this.state.isFocus) {
+			this.getData(this.state.keyword);
+		}
 	}
 	async getData(word) {
 		if (!word || word.length <= 0) {
@@ -77,8 +82,8 @@ export default class Root extends PureComponent {
 						<div className="content-container">
 							<HeaderNav history={this.props.history} />
 							<div className="content project-content">
-								<div className="title Hide">
-									Search the project you want to know
+								<div className="title">
+									{t("project.t2", lng)}
 								</div>
 								<div className="search-box">
 									<img src={searchimg} alt="" />
@@ -88,6 +93,7 @@ export default class Root extends PureComponent {
 										onChange={this.inputChange.bind(this)}
 										onFocus={this.changeFocus.bind(this)}
 										onBlur={this.changeBlur.bind(this)}
+										placeholder={t("project.t2", lng)}
 									/>
 								</div>
 								{!isShowResult && (

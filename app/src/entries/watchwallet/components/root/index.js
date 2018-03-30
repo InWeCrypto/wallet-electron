@@ -199,6 +199,7 @@ export default class Root extends PureComponent {
 				img = walletList.list[key - 1].gnt_category.icon;
 				name = walletList.list[key - 1].gnt_category.name;
 				number = getEthNum(walletList.list[key - 1].balance);
+				decimals = walletList.list[key - 1].decimals;
 				price_cny =
 					walletList.list[key - 1].gnt_category &&
 					walletList.list[key - 1].gnt_category.cap

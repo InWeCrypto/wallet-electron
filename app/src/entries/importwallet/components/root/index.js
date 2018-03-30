@@ -22,11 +22,16 @@ export default class Root extends PureComponent {
 	}
 	componentDidMount() {
 		let q = getQuery(window.location.href);
-		if (q.isChange) {
+		if (q.isChange && q.type) {
 			this.setState({
 				type: 3,
 				walletId: q.type,
 				name: q.name
+			});
+		}
+		if (q.showtype) {
+			this.setState({
+				type: q.showtype
 			});
 		}
 		this.props.getWalletType();
@@ -36,6 +41,22 @@ export default class Root extends PureComponent {
 			type: 2,
 			walletId: item.id
 		});
+		let history = this.props.history;
+		history.push({
+			pathname: history.location.pathname,
+			search:
+				history.location.search && history.location.search.length > 0
+					? `${history.location.search}&showtype=2`
+					: "showtype=2"
+		});
+	}
+	backClick() {
+		if (this.state.type == 2) {
+			this.setState({
+				type: 1
+			});
+		}
+		this.props.history.go(-1);
 	}
 	render() {
 		let { lng, walletTypes } = this.props;
@@ -46,7 +67,10 @@ export default class Root extends PureComponent {
 					<div className="main-box">
 						<Menu curmenu="wallet" lng={lng} />
 						<div className="content-container">
-							<HeaderNav history={this.props.history} />
+							<HeaderNav
+								back={this.backClick.bind(this)}
+								history={this.props.history}
+							/>
 							<div className="content">
 								<div className="importwallet">
 									<div className="import-title">

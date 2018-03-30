@@ -269,6 +269,42 @@ export default class Root extends PureComponent {
 		let r = Number(t * (dec / 100)) + Number(l);
 		return r.toFixed(8);
 	}
+	getCommonMoney() {
+		let {
+			lng,
+			ethWalletDetailInfo,
+			ethWalletConversion,
+			ethConversion
+		} = this.props;
+
+		let num = 0;
+		if (ethConversion && ethConversion.list && ethConversion.list[0]) {
+			let i = ethConversion.list[0];
+			num +=
+				getEthNum(i.balance) *
+				(i.category && i.category.cap
+					? lng == "en"
+						? i.category.cap.price_usd
+						: i.category.cap.price_cny
+					: 0);
+		}
+		if (
+			ethWalletConversion &&
+			ethWalletConversion.list &&
+			ethWalletConversion.list.length > 0
+		) {
+			ethWalletConversion.list.map((item, index) => {
+				num +=
+					getEthNum(item.balance, item.decimals) *
+					(item.category && item.category.cap
+						? lng == "en"
+							? item.category.cap.price_usd
+							: item.category.cap.price_cny
+						: 0);
+			});
+		}
+		return Number(num.toFixed(2));
+	}
 	goOrderList(key) {
 		let {
 			lng,
@@ -281,6 +317,7 @@ export default class Root extends PureComponent {
 			number = "",
 			price_cny = "",
 			price_usd = "",
+			decimals = null,
 			img = "";
 		if (key == 0 && ethWalletDetailInfo) {
 			asset_id = "0x0000000000000000000000000000000000000000";
@@ -308,7 +345,8 @@ export default class Root extends PureComponent {
 			asset_id = item.gnt_category.address;
 			img = item.gnt_category.icon;
 			name = item.gnt_category.name;
-			number = getEthNum(item.balance);
+			number = getEthNum(item.balance, item.decimals);
+			decimals = item.decimals;
 			price_cny = item.gnt_category.cap
 				? item.gnt_category.cap.price_cny
 				: 0;
@@ -322,7 +360,8 @@ export default class Root extends PureComponent {
 			number: number,
 			price_cny: price_cny,
 			price_usd: price_usd,
-			img: img
+			img: img,
+			decimals: decimals ? decimals : null
 		};
 		sessionStorage.setItem(`orderlist_${time}`, JSON.stringify(p));
 		toHref(
@@ -392,7 +431,10 @@ export default class Root extends PureComponent {
 													ethWalletDetailInfo.address}
 											</div>
 										</div>
-										<div className="money">$100.00</div>
+										<div className="money">
+											{lng == "en" ? "$" : "￥"}
+											{`${this.getCommonMoney()}`}
+										</div>
 									</div>
 									<div className="box2 ui center">
 										<div className="navbox f1">
@@ -578,7 +620,8 @@ export default class Root extends PureComponent {
 																>
 																	<div className="t1">
 																		{getEthNum(
-																			item.balance
+																			item.balance,
+																			item.decimals
 																		)}
 																	</div>
 																	<div className="t1">
@@ -671,7 +714,12 @@ export default class Root extends PureComponent {
 																	.list[
 																	selectKey -
 																		1
-																].balance
+																].balance,
+																ethWalletConversion
+																	.list[
+																	selectKey -
+																		1
+																].decimals
 															)}
 														{selectKey == 0 && (
 															<span>

@@ -4,6 +4,7 @@ const PRE_FIX = "ORDERLIST_";
 export const GETORDERLIST = `${PRE_FIX}GETORDERLIST`;
 export const GETSTARTORDER = `${PRE_FIX}GETSTARTORDER`;
 export const CHANGESHOW = `${PRE_FIX}CHANGESHOW`;
+export const CLEARLIST = `${PRE_FIX}CLEARLIST`;
 
 export const MINBLOCK = `${PRE_FIX}MINBLOCK`;
 export const GETBLOCKUMBER = `${PRE_FIX}GETBLOCKUMBER`;
@@ -74,4 +75,7 @@ export const getBlockSecond = createAction(GETBLOCKSECOND, params => {
 			}
 			return res;
 		});
+});
+export const clearList = createAction(CLEARLIST, params => {
+	return [];
 });

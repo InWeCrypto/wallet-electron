@@ -63,6 +63,7 @@ export default class Root extends PureComponent {
 	}
 	componentWillUnmount() {
 		clearTimeout(this.timer);
+		this.props.clearList();
 	}
 	rePageLoad(obj) {
 		let q = obj ? obj : this.state;
@@ -72,9 +73,11 @@ export default class Root extends PureComponent {
 				flag: q.flag,
 				wallet_id: q.wallet_id,
 				asset_id: q.asset_id,
-				size: this.props.orderList
-					? this.props.orderList.list.length
-					: 20,
+				size: obj
+					? 20
+					: this.props.orderList && this.props.orderList.list
+						? this.props.orderList.list.length
+						: 20,
 				page: 0
 			})
 			.then(res => {
@@ -161,7 +164,9 @@ export default class Root extends PureComponent {
 				}
 				item.stateText = i18n.t("orderList.pending", lng);
 				item.percent =
-					item.state / (minBlock ? minBlock.min_block_num : 0) * 100 +
+					(item.state ? item.state : 0) /
+						(minBlock ? minBlock.min_block_num : 0) *
+						100 +
 					"%";
 				return;
 			});
@@ -228,7 +233,10 @@ export default class Root extends PureComponent {
 																: "Pending"}
 														</div>
 														<div className="f1">
-															Txid:{item.tx}
+															{t(
+																"orderList.txid",
+																lng
+															)}:{item.tx}
 														</div>
 														<div className="time">
 															{getLocalTime(
@@ -240,11 +248,11 @@ export default class Root extends PureComponent {
 															{address ==
 																item.from &&
 															address == item.to
-																? address ==
+																? ""
+																: address ==
 																  item.from
-																	? ""
-																	: "-"
-																: "+"}
+																	? "-"
+																	: "+"}
 															{info &&
 																info.decimals &&
 																Number(
@@ -285,18 +293,24 @@ export default class Root extends PureComponent {
 														}
 													>
 														<div className="more-item">
-															From:{item.from}
+															{t(
+																"orderList.from",
+																lng
+															)}:{item.from}
 														</div>
 														<div className="more-item">
-															To:{item.to}
+															{t(
+																"orderList.to",
+																lng
+															)}:{item.to}
 														</div>
 														<div className="more-item">
-															Memo:{item.remark}
+															{t(
+																"orderList.memo",
+																lng
+															)}:{item.remark}
 														</div>
 													</div>
-													{/* <div className="confirm-line">
-														<div className="confirm-inline" />
-													</div> */}
 												</div>
 											);
 										})}
@@ -317,15 +331,18 @@ export default class Root extends PureComponent {
 															{item.percent !=
 																null && (
 																<span>
-																	&nbsp;({
-																		item.state
-																	}/{minBlock &&
+																	&nbsp;({item.state
+																		? item.state
+																		: 0}/{minBlock &&
 																		minBlock.min_block_num})
 																</span>
 															)}
 														</div>
 														<div className="f1">
-															Txid:{item.hash}
+															{t(
+																"orderList.txid",
+																lng
+															)}:{item.hash}
 														</div>
 														<div className="time">
 															{getLocalTime(
@@ -333,19 +350,20 @@ export default class Root extends PureComponent {
 															)}
 														</div>
 														<div className="order">
-															{address ==
-																item.pay_address &&
-															address ==
-																item.receive_address
-																? address ==
+															{item.pay_address ==
+															item.receive_address
+																? ""
+																: address ==
 																  item.pay_address
-																	? ""
-																	: "-"
-																: "+"}
+																	? "-"
+																	: "+"}
 															{Number(
 																Number(
 																	getEthNum(
-																		item.fee
+																		item.fee,
+																		info
+																			? info.decimals
+																			: null
 																	)
 																).toFixed(4)
 															)}{" "}
@@ -371,17 +389,26 @@ export default class Root extends PureComponent {
 														}
 													>
 														<div className="more-item">
-															From:{
+															{t(
+																"orderList.from",
+																lng
+															)}:{
 																item.pay_address
 															}
 														</div>
 														<div className="more-item">
-															To:{
+															{t(
+																"orderList.to",
+																lng
+															)}:{
 																item.receive_address
 															}
 														</div>
 														<div className="more-item">
-															Memo:{item.remark}
+															{t(
+																"orderList.memo",
+																lng
+															)}:{item.remark}
 														</div>
 													</div>
 													{item.percent != null && (
@@ -398,6 +425,20 @@ export default class Root extends PureComponent {
 												</div>
 											);
 										})}
+
+									{(!orderList ||
+										!orderList.list ||
+										orderList.list.length <= 0) && (
+										<div
+											style={{
+												textAlign: "center",
+												padding: ".4rem 0",
+												colro: "#a4a4a4a"
+											}}
+										>
+											{t("error.nodata", lng)}
+										</div>
+									)}
 								</div>
 							</div>
 						</div>

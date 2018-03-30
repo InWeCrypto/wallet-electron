@@ -7,22 +7,22 @@ class ConfirmPassword extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-			password: ""
+			password: "",
+			isfocus: false
 		};
+		this.keyPressClick = this.keyPressClick.bind(this);
 	}
 	componentDidMount() {
-		document.addEventListener(
-			"keypress",
-			e => {
-				if (e.keyCode == 13) {
-					this.confirmClick();
-				}
-			},
-			false
-		);
+		document.addEventListener("keypress", this.keyPressClick);
+		document.querySelector("#passInput").focus();
 	}
 	componentWillUnmount() {
-		document.removeEventListener("keypress", () => {}, false);
+		document.removeEventListener("keypress", this.keyPressClick);
+	}
+	keyPressClick(e) {
+		if (e.keyCode == 13 && this.state.isfocus) {
+			this.confirmClick();
+		}
 	}
 	inputChange(e) {
 		this.setState({
@@ -35,9 +35,19 @@ class ConfirmPassword extends PureComponent {
 	confirmClick() {
 		this.props.confirm(this.state.password);
 	}
+	onFocus() {
+		this.setState({
+			isfocus: true
+		});
+	}
+	onBlur() {
+		this.setState({
+			isfocus: false
+		});
+	}
 	render() {
 		let { lng } = this.props;
-		let { password } = this.state;
+		let { password, isfocus } = this.state;
 		return (
 			<I18n>
 				{(t, { i18n }) => (
@@ -50,7 +60,10 @@ class ConfirmPassword extends PureComponent {
 								<input
 									className="input"
 									onChange={this.inputChange.bind(this)}
+									onFocus={this.onFocus.bind(this)}
+									onBlur={this.onBlur.bind(this)}
 									type="password"
+									id="passInput"
 									placeholder={t(
 										"confirmPassword.holder",
 										lng

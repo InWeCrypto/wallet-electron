@@ -56,14 +56,18 @@ export default class Root extends PureComponent {
 			[type]: e.target.value
 		});
 	}
+	goBack() {
+		this.props.history.go(-1);
+	}
 	async saveClick() {
 		let params = {};
+		let { lng } = this.props;
 		params.name = this.state.name;
 		params.type = this.state.type;
 		params.password = this.state.password;
-		let reg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{6,16}$/;
-		if (!reg.test(params.password)) {
-			Msg.prompt(i18n.t("error.passError", lng));
+		let ism = false;
+		if (params.name.length <= 0) {
+			Msg.prompt(i18n.t("error.nameEmpty", lng));
 			return;
 		}
 		if (this.state.importType === "keystore") {
@@ -71,6 +75,7 @@ export default class Root extends PureComponent {
 		}
 		if (this.state.importType === "mnemonic") {
 			params.mnemonic = this.state.mnemonic;
+			params.lang = lng == "en" ? "en_US" : "zh_CN";
 		}
 		if (this.state.importType === "privatekey") {
 			params.wif = this.state.privatekey;
@@ -89,7 +94,7 @@ export default class Root extends PureComponent {
 				if (whash && whash.length > 0) {
 					wp.address_hash160 = whash;
 				} else {
-					Msg.prompt(i18n.t("error.hash160", this.props.lng));
+					Msg.prompt(i18n.t("error.hash160", lng));
 					return;
 				}
 			}
@@ -100,7 +105,12 @@ export default class Root extends PureComponent {
 			});
 			return;
 		}
-		let local = await this.props.importWallet(params);
+		let reg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{6,16}$/;
+		if (!reg.test(params.password)) {
+			Msg.prompt(i18n.t("error.passError", lng));
+			return;
+		}
+		let local = await this.props.importWallet(params, ism);
 		if (local && local.address) {
 			let p = {
 				category_id: this.state.category_id,
@@ -114,7 +124,7 @@ export default class Root extends PureComponent {
 				if (hash && hash.length > 0) {
 					p.address_hash160 = hash;
 				} else {
-					Msg.prompt(i18n.t("error.hash160", this.props.lng));
+					Msg.prompt(i18n.t("error.hash160", lng));
 					return;
 				}
 			}
@@ -127,7 +137,8 @@ export default class Root extends PureComponent {
 	}
 	render() {
 		let { lng } = this.props;
-		let { name, password } = this.state;
+		let { name, password, importType } = this.state;
+		console.log(importType);
 		return (
 			<I18n>
 				{(t, { i18n }) => (
@@ -157,23 +168,31 @@ export default class Root extends PureComponent {
 													)}
 												/>
 											</div>
-											<div className="end-item">
-												<input
-													className="input"
-													type="password"
-													placeholder={t(
-														"end.password",
-														lng
-													)}
-													value={password}
-													onChange={this.inputChange.bind(
-														this,
-														"password"
-													)}
-												/>
-											</div>
+											{importType != "watch" && (
+												<div className="end-item">
+													<input
+														className="input"
+														type="password"
+														placeholder={t(
+															"end.password",
+															lng
+														)}
+														value={password}
+														onChange={this.inputChange.bind(
+															this,
+															"password"
+														)}
+													/>
+												</div>
+											)}
+
 											<div className="endbtn">
-												<span className="btn">
+												<span
+													className="btn"
+													onClick={this.goBack.bind(
+														this
+													)}
+												>
 													{t("end.previous", lng)}
 												</span>
 												<span

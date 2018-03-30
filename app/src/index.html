@@ -7,9 +7,9 @@
     <title>InWeWallet</title>
 </head>
 
-<body>
+<body style="-webkit-app-region: drag">
     <div id="root"></div>
-    <script type="text/javascript" src="./mainfest/vendor.dll.js"></script>
+    <script type="text/javascript" src="./mainfest/vendor.dll.js "></script>
     <script>
         var electron = require("electron")
         var fs = require('fs');
@@ -31,6 +31,9 @@
                 toHref('/');
             }
         });
+        ipc.on('setLastPage', function () {
+            localStorage.setItem('lastPage', window.location.href);
+        })
         ipc.on('changeLng', function (event, type) {
             let lng = getLocalItem('language');
             if (lng && lng.data != type) {
@@ -44,6 +47,14 @@
         } else {
             ipc.send('loadNetwok', 'test')
         }
+        (function () {
+            var lastpage = localStorage.getItem('lastPage');
+            if (lastpage && lastpage.length > 0) {
+                window.location.href = lastpage;
+                localStorage.removeItem('lastPage');
+            }
+        })()
+        console.log(os.tmpdir())
     </script>
 
 

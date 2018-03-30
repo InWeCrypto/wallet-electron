@@ -66,7 +66,11 @@ export default class Root extends PureComponent {
 								? item.gnt_category.cap.price_usd
 								: item.gnt_category.cap.price_cny
 							: 0;
-					num = num - 0 + getEthNum(item.balance) * price - 0;
+					num =
+						num -
+						0 +
+						getEthNum(item.balance, item.decimals) * price -
+						0;
 				});
 			}
 			if (
@@ -82,7 +86,11 @@ export default class Root extends PureComponent {
 									? item.category.cap.price_usd
 									: item.category.cap.price_cny
 								: 0;
-						num = num - 0 + getEthNum(item.balance) * price - 0;
+						num =
+							num -
+							0 +
+							getEthNum(item.balance, item.decimal) * price -
+							0;
 					}
 				});
 			}
@@ -312,7 +320,7 @@ export default class Root extends PureComponent {
 																	{item.isWatch ? (
 																		<span className="watch">
 																			{t(
-																				"watch",
+																				"watch.watch",
 																				lng
 																			)}
 																		</span>

@@ -52,8 +52,8 @@ export default class Root extends PureComponent {
 		}
 	}
 	componentWillUnmount() {
-		document.removeEventListener("click", this.groupClose, false);
-		document.removeEventListener("keypress", this.createClick, false);
+		document.removeEventListener("click", this.groupClose);
+		document.removeEventListener("keypress", this.createClick);
 	}
 	createClick(e) {
 		let idx = null;

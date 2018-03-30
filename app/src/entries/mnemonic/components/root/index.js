@@ -98,7 +98,16 @@ export default class Root extends PureComponent {
 		}
 		return input;
 	}
-
+	backClick() {
+		let { isfirstPage } = this.state;
+		if (!isfirstPage) {
+			this.setState({
+				isfirstPage: true
+			});
+		} else {
+			this.props.history.go(-1);
+		}
+	}
 	render() {
 		let { lng, walletInfo } = this.props;
 		let { isfirstPage, chooseArray, showArr, waitChoose } = this.state;
@@ -109,7 +118,10 @@ export default class Root extends PureComponent {
 					<div className="main-box mnemonic mnemonic1">
 						<Menu curmenu="wallet" lng={lng} />
 						<div className="content-container">
-							<HeaderNav history={this.props.history} />
+							<HeaderNav
+								back={this.backClick.bind(this)}
+								history={this.props.history}
+							/>
 							<div className="content mnemonic-content">
 								<div className="title">
 									{t("backupMnemonic.title", lng)}

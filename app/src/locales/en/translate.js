@@ -69,6 +69,7 @@ export default {
 		changeHot: "Import Hot"
 	},
 	watch: {
+		watch: "watch",
 		title: "Watch Wallet",
 		textarea:
 			"Watch Wallet needs your wallet address only, serving as a way to manage and trade as a regular account. For security reasons, Cold Wallets among the others are recommended for large amount of assets.",
@@ -93,11 +94,7 @@ export default {
 		wallet: "Wallet",
 		myfollowup: "My Follow-up"
 	},
-	orderList: {
-		fail: "Fail",
-		success: "Success",
-		pending: "Pending"
-	},
+
 	error: {
 		nameEmpty: "Name address cannot be empty",
 		emailEmpty: "Email address cannot be empty",
@@ -115,7 +112,8 @@ export default {
 		MiningError: "Insufficient fuel costs",
 		isSend: "You have an unfinished order",
 		valiError: "Verification fail",
-		hash160: "decode address error"
+		hash160: "decode address error",
+		nodata: "No transactions yet."
 	},
 	success: {
 		login: "Log in successfully",
@@ -130,11 +128,12 @@ export default {
 	},
 	backupMnemonic: {
 		title: "Manager wallet setting",
-		step1: "1、备份助记词能让您丢失钱包的时候快速找回",
-		step2: "2、请务必将以下助记词抄录下来，并且保存在安全的地方",
-		step3: "3、助记词一旦备份成功，此备份步骤不会再出现",
+		step1: "1. Backup your mnemonic seed will help you recover your",
+		step2:
+			"2. Please write down the mnemonic seed and put it in a safe place.",
+		step3: "3. When backup succeeds, this step will not be repeated.",
 		next: "Next",
-		waitChoose: "待选助记词",
+		waitChoose: "Mnemonic words to choose",
 		confirm: "Comfirm"
 	},
 	managerWallet: {
@@ -166,7 +165,7 @@ export default {
 		place: "Enter your password"
 	},
 	unbackup: "unbackup",
-	watch: "watch",
+
 	walletDetail: {
 		watch: "watch",
 		asset: "Assets",
@@ -188,6 +187,16 @@ export default {
 		printPDF: "print to PDF"
 	},
 	project: {
-		t1: "Everyone in the search"
+		t1: "Everyone in the search",
+		t2: "Search the project you want to know"
+	},
+	orderList: {
+		from: "From",
+		to: "To",
+		memo: "Memo",
+		txid: "Txid",
+		fail: "Fail",
+		success: "Success",
+		pending: "Pending"
 	}
 };
