@@ -64,15 +64,29 @@ export default class Root extends PureComponent {
 			isfirstPage: false
 		});
 	}
+	localMember(address) {
+		let local = localStorage.getItem("memoList");
+		if (!local || local.length <= 0) {
+			local = [];
+		} else {
+			local = JSON.parse(local);
+		}
+		if (local.indexOf(address) == -1) {
+			local.push(address);
+			localStorage.setItem("memoList", JSON.stringify(local));
+		}
+	}
 	confirmClick() {
 		let c = this.state.chooseArray;
 		let a = this.props.walletInfo;
+		let address = this.state.address;
 		if (JSON.stringify(a) == JSON.stringify(c)) {
 			Msg.prompt(i18n.t("success.valiSuccess", this.props.lng));
+			setBackUp(this.state.address);
+			this.localMember(address);
 			setTimeout(() => {
 				toHref("wallet");
 			}, 2000);
-			setBackUp(this.state.address);
 		} else {
 			Msg.prompt(i18n.t("error.valiError", this.props.lng));
 			this.setState({

@@ -73,7 +73,8 @@ export default class Root extends PureComponent {
 			name: this.state.name,
 			type: type,
 			mnemonic: mnemonic,
-			password: res
+			password: res,
+			lang: this.props.lng == "en" ? "en_US" : "zh_CN"
 		});
 		if (importres.address && importres.address.length > 0) {
 			this.setState({

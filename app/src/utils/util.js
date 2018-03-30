@@ -320,7 +320,7 @@ export const getEthNum = (str, dec) => {
 	}
 	var p = n.substr(0, n.length - dec);
 	var r = n.substr(n.length - dec);
-	var res = Number(Number(p + "." + r).toFixed(4));
+	var res = Number(Number(p + "." + r).toFixed(8));
 	return res;
 };
 window.getEthNum = getEthNum;

@@ -9,6 +9,8 @@ import keyicon from "#/key.png";
 import mneicon from "#/mnemonic_ico.png";
 import priicon from "#/private_ico.png";
 import watchicon from "#/watch_ico.png";
+import ethicon from "#/ethicon.png";
+import neoicon from "#/neoicon.png";
 import Item from "antd/lib/list/Item";
 
 export default class Root extends PureComponent {
@@ -103,7 +105,10 @@ export default class Root extends PureComponent {
 															>
 																<img
 																	src={
-																		item.img
+																		item.id ==
+																		1
+																			? ethicon
+																			: neoicon
 																	}
 																/>
 																<div className="t">

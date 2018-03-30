@@ -6,6 +6,7 @@ import QRCode from "../../../../assets/js/qcode";
 import { Select, Slider } from "antd";
 import Menu from "@/menu";
 import HeaderNav from "@/headernav";
+import ethicon from "#/ethicon.png";
 const Option = Select.Option;
 import "./index.less";
 
@@ -169,7 +170,10 @@ export default class Root extends PureComponent {
 			}
 			if (
 				this.state.gasNum -
-					getEthNum(this.props.ethConversion.list[0].balance) >
+					getEthNum(
+						this.props.ethConversion.list[0].balance,
+						this.props.ethConversion.list[0].decimals
+					) >
 				0
 			) {
 				Msg.prompt(i18n.t("error.MiningError", this.props.lng));
@@ -327,7 +331,11 @@ export default class Root extends PureComponent {
 			asset_id = "0x0000000000000000000000000000000000000000";
 			img = ethWalletDetailInfo.category.img;
 			name = ethWalletDetailInfo.category.name;
-			number = getEthNum(ethConversion.list[0].balance);
+			number = getEthNum(
+				ethConversion.list &&
+					ethConversion.list[0] &&
+					ethConversion.list[0].balance
+			);
 			price_cny =
 				ethConversion.list[0].category &&
 				ethConversion.list[0].category.cap
@@ -406,14 +414,7 @@ export default class Root extends PureComponent {
 							<div className="content">
 								<div className="wallet">
 									<div className="box1 ui center">
-										<img
-											className="icon"
-											src={
-												ethWalletDetailInfo &&
-												ethWalletDetailInfo.category &&
-												ethWalletDetailInfo.category.img
-											}
-										/>
+										<img className="icon" src={ethicon} />
 										<div className="f1">
 											<div className="name">
 												{ethWalletDetailInfo &&
@@ -531,17 +532,25 @@ export default class Root extends PureComponent {
 														ethConversion.list[0]
 															.category.name}
 												</div>
-												<div>
+												<div
+													style={{
+														textAlign: "right"
+													}}
+												>
 													<div className="t1">
 														{ethConversion &&
 															ethConversion.list &&
 															ethConversion
 																.list[0] && (
 																<span>
-																	{getEthNum(
-																		ethConversion
-																			.list[0]
-																			.balance
+																	{Number(
+																		getEthNum(
+																			ethConversion
+																				.list[0]
+																				.balance
+																		).toFixed(
+																			8
+																		)
 																	)}
 																</span>
 															)}
@@ -555,34 +564,36 @@ export default class Root extends PureComponent {
 															ethConversion
 																.list[0] && (
 																<span>
-																	{(
-																		getEthNum(
+																	{Number(
+																		(
+																			getEthNum(
+																				ethConversion
+																					.list[0]
+																					.balance
+																			) *
+																			(ethConversion
+																				.list[0]
+																				.category &&
 																			ethConversion
 																				.list[0]
-																				.balance
-																		) *
-																		(ethConversion
-																			.list[0]
-																			.category &&
-																		ethConversion
-																			.list[0]
-																			.category
-																			.cap
-																			? lng ==
-																			  "en"
-																				? ethConversion
-																						.list[0]
-																						.category
-																						.cap
-																						.price_usd
-																				: ethConversion
-																						.list[0]
-																						.category
-																						.cap
-																						.price_cny
-																			: 0)
-																	).toFixed(
-																		2
+																				.category
+																				.cap
+																				? lng ==
+																				  "en"
+																					? ethConversion
+																							.list[0]
+																							.category
+																							.cap
+																							.price_usd
+																					: ethConversion
+																							.list[0]
+																							.category
+																							.cap
+																							.price_cny
+																				: 0)
+																		).toFixed(
+																			2
+																		)
 																	)}
 																</span>
 															)}
@@ -623,9 +634,13 @@ export default class Root extends PureComponent {
 																	}}
 																>
 																	<div className="t1">
-																		{getEthNum(
-																			item.balance,
-																			item.decimals
+																		{Number(
+																			getEthNum(
+																				item.balance,
+																				item.decimals
+																			).toFixed(
+																				8
+																			)
 																		)}
 																	</div>
 																	<div className="t1">
@@ -633,27 +648,31 @@ export default class Root extends PureComponent {
 																		"en"
 																			? "$"
 																			: "￥"}{" "}
-																		{getEthNum(
-																			item.balance
-																		) *
-																			(lng ==
-																			"en"
-																				? item.gnt_category &&
-																				  item
-																						.gnt_category
-																						.cap &&
-																				  item
-																						.gnt_category
-																						.cap
-																						.price_usd
-																				: item.gnt_category &&
-																				  item
-																						.gnt_category
-																						.cap &&
-																				  item
-																						.gnt_category
-																						.cap
-																						.price_cny)}
+																		{Number(
+																			getEthNum(
+																				item.balance
+																			) *
+																				(lng ==
+																				"en"
+																					? item.gnt_category &&
+																					  item
+																							.gnt_category
+																							.cap &&
+																					  item
+																							.gnt_category
+																							.cap
+																							.price_usd
+																					: item.gnt_category &&
+																					  item
+																							.gnt_category
+																							.cap &&
+																					  item
+																							.gnt_category
+																							.cap
+																							.price_cny)
+																		).toFixed(
+																			2
+																		)}
 																	</div>
 																</div>
 															</div>
@@ -847,7 +866,13 @@ export default class Root extends PureComponent {
 															lng
 														)}
 													</div>
-													<div className="f1 sliderbox">
+													<div
+														className="f1 sliderbox"
+														style={{
+															WebkitAppRegion:
+																"no-drag"
+														}}
+													>
 														<Slider
 															onChange={this.sliderChange.bind(
 																this

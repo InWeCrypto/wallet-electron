@@ -4,6 +4,8 @@ import { getQuery, getEthNum } from "../../../../utils/util";
 import QRCode from "../../../../assets/js/qcode";
 import Menu from "@/menu";
 import HeaderNav from "@/headernav";
+import ethicon from "#/ethicon.png";
+import neoicon from "#/neoicon.png";
 import "./index.less";
 
 export default class Root extends PureComponent {
@@ -286,7 +288,9 @@ export default class Root extends PureComponent {
 											src={
 												watchInfo &&
 												watchInfo.category &&
-												watchInfo.category.img
+												watchInfo.category.id == 1
+													? ethicon
+													: neoicon
 											}
 										/>
 										<div className="f1">
@@ -704,7 +708,7 @@ export default class Root extends PureComponent {
 																									.price_cny
 																						: 0)
 																				).toFixed(
-																					4
+																					2
 																				)
 																			)}
 																		</div>

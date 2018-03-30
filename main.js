@@ -514,7 +514,7 @@ ipc.on("print-preview", (event, arg) => {
 });
 ipc.on("print-to-pdf", function(event, arg) {
 	const pdfPath = path.join(
-		os.tmpdir(),
+		app.getPath("downloads"),
 		`${arg.title}_${parseInt(Math.random() * 100000000, 10)}.pdf`
 	);
 	const win = BrowserWindow.fromWebContents(event.sender);
@@ -539,7 +539,7 @@ ipc.on("exportJSON", function(event, arg) {
 	dialog.showSaveDialog(
 		{
 			title: "save",
-			defaultPath: path.join(os.tmpdir(), `${name}.json`),
+			defaultPath: path.join(app.getPath("downloads"), `${name}.json`),
 			nameFieldLabel: `${name}.json`
 		},
 		function(res) {

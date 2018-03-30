@@ -195,7 +195,7 @@ export default class Root extends PureComponent {
 													{Number(
 														Number(
 															info.number
-														).toFixed(4)
+														).toFixed(8)
 													)}
 												</span>
 											)}
@@ -229,8 +229,14 @@ export default class Root extends PureComponent {
 															{item.confirmTime &&
 															item.confirmTime
 																.length > 0
-																? "Success"
-																: "Pending"}
+																? t(
+																		"orderList.success",
+																		lng
+																  )
+																: t(
+																		"orderList.pending",
+																		lng
+																  )}
 														</div>
 														<div className="f1">
 															{t(
@@ -262,14 +268,14 @@ export default class Root extends PureComponent {
 																				10,
 																				info.decimals
 																			)
-																	).toFixed(4)
+																	).toFixed(8)
 																)}
 															{(!info ||
 																!info.decimals) &&
 																Number(
 																	Number(
 																		item.value
-																	).toFixed(4)
+																	).toFixed(8)
 																)}{" "}
 															{info && info.name}
 														</div>
@@ -365,7 +371,7 @@ export default class Root extends PureComponent {
 																			? info.decimals
 																			: null
 																	)
-																).toFixed(4)
+																).toFixed(8)
 															)}{" "}
 															{info && info.name}
 														</div>

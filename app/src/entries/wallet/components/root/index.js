@@ -8,6 +8,8 @@ import creatWallet from "#/createwallet_ico.png";
 import importWallet from "#/import_wallet_ico.png";
 import ledger from "#/ledger_ico.png";
 import ledger1 from "#/ledger_ico1.png";
+import ethicon from "#/ethicon.png";
+import neoicon from "#/neoicon.png";
 import { toHref } from "../../../../utils/util";
 export default class Root extends PureComponent {
 	constructor(props) {
@@ -311,7 +313,9 @@ export default class Root extends PureComponent {
 																	item.category &&
 																	item
 																		.category
-																		.img
+																		.id == 1
+																		? ethicon
+																		: neoicon
 																}
 															/>
 															<div className="f1">
@@ -351,12 +355,14 @@ export default class Root extends PureComponent {
 																			"en"
 																				? "$"
 																				: "￥"}
-																			{this.getChildMoney(
-																				walletDetail[
+																			{Number(
+																				this.getChildMoney(
+																					walletDetail[
+																						item
+																							.id
+																					],
 																					item
-																						.id
-																				],
-																				item
+																				)
 																			)}
 																		</span>
 																	)}

@@ -96,6 +96,9 @@ export default class Root extends PureComponent {
 			if (res.code === 4000 && res.data && res.data.result) {
 				params.Unspent = JSON.stringify(res.data.result);
 			}
+			if (params.Amount.indexOf(".") != -1) {
+				params.Amount = params.Amount.split(".")[0];
+			}
 			let l = await this.props.sendNeoOrader(params);
 			let fee = this.props.gasInfo.record.balance;
 			if (l && l.data && l.txid) {
@@ -169,11 +172,17 @@ export default class Root extends PureComponent {
 		let utxo = await this.props.getGasUtxo({
 			address: walletInfo.address
 		});
+
 		if (utxo && utxo.code === 4000) {
 			params.Unspent = JSON.stringify(utxo.data.result.Claims);
 		}
+		if (params.Amount.indexOf(".") != -1) {
+			params.Amount = params.Amount.split(".")[0];
+		}
+
 		let l = await this.props.sendGasOrder(params);
 		let fee = this.props.gasInfo.record.gnt[0].available;
+
 		if (l && l.data && l.txid) {
 			let total = await this.props.createGasOrder({
 				wallet_id: walletInfo.id,

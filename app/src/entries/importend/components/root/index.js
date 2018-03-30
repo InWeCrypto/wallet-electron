@@ -64,12 +64,18 @@ export default class Root extends PureComponent {
 		this.props.history.go(-1);
 		let time = this.state.timetamp;
 		setTimeout(() => {
+			this.props.history.replace({
+				pathname: this.props.history.location.pathname + "back",
+				search: `${this.props.history.location.search}&timetamp=${time}`
+			});
+		}, 5);
+		setTimeout(() => {
 			let his = this.props.history;
 			this.props.history.replace({
-				pathname: his.location.pathname,
-				search: `${his.location.search}&timetamp=${time}`
+				pathname: his.location.pathname.replace("back", ""),
+				search: `${his.location.search}`
 			});
-		}, 20);
+		}, 10);
 	}
 	async saveClick() {
 		let params = {};

@@ -57,7 +57,7 @@ export default class Root extends PureComponent {
 							<HeaderNav history={this.props.history} />
 							<div className="content managewallet-content">
 								<div className="title">
-									Manager wallet setting
+									{t("manageWatch.title", lng)}
 								</div>
 								{/* <div className="title2">backup your wallet</div> */}
 								<div className="hotarea-box">
@@ -73,7 +73,7 @@ export default class Root extends PureComponent {
 											/>
 										</div>
 										<div className="name">
-											Change Watch-Wallet to Hot Wallet
+											{t("manageWatch.title", lng)}
 										</div>
 									</div>
 									<div
@@ -87,7 +87,9 @@ export default class Root extends PureComponent {
 												alt=""
 											/>
 										</div>
-										<div className="name">Delete</div>
+										<div className="name">
+											{t("manageWatch.delete", lng)}
+										</div>
 									</div>
 								</div>
 							</div>

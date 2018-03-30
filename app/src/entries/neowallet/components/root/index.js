@@ -134,7 +134,8 @@ export default class Root extends PureComponent {
 			if (
 				this.state.sendAmount -
 					getNumFromStr(
-						this.props.neoConversion.list[key - 2].balance
+						this.props.neoConversion.list[key - 2].balance,
+						this.props.neoConversion.list[key - 2].decimals
 					) >
 				0
 			) {
@@ -225,9 +226,7 @@ export default class Root extends PureComponent {
 					this.state.sendAmount *
 					Math.pow(10, neoConversion.list[sendKey - 2].decimals)
 				).toString(16);
-			if (params.Amount.indexOf(".") != -1) {
-				params.Amount = params.Amount.split(".")[0];
-			}
+
 			let n = await this.props.getNeoUtxo({
 				address: address,
 				type: "neo-asset-id"
@@ -246,6 +245,9 @@ export default class Root extends PureComponent {
 					...g.data.result
 				]);
 			}
+		}
+		if (params.Amount.indexOf(".") != -1) {
+			params.Amount = params.Amount.split(".")[0];
 		}
 		let l = await this.props.sendNeoOrader(params);
 		if (l && l.data && l.txid) {
@@ -419,14 +421,7 @@ export default class Root extends PureComponent {
 							<div className="content">
 								<div className="wallet neowallet">
 									<div className="box1 ui center">
-										<img
-											className="icon"
-											src={
-												neoWalletDetailInfo &&
-												neoWalletDetailInfo.category &&
-												neoWalletDetailInfo.category.img
-											}
-										/>
+										<img className="icon" src={neoicon} />
 										<div className="f1">
 											<div className="name">
 												{neoWalletDetailInfo &&
@@ -526,7 +521,7 @@ export default class Root extends PureComponent {
 															neoConversion.record
 																.gnt[0]
 																.available
-														).toFixed(4)
+														).toFixed(8)
 													)}GAS
 											</div>
 										</div>
@@ -571,9 +566,13 @@ export default class Root extends PureComponent {
 													{neoConversion &&
 														neoConversion.record && (
 															<div className="t1">
-																{new Number(
-																	neoConversion.record.balance
-																).toFixed(4)}
+																{Number(
+																	Number(
+																		neoConversion
+																			.record
+																			.balance
+																	).toFixed(8)
+																)}
 															</div>
 														)}
 													{neoConversion &&
@@ -583,7 +582,9 @@ export default class Root extends PureComponent {
 														neoConversion.record.cap
 															.price_usd && (
 															<div className="t1">
-																${" "}
+																{lng == "en"
+																	? "$"
+																	: "￥"}{" "}
 																{neoConversion
 																	.record
 																	.balance ==
@@ -593,10 +594,16 @@ export default class Root extends PureComponent {
 																			neoConversion
 																				.record
 																				.balance *
-																			neoConversion
-																				.record
-																				.cap
-																				.price_usd
+																			(lng ==
+																			"en"
+																				? neoConversion
+																						.record
+																						.cap
+																						.price_usd
+																				: neoConversion
+																						.record
+																						.cap
+																						.price_cny)
 																	  ).toFixed(
 																			2
 																	  )}
@@ -637,9 +644,14 @@ export default class Root extends PureComponent {
 														neoConversion.record
 															.gnt[0] && (
 															<div className="t1">
-																{new Number(
-																	neoConversion.record.gnt[0].balance
-																).toFixed(4)}
+																{Number(
+																	Number(
+																		neoConversion
+																			.record
+																			.gnt[0]
+																			.balance
+																	).toFixed(8)
+																)}
 															</div>
 														)}
 
@@ -716,16 +728,18 @@ export default class Root extends PureComponent {
 																	}}
 																>
 																	<div className="t1">
-																		{(
-																			getNumFromStr(
-																				item.balance
-																			) /
-																			Math.pow(
-																				10,
-																				item.decimals
+																		{Number(
+																			(
+																				getNumFromStr(
+																					item.balance
+																				) /
+																				Math.pow(
+																					10,
+																					item.decimals
+																				)
+																			).toFixed(
+																				8
 																			)
-																		).toFixed(
-																			4
 																		)}
 																	</div>
 																	<div className="t1">

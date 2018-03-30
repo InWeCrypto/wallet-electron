@@ -11,7 +11,7 @@ export default {
 		nickname: "Nickname"
 	},
 	send: {
-		txt: "send"
+		txt: "Send"
 	},
 	wallet: {
 		bigTitle: "My Wallet",
@@ -28,7 +28,8 @@ export default {
 		create: "Create",
 		walletName: "Wallet Name",
 		password: "Password",
-		repeatPassword: "Repeat Password"
+		repeatPassword: "Repeat Password",
+		success: "Create Success"
 	},
 	importWallet: {
 		title: "Import Wallet",
@@ -167,7 +168,6 @@ export default {
 		place: "Enter your password"
 	},
 	unbackup: "unbackup",
-
 	walletDetail: {
 		watch: "watch",
 		asset: "Assets",
@@ -200,5 +200,10 @@ export default {
 		fail: "Fail",
 		success: "Success",
 		pending: "Pending"
+	},
+	manageWatch: {
+		title: "Manager wallet setting",
+		change: "Change Watch-Wallet to Hot Wallet",
+		delete: "Delete"
 	}
 };

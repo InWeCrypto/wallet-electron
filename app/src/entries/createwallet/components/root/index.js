@@ -4,6 +4,8 @@ import { I18n } from "react-i18next";
 import Menu from "@/menu";
 import HeaderNav from "@/headernav";
 import http from "../../../../utils/ajax";
+import ethicon from "#/ethicon.png";
+import neoicon from "#/neoicon.png";
 import "./index.less";
 import { toHref } from "../../../../utils/util";
 
@@ -144,7 +146,7 @@ export default class Root extends PureComponent {
 				})
 				.then(res1 => {
 					if (res1.code === 4000) {
-						Msg.prompt("success");
+						Msg.prompt(i18n.t("createWallet.success", lng));
 						setTimeout(() => {
 							toHref("wallet");
 						}, 2000);
@@ -197,7 +199,10 @@ export default class Root extends PureComponent {
 																<img
 																	className="wallet-img"
 																	src={
-																		item.img
+																		item.id ==
+																		1
+																			? ethicon
+																			: neoicon
 																	}
 																/>
 																<div className="t1">
@@ -214,7 +219,10 @@ export default class Root extends PureComponent {
 																	<img
 																		className="wallet-img1"
 																		src={
-																			item.img
+																			item.id ==
+																			1
+																				? ethicon
+																				: neoicon
 																		}
 																	/>
 																</div>

@@ -14,7 +14,8 @@ export default class Root extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-			password: ""
+			password: "",
+			isShowMemo: true
 		};
 	}
 	componentDidMount() {
@@ -25,6 +26,12 @@ export default class Root extends PureComponent {
 		}
 		if (q.address) {
 			set.address = q.address;
+			let l = localStorage.getItem("memoList");
+			if (
+				!(!l || l.length < 0 || JSON.parse(l).indexOf(q.address) == -1)
+			) {
+				set.isShowMemo = false;
+			}
 		}
 		if (q.name) {
 			set.name = q.name;
@@ -102,7 +109,7 @@ export default class Root extends PureComponent {
 	}
 	render() {
 		let { lng } = this.props;
-		let { isShowInputBox, password } = this.state;
+		let { isShowInputBox, password, isShowMemo } = this.state;
 
 		return (
 			<I18n>
@@ -119,56 +126,67 @@ export default class Root extends PureComponent {
 									{t("managerWallet.h2", lng)}
 								</div>
 								<div className="hotarea-box">
-									<div
-										className="hotarea inMnemonic"
-										onClick={this.showInputBox.bind(this)}
-									>
-										<div className="imgbox">
-											<img className="img" src={icon1} />
-										</div>
-										<div className="name">
-											{t("managerWallet.mnemonic", lng)}
-										</div>
-										{isShowInputBox && (
-											<div className="hideBox">
-												<input
-													placeholder={t(
-														"managerWallet.place",
-														lng
-													)}
-													type="password"
-													value={password}
-													onChange={this.passwordChange.bind(
-														this
-													)}
+									{isShowMemo && (
+										<div
+											className="hotarea inMnemonic"
+											onClick={this.showInputBox.bind(
+												this
+											)}
+										>
+											<div className="imgbox">
+												<img
+													className="img"
+													src={icon1}
 												/>
-												<div className="btnBox">
-													<button
-														className="cancel"
-														onClick={this.hideInputBox.bind(
-															this
-														)}
-													>
-														{t(
-															"managerWallet.cancel",
-															lng
-														)}
-													</button>
-													<button
-														className="comfirm"
-														onClick={this.surePassword.bind(
-															this
-														)}
-													>
-														{t(
-															"managerWallet.comfirm",
-															lng
-														)}
-													</button>
-												</div>
 											</div>
-										)}
-									</div>
+											<div className="name">
+												{t(
+													"managerWallet.mnemonic",
+													lng
+												)}
+											</div>
+											{isShowInputBox && (
+												<div className="hideBox">
+													<input
+														placeholder={t(
+															"managerWallet.place",
+															lng
+														)}
+														type="password"
+														value={password}
+														onChange={this.passwordChange.bind(
+															this
+														)}
+													/>
+													<div className="btnBox">
+														<button
+															className="cancel"
+															onClick={this.hideInputBox.bind(
+																this
+															)}
+														>
+															{t(
+																"managerWallet.cancel",
+																lng
+															)}
+														</button>
+														<button
+															className="comfirm"
+															onClick={this.surePassword.bind(
+																this
+															)}
+														>
+															{t(
+																"managerWallet.comfirm",
+																lng
+															)}
+														</button>
+													</div>
+												</div>
+											)}
+										</div>
+									)}
+
 									<div
 										className="hotarea"
 										onClick={this.toKeystroe.bind(this)}
