@@ -15,11 +15,17 @@ export default class Root extends PureComponent {
 	}
 	componentDidMount() {
 		let q = getQuery(window.location.href);
+		let set = {};
 		if (q.wallettype) {
-			this.setState({
-				walletType: q.wallettype
-			});
+			set.walletType = q.wallettype;
 		}
+		if (q.timetamp) {
+			let text = JSON.parse(sessionStorage.getItem(q.timetamp));
+			set.text = text;
+		}
+		this.setState({
+			...set
+		});
 	}
 	textChange(e) {
 		this.setState({
@@ -27,11 +33,20 @@ export default class Root extends PureComponent {
 		});
 	}
 	goEnd() {
+		if (this.state.text.length <= 0) {
+			Msg.prompt(i18n.t("error.addressEmpty", this.props.lng));
+			return;
+		}
+		let time = new Date().getTime();
+		sessionStorage.setItem(
+			`import_${time}`,
+			JSON.stringify(this.state.text)
+		);
 		toHref(
 			"importend",
 			`typeid=${this.state.walletType}&value=${
 				this.state.text
-			}&type=watch`
+			}&type=watch&timetamp=import_${time}`
 		);
 	}
 	render() {

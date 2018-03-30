@@ -192,8 +192,9 @@ export default class Root extends PureComponent {
 		params.Wallet = ethWalletDetailInfo.address;
 		params.To = sendAddress;
 		params.Password = res;
+		let gaspri = "0x" + (gasNum * Math.pow(10, 18) / 90000).toString(16);
 		params.GasPrice =
-			"0x" + (gasNum * Math.pow(10, 18) / 90000).toString(16);
+			gaspri.indexOf(".") == -1 ? gaspri : gaspri.split(".")[0];
 		params.GasLimits = "0x" + Number(90000).toString(16);
 		if (n.code === 4000 && n.data) {
 			params.Nonce = n.data.count;
@@ -209,8 +210,11 @@ export default class Root extends PureComponent {
 				ethWalletConversion.list[selectKey - 1].gnt_category.address;
 			params.Amount =
 				"0x" + (sendAmount * Math.pow(10, dec)).toString(16);
-			// params.GasLimits = "0x0" + Number(90000).toString(16);
 		}
+		params.Amount =
+			params.Amount.indexOf(".") == -1
+				? params.Amount
+				: params.Amount.split(".")[0];
 
 		let l = await this.props.setEthOrder(params);
 		if (l.length > 0) {

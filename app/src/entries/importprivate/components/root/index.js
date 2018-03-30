@@ -28,6 +28,10 @@ export default class Root extends PureComponent {
 			set.isChange = true;
 			set.name = q.name;
 		}
+		if (q.timetamp) {
+			let text = JSON.parse(sessionStorage.getItem(q.timetamp));
+			set.text = text;
+		}
 		this.setState({
 			...set
 		});
@@ -38,11 +42,20 @@ export default class Root extends PureComponent {
 		});
 	}
 	goEnd() {
+		if (this.state.text.length <= 0) {
+			Msg.prompot(i18n.t("error.privateKeyEmpty", this.props.lng));
+			return;
+		}
+		let time = new Date().getTime();
+		sessionStorage.setItem(
+			`import_${time}`,
+			JSON.stringify(this.state.text)
+		);
 		toHref(
 			"importend",
 			`typeid=${this.state.walletType}&value=${
 				this.state.text
-			}&&type=privatekey`
+			}&type=privatekey&timetamp=import_${time}`
 		);
 	}
 	openPass() {

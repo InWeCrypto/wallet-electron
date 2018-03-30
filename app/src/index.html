@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- <META HTTP-EQUIV="pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate">
+    <META HTTP-EQUIV="expires" CONTENT="0"> -->
     <title>InWeWallet</title>
 </head>
 
@@ -43,9 +46,9 @@
         })
         let network = localStorage.getItem('isDev')
         if (!network || !JSON.parse(network)) {
-            ipc.send('loadNetwok', 'formal')
+            ipc.send('loadNetwok', 'formal');
         } else {
-            ipc.send('loadNetwok', 'test')
+            ipc.send('loadNetwok', 'test');
         }
         (function () {
             var lastpage = localStorage.getItem('lastPage');
@@ -54,10 +57,7 @@
                 localStorage.removeItem('lastPage');
             }
         })()
-        console.log(os.tmpdir())
     </script>
-
-
 </body>
 
 </html>

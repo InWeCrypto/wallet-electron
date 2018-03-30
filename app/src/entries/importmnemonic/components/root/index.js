@@ -3,6 +3,7 @@ import { I18n } from "react-i18next";
 import { getQuery, toHref } from "../../../../utils/util";
 import Menu from "@/menu";
 import HeaderNav from "@/headernav";
+import ConfirmPassword from "@/confirmpassword";
 import "./index.less";
 
 export default class Root extends PureComponent {
@@ -10,23 +11,45 @@ export default class Root extends PureComponent {
 		super(props);
 		this.state = {
 			walletType: "",
-			word: ""
+			word: "",
+			isChange: false,
+			isShowPass: false,
+			name: ""
 		};
 	}
 	componentDidMount() {
 		let q = getQuery(window.location.href);
+		let set = {};
 		if (q.wallettype) {
-			this.setState({
-				walletType: q.wallettype
-			});
+			set.walletType = q.wallettype;
 		}
+		if (q.isChange) {
+			set.isChange = true;
+			set.name = q.name;
+		}
+		if (q.timetamp) {
+			let text = JSON.parse(sessionStorage.getItem(q.timetamp));
+			set.word = text;
+		}
+		this.setState({
+			...set
+		});
 	}
 	goEnd() {
+		if (this.state.word.length <= 0) {
+			Msg.prompt(i18n.t("error.memonicEmpty", this.props.lng));
+			return;
+		}
+		let time = new Date().getTime();
+		sessionStorage.setItem(
+			`import_${time}`,
+			JSON.stringify(this.state.word)
+		);
 		toHref(
 			"importend",
 			`typeid=${this.state.walletType}&value=${
 				this.state.word
-			}&type=mnemonic`
+			}&type=mnemonic&timetamp=import_${time}`
 		);
 	}
 	textChange(e) {
@@ -34,9 +57,48 @@ export default class Root extends PureComponent {
 			word: e.target.value
 		});
 	}
+	async changeHot(res) {
+		let type = null;
+		if (this.state.walletType == 1) {
+			type = "eth";
+		}
+		if (this.state.walletType == 2) {
+			type = "neo";
+		}
+		if (this.state.walletType == 3) {
+			type = "btc";
+		}
+		let mnemonic = this.state.word.trim();
+		let importres = await this.props.changeToHot({
+			name: this.state.name,
+			type: type,
+			mnemonic: mnemonic,
+			password: res
+		});
+		if (importres.address && importres.address.length > 0) {
+			this.setState({
+				isShowPass: false
+			});
+			toHref("wallet");
+		}
+	}
+	openPass() {
+		if (this.state.word.length <= 0) {
+			Msg.prompt(i18n.t("error.memonicEmpty", this.props.lng));
+			return;
+		}
+		this.setState({
+			isShowPass: true
+		});
+	}
+	closePass() {
+		this.setState({
+			isShowPass: false
+		});
+	}
 	render() {
 		let { lng } = this.props;
-		let { word } = this.state;
+		let { word, isShowPass, isChange } = this.state;
 		return (
 			<I18n>
 				{(t, { i18n }) => (
@@ -64,21 +126,48 @@ export default class Root extends PureComponent {
 													)}
 												/>
 											</div>
-											<div className="mnemonic-btn">
-												<span
-													className="btn"
-													onClick={this.goEnd.bind(
-														this
-													)}
-												>
-													{t("mnemonic.next", lng)}
-												</span>
-											</div>
+											{!isChange && (
+												<div className="mnemonic-btn">
+													<span
+														className="btn"
+														onClick={this.goEnd.bind(
+															this
+														)}
+													>
+														{t(
+															"mnemonic.next",
+															lng
+														)}
+													</span>
+												</div>
+											)}
+											{isChange && (
+												<div className="mnemonic-btn">
+													<span
+														className="btn"
+														onClick={this.openPass.bind(
+															this
+														)}
+													>
+														{t(
+															"mnemonic.changeHot",
+															lng
+														)}
+													</span>
+												</div>
+											)}
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
+						{isShowPass && (
+							<ConfirmPassword
+								confirm={this.changeHot.bind(this)}
+								close={this.closePass.bind(this)}
+								lng={lng}
+							/>
+						)}
 					</div>
 				)}
 			</I18n>

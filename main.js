@@ -20,6 +20,23 @@ var createFolder = function(to) {
 		}
 	}
 };
+function deleteall(path) {
+	var files = [];
+	if (fs.existsSync(path)) {
+		files = fs.readdirSync(path);
+		files.forEach(function(file, index) {
+			var curPath = path + "/" + file;
+			if (fs.statSync(curPath).isDirectory()) {
+				// recurse
+				deleteall(curPath);
+			} else {
+				// delete file
+				fs.unlinkSync(curPath);
+			}
+		});
+		// fs.rmdirSync(path);
+	}
+}
 var setLanguage = function(lng) {
 	const tmdir = os.tmpdir();
 	const area = app.getLocale();
@@ -99,7 +116,8 @@ let menuText = function() {
 			hide: "隐藏",
 			hideother: "隐藏其他",
 			showAll: "显示全部",
-			quit: "退出"
+			quit: "退出",
+			clear: "清除缓存"
 		};
 	} else {
 		res = {
@@ -131,7 +149,8 @@ let menuText = function() {
 			hide: "Hide",
 			hideother: "Hide Other",
 			showAll: "Show All",
-			quit: "Quit"
+			quit: "Quit",
+			clear: "Clear Cache"
 		};
 	}
 	return res;
@@ -293,6 +312,16 @@ let template = [
 						}
 					}
 				]
+			},
+			{
+				type: "separator"
+			},
+			{
+				label: text.clear,
+				click: function() {
+					let userD = app.getPath("userData");
+					deleteall(path.join(userD, "Cache"));
+				}
 			},
 			{
 				type: "separator"
@@ -554,10 +583,10 @@ var updateHandler = function() {
 				? `you has an update,the app will restart to update`
 				: "你有一个更新，请重启"
 		);
-		win.webContents.send("setLastPage");
 		setTimeout(function() {
 			autoUpdater.quitAndInstall();
 			createWindow();
+			win.webContents.send("setLastPage");
 		}, 2000);
 	});
 	// Wait a second for the window to exist before checking for updates.

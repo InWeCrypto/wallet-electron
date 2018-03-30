@@ -353,8 +353,8 @@ export default class Root extends PureComponent {
 															{item.pay_address ==
 															item.receive_address
 																? ""
-																: address ==
-																  item.pay_address
+																: address.toLowerCase() ==
+																  item.pay_address.toLowerCase()
 																	? "-"
 																	: "+"}
 															{Number(
@@ -411,7 +411,7 @@ export default class Root extends PureComponent {
 															)}:{item.remark}
 														</div>
 													</div>
-													{item.percent != null && (
+													{item.percent && (
 														<div className="confirm-line">
 															<div
 																style={{

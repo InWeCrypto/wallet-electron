@@ -1,6 +1,5 @@
 {
 	"presets": ["env", "react", "es2015", "stage-0"],
-	"ignore": ["./react/dist/ueditor/"],
 	"plugins": [
 		[
 			"transform-runtime",

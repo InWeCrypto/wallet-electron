@@ -34,6 +34,11 @@ export default class Root extends PureComponent {
 				type: q.showtype
 			});
 		}
+		if (q.walletid) {
+			this.setState({
+				walletId: q.walletid
+			});
+		}
 		this.props.getWalletType();
 	}
 	chooseType(item) {
@@ -46,8 +51,10 @@ export default class Root extends PureComponent {
 			pathname: history.location.pathname,
 			search:
 				history.location.search && history.location.search.length > 0
-					? `${history.location.search}&showtype=2`
-					: "showtype=2"
+					? `${history.location.search}&showtype=2&walletid=${
+							item.id
+					  }`
+					: `showtype=2&walletid=${item.id}`
 		});
 	}
 	backClick() {

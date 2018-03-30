@@ -26,6 +26,9 @@ export default class Root extends PureComponent {
 		if (q.typeid) {
 			set.category_id = q.typeid;
 		}
+		if (q.timetamp) {
+			set.timetamp = q.timetamp;
+		}
 		if (q.typeid == 1) {
 			set.type = "eth";
 		}
@@ -47,6 +50,7 @@ export default class Root extends PureComponent {
 		if (q.type == "watch") {
 			set.watchAddress = q.value.trim();
 		}
+
 		this.setState({
 			...set
 		});
@@ -58,6 +62,14 @@ export default class Root extends PureComponent {
 	}
 	goBack() {
 		this.props.history.go(-1);
+		let time = this.state.timetamp;
+		setTimeout(() => {
+			let his = this.props.history;
+			this.props.history.replace({
+				pathname: his.location.pathname,
+				search: `${his.location.search}&timetamp=${time}`
+			});
+		}, 20);
 	}
 	async saveClick() {
 		let params = {};
