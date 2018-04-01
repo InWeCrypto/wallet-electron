@@ -12,7 +12,6 @@ import { getLocalItem, remFun, addClass } from "./utils/util";
 
 import i18n from "./i18n";
 window.i18n = i18n;
-
 const store = storeFun();
 
 let userinfo = getLocalItem("userInfo");

@@ -323,6 +323,7 @@ export const getEthNum = (str, dec) => {
 	var res = Number(Number(p + "." + r).toFixed(8));
 	return res;
 };
+
 window.getEthNum = getEthNum;
 export const setBackUp = address => {
 	let backUp = localStorage.getItem("backUp");
@@ -334,3 +335,19 @@ export const setBackUp = address => {
 	localStorage.setItem("backUp", JSON.stringify(arr));
 };
 window.setBackUp = setBackUp;
+
+export const getNumberString = number => {
+	let st = number.toString().toLowerCase();
+	if (st.indexOf("e-") != -1) {
+		let stArr = st.split("e-");
+		let p = stArr[1];
+		let t = stArr[0];
+		let r = "0.";
+		for (let i = 0; i < p - t.length; i++) {
+			r = r + "0";
+		}
+		return r + t;
+	}
+	return st;
+};
+window.getLittleNumber = getLittleNumber;

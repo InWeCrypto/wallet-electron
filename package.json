@@ -4,8 +4,7 @@
 	"description": "InWeCrypto",
 	"main": "main.js",
 	"scripts": {
-		"dev":
-			"concurrently \"webpack  --config webpack.config.js --progress --profile&& electron .\" \"webpack --watch\"",
+		"dev": "concurrently \"webpack  --config webpack.config.js --progress --profile&& electron .\" \"webpack --watch\"",
 		"compile": "webpack --config webpack.config.js --progress --profile",
 		"watch": "webpack --watch",
 		"postinstall": "webpack --config webpack.dll.config.js",
@@ -19,15 +18,18 @@
 		"productName": "InWeCrypto",
 		"appId": "com.raistone.inwecrypto",
 		"copyright": "©InWeCrypto 2018",
-		"files": ["./main.js", "resources/index.html", "resources/"],
+		"files": [
+			"./main.js",
+			"resources/index.html",
+			"resources/"
+		],
 		"mac": {
 			"icon": "./favicon.icns"
 		},
 		"publish": [
 			{
 				"provider": "generic",
-				"url":
-					"https://inwecrypto-china.oss-cn-shanghai.aliyuncs.com/pcwallet/"
+				"url": "https://inwecrypto-china.oss-cn-shanghai.aliyuncs.com/pcwallet/"
 			}
 		],
 		"dmg": {
@@ -47,7 +49,10 @@
 			]
 		},
 		"linux": {
-			"target": ["AppImage", "deb"]
+			"target": [
+				"AppImage",
+				"deb"
+			]
 		},
 		"win": {
 			"target": "nsis",
@@ -59,6 +64,7 @@
 		"babel-plugin-react-html-attrs": "^2.1.0",
 		"bignumber.js": "^6.0.0",
 		"concurrently": "^3.5.1",
+		"decimal.js": "^10.0.0",
 		"dsmorse-gridster": "^0.7.0",
 		"echarts": "^3.8.5",
 		"electron-log": "^2.2.14",

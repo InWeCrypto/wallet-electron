@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import { NavLink, Link } from "react-router-dom";
+
 import { Modal, Button } from "antd";
 import { I18n } from "react-i18next";
 import { getQuery, toHref } from "../../../../utils/util";
@@ -73,7 +74,7 @@ export default class Root extends PureComponent {
 											/>
 										</div>
 										<div className="name">
-											{t("manageWatch.title", lng)}
+											{t("manageWatch.change", lng)}
 										</div>
 									</div>
 									<div

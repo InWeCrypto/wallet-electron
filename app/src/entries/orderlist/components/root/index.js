@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import { I18n } from "react-i18next";
+import { Decimal } from "decimal.js";
 import {
 	getQuery,
 	getLocalTime,
@@ -261,7 +262,7 @@ export default class Root extends PureComponent {
 																	: "+"}
 															{info &&
 																info.decimals &&
-																Number(
+																getNumberString(
 																	Number(
 																		item.value /
 																			Math.pow(
@@ -272,10 +273,14 @@ export default class Root extends PureComponent {
 																)}
 															{(!info ||
 																!info.decimals) &&
-																Number(
+																getNumberString(
 																	Number(
-																		item.value
-																	).toFixed(8)
+																		Number(
+																			item.value
+																		).toFixed(
+																			8
+																		)
+																	)
 																)}{" "}
 															{info && info.name}
 														</div>
@@ -363,15 +368,17 @@ export default class Root extends PureComponent {
 																  item.pay_address.toLowerCase()
 																	? "-"
 																	: "+"}
-															{Number(
+															{getNumberString(
 																Number(
-																	getEthNum(
-																		item.fee,
-																		info
-																			? info.decimals
-																			: null
-																	)
-																).toFixed(8)
+																	Number(
+																		getEthNum(
+																			item.fee,
+																			info
+																				? info.decimals
+																				: null
+																		)
+																	).toFixed(8)
+																)
 															)}{" "}
 															{info && info.name}
 														</div>
