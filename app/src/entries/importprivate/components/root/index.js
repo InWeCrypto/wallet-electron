@@ -125,7 +125,7 @@ export default class Root extends PureComponent {
 											<div className="private-btn">
 												{!isChange && (
 													<span
-														className="btn"
+														className="button-green"
 														onClick={this.goEnd.bind(
 															this
 														)}
@@ -135,7 +135,7 @@ export default class Root extends PureComponent {
 												)}
 												{isChange && (
 													<span
-														className="btn"
+														className="button-green"
 														onClick={this.openPass.bind(
 															this
 														)}

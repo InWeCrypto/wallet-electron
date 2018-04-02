@@ -227,7 +227,7 @@ export default class Root extends PureComponent {
 											<div className="key-next">
 												{!isChange && (
 													<span
-														className="keybtn"
+														className="button-green"
 														onClick={this.goNext.bind(
 															this
 														)}
@@ -240,7 +240,7 @@ export default class Root extends PureComponent {
 												)}
 												{isChange && (
 													<span
-														className="keybtn"
+														className="button-green"
 														onClick={this.opPass.bind(
 															this
 														)}

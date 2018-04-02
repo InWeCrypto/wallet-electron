@@ -25,6 +25,7 @@ if (languageItem && languageItem.data) {
 if (userinfo && userinfo.data) {
 	store.dispatch(setReduxUserInfo(JSON.parse(userinfo.data)));
 }
+
 const render = Component => {
 	domRender(
 		<Provider store={store}>

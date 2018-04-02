@@ -4,6 +4,7 @@ html {
 }
 body {
 	font-size: 16px;
+	font-weight: 200;
 }
 #root {
 	width: 100%;
@@ -274,7 +275,10 @@ body {
 		top: -0.04rem;
 	}
 }
-
+.ant-select-selection-selected-value {
+	width: 100%;
+	text-align: center;
+}
 //公共样式
 .mbox {
 	border-radius: 0.1rem;
@@ -333,7 +337,7 @@ body {
 //交易
 //按钮
 .button-green {
-	background: linear-gradient(to right, #82e0ac, #47c47f);
+	background: linear-gradient(to right, #538376, #3c7965);
 	width: 2rem;
 	height: 0.44rem;
 	border-radius: 0.08rem;
@@ -344,6 +348,9 @@ body {
 	color: #fff;
 	cursor: pointer;
 	box-sizing: border-box;
+	&:hover {
+		background: linear-gradient(to right, #82e0ac, #47c47f);
+	}
 }
 .button-default {
 	background: #fff;
@@ -374,7 +381,7 @@ body {
 	box-sizing: border-box;
 }
 .line-orange {
-	background: linear-gradient(to right, #ef7247, #e63d00);
+	background: linear-gradient(to right, #f0764d, #e63f03);
 }
 input::-webkit-input-placeholder {
 	color: #53536b;

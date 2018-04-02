@@ -296,76 +296,83 @@ export default class Root extends PureComponent {
 												list.map((item, index) => {
 													return (
 														<div
+															className="group-out"
 															key={index}
-															className="ui center wallet-group"
-															onClick={this.goDetail.bind(
-																this,
-																item
-															)}
 														>
-															<img
-																className="wallet-img"
-																onClick={this.goManger.bind(
+															<div
+																className="ui center wallet-group"
+																onClick={this.goDetail.bind(
 																	this,
 																	item
 																)}
-																src={
-																	item.category &&
-																	item
-																		.category
-																		.id == 1
-																		? ethicon
-																		: neoicon
-																}
-															/>
-															<div className="f1">
-																<div className="wallet-name">
-																	{item.name}
-																	{item.isWatch ? (
-																		<span className="watch">
-																			{t(
-																				"watch.watch",
-																				lng
-																			)}
-																		</span>
-																	) : (
-																		""
+															>
+																<img
+																	className="wallet-img"
+																	onClick={this.goManger.bind(
+																		this,
+																		item
 																	)}
-																	{!item.isWatch &&
-																		!item.isBackup && (
-																			<span className="unback">
+																	src={
+																		item.category &&
+																		item
+																			.category
+																			.id ==
+																			1
+																			? ethicon
+																			: neoicon
+																	}
+																/>
+																<div className="f1">
+																	<div className="wallet-name">
+																		{
+																			item.name
+																		}
+																		{item.isWatch ? (
+																			<span className="watch">
 																				{t(
-																					"unbackup",
+																					"watch.watch",
 																					lng
+																				)}
+																			</span>
+																		) : (
+																			""
+																		)}
+																		{!item.isWatch &&
+																			!item.isBackup && (
+																				<span className="unback">
+																					{t(
+																						"unbackup",
+																						lng
+																					)}
+																				</span>
+																			)}
+																	</div>
+																	<div className="wallet-address">
+																		{
+																			item.address
+																		}
+																	</div>
+																</div>
+																<div>
+																	{item.id &&
+																		walletDetail && (
+																			<span className="t3">
+																				{lng ===
+																				"en"
+																					? "$"
+																					: "￥"}
+																				{Number(
+																					this.getChildMoney(
+																						walletDetail[
+																							item
+																								.id
+																						],
+																						item
+																					)
 																				)}
 																			</span>
 																		)}
 																</div>
-																<div className="wallet-address">
-																	{
-																		item.address
-																	}
-																</div>
-															</div>
-															<div>
-																{item.id &&
-																	walletDetail && (
-																		<span className="t3">
-																			{lng ===
-																			"en"
-																				? "$"
-																				: "￥"}
-																			{Number(
-																				this.getChildMoney(
-																					walletDetail[
-																						item
-																							.id
-																					],
-																					item
-																				)
-																			)}
-																		</span>
-																	)}
 															</div>
 														</div>
 													);

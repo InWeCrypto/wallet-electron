@@ -81,7 +81,7 @@ export default class Root extends PureComponent {
 											</div>
 											<div className="watch-btn">
 												<span
-													className="btn"
+													className="button-green"
 													onClick={this.goEnd.bind(
 														this
 													)}

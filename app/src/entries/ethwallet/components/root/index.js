@@ -83,7 +83,7 @@ export default class Root extends PureComponent {
 		setTimeout(() => {
 			var box = document.getElementById("qrcode");
 			box.innerHTML = "";
-			var n = box.offsetWidth - 10;
+			var n = box.offsetWidth - 60;
 			var qrcode = new QRCode(box, {
 				width: n, //设置宽高
 				height: n
@@ -493,7 +493,7 @@ export default class Root extends PureComponent {
 											</div> */}
 										</div>
 										<div
-											className="box-btn line-orange"
+											className="box-btn"
 											onClick={this.addAsset.bind(
 												this,
 												ethWalletDetailInfo
@@ -504,99 +504,107 @@ export default class Root extends PureComponent {
 									</div>
 									{type === 1 && (
 										<div className="box3">
-											<div
-												className="wallet-item ui center"
-												onClick={this.goOrderList.bind(
-													this,
-													0
-												)}
-											>
-												<img
-													className="icon"
-													src={
-														ethConversion &&
-														ethConversion.list &&
-														ethConversion.list[0] &&
-														ethConversion.list[0]
-															.category &&
-														ethConversion.list[0]
-															.category.img
-													}
-												/>
-												<div className="f1 name">
-													{ethConversion &&
-														ethConversion.list &&
-														ethConversion.list[0] &&
-														ethConversion.list[0]
-															.category &&
-														ethConversion.list[0]
-															.category.name}
-												</div>
+											<div className="wallet-out">
 												<div
-													style={{
-														textAlign: "right"
-													}}
+													className="wallet-item ui center"
+													onClick={this.goOrderList.bind(
+														this,
+														0
+													)}
 												>
-													<div className="t1">
+													<img
+														className="icon"
+														src={
+															ethConversion &&
+															ethConversion.list &&
+															ethConversion
+																.list[0] &&
+															ethConversion
+																.list[0]
+																.category &&
+															ethConversion
+																.list[0]
+																.category.img
+														}
+													/>
+													<div className="f1 name">
 														{ethConversion &&
 															ethConversion.list &&
 															ethConversion
-																.list[0] && (
-																<span>
-																	{Number(
-																		getEthNum(
-																			ethConversion
-																				.list[0]
-																				.balance
-																		).toFixed(
-																			8
-																		)
-																	)}
-																</span>
-															)}
+																.list[0] &&
+															ethConversion
+																.list[0]
+																.category &&
+															ethConversion
+																.list[0]
+																.category.name}
 													</div>
-													<div className="t1">
-														{lng == "en"
-															? "$"
-															: "￥"}
-														{ethConversion &&
-															ethConversion.list &&
-															ethConversion
-																.list[0] && (
-																<span>
-																	{Number(
-																		(
+													<div
+														style={{
+															textAlign: "right"
+														}}
+													>
+														<div className="t1">
+															{ethConversion &&
+																ethConversion.list &&
+																ethConversion
+																	.list[0] && (
+																	<span>
+																		{Number(
 																			getEthNum(
 																				ethConversion
 																					.list[0]
 																					.balance
-																			) *
-																			(ethConversion
-																				.list[0]
-																				.category &&
-																			ethConversion
-																				.list[0]
-																				.category
-																				.cap
-																				? lng ==
-																				  "en"
-																					? ethConversion
-																							.list[0]
-																							.category
-																							.cap
-																							.price_usd
-																					: ethConversion
-																							.list[0]
-																							.category
-																							.cap
-																							.price_cny
-																				: 0)
-																		).toFixed(
-																			2
-																		)
-																	)}
-																</span>
-															)}
+																			).toFixed(
+																				8
+																			)
+																		)}
+																	</span>
+																)}
+														</div>
+														<div className="t1">
+															{lng == "en"
+																? "$"
+																: "￥"}
+															{ethConversion &&
+																ethConversion.list &&
+																ethConversion
+																	.list[0] && (
+																	<span>
+																		{Number(
+																			(
+																				getEthNum(
+																					ethConversion
+																						.list[0]
+																						.balance
+																				) *
+																				(ethConversion
+																					.list[0]
+																					.category &&
+																				ethConversion
+																					.list[0]
+																					.category
+																					.cap
+																					? lng ==
+																					  "en"
+																						? ethConversion
+																								.list[0]
+																								.category
+																								.cap
+																								.price_usd
+																						: ethConversion
+																								.list[0]
+																								.category
+																								.cap
+																								.price_cny
+																					: 0)
+																			).toFixed(
+																				2
+																			)
+																		)}
+																	</span>
+																)}
+														</div>
 													</div>
 												</div>
 											</div>
@@ -608,71 +616,78 @@ export default class Root extends PureComponent {
 													(item, index) => {
 														return (
 															<div
+																className="wallet-out"
 																key={index}
-																className="wallet-item ui center"
-																onClick={this.goOrderList.bind(
-																	this,
-																	index + 1
-																)}
 															>
-																<img
-																	className="icon"
-																	src={
-																		item.gnt_category &&
-																		item
-																			.gnt_category
-																			.icon
-																	}
-																/>
-																<div className="f1 name">
-																	{item.name}
-																</div>
 																<div
-																	style={{
-																		textAlign:
-																			"right"
-																	}}
+																	className="wallet-item ui center"
+																	onClick={this.goOrderList.bind(
+																		this,
+																		index +
+																			1
+																	)}
 																>
-																	<div className="t1">
-																		{Number(
-																			getEthNum(
-																				item.balance,
-																				item.decimals
-																			).toFixed(
-																				8
-																			)
-																		)}
+																	<img
+																		className="icon"
+																		src={
+																			item.gnt_category &&
+																			item
+																				.gnt_category
+																				.icon
+																		}
+																	/>
+																	<div className="f1 name">
+																		{
+																			item.name
+																		}
 																	</div>
-																	<div className="t1">
-																		{lng ==
-																		"en"
-																			? "$"
-																			: "￥"}{" "}
-																		{Number(
-																			getEthNum(
-																				item.balance
-																			) *
-																				(lng ==
-																				"en"
-																					? item.gnt_category &&
-																					  item
-																							.gnt_category
-																							.cap &&
-																					  item
-																							.gnt_category
-																							.cap
-																							.price_usd
-																					: item.gnt_category &&
-																					  item
-																							.gnt_category
-																							.cap &&
-																					  item
-																							.gnt_category
-																							.cap
-																							.price_cny)
-																		).toFixed(
-																			2
-																		)}
+																	<div
+																		style={{
+																			textAlign:
+																				"right"
+																		}}
+																	>
+																		<div className="t1">
+																			{Number(
+																				getEthNum(
+																					item.balance,
+																					item.decimals
+																				).toFixed(
+																					8
+																				)
+																			)}
+																		</div>
+																		<div className="t1">
+																			{lng ==
+																			"en"
+																				? "$"
+																				: "￥"}{" "}
+																			{Number(
+																				getEthNum(
+																					item.balance
+																				) *
+																					(lng ==
+																					"en"
+																						? item.gnt_category &&
+																						  item
+																								.gnt_category
+																								.cap &&
+																						  item
+																								.gnt_category
+																								.cap
+																								.price_usd
+																						: item.gnt_category &&
+																						  item
+																								.gnt_category
+																								.cap &&
+																						  item
+																								.gnt_category
+																								.cap
+																								.price_cny)
+																			).toFixed(
+																				2
+																			)}
+																		</div>
 																	</div>
 																</div>
 															</div>

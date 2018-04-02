@@ -73,7 +73,7 @@ export default class Root extends PureComponent {
 	}
 	render() {
 		let { lng, searchHistory, searchResult } = this.props;
-		let { keyword, isShowResult } = this.state;
+		let { keyword, isShowResult, isFocus } = this.state;
 		return (
 			<I18n>
 				{(t, { i18n }) => (
@@ -82,7 +82,13 @@ export default class Root extends PureComponent {
 						<div className="content-container">
 							<HeaderNav history={this.props.history} />
 							<div className="content project-content">
-								<div className="title">
+								<div
+									className={((isFocus, isShowResult) => {
+										return isFocus || isShowResult
+											? "title hide"
+											: "title";
+									})(isFocus, isShowResult)}
+								>
 									{t("project.t2", lng)}
 								</div>
 								<div className="search-box">
@@ -93,7 +99,9 @@ export default class Root extends PureComponent {
 										onChange={this.inputChange.bind(this)}
 										onFocus={this.changeFocus.bind(this)}
 										onBlur={this.changeBlur.bind(this)}
-										placeholder={t("project.t2", lng)}
+										placeholder={
+											isFocus ? "" : t("project.t2", lng)
+										}
 									/>
 								</div>
 								{!isShowResult && (
@@ -124,7 +132,13 @@ export default class Root extends PureComponent {
 									</div>
 								)}
 								{isShowResult && (
-									<div className="search-list">
+									<div
+										className={((isFocus, isShowResult) => {
+											return isFocus || isShowResult
+												? "search-list focus"
+												: "search-list";
+										})(isFocus, isShowResult)}
+									>
 										<ul className="search-list-ul">
 											{searchResult &&
 												searchResult.data &&

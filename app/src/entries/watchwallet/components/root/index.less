@@ -65,8 +65,15 @@
 			flex-flow: column;
 			justify-content: center;
 			cursor: pointer;
+			border: 1px solid #f0744b;
+			background: linear-gradient(to right, #69444c, #663437);
+			&:hover {
+				background: linear-gradient(to right, #f0764d, #e63f03);
+			}
 			&.disabled {
 				cursor: default;
+				border: 1px solid #9b9b9b;
+				background: linear-gradient(to right, #636378, #5a5a6f);
 			}
 			.t2 {
 				font-size: 0.12rem;
@@ -87,7 +94,13 @@
 		border-radius: 0.08rem;
 		box-sizing: border-box;
 		overflow: auto;
-		padding: 0.2rem;
+		padding: 0.2rem 0;
+		.wallet-out {
+			padding: 0 0.2rem;
+			&:hover {
+				background: #3a3a59;
+			}
+		}
 		.wallet-item {
 			padding: 0.25rem 0;
 			color: #fff;
@@ -117,7 +130,7 @@
 		}
 		.send-name {
 			margin-bottom: 0.1rem;
-			font-size: 0.18rem;
+			font-size: 0.16rem;
 			.t1 {
 				font-size: 0.14rem;
 			}
@@ -188,13 +201,15 @@
 			padding: 0.4rem 0;
 			font-size: 0.24rem;
 		}
-
 		.qcode {
 			width: 2rem;
 			height: 2rem;
 			box-sizing: border-box;
-			border: 0.05rem solid #fff;
+			padding: 0.2rem;
+			border: 0.1rem solid #d3d3d3;
 			display: inline-block;
+			border-radius: 0.25rem;
+			background: #fff;
 		}
 		.btn-box {
 			padding: 0.5rem 0;

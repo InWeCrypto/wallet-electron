@@ -51,8 +51,13 @@ export default class Root extends PureComponent {
 			this.setState({
 				frozenShow: true
 			});
+			return;
 		}
 		let { walletInfo, password } = this.state;
+		if (!password || password.length <= 0) {
+			Msg.prompt(i18n.t("error.passwordEmpty", this.props.lng));
+			return;
+		}
 		if (this.state.frozenShow) {
 			let params = {};
 			let ass = {};
@@ -131,10 +136,14 @@ export default class Root extends PureComponent {
 			});
 			return;
 		}
+
 		let { walletInfo, passwordT } = this.state;
 		let ass = {},
 			params = {};
-
+		if (!passwordT || passwordT.length <= 0) {
+			Msg.prompt(i18n.t("error.passwordEmpty", this.props.lng));
+			return;
+		}
 		ass.wallet_id = walletInfo.id;
 		ass.flag = "neo";
 		ass.asset_id =

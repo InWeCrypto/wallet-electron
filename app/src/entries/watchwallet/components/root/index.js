@@ -73,7 +73,7 @@ export default class Root extends PureComponent {
 		setTimeout(() => {
 			var box = document.getElementById("qrcode");
 			box.innerHTML = "";
-			var n = box.offsetWidth - 10;
+			var n = box.offsetWidth - 60;
 			var qrcode = new QRCode(box, {
 				width: n, //设置宽高
 				height: n
@@ -387,7 +387,7 @@ export default class Root extends PureComponent {
 											)}
 
 										<div
-											className="box-btn line-orange"
+											className="box-btn"
 											onClick={this.addAsset.bind(
 												this,
 												watchInfo
@@ -402,220 +402,59 @@ export default class Root extends PureComponent {
 												{watchConver &&
 													watchConver.list &&
 													watchConver.list[0] && (
-														<div
-															className="wallet-item ui center"
-															onClick={this.goOrderList.bind(
-																this,
-																0
-															)}
-														>
-															<img
-																className="icon"
-																src={
-																	watchConver
-																		.list[0]
-																		.category &&
-																	watchConver
-																		.list[0]
-																		.category
-																		.img
-																}
-															/>
-															<div className="f1 name">
-																{watchConver
-																	.list[0]
-																	.category &&
-																	watchConver
-																		.list[0]
-																		.category
-																		.name}
-															</div>
+														<div className="wallet-out">
 															<div
-																style={{
-																	textAlign:
-																		"right"
-																}}
+																className="wallet-item ui center"
+																onClick={this.goOrderList.bind(
+																	this,
+																	0
+																)}
 															>
-																<div className="t1">
-																	{getEthNum(
+																<img
+																	className="icon"
+																	src={
 																		watchConver
-																			.list[0]
-																			.balance
-																	)}
-																</div>
-																<div className="t1">
-																	{lng == "en"
-																		? "$"
-																		: "￥"}
-																	{(
-																		getEthNum(
-																			watchConver
-																				.list[0]
-																				.balance
-																		) *
-																		(watchConver
 																			.list[0]
 																			.category &&
 																		watchConver
 																			.list[0]
 																			.category
-																			.cap
-																			? lng ==
-																			  "en"
-																				? watchConver
-																						.list[0]
-																						.category
-																						.cap
-																						.price_usd
-																				: watchConver
-																						.list[0]
-																						.category
-																						.cap
-																						.price_cny
-																			: 0)
-																	).toFixed(
-																		2
-																	)}
-																</div>
-															</div>
-														</div>
-													)}
-
-												{walletList &&
-													walletList.list &&
-													walletList.list.length >
-														0 &&
-													walletList.list.map(
-														(item, index) => {
-															return (
-																<div
-																	key={index}
-																	className="wallet-item ui center"
-																	onClick={this.goOrderList.bind(
-																		this,
-																		index +
-																			1
-																	)}
-																>
-																	<img
-																		className="icon"
-																		src={
-																			item.gnt_category &&
-																			item
-																				.gnt_category
-																				.icon
-																		}
-																	/>
-																	<div className="f1 name">
-																		{item.gnt_category &&
-																			item
-																				.gnt_category
-																				.name}
-																	</div>
-																	<div
-																		style={{
-																			textAlign:
-																				"right"
-																		}}
-																	>
-																		<div className="t1">
-																			{getEthNum(
-																				item.balance,
-																				item.decimals
-																			)}
-																		</div>
-																		<div className="t1">
-																			{lng ==
-																			"en"
-																				? "$"
-																				: "￥"}
-																			{(
-																				getEthNum(
-																					item.balance,
-																					item.decimals
-																				) *
-																				(item.gnt_category &&
-																				item
-																					.gnt_category
-																					.cap
-																					? lng ==
-																					  "en"
-																						? item
-																								.gnt_category
-																								.cap
-																								.price_usd
-																						: item
-																								.gnt_category
-																								.cap
-																								.price_usd
-																					: 0)
-																			).toFixed(
-																				2
-																			)}
-																		</div>
-																	</div>
-																</div>
-															);
-														}
-													)}
-											</div>
-										)}
-									{type === 1 &&
-										walletType == 2 && (
-											<div className="box3">
-												{watchConver &&
-													watchConver.list &&
-													watchConver.list[0] && (
-														<div
-															className="wallet-item ui center"
-															onClick={this.goOrderList.bind(
-																this,
-																0
-															)}
-														>
-															<img
-																className="icon"
-																src={
-																	watchConver
+																			.img
+																	}
+																/>
+																<div className="f1 name">
+																	{watchConver
 																		.list[0]
 																		.category &&
-																	watchConver
-																		.list[0]
-																		.category
-																		.img
-																}
-															/>
-															<div className="f1 name">
-																{watchConver
-																	.list[0]
-																	.category &&
-																	watchConver
-																		.list[0]
-																		.category
-																		.name}
-															</div>
-															<div
-																style={{
-																	textAlign:
-																		"right"
-																}}
-															>
-																<div className="t1">
-																	{
 																		watchConver
 																			.list[0]
-																			.balance
-																	}
+																			.category
+																			.name}
 																</div>
-																<div className="t1">
-																	{lng == "en"
-																		? "$"
-																		: "￥"}
-																	{Number(
-																		(
+																<div
+																	style={{
+																		textAlign:
+																			"right"
+																	}}
+																>
+																	<div className="t1">
+																		{getEthNum(
 																			watchConver
 																				.list[0]
-																				.balance *
+																				.balance
+																		)}
+																	</div>
+																	<div className="t1">
+																		{lng ==
+																		"en"
+																			? "$"
+																			: "￥"}
+																		{(
+																			getEthNum(
+																				watchConver
+																					.list[0]
+																					.balance
+																			) *
 																			(watchConver
 																				.list[0]
 																				.category &&
@@ -638,85 +477,13 @@ export default class Root extends PureComponent {
 																				: 0)
 																		).toFixed(
 																			2
-																		)
-																	)}
+																		)}
+																	</div>
 																</div>
 															</div>
 														</div>
 													)}
-												{walletList &&
-													walletList.record &&
-													walletList.record.gnt &&
-													walletList.record.gnt
-														.length > 0 &&
-													walletList.record.gnt.map(
-														(item, index) => {
-															return (
-																<div
-																	key={index}
-																	className="wallet-item ui center"
-																	onClick={this.goOrderList.bind(
-																		this,
-																		1
-																	)}
-																>
-																	<img
-																		className="icon"
-																		src={
-																			walletList
-																				.record
-																				.category
-																				.img
-																		}
-																	/>
-																	<div className="f1 name">
-																		{
-																			item.name
-																		}
-																	</div>
-																	<div
-																		style={{
-																			textAlign:
-																				"right"
-																		}}
-																	>
-																		<div className="t1">
-																			{Number(
-																				Number(
-																					item.balance
-																				).toFixed(
-																					8
-																				)
-																			)}
-																		</div>
-																		<div className="t1">
-																			{lng ==
-																			"en"
-																				? "$"
-																				: "￥"}
-																			{Number(
-																				(
-																					item.balance *
-																					(item.cap
-																						? lng ==
-																						  "en"
-																							? item
-																									.cap
-																									.price_usd
-																							: item
-																									.cap
-																									.price_cny
-																						: 0)
-																				).toFixed(
-																					2
-																				)
-																			)}
-																		</div>
-																	</div>
-																</div>
-															);
-														}
-													)}
+
 												{walletList &&
 													walletList.list &&
 													walletList.list.length >
@@ -725,53 +492,51 @@ export default class Root extends PureComponent {
 														(item, index) => {
 															return (
 																<div
+																	className="wallet-out"
 																	key={index}
-																	className="wallet-item ui center"
-																	onClick={this.goOrderList.bind(
-																		this,
-																		index +
-																			2
-																	)}
 																>
-																	<img
-																		className="icon"
-																		src={
-																			item.gnt_category &&
-																			item
-																				.gnt_category
-																				.icon
-																		}
-																	/>
-																	<div className="f1 name">
-																		{item.gnt_category &&
-																			item
-																				.gnt_category
-																				.name}
-																	</div>
 																	<div
-																		style={{
-																			textAlign:
-																				"right"
-																		}}
+																		className="wallet-item ui center"
+																		onClick={this.goOrderList.bind(
+																			this,
+																			index +
+																				1
+																		)}
 																	>
-																		<div className="t1">
-																			{Number(
-																				getNumFromStr(
+																		<img
+																			className="icon"
+																			src={
+																				item.gnt_category &&
+																				item
+																					.gnt_category
+																					.icon
+																			}
+																		/>
+																		<div className="f1 name">
+																			{item.gnt_category &&
+																				item
+																					.gnt_category
+																					.name}
+																		</div>
+																		<div
+																			style={{
+																				textAlign:
+																					"right"
+																			}}
+																		>
+																			<div className="t1">
+																				{getEthNum(
 																					item.balance,
 																					item.decimals
-																				).toFixed(
-																					4
-																				)
-																			)}
-																		</div>
-																		<div className="t1">
-																			{lng ==
-																			"en"
-																				? "$"
-																				: "￥"}
-																			{Number(
-																				(
-																					getNumFromStr(
+																				)}
+																			</div>
+																			<div className="t1">
+																				{lng ==
+																				"en"
+																					? "$"
+																					: "￥"}
+																				{(
+																					getEthNum(
 																						item.balance,
 																						item.decimals
 																					) *
@@ -788,12 +553,265 @@ export default class Root extends PureComponent {
 																							: item
 																									.gnt_category
 																									.cap
-																									.price_cny
+																									.price_usd
 																						: 0)
 																				).toFixed(
-																					4
-																				)
-																			)}
+																					2
+																				)}
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															);
+														}
+													)}
+											</div>
+										)}
+									{type === 1 &&
+										walletType == 2 && (
+											<div className="box3">
+												{watchConver &&
+													watchConver.list &&
+													watchConver.list[0] && (
+														<div className="wallet-out">
+															<div
+																className="wallet-item ui center"
+																onClick={this.goOrderList.bind(
+																	this,
+																	0
+																)}
+															>
+																<img
+																	className="icon"
+																	src={
+																		watchConver
+																			.list[0]
+																			.category &&
+																		watchConver
+																			.list[0]
+																			.category
+																			.img
+																	}
+																/>
+																<div className="f1 name">
+																	{watchConver
+																		.list[0]
+																		.category &&
+																		watchConver
+																			.list[0]
+																			.category
+																			.name}
+																</div>
+																<div
+																	style={{
+																		textAlign:
+																			"right"
+																	}}
+																>
+																	<div className="t1">
+																		{
+																			watchConver
+																				.list[0]
+																				.balance
+																		}
+																	</div>
+																	<div className="t1">
+																		{lng ==
+																		"en"
+																			? "$"
+																			: "￥"}
+																		{Number(
+																			(
+																				watchConver
+																					.list[0]
+																					.balance *
+																				(watchConver
+																					.list[0]
+																					.category &&
+																				watchConver
+																					.list[0]
+																					.category
+																					.cap
+																					? lng ==
+																					  "en"
+																						? watchConver
+																								.list[0]
+																								.category
+																								.cap
+																								.price_usd
+																						: watchConver
+																								.list[0]
+																								.category
+																								.cap
+																								.price_cny
+																					: 0)
+																			).toFixed(
+																				2
+																			)
+																		)}
+																	</div>
+																</div>
+															</div>
+														</div>
+													)}
+												{walletList &&
+													walletList.record &&
+													walletList.record.gnt &&
+													walletList.record.gnt
+														.length > 0 &&
+													walletList.record.gnt.map(
+														(item, index) => {
+															return (
+																<div
+																	className="wallet-out"
+																	key={index}
+																>
+																	<div
+																		className="wallet-item ui center"
+																		onClick={this.goOrderList.bind(
+																			this,
+																			1
+																		)}
+																	>
+																		<img
+																			className="icon"
+																			src={
+																				walletList
+																					.record
+																					.category
+																					.img
+																			}
+																		/>
+																		<div className="f1 name">
+																			{
+																				item.name
+																			}
+																		</div>
+																		<div
+																			style={{
+																				textAlign:
+																					"right"
+																			}}
+																		>
+																			<div className="t1">
+																				{Number(
+																					Number(
+																						item.balance
+																					).toFixed(
+																						8
+																					)
+																				)}
+																			</div>
+																			<div className="t1">
+																				{lng ==
+																				"en"
+																					? "$"
+																					: "￥"}
+																				{Number(
+																					(
+																						item.balance *
+																						(item.cap
+																							? lng ==
+																							  "en"
+																								? item
+																										.cap
+																										.price_usd
+																								: item
+																										.cap
+																										.price_cny
+																							: 0)
+																					).toFixed(
+																						2
+																					)
+																				)}
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															);
+														}
+													)}
+												{walletList &&
+													walletList.list &&
+													walletList.list.length >
+														0 &&
+													walletList.list.map(
+														(item, index) => {
+															return (
+																<div
+																	className="wallet-out"
+																	key={index}
+																>
+																	<div
+																		className="wallet-item ui center"
+																		onClick={this.goOrderList.bind(
+																			this,
+																			index +
+																				2
+																		)}
+																	>
+																		<img
+																			className="icon"
+																			src={
+																				item.gnt_category &&
+																				item
+																					.gnt_category
+																					.icon
+																			}
+																		/>
+																		<div className="f1 name">
+																			{item.gnt_category &&
+																				item
+																					.gnt_category
+																					.name}
+																		</div>
+																		<div
+																			style={{
+																				textAlign:
+																					"right"
+																			}}
+																		>
+																			<div className="t1">
+																				{Number(
+																					getNumFromStr(
+																						item.balance,
+																						item.decimals
+																					).toFixed(
+																						4
+																					)
+																				)}
+																			</div>
+																			<div className="t1">
+																				{lng ==
+																				"en"
+																					? "$"
+																					: "￥"}
+																				{Number(
+																					(
+																						getNumFromStr(
+																							item.balance,
+																							item.decimals
+																						) *
+																						(item.gnt_category &&
+																						item
+																							.gnt_category
+																							.cap
+																							? lng ==
+																							  "en"
+																								? item
+																										.gnt_category
+																										.cap
+																										.price_usd
+																								: item
+																										.gnt_category
+																										.cap
+																										.price_cny
+																							: 0)
+																					).toFixed(
+																						4
+																					)
+																				)}
+																			</div>
 																		</div>
 																	</div>
 																</div>

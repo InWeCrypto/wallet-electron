@@ -29,9 +29,15 @@ export default class Root extends PureComponent {
 	}
 	componentDidMount() {
 		document.addEventListener("keypress", this.pressLogin);
+		setTimeout(() => {
+			document.querySelector("#loginImg").className = "login-img s";
+		}, 1000);
 	}
 	componentWillUnmount() {
 		document.removeEventListener("keypress", this.pressLogin);
+		setTimeout(() => {
+			document.querySelector("#loginImg").className = "login-img s";
+		}, 0);
 	}
 	pressLogin(e) {
 		if (e.keyCode == 13 && this.state.type == "signin") {
@@ -133,7 +139,7 @@ export default class Root extends PureComponent {
 			.registerUser({
 				email: registerEmail,
 				code: registerCode,
-				name: registerNickname,
+				name: registerEmail,
 				password: registerPassword,
 				password_confirmation: registerRepassword
 			})
@@ -180,6 +186,7 @@ export default class Root extends PureComponent {
 										<img
 											className="login-img"
 											src={loginHeader}
+											id="loginImg"
 										/>
 									</div>
 									<div className="login-name">

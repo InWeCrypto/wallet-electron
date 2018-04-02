@@ -117,7 +117,8 @@ let menuText = function() {
 			hideother: "隐藏其他",
 			showAll: "显示全部",
 			quit: "退出",
-			clear: "清除缓存"
+			clear: "清除缓存",
+			changeuser: "切换用户"
 		};
 	} else {
 		res = {
@@ -150,7 +151,8 @@ let menuText = function() {
 			hideother: "Hide Other",
 			showAll: "Show All",
 			quit: "Quit",
-			clear: "Clear Cache"
+			clear: "Clear Cache",
+			changeuser: "Change User"
 		};
 	}
 	return res;
@@ -321,6 +323,15 @@ let template = [
 				click: function() {
 					let userD = app.getPath("userData");
 					deleteall(path.join(userD, "Cache"));
+				}
+			},
+			{
+				type: "separator"
+			},
+			{
+				label: text.changeuser,
+				click: function() {
+					win.webContents.send("changeUser");
 				}
 			},
 			{
@@ -659,7 +670,6 @@ function createWindow() {
 			});
 		}
 		service.kill();
-		// win.webContents.send("setLastPage");
 	});
 	// Emitted when the window is closed.
 	win.on("closed", () => {

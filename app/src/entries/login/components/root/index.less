@@ -15,6 +15,9 @@
 				height: 0.79rem;
 				position: relative;
 				top: -0.3rem;
+				&.s {
+					animation: scaleHeader 0.3s ease-in-out;
+				}
 			}
 		}
 		.login-name {
@@ -43,6 +46,12 @@
 				padding: 0 0.1rem;
 				background: rgba(0, 0, 0, 0.17);
 				color: rgba(255, 255, 255, 1);
+				&.has {
+					background: rgba(0, 0, 0, 0.27);
+				}
+				&:focus {
+					background: rgba(0, 0, 0, 0.27);
+				}
 			}
 			.send {
 				position: absolute;
@@ -107,5 +116,16 @@
 		background-size: 100% 100%;
 		width: 0.11rem;
 		height: 0.18rem;
+	}
+}
+@keyframes scaleHeader {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.2);
+	}
+	100% {
+		transform: scale(1);
 	}
 }

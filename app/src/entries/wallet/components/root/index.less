@@ -24,6 +24,9 @@
 			cursor: pointer;
 			margin-right: 0.2rem;
 			font-size: 0.18rem;
+			&:hover {
+				background: linear-gradient(to bottom, #525275, #262642);
+			}
 			.walletimg {
 				width: 0.48rem;
 				height: 0.48rem;
@@ -31,6 +34,9 @@
 			}
 			&.disabled {
 				color: #9b9b9b;
+			}
+			&.disabled:hover {
+				background: #2e2e4c;
 			}
 			.t1 {
 				text-align: center;
@@ -95,7 +101,12 @@
 			overflow: auto;
 			border-radius: 0 0 0.04rem 0.04rem;
 			box-sizing: border-box;
+		}
+		.group-out {
 			padding: 0 0.2rem;
+			&:hover {
+				background: #3a3a59;
+			}
 		}
 		.wallet-group {
 			padding: 0.2rem 0;
@@ -103,6 +114,7 @@
 			&:nth-child(1) {
 				border-top: none;
 			}
+
 			.wallet-img {
 				width: 0.56rem;
 				height: 0.56rem;

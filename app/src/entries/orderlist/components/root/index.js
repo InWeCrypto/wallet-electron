@@ -223,7 +223,11 @@ export default class Root extends PureComponent {
 											return (
 												<div
 													key={index}
-													className="list-group"
+													className={(item => {
+														return item.isShowMore
+															? "list-group show"
+															: "list-group";
+													})(item)}
 												>
 													<div className="list-base ui">
 														<div className="state">
@@ -334,7 +338,11 @@ export default class Root extends PureComponent {
 											return (
 												<div
 													key={index}
-													className="list-group"
+													className={(item => {
+														return item.isShowMore
+															? "list-group show"
+															: "list-group";
+													})(item)}
 												>
 													<div className="list-base ui">
 														<div className="state">

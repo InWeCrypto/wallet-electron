@@ -25,7 +25,6 @@ import WatchWallet from "./entries/watchwallet";
 import TransationDetail from "./entries/transationdetail";
 import Print from "./entries/print";
 import OrderList from "./entries/orderlist";
-//transationdetail
 export default () => {
 	return (
 		<Switch>

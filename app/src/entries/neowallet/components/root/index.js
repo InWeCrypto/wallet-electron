@@ -53,7 +53,7 @@ export default class Root extends PureComponent {
 		setTimeout(() => {
 			var box = document.getElementById("qrcode");
 			box.innerHTML = "";
-			var n = box.offsetWidth - 10;
+			var n = box.offsetWidth - 60;
 			var qrcode = new QRCode(box, {
 				width: n, //设置宽高
 				height: n
@@ -516,7 +516,7 @@ export default class Root extends PureComponent {
 											</div> */}
 										</div>
 										<div
-											className="box-btn line-orange"
+											className="box-btn gas"
 											onClick={this.goGas.bind(this)}
 										>
 											<div className="t1">
@@ -544,178 +544,188 @@ export default class Root extends PureComponent {
 												this,
 												neoWalletDetailInfo
 											)}
-											className="box-btn line-orange"
+											className="box-btn"
 										>
 											{t("walletDetail.addAsset", lng)}
 										</div>
 									</div>
 									{type === 1 && (
 										<div className="box3">
-											<div
-												onClick={this.goOrderList.bind(
-													this,
-													0
-												)}
-												className="wallet-item ui center"
-											>
-												<img
-													className="icon"
-													src={
-														neoConversion &&
-														neoConversion.record &&
-														neoConversion.record
-															.category &&
-														neoConversion.record
-															.category.img
-													}
-												/>
-												<div className="f1 name">
-													NEO
-												</div>
+											<div className="wallet-out">
 												<div
-													style={{
-														textAlign: "right"
-													}}
+													onClick={this.goOrderList.bind(
+														this,
+														0
+													)}
+													className="wallet-item ui center"
 												>
-													{neoConversion &&
-														neoConversion.record && (
-															<div className="t1">
-																{Number(
-																	Number(
-																		neoConversion
-																			.record
-																			.balance
-																	).toFixed(8)
-																)}
-															</div>
-														)}
-													{neoConversion &&
-														neoConversion.record &&
-														neoConversion.record
-															.cap &&
-														neoConversion.record.cap
-															.price_usd && (
-															<div className="t1">
-																{lng == "en"
-																	? "$"
-																	: "￥"}{" "}
-																{neoConversion
-																	.record
-																	.balance ==
-																0
-																	? "0"
-																	: (
+													<img
+														className="icon"
+														src={
+															neoConversion &&
+															neoConversion.record &&
+															neoConversion.record
+																.category &&
+															neoConversion.record
+																.category.img
+														}
+													/>
+													<div className="f1 name">
+														NEO
+													</div>
+													<div
+														style={{
+															textAlign: "right"
+														}}
+													>
+														{neoConversion &&
+															neoConversion.record && (
+																<div className="t1">
+																	{Number(
+																		Number(
 																			neoConversion
 																				.record
-																				.balance *
-																			(lng ==
-																			"en"
-																				? neoConversion
-																						.record
-																						.cap
-																						.price_usd
-																				: neoConversion
-																						.record
-																						.cap
-																						.price_cny)
-																	  ).toFixed(
-																			2
-																	  )}
-															</div>
-														)}
+																				.balance
+																		).toFixed(
+																			8
+																		)
+																	)}
+																</div>
+															)}
+														{neoConversion &&
+															neoConversion.record &&
+															neoConversion.record
+																.cap &&
+															neoConversion.record
+																.cap
+																.price_usd && (
+																<div className="t1">
+																	{lng == "en"
+																		? "$"
+																		: "￥"}{" "}
+																	{neoConversion
+																		.record
+																		.balance ==
+																	0
+																		? "0"
+																		: (
+																				neoConversion
+																					.record
+																					.balance *
+																				(lng ==
+																				"en"
+																					? neoConversion
+																							.record
+																							.cap
+																							.price_usd
+																					: neoConversion
+																							.record
+																							.cap
+																							.price_cny)
+																		  ).toFixed(
+																				2
+																		  )}
+																</div>
+															)}
+													</div>
 												</div>
 											</div>
-											<div
-												className="wallet-item ui center"
-												onClick={this.goOrderList.bind(
-													this,
-													1
-												)}
-											>
-												<img
-													className="icon"
-													src={
-														neoConversion &&
-														neoConversion.record &&
-														neoConversion.record
-															.category &&
-														neoConversion.record
-															.category.img
-													}
-												/>
-												<div className="f1 name">
-													GAS
-												</div>
+											<div className="wallet-out">
 												<div
-													style={{
-														textAlign: "right"
-													}}
+													className="wallet-item ui center"
+													onClick={this.goOrderList.bind(
+														this,
+														1
+													)}
 												>
-													{neoConversion &&
-														neoConversion.record &&
-														neoConversion.record
-															.gnt &&
-														neoConversion.record
-															.gnt[0] && (
-															<div className="t1">
-																{Number(
-																	Number(
-																		neoConversion
-																			.record
-																			.gnt[0]
-																			.balance
-																	).toFixed(8)
-																)}
-															</div>
-														)}
-
-													{neoConversion &&
-														neoConversion.record &&
-														neoConversion.record
-															.cap &&
-														neoConversion.record
-															.gnt &&
-														neoConversion.record
-															.gnt[0] &&
-														neoConversion.record
-															.gnt[0].cap &&
-														neoConversion.record
-															.gnt[0].cap
-															.price_usd && (
-															<div className="t1">
-																{lng == "en"
-																	? "$"
-																	: "￥"}{" "}
-																{neoConversion
-																	.record
-																	.gnt[0]
-																	.balance ==
-																0
-																	? "0"
-																	: (
+													<img
+														className="icon"
+														src={
+															neoConversion &&
+															neoConversion.record &&
+															neoConversion.record
+																.category &&
+															neoConversion.record
+																.category.img
+														}
+													/>
+													<div className="f1 name">
+														GAS
+													</div>
+													<div
+														style={{
+															textAlign: "right"
+														}}
+													>
+														{neoConversion &&
+															neoConversion.record &&
+															neoConversion.record
+																.gnt &&
+															neoConversion.record
+																.gnt[0] && (
+																<div className="t1">
+																	{Number(
+																		Number(
 																			neoConversion
 																				.record
 																				.gnt[0]
-																				.balance *
-																			(lng ==
-																			"en"
-																				? neoConversion
-																						.record
-																						.gnt[0]
-																						.cap
-																						.price_usd
-																				: neoConversion
-																						.record
-																						.gnt[0]
-																						.cap
-																						.price_cny)
-																	  ).toFixed(
-																			2
-																	  )}
-															</div>
-														)}
+																				.balance
+																		).toFixed(
+																			8
+																		)
+																	)}
+																</div>
+															)}
+
+														{neoConversion &&
+															neoConversion.record &&
+															neoConversion.record
+																.cap &&
+															neoConversion.record
+																.gnt &&
+															neoConversion.record
+																.gnt[0] &&
+															neoConversion.record
+																.gnt[0].cap &&
+															neoConversion.record
+																.gnt[0].cap
+																.price_usd && (
+																<div className="t1">
+																	{lng == "en"
+																		? "$"
+																		: "￥"}{" "}
+																	{neoConversion
+																		.record
+																		.gnt[0]
+																		.balance ==
+																	0
+																		? "0"
+																		: (
+																				neoConversion
+																					.record
+																					.gnt[0]
+																					.balance *
+																				(lng ==
+																				"en"
+																					? neoConversion
+																							.record
+																							.gnt[0]
+																							.cap
+																							.price_usd
+																					: neoConversion
+																							.record
+																							.gnt[0]
+																							.cap
+																							.price_cny)
+																		  ).toFixed(
+																				2
+																		  )}
+																</div>
+															)}
+													</div>
 												</div>
 											</div>
+
 											{neoConversion &&
 												neoConversion.list &&
 												neoConversion.list.length > 0 &&
@@ -723,78 +733,85 @@ export default class Root extends PureComponent {
 													(item, index) => {
 														return (
 															<div
+																className="wallet-out"
 																key={index}
-																onClick={this.goOrderList.bind(
-																	this,
-																	index + 2
-																)}
-																className="wallet-item ui center"
 															>
-																<img
-																	className="icon"
-																	src={
-																		item.gnt_category &&
-																		item
-																			.gnt_category
-																			.icon
-																	}
-																/>
-																<div className="f1 name">
-																	{item.name}
-																</div>
 																<div
-																	style={{
-																		textAlign:
-																			"right"
-																	}}
+																	onClick={this.goOrderList.bind(
+																		this,
+																		index +
+																			2
+																	)}
+																	className="wallet-item ui center"
 																>
-																	<div className="t1">
-																		{Number(
-																			(
+																	<img
+																		className="icon"
+																		src={
+																			item.gnt_category &&
+																			item
+																				.gnt_category
+																				.icon
+																		}
+																	/>
+																	<div className="f1 name">
+																		{
+																			item.name
+																		}
+																	</div>
+																	<div
+																		style={{
+																			textAlign:
+																				"right"
+																		}}
+																	>
+																		<div className="t1">
+																			{Number(
+																				(
+																					getNumFromStr(
+																						item.balance
+																					) /
+																					Math.pow(
+																						10,
+																						item.decimals
+																					)
+																				).toFixed(
+																					8
+																				)
+																			)}
+																		</div>
+																		<div className="t1">
+																			{lng ==
+																			"en"
+																				? "$"
+																				: "￥"}{" "}
+																			{(
 																				getNumFromStr(
 																					item.balance
 																				) /
 																				Math.pow(
 																					10,
 																					item.decimals
-																				)
+																				) *
+																				(lng ==
+																				"en"
+																					? item
+																							.gnt_category
+																							.cap &&
+																					  item
+																							.gnt_category
+																							.cap
+																							.price_usd
+																					: item
+																							.gnt_category
+																							.cap &&
+																					  item
+																							.gnt_category
+																							.cap
+																							.price_cny)
 																			).toFixed(
-																				8
-																			)
-																		)}
-																	</div>
-																	<div className="t1">
-																		{lng ==
-																		"en"
-																			? "$"
-																			: "￥"}{" "}
-																		{(
-																			getNumFromStr(
-																				item.balance
-																			) /
-																			Math.pow(
-																				10,
-																				item.decimals
-																			) *
-																			(lng ==
-																			"en"
-																				? item
-																						.gnt_category
-																						.cap &&
-																				  item
-																						.gnt_category
-																						.cap
-																						.price_usd
-																				: item
-																						.gnt_category
-																						.cap &&
-																				  item
-																						.gnt_category
-																						.cap
-																						.price_cny)
-																		).toFixed(
-																			2
-																		)}
+																				2
+																			)}
+																		</div>
 																	</div>
 																</div>
 															</div>

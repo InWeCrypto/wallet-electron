@@ -35,8 +35,9 @@
                 toHref('/');
             }
         });
-        ipc.on('setLastPage', function () {
-            localStorage.setItem('lastPage', window.location.href);
+        ipc.on('changeUser', function () {
+            localStorage.removeItem('userInfo');
+            toHref('/')
         })
         ipc.on('changeLng', function (event, type) {
             let lng = getLocalItem('language');
@@ -45,6 +46,9 @@
                 window.location.reload();
             }
         })
+        window.onhashchange = function () {
+            window.localStorage.setItem('lastPage', window.location.href)
+        }
         let network = localStorage.getItem('isDev')
         if (!network || !JSON.parse(network)) {
             ipc.send('loadNetwok', 'formal');
