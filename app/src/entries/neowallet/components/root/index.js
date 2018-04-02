@@ -82,12 +82,15 @@ export default class Root extends PureComponent {
 	sendKeyChange(e) {
 		this.setState({ sendKey: e });
 	}
-	sendClick() {
+	async sendClick() {
 		let key = this.state.sendKey;
 		var params = {};
-
 		params.wallet_id = this.props.neoWalletDetailInfo.id;
-		params.flag = "neo";
+		params.flag = "NEO";
+		if (this.state.sendAmount <= 0) {
+			Msg.prompt(i18n.t("error.amountZero", this.props.lng));
+			return;
+		}
 		if (this.state.sendAddress.length <= 0) {
 			Msg.prompt(i18n.t("error.addressEmpty", this.props.lng));
 			return;
@@ -97,9 +100,6 @@ export default class Root extends PureComponent {
 			return;
 		}
 		if (key == 0) {
-			params.asset_id =
-				"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b";
-
 			if (
 				this.state.sendAmount -
 					this.props.neoConversion.record.balance >
@@ -109,9 +109,8 @@ export default class Root extends PureComponent {
 				return;
 			}
 		}
+
 		if (key == 1) {
-			params.asset_id =
-				"0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7";
 			if (
 				this.state.sendAmount -
 					this.props.neoConversion.record.gnt[0].balance >
@@ -127,10 +126,9 @@ export default class Root extends PureComponent {
 			this.props.neoConversion.list[key - 2] &&
 			this.props.neoConversion.list[key - 2].gnt_category
 		) {
-			params.asset_id = this.props.neoConversion.list[
-				key - 2
-			].gnt_category.address;
-
+			// params.asset_id = this.props.neoConversion.list[
+			// 	key - 2
+			// ].gnt_category.address;
 			if (
 				this.state.sendAmount -
 					getNumFromStr(
@@ -143,31 +141,47 @@ export default class Root extends PureComponent {
 				return;
 			}
 		}
-		this.props
-			.getAssetsOrderList({
-				...params
-			})
-			.then(res => {
-				if (res.code === 4000 && res.data) {
-					let isSending = false;
-					if (res.data.list && res.data.list.length > 0) {
-						let list = res.data.list;
-						list.map((item, index) => {
-							if (
-								!item.confirmTime ||
-								item.confirmTime.length <= 0
-							) {
-								isSending = true;
-							}
-						});
-					}
-					if (!isSending) {
-						this.setState({ isShowPass: true });
-					} else {
-						Msg.prompt(i18n.t("error.isSend", this.props.lng));
-					}
-				}
-			});
+
+		//params.asset_id ="0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b";
+		//params.asset_id ="0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7";
+		let neo = await this.props.getAssetsOrderList({
+			...params,
+			asset_id:
+				"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b"
+		});
+		let arr = [];
+		let isSending = false;
+		if (
+			neo.code === 4000 &&
+			neo.data &&
+			neo.data.list &&
+			neo.data.list.length > 0
+		) {
+			arr.concat(neo.data.list);
+		}
+		let gas = await this.props.getAssetsOrderList({
+			...params,
+			asset_id:
+				"0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7"
+		});
+		if (
+			gas.code === 4000 &&
+			gas.data &&
+			gas.data.list &&
+			gas.data.list.length > 0
+		) {
+			arr.concat(gas.data.list);
+		}
+		if (arr.length > 0) {
+			if (!item.confirmTime || item.confirmTime.length <= 0) {
+				isSending = true;
+			}
+		}
+		if (!isSending) {
+			this.setState({ isShowPass: true });
+		} else {
+			Msg.prompt(i18n.t("error.isSend", this.props.lng));
+		}
 	}
 	closePasss() {
 		this.setState({ isShowPass: false });
@@ -683,11 +697,18 @@ export default class Root extends PureComponent {
 																				.record
 																				.gnt[0]
 																				.balance *
-																			neoConversion
-																				.record
-																				.gnt[0]
-																				.cap
-																				.price_usd
+																			(lng ==
+																			"en"
+																				? neoConversion
+																						.record
+																						.gnt[0]
+																						.cap
+																						.price_usd
+																				: neoConversion
+																						.record
+																						.gnt[0]
+																						.cap
+																						.price_cny)
 																	  ).toFixed(
 																			2
 																	  )}

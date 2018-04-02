@@ -157,6 +157,12 @@ export default class Root extends PureComponent {
 														onChange={this.passwordChange.bind(
 															this
 														)}
+														className={(password => {
+															return password.length >
+																0
+																? "has"
+																: "";
+														})(password)}
 													/>
 													<div className="btnBox">
 														<button

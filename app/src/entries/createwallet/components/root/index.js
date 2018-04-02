@@ -232,7 +232,22 @@ export default class Root extends PureComponent {
 																			index
 																		] && (
 																			<input
-																				className="input"
+																				className={((
+																					itemList,
+																					index
+																				) => {
+																					return itemList[
+																						index
+																					]
+																						.walletName
+																						.length >
+																						0
+																						? "input has"
+																						: "input";
+																				})(
+																					itemList,
+																					index
+																				)}
 																				type="text"
 																				placeholder={t(
 																					"createWallet.walletName",
@@ -257,7 +272,22 @@ export default class Root extends PureComponent {
 																			index
 																		] && (
 																			<input
-																				className="input"
+																				className={((
+																					itemList,
+																					index
+																				) => {
+																					return itemList[
+																						index
+																					]
+																						.password
+																						.length >
+																						0
+																						? "input has"
+																						: "input";
+																				})(
+																					itemList,
+																					index
+																				)}
 																				type="password"
 																				placeholder={t(
 																					"createWallet.password",
@@ -276,7 +306,22 @@ export default class Root extends PureComponent {
 																			index
 																		] && (
 																			<input
-																				className="input"
+																				className={((
+																					itemList,
+																					index
+																				) => {
+																					return itemList[
+																						index
+																					]
+																						.repeatPassword
+																						.length >
+																						0
+																						? "input has"
+																						: "input";
+																				})(
+																					itemList,
+																					index
+																				)}
 																				type="password"
 																				placeholder={t(
 																					"createWallet.repeatPassword",

@@ -110,6 +110,7 @@ export default {
 		followError: "you know the math",
 		addressEmpty: "地址不得为空",
 		amountEmpty: "数额不得为空",
+		amountZero: "金额不能小于等于0",
 		amountError: "数额不得大于余额",
 		MiningError: "Fuel不足",
 		isSend: "订单未完成",

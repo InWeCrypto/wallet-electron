@@ -685,7 +685,7 @@ export default class Root extends PureComponent {
 																				Number(
 																					item.balance
 																				).toFixed(
-																					4
+																					8
 																				)
 																			)}
 																		</div>

@@ -445,8 +445,9 @@ export default class Root extends PureComponent {
 										<div
 											style={{
 												textAlign: "center",
-												padding: ".4rem 0",
-												colro: "#a4a4a4a"
+												padding: ".2rem 0",
+												fontSize: "16px",
+												colro: "#53536B"
 											}}
 										>
 											{t("error.nodata", lng)}

@@ -350,4 +350,4 @@ export const getNumberString = number => {
 	}
 	return st;
 };
-window.getLittleNumber = getLittleNumber;
+window.getNumberString = getNumberString;

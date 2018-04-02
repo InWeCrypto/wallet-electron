@@ -76,13 +76,16 @@
 					}
 					.input {
 						width: 100%;
-						background: rgba(0, 0, 0, 0.17);
+						background: #292946;
 						padding: 0.08rem 0.15rem;
 						box-sizing: border-box;
 						border-radius: 0.2rem;
 						color: rgba(255, 255, 255, 1);
 						border: none;
 						outline: none;
+						&.has {
+							background: #23233f;
+						}
 						&::-webkit-input-placeholder {
 							color: rgba(255, 255, 255, 0.2);
 						}
@@ -100,14 +103,13 @@
 						line-height: 0.3rem;
 						cursor: pointer;
 						background: linear-gradient(
-							to right,
-							#ffffff 0%,
-							#cacaca 10%,
+							to bottom,
+							#dadada 0%,
 							#bdbdbd 100%
 						);
 						&.c {
 							background: linear-gradient(
-								to right,
+								to bottom,
 								#82e0ac,
 								#47c47f
 							);

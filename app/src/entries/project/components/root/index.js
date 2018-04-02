@@ -156,11 +156,17 @@ export default class Root extends PureComponent {
 																			item.long_name
 																		})
 																	</div>
-																	<div className="mess">
-																		{
-																			item.desc
-																		}
-																	</div>
+																	{item.desc &&
+																		item
+																			.desc
+																			.length >
+																			0 && (
+																			<div className="mess">
+																				{
+																					item.desc
+																				}
+																			</div>
+																		)}
 																</div>
 															</li>
 														);

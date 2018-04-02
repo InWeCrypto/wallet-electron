@@ -112,6 +112,7 @@ export default {
 		addressEmpty: "address cannot be empty",
 		amountEmpty: "amount cannot be empty",
 		amountError: "Amount cannot be greater than the balance ",
+		amountZero: "Amount cannot be less than zero",
 		MiningError: "Insufficient fuel costs",
 		isSend: "You have an unfinished order",
 		valiError: "Verification fail",
