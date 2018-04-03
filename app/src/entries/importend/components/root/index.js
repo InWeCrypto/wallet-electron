@@ -123,9 +123,9 @@ export default class Root extends PureComponent {
 			});
 			return;
 		}
-		let reg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{6,16}$/;
+		let reg = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 		if (!reg.test(params.password)) {
-			Msg.prompt(i18n.t("error.passError", lng));
+			Msg.prompt(i18n.t("error.passVili", lng));
 			return;
 		}
 		let local = await this.props.importWallet(params, ism);

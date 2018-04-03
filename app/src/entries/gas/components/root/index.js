@@ -58,6 +58,11 @@ export default class Root extends PureComponent {
 			Msg.prompt(i18n.t("error.passwordEmpty", this.props.lng));
 			return;
 		}
+		//判断当前app是否有正在转账的订单
+		if (window.walletState.checkItem(walletInfo.address)) {
+			Msg.prompt(i18n.t("error.isSend", this.props.lng));
+			return;
+		}
 		if (this.state.frozenShow) {
 			let params = {};
 			let ass = {};
@@ -121,6 +126,14 @@ export default class Root extends PureComponent {
 					asset_id: params.Asset
 				});
 				if (unfree && unfree.code === 4000) {
+					window.walletState.addItem({
+						txid: unfree.data.tx,
+						flag: "NEO",
+						wallet_id: walletInfo.id,
+						asset_id: params.Asset,
+						from: unfree.data.from,
+						to: unfree.data.to
+					});
 					Msg.prompt(i18n.t("success.unfreeze", this.props.lng));
 					setTimeout(() => {
 						window.history.back();
@@ -138,6 +151,11 @@ export default class Root extends PureComponent {
 		}
 
 		let { walletInfo, passwordT } = this.state;
+		//判断当前app是否有正在转账的订单
+		if (window.walletState.checkItem(walletInfo.address)) {
+			Msg.prompt(i18n.t("error.isSend", this.props.lng));
+			return;
+		}
 		let ass = {},
 			params = {};
 		if (!passwordT || passwordT.length <= 0) {
@@ -206,6 +224,14 @@ export default class Root extends PureComponent {
 				asset_id: params.Asset
 			});
 			if (total && total.code === 4000) {
+				window.walletState.addItem({
+					txid: total.data.tx,
+					flag: "NEO",
+					wallet_id: walletInfo.id,
+					asset_id: params.Asset,
+					from: total.data.from,
+					to: total.data.to
+				});
 				Msg.prompt(i18n.t("success.totalClaims", this.props.lng));
 				setTimeout(() => {
 					window.history.back();

@@ -123,9 +123,9 @@ export default class Root extends PureComponent {
 			Msg.prompt(i18n.t("error.nameEmpty", lng));
 			return;
 		}
-		let reg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{6,16}$/;
+		let reg = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 		if (!reg.test(password)) {
-			Msg.prompt(i18n.t("error.passError", lng));
+			Msg.prompt(i18n.t("error.passVili", lng));
 			return;
 		}
 		if (password != repassword) {

@@ -181,6 +181,13 @@ export default class Root extends PureComponent {
 				return;
 			}
 		}
+		// if (
+		// 	window.walletState.checkItem(this.props.neoWalletDetailInfo.address)
+		// ) {
+
+		// 	Msg.prompt(i18n.t("error.isSend", this.props.lng));
+		// 	return;
+		// }
 		this.setState({ isShowPass: true });
 	}
 	async confirmPass(res) {
@@ -237,6 +244,14 @@ export default class Root extends PureComponent {
 				})
 				.then(res => {
 					if (res.code === 4000) {
+						window.walletState.addItem({
+							txid: res.data.tx,
+							flag: "ETH",
+							wallet_id: ethWalletDetailInfo.id,
+							asset_id: params.Asset,
+							from: res.data.from,
+							to: res.data.to
+						});
 						Msg.prompt(
 							i18n.t("success.transferSuccess", this.props.lng)
 						);

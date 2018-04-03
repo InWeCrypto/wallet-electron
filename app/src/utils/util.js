@@ -78,7 +78,6 @@ export const setLocalItem = (key, value, ms) => {
 	if (ms) {
 		extime = key + ms;
 	}
-	console.log(value);
 	localStorage.setItem(key, JSON.stringify({ data: value, extime: extime }));
 };
 window.setLocalItem = setLocalItem;

@@ -35,9 +35,6 @@ export default class Root extends PureComponent {
 	}
 	componentWillUnmount() {
 		document.removeEventListener("keypress", this.pressLogin);
-		setTimeout(() => {
-			document.querySelector("#loginImg").className = "login-img s";
-		}, 0);
 	}
 	pressLogin(e) {
 		if (e.keyCode == 13 && this.state.type == "signin") {

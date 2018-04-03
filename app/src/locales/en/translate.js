@@ -107,6 +107,8 @@ export default {
 		resetPass: "Password reset failed, please try again",
 		passLength: "The entered passwords are inconsistent ",
 		passError: "The entered passwords are inconsistent ",
+		passVili:
+			"The password needs to contain at least 8 characters, with upper case, lower case and digits mixed.",
 		codeEmpty: "Verification code cannot be empty",
 		followError: "you know the math",
 		addressEmpty: "address cannot be empty",

@@ -163,19 +163,22 @@ export default class Root extends PureComponent {
 		let backUp = localStorage.getItem("backUp");
 
 		let l = [];
+
 		server.list.map((item, index) => {
 			item.isWatch = true;
 			item.isBackup = false;
-			local.map((i, m) => {
-				if (
-					item.address &&
-					i.address &&
-					item.address === i.address &&
-					item.name === i.name
-				) {
-					item.isWatch = false;
-				}
-			});
+			if (local && local.length > 0) {
+				local.map((i, m) => {
+					if (
+						item.address &&
+						i.address &&
+						item.address === i.address &&
+						item.name === i.name
+					) {
+						item.isWatch = false;
+					}
+				});
+			}
 			if (backUp && JSON.parse(backUp).length > 0) {
 				JSON.parse(backUp).map((i, m) => {
 					if (item.address && i === item.address) {

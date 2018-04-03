@@ -88,6 +88,7 @@ export default class Root extends PureComponent {
 		var params = {};
 		params.wallet_id = this.props.neoWalletDetailInfo.id;
 		params.flag = "NEO";
+		let arr = [];
 		if (this.state.sendAmount <= 0) {
 			Msg.prompt(i18n.t("error.amountZero", this.props.lng));
 			return;
@@ -110,7 +111,6 @@ export default class Root extends PureComponent {
 				return;
 			}
 		}
-
 		if (key == 1) {
 			if (
 				this.state.sendAmount -
@@ -130,6 +130,19 @@ export default class Root extends PureComponent {
 			// params.asset_id = this.props.neoConversion.list[
 			// 	key - 2
 			// ].gnt_category.address;
+			let curcoin = await this.props.getAssetsOrderList({
+				...params,
+				asset_id: this.props.neoConversion.list[key - 2].gnt_category
+					.address
+			});
+			if (
+				curcoin.code === 4000 &&
+				curcoin.data &&
+				curcoin.data.list &&
+				curcoin.data.list.length > 0
+			) {
+				arr.concat(curcoin.data.list);
+			}
 			if (
 				this.state.sendAmount -
 					getNumFromStr(
@@ -142,7 +155,13 @@ export default class Root extends PureComponent {
 				return;
 			}
 		}
-
+		//判断当前app是否有正在转账的订单
+		if (
+			window.walletState.checkItem(this.props.neoWalletDetailInfo.address)
+		) {
+			Msg.prompt(i18n.t("error.isSend", this.props.lng));
+			return;
+		}
 		//params.asset_id ="0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b";
 		//params.asset_id ="0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7";
 		let neo = await this.props.getAssetsOrderList({
@@ -150,7 +169,7 @@ export default class Root extends PureComponent {
 			asset_id:
 				"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b"
 		});
-		let arr = [];
+
 		let isSending = false;
 		if (
 			neo.code === 4000 &&
@@ -241,15 +260,15 @@ export default class Root extends PureComponent {
 					this.state.sendAmount *
 					Math.pow(10, neoConversion.list[sendKey - 2].decimals)
 				).toString(16);
-
-			let n = await this.props.getNeoUtxo({
-				address: address,
-				type: "neo-asset-id"
-			});
 			fee = parseInt(
 				sendAmount *
 					Math.pow(10, neoConversion.list[sendKey - 2].decimals)
 			);
+			let n = await this.props.getNeoUtxo({
+				address: address,
+				type: "neo-asset-id"
+			});
+
 			let g = await this.props.getNeoUtxo({
 				address: address,
 				type: "neo-gas-asset-id"
@@ -259,6 +278,8 @@ export default class Root extends PureComponent {
 					...n.data.result,
 					...g.data.result
 				]);
+			} else {
+				return;
 			}
 		}
 		if (params.Amount.indexOf(".") != -1) {
@@ -279,6 +300,14 @@ export default class Root extends PureComponent {
 				asset_id: params.Asset
 			});
 			if (order && order.code === 4000) {
+				window.walletState.addItem({
+					txid: order.data.tx,
+					flag: "NEO",
+					wallet_id: neoWalletDetailInfo.id,
+					asset_id: params.Asset,
+					from: order.data.from,
+					to: order.data.to
+				});
 				Msg.prompt(i18n.t("success.transferSuccess", this.props.lng));
 			}
 		}

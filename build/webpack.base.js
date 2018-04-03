@@ -11,12 +11,13 @@ var rootPath = path.resolve(__dirname, "../app/src");
 
 entries.app = [rootPath + "/index.js", rootPath + "/assets/less/common.less"];
 entries.pace = [
-	rootPath + "/assets/less/pace.theme.less",
-	rootPath + "/assets/js/pace.js"
+	path.join(rootPath, "/assets/js/pace.js"),
+	path.join(rootPath, "/assets/less/pace.theme.less")
 ];
 entries.message = [
-	rootPath + "/assets/less/message.less",
-	rootPath + "/assets/js/message.js"
+	path.join(rootPath, "/assets/less/message.less"),
+	path.join(rootPath, "/assets/js/message.js"),
+	path.join(rootPath, "/assets/js/walletstate.js")
 ];
 var webpackConfig = {
 	entry: entries,

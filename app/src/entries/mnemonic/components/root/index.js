@@ -202,7 +202,7 @@ export default class Root extends PureComponent {
 												{t("backupMnemonic.step3", lng)}
 											</p>
 											<button
-												className="next"
+												className="next button-green"
 												onClick={this.nextPage.bind(
 													this
 												)}
@@ -238,7 +238,7 @@ export default class Root extends PureComponent {
 													)}
 											</ul>
 											<button
-												className="next"
+												className="next button-green"
 												onClick={this.confirmClick.bind(
 													this
 												)}
