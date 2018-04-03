@@ -79,16 +79,29 @@
 				height: 0.44rem;
 				line-height: 0.44rem;
 				color: #fff;
-				font-size: 0.18rem;
+				font-size: 0.16rem;
 				border-radius: 0.04rem;
 				font-weight: 200;
 				cursor: pointer;
-				background: linear-gradient(to right, #82e0ac, #47c47f);
+				border: 1px solid #47c47f;
+				color: #47c47f;
+				&:hover {
+					background: linear-gradient(to right, #82e0ac, #47c47f);
+					color: #fff;
+				}
 			}
 			.signup {
 				color: #47c47f;
 				padding: 0.05rem 0;
 				cursor: pointer;
+				width: 3.08rem;
+				margin: 0.05rem auto 0 auto;
+				span {
+					color: #53536b;
+					&:hover {
+						color: #47c47f;
+					}
+				}
 			}
 		}
 	}

@@ -117,7 +117,11 @@ export default {
 		isSend: "You have an unfinished order",
 		valiError: "Verification fail",
 		hash160: "decode address error",
-		nodata: "No transactions yet."
+		nodata: "No transactions yet.",
+		delete: "Delete Fail"
+	},
+	delete: {
+		delete: "Delete"
 	},
 	success: {
 		login: "Log in successfully",
@@ -206,5 +210,9 @@ export default {
 		title: "Manager wallet setting",
 		change: "Change Watch-Wallet to Hot Wallet",
 		delete: "Delete"
+	},
+	addAsset: {
+		title: "Add Asset",
+		confirm: "Confirm"
 	}
 };

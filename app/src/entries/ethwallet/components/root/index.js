@@ -7,6 +7,7 @@ import { Select, Slider } from "antd";
 import Menu from "@/menu";
 import HeaderNav from "@/headernav";
 import ethicon from "#/ethicon.png";
+import seticon from "#/setting.png";
 const Option = Select.Option;
 import "./index.less";
 
@@ -304,10 +305,10 @@ export default class Root extends PureComponent {
 			ethWalletConversion.list.map((item, index) => {
 				num +=
 					getEthNum(item.balance, item.decimals) *
-					(item.category && item.category.cap
+					(item.gnt_category && item.gnt_category.cap
 						? lng == "en"
-							? item.category.cap.price_usd
-							: item.category.cap.price_cny
+							? item.gnt_category.cap.price_usd
+							: item.gnt_category.cap.price_cny
 						: 0);
 			});
 		}
@@ -385,6 +386,23 @@ export default class Root extends PureComponent {
 			}&timetamp=orderlist_${time}`
 		);
 	}
+	async deleteCoin(item, e) {
+		e.stopPropagation();
+		let del = await this.props.deleteCoin({
+			id: item.id
+		});
+		if (del.code != 4000) {
+			Msg.prompt(i18n.t("error.delete", this.props.lng));
+		}
+	}
+	goManage() {
+		let { ethWalletDetailInfo } = this.props;
+		toHref(
+			`managewallet?id=${ethWalletDetailInfo.id}&address=${
+				ethWalletDetailInfo.address
+			}&name=${ethWalletDetailInfo.name}`
+		);
+	}
 	render() {
 		let {
 			lng,
@@ -414,7 +432,19 @@ export default class Root extends PureComponent {
 							<div className="content">
 								<div className="wallet">
 									<div className="box1 ui center">
-										<img className="icon" src={ethicon} />
+										<div className="icon-box">
+											<img
+												className="icon"
+												src={ethicon}
+											/>
+											<img
+												className="icon2"
+												src={seticon}
+												onClick={this.goManage.bind(
+													this
+												)}
+											/>
+										</div>
 										<div className="f1">
 											<div className="name">
 												{ethWalletDetailInfo &&
@@ -640,6 +670,18 @@ export default class Root extends PureComponent {
 																		{
 																			item.name
 																		}
+																		<span
+																			onClick={this.deleteCoin.bind(
+																				this,
+																				item
+																			)}
+																			className="delete"
+																		>
+																			{t(
+																				"delete.delete",
+																				lng
+																			)}
+																		</span>
 																	</div>
 																	<div
 																		style={{

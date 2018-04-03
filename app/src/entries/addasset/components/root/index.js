@@ -79,7 +79,9 @@ export default class Root extends PureComponent {
 						<div className="content-container">
 							<HeaderNav history={this.props.history} />
 							<div className="content addasset-content">
-								<div className="title">Add Asset</div>
+								<div className="title">
+									{t("addAsset.title")}
+								</div>
 								<div className="cokBox">
 									<ul className="assetUl">
 										{assetsList &&
@@ -135,7 +137,7 @@ export default class Root extends PureComponent {
 										onClick={this.submitData.bind(this)}
 										className="confirmBtn button-green"
 									>
-										confirm
+										{t("addAsset.confirm")}
 									</button>
 								</div>
 							</div>

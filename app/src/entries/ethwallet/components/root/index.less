@@ -14,10 +14,27 @@
 			vertical-align: middle;
 			margin-left: 0.2rem;
 		}
-		.icon {
+		.icon-box {
 			width: 0.8rem;
 			height: 0.8rem;
 			margin-right: 0.2rem;
+			position: relative;
+			&:hover .icon2 {
+				display: block;
+			}
+		}
+		.icon2 {
+			width: 0.8rem;
+			height: 0.8rem;
+			position: absolute;
+			left: 0;
+			top: 0;
+			display: none;
+			z-index: 1;
+		}
+		.icon {
+			width: 0.8rem;
+			height: 0.8rem;
 		}
 		.money {
 			margin-left: 0.2rem;
@@ -93,8 +110,19 @@
 			padding: 0 0.2rem;
 			&:hover {
 				background: #3a3a59;
+				.delete {
+					display: inline-block;
+				}
+			}
+			.delete {
+				display: none;
+				color: #5c89eb;
+				font-size: 0.12rem;
+				cursor: pointer;
+				margin-left: 0.2rem;
 			}
 		}
+
 		.wallet-item {
 			padding: 0.25rem 0;
 			color: #fff;

@@ -7,7 +7,8 @@ import {
 	GETASSETORDERLIST,
 	ETHORDER,
 	GETETHNONCE,
-	CREATEORDER
+	CREATEORDER,
+	DELETECOIN
 } from "./actions";
 
 export const ethWalletDetailInfo = handleActions(
@@ -18,9 +19,18 @@ export const ethWalletDetailInfo = handleActions(
 );
 export const ethWalletConversion = handleActions(
 	{
-		[GETETHWALLETCONVERSION]: (state, { payload }) => payload
+		[GETETHWALLETCONVERSION]: (state, { payload }) => payload,
+		[DELETECOIN]: (state, { payload }) => {
+			let list = state.list;
+			let arr = list.filter((item, index) => {
+				if (item.id != payload.id) {
+					return item;
+				}
+			});
+			return { record: state.record, list: arr };
+		}
 	},
-	[]
+	null
 );
 export const ethConversion = handleActions(
 	{

@@ -6,6 +6,7 @@ import {
 	GETASSETORDERLIST,
 	GETNEOUTXO,
 	GETGASUTXO,
+	DELETECOIN,
 	SENDNEOORDER,
 	CREATEORDER
 } from "./actions";
@@ -24,7 +25,16 @@ export const neoWalletAssets = handleActions(
 );
 export const neoConversion = handleActions(
 	{
-		[GETWALLETCONVERSION]: (state, { payload }) => payload
+		[GETWALLETCONVERSION]: (state, { payload }) => payload,
+		[DELETECOIN]: (state, { payload }) => {
+			let list = state.list;
+			let arr = list.filter((item, index) => {
+				if (item.id != payload.id) {
+					return item;
+				}
+			});
+			return { record: state.record, list: arr };
+		}
 	},
 	null
 );

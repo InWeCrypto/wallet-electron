@@ -10,6 +10,7 @@ export const GETNEOUTXO = `${PRE_FIX}GETNEOUTXO`;
 export const GETGASUTXO = `${PRE_FIX}GETGASUTXO`;
 export const SENDNEOORDER = `${PRE_FIX}SENDNEOORDER`;
 export const CREATEORDER = `${PRE_FIX}CREATEORDER`;
+export const DELETECOIN = `${PRE_FIX}DELETECOIN`;
 
 export const setNeoWalletInfo = createAction(WALLETINFO, params => {
 	return params;
@@ -56,4 +57,22 @@ export const createOrder = createAction(CREATEORDER, params => {
 		url: "wallet-order",
 		params
 	});
+});
+export const deleteCoin = createAction(DELETECOIN, params => {
+	return http
+		.delete({
+			url: `user-gnt/${params.id}`
+		})
+		.then(res => {
+			if (res.code === 4000) {
+				return {
+					msg: res.msg,
+					code: res.code,
+					data: {
+						id: params.id
+					}
+				};
+			}
+			return res;
+		});
 });

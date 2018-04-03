@@ -206,7 +206,7 @@ export default class Root extends PureComponent {
 
 											<div className="endbtn">
 												<span
-													className="btn"
+													className="button-green"
 													onClick={this.goBack.bind(
 														this
 													)}
@@ -214,7 +214,7 @@ export default class Root extends PureComponent {
 													{t("end.previous", lng)}
 												</span>
 												<span
-													className="btn"
+													className="button-green"
 													onClick={this.saveClick.bind(
 														this
 													)}

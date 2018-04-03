@@ -7,6 +7,7 @@ import ConfirmPassword from "../../../../components/confirmpassword";
 import Menu from "@/menu";
 import HeaderNav from "@/headernav";
 import neoicon from "#/neoicon.png";
+import seticon from "#/setting.png";
 const Option = Select.Option;
 import "./index.less";
 
@@ -408,6 +409,23 @@ export default class Root extends PureComponent {
 	goGas() {
 		toHref("gas", `walletid=${this.props.neoWalletDetailInfo.id}`);
 	}
+	async deleteCoin(item, e) {
+		e.stopPropagation();
+		let del = await this.props.deleteCoin({
+			id: item.id
+		});
+		if (del.code != 4000) {
+			Msg.prompt(i18n.t("error.delete", this.props.lng));
+		}
+	}
+	goManage() {
+		let { neoWalletDetailInfo } = this.props;
+		toHref(
+			`managewallet?id=${neoWalletDetailInfo.id}&address=${
+				neoWalletDetailInfo.address
+			}&name=${neoWalletDetailInfo.name}`
+		);
+	}
 	render() {
 		let {
 			lng,
@@ -435,7 +453,19 @@ export default class Root extends PureComponent {
 							<div className="content">
 								<div className="wallet neowallet">
 									<div className="box1 ui center">
-										<img className="icon" src={neoicon} />
+										<div className="icon-box">
+											<img
+												className="icon"
+												src={neoicon}
+											/>
+											<img
+												className="icon2"
+												src={seticon}
+												onClick={this.goManage.bind(
+													this
+												)}
+											/>
+										</div>
 										<div className="f1">
 											<div className="name">
 												{neoWalletDetailInfo &&
@@ -757,6 +787,18 @@ export default class Root extends PureComponent {
 																		{
 																			item.name
 																		}
+																		<span
+																			onClick={this.deleteCoin.bind(
+																				this,
+																				item
+																			)}
+																			className="delete"
+																		>
+																			{t(
+																				"delete.delete",
+																				lng
+																			)}
+																		</span>
 																	</div>
 																	<div
 																		style={{

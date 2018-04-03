@@ -229,14 +229,7 @@ export default class Root extends PureComponent {
 											/>
 										</div>
 									</div>
-									<div className="login-forget">
-										<span
-											className="t1"
-											onClick={this.goFroget.bind(this)}
-										>
-											{t("login.forget", lng)}
-										</span>
-									</div>
+
 									<div className="login-btn">
 										<span
 											className="loginbtn"
@@ -246,13 +239,22 @@ export default class Root extends PureComponent {
 										>
 											{t("login.signin", lng)}
 										</span>
-										<div className="signup">
+										<div className="signup ui center">
 											<span
 												onClick={this.goRegister.bind(
 													this
 												)}
 											>
 												{t("login.signup", lng)}
+											</span>
+											<div className="f1" />
+											<span
+												className="t1"
+												onClick={this.goFroget.bind(
+													this
+												)}
+											>
+												{t("login.forget", lng)}
 											</span>
 										</div>
 									</div>

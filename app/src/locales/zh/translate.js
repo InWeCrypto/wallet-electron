@@ -116,7 +116,11 @@ export default {
 		isSend: "订单未完成",
 		valiError: "验证失败",
 		hash160: "解码地址出错",
-		nodata: "无交易记录"
+		nodata: "无交易记录",
+		delete: "删除失败"
+	},
+	delete: {
+		delete: "删除"
 	},
 	success: {
 		login: "登录成功",
@@ -204,5 +208,9 @@ export default {
 		title: "管理观察钱包",
 		change: "转化为热钱包",
 		delete: "删除"
+	},
+	addAsset: {
+		title: "添加资产",
+		confirm: "确定"
 	}
 };

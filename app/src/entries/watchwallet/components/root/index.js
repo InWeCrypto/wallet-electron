@@ -6,6 +6,7 @@ import Menu from "@/menu";
 import HeaderNav from "@/headernav";
 import ethicon from "#/ethicon.png";
 import neoicon from "#/neoicon.png";
+import seticon from "#/setting.png";
 import "./index.less";
 
 export default class Root extends PureComponent {
@@ -268,7 +269,23 @@ export default class Root extends PureComponent {
 			}&timetamp=orderlist_${time}`
 		);
 	}
-
+	async deleteCoin(item, e) {
+		e.stopPropagation();
+		let del = await this.props.deleteCoin({
+			id: item.id
+		});
+		if (del.code != 4000) {
+			Msg.prompt(i18n.t("error.delete", this.props.lng));
+		}
+	}
+	goManage() {
+		let { watchInfo } = this.props;
+		toHref(
+			`watchmanagewallet?id=${watchInfo.id}&type=${
+				watchInfo.category_id
+			}&name=${watchInfo.name}`
+		);
+	}
 	render() {
 		let { lng, watchInfo, watchConver, walletList } = this.props;
 		let { type, walletType } = this.state;
@@ -283,16 +300,25 @@ export default class Root extends PureComponent {
 							<div className="content">
 								<div className="wallet">
 									<div className="box1 ui center">
-										<img
-											className="icon"
-											src={
-												watchInfo &&
-												watchInfo.category &&
-												watchInfo.category.id == 1
-													? ethicon
-													: neoicon
-											}
-										/>
+										<div className="icon-box">
+											<img
+												className="icon"
+												src={
+													watchInfo &&
+													watchInfo.category &&
+													watchInfo.category.id == 1
+														? ethicon
+														: neoicon
+												}
+											/>
+											<img
+												className="icon2"
+												src={seticon}
+												onClick={this.goManage.bind(
+													this
+												)}
+											/>
+										</div>
 										<div className="f1">
 											<div className="name">
 												<span>
@@ -517,6 +543,18 @@ export default class Root extends PureComponent {
 																				item
 																					.gnt_category
 																					.name}
+																			<span
+																				onClick={this.deleteCoin.bind(
+																					this,
+																					item
+																				)}
+																				className="delete"
+																			>
+																				{t(
+																					"delete.delete",
+																					lng
+																				)}
+																			</span>
 																		</div>
 																		<div
 																			style={{
@@ -764,6 +802,18 @@ export default class Root extends PureComponent {
 																				item
 																					.gnt_category
 																					.name}
+																			<span
+																				onClick={this.deleteCoin.bind(
+																					this,
+																					item
+																				)}
+																				className="delete"
+																			>
+																				{t(
+																					"delete.delete",
+																					lng
+																				)}
+																			</span>
 																		</div>
 																		<div
 																			style={{

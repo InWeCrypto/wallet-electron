@@ -13,6 +13,7 @@ export const GETETHUTXO = `${PRE_FIX}GETETHUTXO`;
 export const ETHORDER = `${PRE_FIX}ETHORDER`;
 export const GETETHNONCE = `${PRE_FIX}GETETHNONCE`;
 export const CREATEORDER = `${PRE_FIX}CREATEORDER`;
+export const DELETECOIN = `${PRE_FIX}DELETECOIN`;
 
 export const setEthWalletInfo = createAction(WALLETINFO, params => {
 	return params;
@@ -65,4 +66,22 @@ export const createOrder = createAction(CREATEORDER, params => {
 		url: "wallet-order",
 		params
 	});
+});
+export const deleteCoin = createAction(DELETECOIN, params => {
+	return http
+		.delete({
+			url: `user-gnt/${params.id}`
+		})
+		.then(res => {
+			if (res.code === 4000) {
+				return {
+					msg: res.msg,
+					code: res.code,
+					data: {
+						id: params.id
+					}
+				};
+			}
+			return res;
+		});
 });
