@@ -2,9 +2,9 @@ import React, { PureComponent } from "react";
 import { NavLink } from "react-router-dom";
 import { I18n } from "react-i18next";
 import { Popover } from "antd";
+import menutop from "#/menutop.png";
 import memberImg from "#/tou_ico.png";
 import { setLocalItem, getLocalItem, toHref } from "../../utils/util";
-
 import "./index.less";
 
 class Menu extends PureComponent {
@@ -50,7 +50,9 @@ class Menu extends PureComponent {
 			<I18n>
 				{(t, { i18n }) => (
 					<div className="menu-left">
-						<p className="title">InWeWallet</p>
+						<p className="title">
+							<img className="topimg" src={menutop} />
+						</p>
 						<img
 							className="user-logo"
 							src={

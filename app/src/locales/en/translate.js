@@ -2,14 +2,20 @@ export default {
 	login: {
 		signin: "Sign In",
 		signup: "Sign Up",
+		signup2: "Don't have account ? creat",
 		forget: "Forget Password?",
 		email: "Email Address",
 		code: "Verification Code",
 		password: "Password",
 		repassword: "Repeat Password",
 		reset: "Reset Password",
-		nickname: "Nickname"
+		nickname: "Nickname",
+		loading: "Landing"
 	},
+	loading: "Loading",
+	transfrom: "Transforming",
+	importing: "Importing",
+	changeing: "Changing",
 	send: {
 		txt: "Send"
 	},
@@ -105,7 +111,7 @@ export default {
 		rpasswordEmpty: "Repeating password cannot be empty",
 		emailSend: "Email sending failed, please try again ",
 		resetPass: "Password reset failed, please try again",
-		passLength: "The entered passwords are inconsistent ",
+		passLength: "The entered to contain at least 6 characters",
 		passError: "The entered passwords are inconsistent ",
 		passVili:
 			"The password needs to contain at least 8 characters, with upper case, lower case and digits mixed.",
@@ -120,7 +126,8 @@ export default {
 		valiError: "Verification fail",
 		hash160: "decode address error",
 		nodata: "No transactions yet.",
-		delete: "Delete Fail"
+		delete: "Delete Fail",
+		keyerror: "Key store type is error"
 	},
 	delete: {
 		delete: "Delete"

@@ -4,8 +4,6 @@ import { I18n } from "react-i18next";
 import { getQuery } from "../../../../utils/util";
 import Menu from "@/menu";
 import "./index.less";
-import creatWallet from "#/createwallet_ico.png";
-import importWallet from "#/import_wallet_ico.png";
 import ledger from "#/ledger_ico.png";
 import ledger1 from "#/ledger_ico1.png";
 import ethicon from "#/ethicon.png";
@@ -235,10 +233,7 @@ export default class Root extends PureComponent {
 												pathname: "createwallet"
 											}}
 										>
-											<img
-												className="walletimg"
-												src={creatWallet}
-											/>
+											<span className="walletimg create" />
 											<div>
 												{t("wallet.createWallet", lng)}
 											</div>
@@ -249,10 +244,7 @@ export default class Root extends PureComponent {
 											}}
 											className="wallet-ctrlbtn"
 										>
-											<img
-												className="walletimg"
-												src={importWallet}
-											/>
+											<span className="walletimg import" />
 											<div>
 												{t("wallet.importWallet", lng)}
 											</div>

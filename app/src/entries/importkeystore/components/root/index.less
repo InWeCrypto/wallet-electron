@@ -2,7 +2,7 @@
 	.keystore-title {
 		padding: 0.4rem 0;
 		font-size: 0.3rem;
-		color: #47d184;
+		color: #4a4a4a;
 		text-align: center;
 	}
 	.keystore-container {
@@ -12,10 +12,12 @@
 	.keystore-box {
 		max-width: 90%;
 		width: 7.7rem;
-		background: #2e2e4c;
+		background: #0b0b0b;
 		border-radius: 0.08rem;
 		box-sizing: border-box;
 		padding: 0.2rem;
+		box-sizing: border-box;
+		border: 3px solid #1e1e1e;
 	}
 	.keystore-group {
 		align-items: flex-start;
@@ -38,7 +40,7 @@
 		.keystore-text {
 			width: 100%;
 			resize: none;
-			background: rgba(0, 0, 0, 0.17);
+			background: #121212;
 			height: 1.8rem;
 			border: none;
 			outline: none;
@@ -46,15 +48,25 @@
 			box-sizing: border-box;
 			padding: 0.1rem;
 			color: #fff;
+			&::-webkit-input-placeholder {
+				color: #4a4a4a;
+			}
 		}
 		.filename {
 			width: 100%;
-			padding: 0.1rem;
+			padding: 0.17rem;
 			box-sizing: border-box;
-			background: rgba(0, 0, 0, 0.17);
+			background: #121212;
+			border: 1px solid #121212;
 			outline: none;
 			border-radius: 0.08rem;
 			color: #fff;
+			&::-webkit-input-placeholder {
+				color: #4a4a4a;
+			}
+			&.cur {
+				border: 1px solid #47c47f;
+			}
 		}
 		.icon-openfile {
 			display: block;

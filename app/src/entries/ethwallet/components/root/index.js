@@ -228,37 +228,46 @@ export default class Root extends PureComponent {
 				? params.Amount
 				: params.Amount.split(".")[0];
 
-		let l = await this.props.setEthOrder(params);
-		if (l.length > 0) {
-			this.props
-				.createOrder({
-					wallet_id: ethWalletDetailInfo.id,
-					data: l,
-					pay_address: ethWalletDetailInfo.address,
-					receive_address: sendAddress,
-					remark: "",
-					fee: params.Amount,
-					handle_fee: params.GasPrice,
-					flag: "eth",
-					asset_id: params.Asset
-				})
-				.then(res => {
-					if (res.code === 4000) {
-						window.walletState.addItem({
-							txid: res.data.tx,
-							flag: "ETH",
-							wallet_id: ethWalletDetailInfo.id,
-							asset_id: params.Asset,
-							from: res.data.from,
-							to: res.data.to
-						});
-						Msg.prompt(
-							i18n.t("success.transferSuccess", this.props.lng)
-						);
-					}
-				});
+		let load = Msg.load(i18n.t("transfrom", this.props.lng));
+		try {
+			let l = await this.props.setEthOrder(params);
+			if (l.length > 0) {
+				this.props
+					.createOrder({
+						wallet_id: ethWalletDetailInfo.id,
+						data: l,
+						pay_address: ethWalletDetailInfo.address,
+						receive_address: sendAddress,
+						remark: "",
+						fee: params.Amount,
+						handle_fee: params.GasPrice,
+						flag: "eth",
+						asset_id: params.Asset
+					})
+					.then(res => {
+						if (res.code === 4000) {
+							window.walletState.addItem({
+								txid: res.data.tx,
+								flag: "ETH",
+								wallet_id: ethWalletDetailInfo.id,
+								asset_id: params.Asset,
+								from: res.data.from,
+								to: res.data.to
+							});
+							Msg.prompt(
+								i18n.t(
+									"success.transferSuccess",
+									this.props.lng
+								)
+							);
+						}
+					});
+			}
+			load.hide();
+			this.setState({ isShowPass: false, password: res });
+		} catch (e) {
+			load.hide();
 		}
-		this.setState({ isShowPass: false, password: res });
 	}
 	closePasss() {
 		this.setState({
@@ -538,7 +547,7 @@ export default class Root extends PureComponent {
 											</div> */}
 										</div>
 										<div
-											className="box-btn"
+											className="box-btn button-blue"
 											onClick={this.addAsset.bind(
 												this,
 												ethWalletDetailInfo
@@ -691,12 +700,7 @@ export default class Root extends PureComponent {
 																				item
 																			)}
 																			className="delete"
-																		>
-																			{t(
-																				"delete.delete",
-																				lng
-																			)}
-																		</span>
+																		/>
 																	</div>
 																	<div
 																		style={{
@@ -791,11 +795,14 @@ export default class Root extends PureComponent {
 															ethConversion &&
 															ethConversion.list &&
 															ethConversion
-																.list[0] &&
-															getEthNum(
-																ethConversion
-																	.list[0]
-																	.balance
+																.list[0] && (
+																<span>
+																	{getEthNum(
+																		ethConversion
+																			.list[0]
+																			.balance
+																	)}
+																</span>
 															)}
 														{selectKey > 0 &&
 															ethWalletConversion &&
@@ -803,32 +810,34 @@ export default class Root extends PureComponent {
 															ethWalletConversion
 																.list[
 																selectKey - 1
-															] &&
-															getEthNum(
-																ethWalletConversion
-																	.list[
-																	selectKey -
-																		1
-																].balance,
-																ethWalletConversion
-																	.list[
-																	selectKey -
-																		1
-																].decimals
+															] && (
+																<span>
+																	{getEthNum(
+																		ethWalletConversion
+																			.list[
+																			selectKey -
+																				1
+																		]
+																			.balance,
+																		ethWalletConversion
+																			.list[
+																			selectKey -
+																				1
+																		]
+																			.decimals
+																	)}
+																</span>
 															)}
-														{selectKey == 0 && (
-															<span>
-																{ethWalletConversion &&
-																	ethWalletConversion.record &&
-																	ethWalletConversion
-																		.record
-																		.category &&
-																	ethWalletConversion
-																		.record
-																		.category
-																		.name}
-															</span>
-														)}
+														{selectKey == 0 &&
+															(ethWalletConversion &&
+																ethWalletConversion.record &&
+																ethWalletConversion
+																	.record
+																	.category &&
+																ethWalletConversion
+																	.record
+																	.category
+																	.name)}
 														{selectKey > 0 && (
 															<span>
 																{ethWalletConversion &&
@@ -850,7 +859,7 @@ export default class Root extends PureComponent {
 												<div className="ui input-box">
 													<input
 														type="text"
-														className="input"
+														className="input input2"
 														value={sendAmount}
 														onChange={this.inputChange.bind(
 															this,

@@ -78,13 +78,13 @@ class ConfirmPassword extends PureComponent {
 									{t("confirmPassword.cannel", lng)}
 								</span>
 								{password.length < 6 && (
-									<span className="btn button-disabled">
+									<span className="btn button-disabled1">
 										{t("confirmPassword.confirm", lng)}
 									</span>
 								)}
 								{password.length >= 6 && (
 									<span
-										className="btn button-green"
+										className="btn button-green1"
 										onClick={this.confirmClick.bind(this)}
 									>
 										{t("confirmPassword.confirm", lng)}

@@ -8,11 +8,11 @@
 			padding-top: 0.4rem;
 			text-align: center;
 			font-size: 0.29rem;
-			color: #47d184;
+			color: #4a4a4a;
 			text-align: center;
 			font-weight: bold;
 			overflow: hidden;
-			transition: height 0.3s linear;
+			transition: height 0.5s linear;
 			height: 1rem;
 			box-sizing: border-box;
 			&.hide {
@@ -43,9 +43,13 @@
 				line-height: 0.54rem;
 				font-size: 0.16rem;
 				border: 0;
-				border-bottom: 2px solid #37c175;
+				border-bottom: 2px solid #015a23;
 				outline: none;
 				background: transparent;
+				transition: all 0.3s linear;
+				&:focus {
+					border-bottom: 2px solid #11e763;
+				}
 			}
 		}
 		.tags-box {
@@ -70,9 +74,16 @@
 					line-height: 0.34rem;
 					color: #fff;
 					font-size: 0.16rem;
-					border-radius: 0.08rem;
-					background: linear-gradient(to bottom, #525275, #262642);
+					border-radius: 0.04rem;
+					background: #0d0d0d;
+					box-sizing: border-box;
+					border: 1px solid #9b9b9b;
 					cursor: pointer;
+					transition: all 0.3s linear;
+					&:hover {
+						background: #00280f;
+						border: 1px solid #11e763;
+					}
 				}
 			}
 		}

@@ -382,14 +382,12 @@ export default class Root extends PureComponent {
 										</div>
 										{walletType &&
 											walletType == 2 && (
-												<div className="box-btn disabled">
-													<div className="t1">
+												<div className="box-btn button-disabled">
+													<div className="t2">
 														{t(
 															"walletDetail.claim",
 															lng
 														)}
-													</div>
-													<div className="t2">
 														{walletList &&
 															walletList.record &&
 															walletList.record
@@ -413,7 +411,7 @@ export default class Root extends PureComponent {
 											)}
 
 										<div
-											className="box-btn"
+											className="box-btn button-blue"
 											onClick={this.addAsset.bind(
 												this,
 												watchInfo
@@ -428,7 +426,7 @@ export default class Root extends PureComponent {
 												{watchConver &&
 													watchConver.list &&
 													watchConver.list[0] && (
-														<div className="wallet-out">
+														<div className="wallet-out even">
 															<div
 																className="wallet-item ui center"
 																onClick={this.goOrderList.bind(
@@ -518,7 +516,13 @@ export default class Root extends PureComponent {
 														(item, index) => {
 															return (
 																<div
-																	className="wallet-out"
+																	className={
+																		index %
+																			2 ==
+																		0
+																			? "wallet-out"
+																			: "wallet-out even"
+																	}
 																	key={index}
 																>
 																	<div
@@ -549,12 +553,7 @@ export default class Root extends PureComponent {
 																					item
 																				)}
 																				className="delete"
-																			>
-																				{t(
-																					"delete.delete",
-																					lng
-																				)}
-																			</span>
+																			/>
 																		</div>
 																		<div
 																			style={{
@@ -591,7 +590,7 @@ export default class Root extends PureComponent {
 																							: item
 																									.gnt_category
 																									.cap
-																									.price_usd
+																									.price_cny
 																						: 0)
 																				).toFixed(
 																					2
@@ -611,7 +610,7 @@ export default class Root extends PureComponent {
 												{watchConver &&
 													watchConver.list &&
 													watchConver.list[0] && (
-														<div className="wallet-out">
+														<div className="wallet-out even">
 															<div
 																className="wallet-item ui center"
 																onClick={this.goOrderList.bind(
@@ -777,7 +776,13 @@ export default class Root extends PureComponent {
 														(item, index) => {
 															return (
 																<div
-																	className="wallet-out"
+																	className={
+																		index %
+																			2 !=
+																		0
+																			? "wallet-out"
+																			: "wallet-out even"
+																	}
 																	key={index}
 																>
 																	<div
@@ -808,12 +813,7 @@ export default class Root extends PureComponent {
 																					item
 																				)}
 																				className="delete"
-																			>
-																				{t(
-																					"delete.delete",
-																					lng
-																				)}
-																			</span>
+																			/>
 																		</div>
 																		<div
 																			style={{

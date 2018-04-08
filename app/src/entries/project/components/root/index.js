@@ -6,7 +6,7 @@ import Menu from "@/menu/index.js";
 import HeaderNav from "@/headernav/index.js";
 import img from "#/zhuye_ico.png";
 import searchimg from "#/search_ico.png";
-
+import searchimg1 from "#/search_ico1.png";
 import "./index.less";
 
 export default class Root extends PureComponent {
@@ -92,7 +92,10 @@ export default class Root extends PureComponent {
 									{t("project.t2", lng)}
 								</div>
 								<div className="search-box">
-									<img src={searchimg} alt="" />
+									<img
+										src={isFocus ? searchimg : searchimg1}
+										alt=""
+									/>
 									<input
 										type="text"
 										value={keyword}

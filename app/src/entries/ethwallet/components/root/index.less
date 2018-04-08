@@ -56,15 +56,17 @@
 		}
 	}
 	.box2 {
-		background: #2e2e4c;
+		background: #0b0b0b;
 		border-radius: 0.08rem;
 		box-sizing: border-box;
 		padding: 0.2rem;
+		box-sizing: border-box;
+		border: 3px solid #1e1e1e;
 		.nav-item {
 			display: inline-block;
 			margin: 0 0.2rem;
 			font-size: 0.18rem;
-			color: #55557d;
+			color: #828282;
 			cursor: pointer;
 			&.cur {
 				color: #47d184;
@@ -74,17 +76,15 @@
 			margin-left: 0.2rem;
 			padding: 0 0.08rem;
 			height: 0.36rem;
-			border-radius: 0.08rem;
 			display: flex;
 			font-size: 0.14rem;
 			color: #fff;
 			flex-flow: column;
 			justify-content: center;
-			border: 1px solid #f0744b;
+			width: auto;
 			cursor: pointer;
-			background: linear-gradient(to right, #69444c, #663437);
-			&:hover {
-				background: linear-gradient(to right, #f0764d, #e63f03);
+			&.gas {
+				text-align: left;
 			}
 			.t2 {
 				font-size: 0.12rem;
@@ -101,48 +101,75 @@
 		right: 0.4rem;
 		bottom: 0.4rem;
 		top: 2.71rem;
-		background: #2e2e4c;
+		background: #0b0b0b;
 		border-radius: 0.08rem;
 		box-sizing: border-box;
 		overflow: auto;
 		padding: 0.2rem 0;
+		box-sizing: border-box;
+		border: 3px solid #1e1e1e;
 		.wallet-out {
 			padding: 0 0.2rem;
+			transition: all 0.3s linear;
+			&.even {
+				background: #121212;
+			}
 			&:hover {
-				background: #3a3a59;
 				.delete {
-					display: inline-block;
+					opacity: 1;
+				}
+				.wallet-item {
+					color: #fff;
+					.name {
+						margin-right: 0.2rem;
+						color: #47d184;
+					}
+					.t1 {
+						font-size: 0.12rem;
+						color: #47d184;
+					}
+				}
+			}
+			.wallet-item {
+				padding: 0.25rem 0;
+				color: #fff;
+				color: #828282;
+				transition: all 0.3s linear;
+				.icon {
+					width: 0.4rem;
+					height: 0.4rem;
+					margin-right: 0.1rem;
+				}
+				.name {
+					margin-right: 0.2rem;
+					transition: all 0.3s linear;
+				}
+				.t1 {
+					font-size: 0.12rem;
+					transition: all 0.3s linear;
 				}
 			}
 			.delete {
-				display: none;
-				color: #5c89eb;
+				position: relative;
+				top: 0.02rem;
+				display: inline-block;
 				font-size: 0.12rem;
 				cursor: pointer;
 				margin-left: 0.2rem;
-			}
-		}
-
-		.wallet-item {
-			padding: 0.25rem 0;
-			color: #fff;
-			border-bottom: 1px solid #373755;
-			.icon {
-				width: 0.4rem;
-				height: 0.4rem;
-				margin-right: 0.1rem;
-			}
-			.name {
-				margin-right: 0.2rem;
-			}
-			.t1 {
-				font-size: 0.12rem;
+				width: 0.12rem;
+				height: 0.14rem;
+				background: url("../../../../assets/images/deletecoin.png");
+				background-size: 100% 100%;
+				opacity: 0;
+				transition: all 0.3s linear;
 			}
 		}
 	}
 	.box4 {
 		margin-top: 0.2rem;
-		background: #2e2e4c;
+		background: #0b0b0b;
+		box-sizing: border-box;
+		border: 3px solid #1e1e1e;
 		border-radius: 0.08rem;
 		box-sizing: border-box;
 		padding: 0.2rem;
@@ -153,8 +180,13 @@
 		.send-name {
 			margin-bottom: 0.1rem;
 			font-size: 0.16rem;
+			color: #828282;
 			.t1 {
 				font-size: 0.14rem;
+				span {
+					color: #fff;
+					margin-right: 0.05rem;
+				}
 			}
 			.t2 {
 				color: #47d184;
@@ -168,14 +200,23 @@
 		.input {
 			width: 100%;
 			height: 0.6rem;
-			background: rgba(0, 0, 0, 0.21);
-
-			border: none;
+			// background: rgba(0, 0, 0, 0.21);
+			background: none;
+			border: 1px solid #015a23;
 			box-sizing: border-box;
 			padding: 0 0.1rem;
+			border-radius: 0.08rem;
 			font-size: 0.18rem;
 			color: rgba(255, 255, 255, 0.4);
+			transition: all 0.3s linear;
+			&:focus {
+				border: 1px solid #11e763;
+			}
+			&.input2 {
+				border-radius: 0.08rem 0 0 0.08rem;
+			}
 		}
+
 		.btn-box {
 			padding: 0.5rem 0 0.3rem 0;
 			text-align: center;
@@ -186,7 +227,7 @@
 		}
 		.ant-select-selection {
 			border-radius: 0;
-			background: linear-gradient(to right, #ef7247, #e63d00);
+			background: #015a23;
 		}
 		.ant-select-selection__rendered {
 			line-height: 0.6rem;
@@ -203,6 +244,7 @@
 		}
 		.slideritem {
 			margin-top: 0.2rem;
+			color: #828282;
 		}
 		.ant-slider-track {
 			background: #ef7247;
@@ -214,7 +256,10 @@
 	}
 	.box5 {
 		margin-top: 0.2rem;
-		background: #2e2e4c;
+		background: #0b0b0b;
+		box-sizing: border-box;
+		border: 3px solid #1e1e1e;
+		border-radius: 0.08rem;
 		border-radius: 0.08rem;
 		box-sizing: border-box;
 		text-align: center;
@@ -231,7 +276,7 @@
 			padding: 0.2rem;
 			border: 0.1rem solid #d3d3d3;
 			display: inline-block;
-			border-radius: 0.25rem;
+			border-radius: 0.08rem;
 			background: #fff;
 		}
 		.btn-box {

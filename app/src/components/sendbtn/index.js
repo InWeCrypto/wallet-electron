@@ -48,10 +48,7 @@ class SendBtn extends PureComponent {
 						}
 					>
 						{!isSending && (
-							<div
-								className="line-orange"
-								onClick={this.sendClick.bind(this)}
-							>
+							<div onClick={this.sendClick.bind(this)}>
 								{t("send.txt", lng)}
 							</div>
 						)}

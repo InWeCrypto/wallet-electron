@@ -140,6 +140,26 @@ export default class Root extends PureComponent {
 			return minB - stateB;
 		}
 	}
+	openEthTxid(item) {
+		let isDev = localStorage.getItem("isDev");
+		let tx = item.tx.indexOf("0x") != -1 ? item.tx : "0x" + item.tx;
+		if (isDev && JSON.parse(isDev)) {
+			shell.openExternal(`https://ropsten.etherscan.io/tx/${tx}`);
+		} else {
+			shell.openExternal(`https://etherscan.io/tx/${tx}`);
+		}
+	}
+	openNeoTxid(item) {
+		let isDev = localStorage.getItem("isDev");
+		console.log(item.tx);
+		let tx =
+			item.tx.indexOf("0x") == -1 ? item.tx : item.tx.replace(/^0x/, "");
+		if (isDev && JSON.parse(isDev)) {
+			shell.openExternal(`https://neoscan-testnet.io/transaction/${tx}`);
+		} else {
+			shell.openExternal(`https://neoscan.io/transaction/${tx}`);
+		}
+	}
 	showMoreClick(idx) {
 		this.props.changeShow(idx);
 	}
@@ -243,7 +263,13 @@ export default class Root extends PureComponent {
 																		lng
 																  )}
 														</div>
-														<div className="f1">
+														<div
+															className="f1 txid"
+															onClick={this.openNeoTxid.bind(
+																this,
+																item
+															)}
+														>
 															{t(
 																"orderList.txid",
 																lng
@@ -357,7 +383,13 @@ export default class Root extends PureComponent {
 																</span>
 															)}
 														</div>
-														<div className="f1">
+														<div
+															className="f1 txid"
+															onClick={this.openEthTxid.bind(
+																this,
+																item
+															)}
+														>
 															{t(
 																"orderList.txid",
 																lng

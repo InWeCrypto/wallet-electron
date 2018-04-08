@@ -24,8 +24,15 @@ window.walletState = (function(win, http, undefined) {
 						asset_id: list[i].asset_id
 					});
 					if (state && state.length > 0) {
-						state.map(function(v, i) {
-							if (v.confirmTime && v.confirmTime.length > 0) {
+						var num = 0;
+						state.map(function(v) {
+							if (
+								list[i].txid &&
+								v.tx &&
+								list[i].txid == v.tx &&
+								v.confirmTime &&
+								v.confirmTime.length > 0
+							) {
 								isPending = false;
 							}
 						});

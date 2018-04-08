@@ -71,7 +71,7 @@ export default class Root extends PureComponent {
 		}
 		let reg = /^\{.*?\}$/;
 		if (!reg.test(str)) {
-			Msg.prompt("Key store type is error");
+			Msg.prompt(i18n.t("error.keyerror", this.props.lng));
 			return;
 		}
 		toHref(
@@ -119,6 +119,7 @@ export default class Root extends PureComponent {
 		if (this.state.type == 1) {
 			json = this.state.readFileText;
 		}
+		let load = Msg.load(i18n.t("changeing", png));
 		this.props
 			.changeToHot({
 				name: this.state.name,
@@ -127,6 +128,7 @@ export default class Root extends PureComponent {
 				password: res
 			})
 			.then(res => {
+				load.hide();
 				if (res.address && res.address.length > 0) {
 					this.setState({
 						isShowPass: false
@@ -204,7 +206,11 @@ export default class Root extends PureComponent {
 														<input
 															type="text"
 															disabled="disabled"
-															className="filename"
+															className={
+																type == 1
+																	? "filename cur"
+																	: "filename"
+															}
 															placeholder={t(
 																"keyStore.input",
 																lng

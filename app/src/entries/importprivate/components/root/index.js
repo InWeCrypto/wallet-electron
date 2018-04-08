@@ -86,7 +86,9 @@ export default class Root extends PureComponent {
 			return;
 		}
 		params.wif = this.state.text;
+		let load = Msg.load(i18n.t("changeing", png));
 		this.props.importPrivate(params).then(res => {
+			load.hide();
 			if (res.address && res.address.length > 0) {
 				toHref("wallet");
 			}

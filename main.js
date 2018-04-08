@@ -1,4 +1,12 @@
-const { app, BrowserWindow, shell, dialog, Menu, Tray } = require("electron");
+const {
+	app,
+	BrowserWindow,
+	shell,
+	dialog,
+	Menu,
+	Tray,
+	session
+} = require("electron");
 const autoUpdater = require("electron-updater").autoUpdater;
 const electron = require("electron");
 const cp = require("child_process");
@@ -8,6 +16,7 @@ const log = require("electron-log");
 const ipc = electron.ipcMain;
 const path = require("path");
 const url = require("url");
+var ses = null;
 //创建文件路径
 var createFolder = function(to) {
 	var sep = path.sep;
@@ -321,8 +330,11 @@ let template = [
 			{
 				label: text.clear,
 				click: function() {
-					let userD = app.getPath("userData");
-					deleteall(path.join(userD, "Cache"));
+					// let userD = app.getPath("userData");
+					// deleteall(path.join(userD, "Cache"));
+					ses.clearCache(function(res) {
+						sendStatus(JSON.stringify(res));
+					});
 				}
 			},
 			{
@@ -646,6 +658,7 @@ function createWindow() {
 			.then(name => console.log(`Added Extension:  ${name}`))
 			.catch(err => console.log("An error occurred: ", err));
 	}
+	ses = win.webContents.session;
 	win.once("ready-to-show", () => {
 		win.show();
 		if (!isDev) {

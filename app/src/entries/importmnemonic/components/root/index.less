@@ -2,30 +2,36 @@
 	.title {
 		padding: 0.4rem 0;
 		font-size: 0.3rem;
-		color: #47d184;
+		color: #4a4a4a;
 		text-align: center;
 	}
 	.mnemonic-box {
 		max-width: 90%;
 		width: 7.7rem;
-		background: #2e2e4c;
+		background: #0b0b0b;
 		border-radius: 0.08rem;
 		box-sizing: border-box;
 		padding: 0.2rem;
+		border: 3px solid #1e1e1e;
 	}
 	.textarea {
 		width: 100%;
 		resize: none;
 		height: 3.12rem;
 		border-radius: 0.08rem;
-		background: rgba(0, 0, 0, 0.21);
+		background: #121212;
 		border: none;
 		outline: none;
 		box-sizing: border-box;
 		padding: 0.1rem;
 		color: #fff;
+		border: 1px solid #121212;
+		transition: all 0.3s linear;
 		&::-webkit-input-placeholder {
-			color: #53536b;
+			color: #4a4a4a;
+		}
+		&:focus {
+			border: 1px solid #47c47f;
 		}
 	}
 	.mnemonic-btn {

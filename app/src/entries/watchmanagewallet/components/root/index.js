@@ -66,13 +66,7 @@ export default class Root extends PureComponent {
 										className="hotarea"
 										onClick={this.goChange.bind(this)}
 									>
-										<div className="imgbox">
-											<img
-												className="img"
-												src={icon2}
-												alt=""
-											/>
-										</div>
+										<div className="icon-box keyico" />
 										<div className="name">
 											{t("manageWatch.change", lng)}
 										</div>
@@ -81,13 +75,7 @@ export default class Root extends PureComponent {
 										className="hotarea"
 										onClick={this.deleteWatch.bind(this)}
 									>
-										<div className="imgbox">
-											<img
-												className="img"
-												src={icon3}
-												alt=""
-											/>
-										</div>
+										<div className="icon-box deleteico" />
 										<div className="name">
 											{t("manageWatch.delete", lng)}
 										</div>

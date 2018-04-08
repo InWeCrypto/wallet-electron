@@ -33,16 +33,27 @@
 		right: 0.5rem;
 		bottom: 0.5rem;
 		top: 2rem;
-		background: #2e2e4c;
+		background: #0b0b0b;
 		overflow: auto;
 		border-radius: 0.08rem;
-		color: #fff;
+		color: #828282;
+		box-sizing: border-box;
+		border: 3px solid #1e1e1e;
 		.list-group {
 			border-bottom: 1px solid #37374a;
 			&.show {
-				background: #3a3a59;
+				background: #121212;
+			}
+			.txid {
+				color: #23355a;
+				transition: all 0.3s linear;
+				cursor: pointer;
+				&:hover {
+					color: #5c89eb;
+				}
 			}
 		}
+
 		.list-base {
 			padding: 0.14rem;
 			box-sizing: border-box;

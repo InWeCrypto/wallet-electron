@@ -128,68 +128,69 @@ export default class Root extends PureComponent {
 								<div className="hotarea-box">
 									{isShowMemo && (
 										<div
-											className="hotarea inMnemonic"
+											className="hotarea memo"
 											onClick={this.showInputBox.bind(
 												this
 											)}
 										>
-											<div className="imgbox">
-												<img
-													className="img"
-													src={icon1}
-												/>
-											</div>
+											<div className="icon-box memoico" />
 											<div className="name">
 												{t(
 													"managerWallet.mnemonic",
 													lng
 												)}
 											</div>
-											{isShowInputBox && (
-												<div className="hideBox">
-													<input
-														placeholder={t(
-															"managerWallet.place",
-															lng
-														)}
-														type="password"
-														value={password}
-														onChange={this.passwordChange.bind(
+											{/* {isShowInputBox && ( */}
+											<div
+												className={
+													isShowInputBox
+														? "hideBox show"
+														: "hideBox"
+												}
+											>
+												<input
+													placeholder={t(
+														"managerWallet.place",
+														lng
+													)}
+													type="password"
+													value={password}
+													onChange={this.passwordChange.bind(
+														this
+													)}
+													className={(password => {
+														return password.length >
+															0
+															? "has"
+															: "";
+													})(password)}
+												/>
+												<div className="btnBox">
+													<button
+														className="cancel button-black"
+														onClick={this.hideInputBox.bind(
 															this
 														)}
-														className={(password => {
-															return password.length >
-																0
-																? "has"
-																: "";
-														})(password)}
-													/>
-													<div className="btnBox">
-														<button
-															className="cancel"
-															onClick={this.hideInputBox.bind(
-																this
-															)}
-														>
-															{t(
-																"managerWallet.cancel",
-																lng
-															)}
-														</button>
-														<button
-															className="comfirm"
-															onClick={this.surePassword.bind(
-																this
-															)}
-														>
-															{t(
-																"managerWallet.comfirm",
-																lng
-															)}
-														</button>
-													</div>
+													>
+														{t(
+															"managerWallet.cancel",
+															lng
+														)}
+													</button>
+													<button
+														className="comfirm button-green"
+														onClick={this.surePassword.bind(
+															this
+														)}
+													>
+														{t(
+															"managerWallet.comfirm",
+															lng
+														)}
+													</button>
 												</div>
-											)}
+											</div>
+											// )}
 										</div>
 									)}
 
@@ -197,13 +198,7 @@ export default class Root extends PureComponent {
 										className="hotarea"
 										onClick={this.toKeystroe.bind(this)}
 									>
-										<div className="imgbox">
-											<img
-												className="img"
-												src={icon2}
-												alt=""
-											/>
-										</div>
+										<div className="icon-box keyico" />
 										<div className="name">
 											{t("managerWallet.keystore", lng)}
 										</div>
@@ -212,9 +207,7 @@ export default class Root extends PureComponent {
 										className="hotarea"
 										onClick={this.deleteWallet.bind(this)}
 									>
-										<div className="imgbox">
-											<img className="img" src={icon3} />
-										</div>
+										<div className="icon-box deleteico" />
 										<div className="name">
 											{t("managerWallet.delete", lng)}
 										</div>

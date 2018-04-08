@@ -12,10 +12,7 @@ import {
 export const orderList = handleActions(
 	{
 		[GETSTARTORDER]: (state, { payload }) => payload,
-		[CLEARLIST]: (state, { payload }) => {
-			console.log(payload);
-			return payload;
-		},
+		[CLEARLIST]: (state, { payload }) => payload,
 		[GETORDERLIST]: (state, { payload }) => {
 			if (!state) {
 				state = { list: [] };

@@ -285,31 +285,40 @@ export default class Root extends PureComponent {
 		if (params.Amount.indexOf(".") != -1) {
 			params.Amount = params.Amount.split(".")[0];
 		}
-		let l = await this.props.sendNeoOrader(params);
-		if (l && l.data && l.txid) {
-			let order = await this.props.createOrder({
-				wallet_id: neoWalletDetailInfo.id,
-				data: l.data,
-				trade_no: l.txid.indexOf("0x") == -1 ? "0x" + l.txid : l.txid,
-				pay_address: neoWalletDetailInfo.address,
-				receive_address: sendAddress,
-				remark: "",
-				fee: fee + "",
-				handle_fee: "0",
-				flag: "NEO",
-				asset_id: params.Asset
-			});
-			if (order && order.code === 4000) {
-				window.walletState.addItem({
-					txid: order.data.tx,
-					flag: "NEO",
+		let load = Msg.load(i18n.t("transfrom", this.props.lng));
+		try {
+			let l = await this.props.sendNeoOrader(params);
+			if (l && l.data && l.txid) {
+				let order = await this.props.createOrder({
 					wallet_id: neoWalletDetailInfo.id,
-					asset_id: params.Asset,
-					from: order.data.from,
-					to: order.data.to
+					data: l.data,
+					trade_no:
+						l.txid.indexOf("0x") == -1 ? "0x" + l.txid : l.txid,
+					pay_address: neoWalletDetailInfo.address,
+					receive_address: sendAddress,
+					remark: "",
+					fee: fee + "",
+					handle_fee: "0",
+					flag: "NEO",
+					asset_id: params.Asset
 				});
-				Msg.prompt(i18n.t("success.transferSuccess", this.props.lng));
+				if (order && order.code === 4000) {
+					window.walletState.addItem({
+						txid: order.data.tx,
+						flag: "NEO",
+						wallet_id: neoWalletDetailInfo.id,
+						asset_id: params.Asset,
+						from: order.data.from,
+						to: order.data.to
+					});
+					Msg.prompt(
+						i18n.t("success.transferSuccess", this.props.lng)
+					);
+				}
 			}
+			load.hide();
+		} catch (e) {
+			load.hide();
 		}
 	}
 	getCommonMoney() {
@@ -575,13 +584,11 @@ export default class Root extends PureComponent {
 											</div> */}
 										</div>
 										<div
-											className="box-btn gas"
+											className="button-black box-btn gas"
 											onClick={this.goGas.bind(this)}
 										>
-											<div className="t1">
-												{t("walletDetail.claim", lng)}
-											</div>
 											<div className="t2">
+												{t("walletDetail.claim", lng)}{" "}
 												{neoConversion &&
 													neoConversion.record &&
 													neoConversion.record.gnt &&
@@ -603,14 +610,14 @@ export default class Root extends PureComponent {
 												this,
 												neoWalletDetailInfo
 											)}
-											className="box-btn"
+											className="box-btn button-blue"
 										>
 											{t("walletDetail.addAsset", lng)}
 										</div>
 									</div>
 									{type === 1 && (
 										<div className="box3">
-											<div className="wallet-out">
+											<div className="wallet-out even">
 												<div
 													onClick={this.goOrderList.bind(
 														this,
@@ -792,7 +799,12 @@ export default class Root extends PureComponent {
 													(item, index) => {
 														return (
 															<div
-																className="wallet-out"
+																className={
+																	index % 2 !=
+																	0
+																		? "wallet-out"
+																		: "wallet-out even"
+																}
 																key={index}
 															>
 																<div
@@ -822,12 +834,7 @@ export default class Root extends PureComponent {
 																				item
 																			)}
 																			className="delete"
-																		>
-																			{t(
-																				"delete.delete",
-																				lng
-																			)}
-																		</span>
+																		/>
 																	</div>
 																	<div
 																		style={{
@@ -933,7 +940,9 @@ export default class Root extends PureComponent {
 																	.balance ==
 																	0
 																	? "0"
-																	: neoConversion
+																	: neoConversion &&
+																	  neoConversion.record &&
+																	  neoConversion
 																			.record
 																			.balance}
 															</span>
@@ -1001,7 +1010,7 @@ export default class Root extends PureComponent {
 												<div className="ui input-box">
 													<input
 														type="number"
-														className="input"
+														className="input input2"
 														value={sendAmount}
 														onChange={this.sendAmount.bind(
 															this

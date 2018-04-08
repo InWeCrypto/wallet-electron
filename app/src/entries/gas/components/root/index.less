@@ -4,7 +4,7 @@
 			text-align: center;
 			font-size: 0.3rem;
 			line-height: 0.36rem;
-			color: #47d184;
+			color: #4a4a4a;
 			margin-top: 0.4rem;
 		}
 		.cokBox {
@@ -21,10 +21,15 @@
 			.gasBox {
 				margin: 0 0.3rem;
 				width: 2.1rem;
-				background: rgba(71, 209, 132, 1);
+				background: #121212;
+				box-sizing: border-box;
 				border-radius: 8px;
 				color: #fff;
 				transition: all 0.3s ease-in-out;
+				border: 3px solid #121212;
+				&:hover {
+					border: 3px solid #1e1e1e;
+				}
 				&.frozen {
 					height: 2.66rem;
 				}
@@ -42,6 +47,7 @@
 					text-overflow: ellipsis;
 					white-space: nowrap;
 					text-align: center;
+					font-weight: 400;
 				}
 				input {
 					display: block;
@@ -49,13 +55,15 @@
 					width: 1.68rem;
 					border: 0;
 					outline: none;
-					background: rgba(0, 0, 0, 0.17);
-					border-radius: 0.35rem;
-					line-height: 0.4rem;
+					background: #333;
+					border-radius: 0.04rem;
+					line-height: 0.38rem;
 					text-align: center;
 					font-size: 0.14rem;
 					color: #fff;
-					transition: all 0.3s ease-in-out;
+					border: 1px solid #121212;
+					transition: all 0.3s linear;
+					height: 0;
 					&::-webkit-input-placeholder {
 						color: rgba(255, 255, 255, 0.17);
 					}
@@ -63,6 +71,10 @@
 					&.showhei {
 						height: 0.4rem;
 						margin-top: 0.18rem;
+					}
+					&:focus {
+						border: 1px solid #015a23;
+						background: #161616;
 					}
 				}
 				button {
@@ -72,11 +84,12 @@
 					margin-bottom: 0.33rem;
 					width: 1.09rem;
 					height: 0.34rem;
+					line-height: 0.32rem;
 					border-radius: 4px;
-					background: #fff;
-					border: 0;
 					outline: none;
-					color: #ff7044;
+					font-size: 0.14rem;
+					font-weight: 200;
+					// color: #ff7044;
 				}
 			}
 		}

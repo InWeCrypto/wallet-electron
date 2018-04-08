@@ -4,17 +4,17 @@
 	justify-content: center;
 	height: 100%;
 	.login-content {
-		width: 4.6rem;
-		background: #2e2e4c;
+		width: 5.9rem;
+		background: #0b0b0b;
 		border-radius: 0.08rem;
 		.login-header {
 			text-align: center;
 			height: 0.5rem;
 			.login-img {
-				width: 1.24rem;
-				height: 0.79rem;
+				width: 1.4rem;
+				height: 1.4rem;
 				position: relative;
-				top: -0.3rem;
+				top: -0.7rem;
 				&.s {
 					animation: scaleHeader 0.3s ease-in-out;
 				}
@@ -25,49 +25,69 @@
 			margin-top: 0.2rem;
 		}
 		.loginname {
-			width: 1.16rem;
+			width: 2.47rem;
 			margin-bottom: 0.35rem;
+			margin-top: 0.25rem;
 		}
 		.login-item {
 			text-align: center;
-			padding: 0.07rem 0;
+			padding: 0.15rem 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
 		}
 		.input-box {
 			display: inline-block;
-			width: 3.08rem;
+			width: 4.3rem;
 			height: 0.44rem;
-			border-radius: 0.08rem;
 			overflow: hidden;
 			position: relative;
+			display: flex;
+			align-items: center;
+			justify-content: center;
 			.input {
 				box-sizing: border-box;
-				width: 100%;
+				flex: 1;
 				height: 100%;
 				padding: 0 0.1rem;
-				background: rgba(0, 0, 0, 0.17);
+				background: #333333;
+				border-radius: 0.04rem;
 				color: rgba(255, 255, 255, 1);
+				border: 1px solid transparent;
+				transition: all 0.3s linear;
+				&::-webkit-input-placeholder {
+					color: #828282;
+				}
 				&.has {
 					background: rgba(0, 0, 0, 0.27);
 				}
 				&:focus {
 					background: rgba(0, 0, 0, 0.27);
+					border: 1px solid #015a23;
+					border-radius: 0.04rem;
 				}
+			}
+			.btn {
+				width: 1.2rem;
+				margin-left: 0.14rem;
 			}
 			.send {
 				position: absolute;
-				top: 0.1rem;
+				top: 0.13rem;
 				right: 0.1rem;
 				display: block;
 			}
 		}
 		.login-forget {
-			text-align: right;
-			width: 3.08rem;
-			margin: 0 auto;
-
+			text-align: left;
+			width: 4.3rem;
 			span {
 				cursor: pointer;
-				color: rgba(255, 255, 255, 0.54);
+				color: #4a4a4a;
+				transition: all 0.3s linear;
+				&:hover {
+					color: #fff;
+				}
 			}
 		}
 		.login-btn {
@@ -75,7 +95,7 @@
 			padding: 0.3rem 0;
 			.loginbtn {
 				display: inline-block;
-				width: 3.08rem;
+				width: 1.88rem;
 				height: 0.44rem;
 				line-height: 0.44rem;
 				color: #fff;
@@ -83,23 +103,19 @@
 				border-radius: 0.04rem;
 				font-weight: 200;
 				cursor: pointer;
-				border: 1px solid #47c47f;
-				color: #47c47f;
-				&:hover {
-					background: linear-gradient(to right, #82e0ac, #47c47f);
-					color: #fff;
-				}
 			}
 			.signup {
 				color: #47c47f;
-				padding: 0.05rem 0;
-				cursor: pointer;
-				width: 3.08rem;
+				padding: 0.15rem 0 0 0;
 				margin: 0.05rem auto 0 auto;
+				justify-content: center;
+				transition: all 0.3s linear;
 				span {
-					color: #53536b;
+					color: #4a4a4a;
+					transition: all 0.3s linear;
+					cursor: pointer;
 					&:hover {
-						color: #47c47f;
+						color: #fff;
 					}
 				}
 			}
@@ -110,15 +126,15 @@
 		position: relative;
 		.login-name {
 			margin: 0;
-			padding: 0.2rem 0;
+			padding: 0.3rem 0;
 			.loginname {
 				margin: 0;
 			}
 		}
 		.icon-return {
 			position: absolute;
-			left: 0.29rem;
-			top: 0.25rem;
+			left: 0.4rem;
+			top: 0.4rem;
 		}
 	}
 	.icon-return {

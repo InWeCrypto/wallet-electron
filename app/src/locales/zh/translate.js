@@ -2,14 +2,20 @@ export default {
 	login: {
 		signin: "登录",
 		signup: "注册",
+		signup2: "还没有账号？去创建一个吧",
 		forget: "忘记密码？",
 		email: "邮箱地址",
 		code: "验证码",
 		password: "密码",
 		repassword: "再次输入密码",
 		reset: "重置密码",
-		nickname: "用户名"
+		nickname: "用户名",
+		loading: "正在登陆"
 	},
+	loading: "载入中",
+	transfrom: "正在转账",
+	importing: "正在导入",
+	changeing: "正在转换",
 	send: {
 		txt: "发送"
 	},
@@ -118,7 +124,8 @@ export default {
 		valiError: "验证失败",
 		hash160: "解码地址出错",
 		nodata: "无交易记录",
-		delete: "删除失败"
+		delete: "删除失败",
+		keyerror: "Key Store 格式错误"
 	},
 	delete: {
 		delete: "删除"

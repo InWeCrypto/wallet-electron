@@ -285,7 +285,7 @@ export default class Root extends PureComponent {
 											)}
 										/>
 										<button
-											className="total"
+											className="button-green total"
 											onClick={this.totalClaimClick.bind(
 												this
 											)}
@@ -329,7 +329,7 @@ export default class Root extends PureComponent {
 										/>
 
 										<button
-											className="total"
+											className="button-green total"
 											onClick={this.showFrozenInp.bind(
 												this
 											)}

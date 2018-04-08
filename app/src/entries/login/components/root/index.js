@@ -5,6 +5,7 @@ import { setLocalItem, toHref } from "../../../../utils/util";
 import SendBtn from "../../../../components/sendbtn";
 import "./index.less";
 import loginName from "#/loginname.png";
+import loginName1 from "#/loginname1.png";
 import loginHeader from "#/tou_pic.png";
 import { timingSafeEqual } from "crypto";
 export default class Root extends PureComponent {
@@ -79,18 +80,27 @@ export default class Root extends PureComponent {
 		}
 		this.props.sendEmailCode(this.state.forgetEmail).then(res => {
 			if (res.code === 4000 && typeof callback === "function") {
-				console.log(1111);
 				callback();
 			}
 		});
 	}
 	signInClick() {
+		if (this.state.email.length <= 0) {
+			Msg.prompt(i18n.t("error.emailEmpty", this.props.lng));
+			return;
+		}
+		if (this.state.password.length <= 0) {
+			Msg.prompt(i18n.t("error.passwordEmpty", this.props.lng));
+			return;
+		}
+		let loading = Msg.load(i18n.t("login.loading", this.props.lng));
 		this.props
 			.signIn({
 				email: this.state.email,
 				password: this.state.password
 			})
 			.then(res => {
+				loading.hide();
 				if (res.code === 4000) {
 					setLocalItem("userInfo", JSON.stringify(res.data));
 					toHref("wallet");
@@ -104,7 +114,31 @@ export default class Root extends PureComponent {
 			forgetPassword,
 			forgetRepassword
 		} = this.state;
-
+		if (this.state.forgetEmail.length <= 0) {
+			Msg.prompt(i18n.t("error.emailEmpty", this.props.lng));
+			return;
+		}
+		if (this.state.forgetCode.length <= 0) {
+			Msg.prompt(i18n.t("error.codeEmpty", this.props.lng));
+			return;
+		}
+		if (this.state.forgetPassword.length <= 0) {
+			Msg.prompt(i18n.t("error.passwordEmpty", this.props.lng));
+			return;
+		}
+		if (this.state.forgetPassword.length < 6) {
+			Msg.prompt(i18n.t("error.passLength", this.props.lng));
+			return;
+		}
+		if (this.state.forgetRepassword.length <= 0) {
+			Msg.prompt(i18n.t("error.rpasswordEmpty", this.props.lng));
+			return;
+		}
+		if (this.state.forgetPassword != this.state.forgetRepassword) {
+			Msg.prompt(i18n.t("error.passError", this.props.lng));
+			return;
+		}
+		let loading = Msg.load(i18n.t("loading", this.props.lng));
 		this.props
 			.forgetUser({
 				email: forgetEmail,
@@ -113,6 +147,7 @@ export default class Root extends PureComponent {
 				password_confirmation: forgetRepassword
 			})
 			.then(res => {
+				loading.hide();
 				if (res.code === 4000) {
 					this.setState({
 						type: "signin",
@@ -132,6 +167,27 @@ export default class Root extends PureComponent {
 			registerPassword,
 			registerRepassword
 		} = this.state;
+		if (this.state.registerEmail.length <= 0) {
+			Msg.prompt(i18n.t("error.emailEmpty", this.props.lng));
+			return;
+		}
+		if (this.state.registerCode.length <= 0) {
+			Msg.prompt(i18n.t("error.codeEmpty", this.props.lng));
+			return;
+		}
+		if (this.state.registerPassword.length <= 0) {
+			Msg.prompt(i18n.t("error.passwordEmpty", this.props.lng));
+			return;
+		}
+		if (this.state.registerRepassword.length <= 0) {
+			Msg.prompt(i18n.t("error.rpasswordEmpty", this.props.lng));
+			return;
+		}
+		if (this.state.registerRepassword != this.state.registerPassword) {
+			Msg.prompt(i18n.t("error.passError", this.props.lng));
+			return;
+		}
+		let loading = Msg.load(i18n.t("loading", this.props.lng));
 		this.props
 			.registerUser({
 				email: registerEmail,
@@ -141,6 +197,7 @@ export default class Root extends PureComponent {
 				password_confirmation: registerRepassword
 			})
 			.then(res => {
+				loading.hide();
 				if (res.code === 4000) {
 					Msg.prompt(
 						i18n.t("success.registerSuccess", this.props.lng)
@@ -224,27 +281,18 @@ export default class Root extends PureComponent {
 													"password"
 												)}
 											/>
-										</div>
-									</div>
-
-									<div className="login-btn">
-										<span
-											className="loginbtn"
-											onClick={this.signInClick.bind(
-												this
-											)}
-										>
-											{t("login.signin", lng)}
-										</span>
-										<div className="signup ui center">
-											<span
-												onClick={this.goRegister.bind(
+											<div
+												className="btn button-green"
+												onClick={this.signInClick.bind(
 													this
 												)}
 											>
-												{t("login.signup", lng)}
-											</span>
-											<div className="f1" />
+												{t("login.signin", lng)}
+											</div>
+										</div>
+									</div>
+									<div className="login-item">
+										<div className="login-forget">
 											<span
 												className="t1"
 												onClick={this.goFroget.bind(
@@ -253,6 +301,27 @@ export default class Root extends PureComponent {
 											>
 												{t("login.forget", lng)}
 											</span>
+										</div>
+									</div>
+									<div className="login-btn">
+										<div className="signup ui center">
+											<span
+												onClick={this.goRegister.bind(
+													this
+												)}
+												className="t1"
+											>
+												{t("login.signup2", lng)}
+											</span>
+											{/* <div className="f1" />
+											<span
+												className="t1"
+												onClick={this.goFroget.bind(
+													this
+												)}
+											>
+												{t("login.forget", lng)}
+											</span> */}
 										</div>
 									</div>
 								</div>
@@ -266,7 +335,7 @@ export default class Root extends PureComponent {
 									<div className="login-name">
 										<img
 											className="loginname"
-											src={loginName}
+											src={loginName1}
 										/>
 									</div>
 									<div className="login-item">
@@ -363,7 +432,7 @@ export default class Root extends PureComponent {
 									</div>
 									<div className="login-btn">
 										<span
-											className="loginbtn"
+											className="loginbtn button-green"
 											onClick={this.registerUser.bind(
 												this
 											)}
@@ -382,7 +451,7 @@ export default class Root extends PureComponent {
 									<div className="login-name">
 										<img
 											className="loginname"
-											src={loginName}
+											src={loginName1}
 										/>
 									</div>
 									<div className="login-item">
@@ -462,7 +531,7 @@ export default class Root extends PureComponent {
 									</div>
 									<div className="login-btn">
 										<span
-											className="loginbtn"
+											className="loginbtn button-green"
 											onClick={this.forgetUser.bind(this)}
 										>
 											{t("login.reset", lng)}

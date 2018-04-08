@@ -3,7 +3,7 @@
 	height: 100%;
 	.bigtitle {
 		text-align: center;
-		color: #47d184;
+		color: #4a4a4a;
 		font-size: 0.36rem;
 		padding: 0.4rem 0 0.34rem 0;
 	}
@@ -15,7 +15,7 @@
 			flex: 0 1 2.4rem;
 			height: 1.6rem;
 			align-items: center;
-			background: #2e2e4c;
+			background: #0b0b0b;
 			border-radius: 0.08rem;
 			display: flex;
 			justify-content: center;
@@ -24,26 +24,50 @@
 			cursor: pointer;
 			margin-right: 0.2rem;
 			font-size: 0.18rem;
+			color: #4a4a4a;
+			border: 3px solid #0b0b0b;
+			transition: border 0.3s linear;
 			&:hover {
-				background: linear-gradient(to bottom, #525275, #262642);
+				color: #fff;
+				border: 3px solid #1e1e1e;
+				.walletimg.create {
+					background: url("../../../../assets/images/createwallet_ico_s.png");
+					background-size: 100% 100%;
+				}
+				.walletimg.import {
+					background: url("../../../../assets/images/import_wallet_ico_s.png");
+					background-size: 100% 100%;
+				}
 			}
 			.walletimg {
 				width: 0.48rem;
 				height: 0.48rem;
 				margin-bottom: 0.1rem;
+				display: inline-block;
+				&.create {
+					background: url("../../../../assets/images/createwallet_ico.png");
+					background-size: 100% 100%;
+				}
+				&.import {
+					background: url("../../../../assets/images/import_wallet_ico.png");
+					background-size: 100% 100%;
+				}
 			}
+
 			&.disabled {
-				color: #9b9b9b;
+				color: #4a4a4a;
 			}
 			&.disabled:hover {
-				background: #2e2e4c;
+				background: #0b0b0b;
+				border: 3px solid #0b0b0b;
 			}
 			.t1 {
 				text-align: center;
+				color: #828282;
 			}
 			.t2 {
 				font-size: 0.12rem;
-				color: #55557d;
+				color: #4a4a4a;
 			}
 		}
 	}
@@ -56,37 +80,42 @@
 		box-sizing: border-box;
 		padding: 0 0.4rem;
 		color: #fff;
+		box-sizing: border-box;
+		padding: 3px solid #1e1e1e;
 		.group-title {
-			background: #2e2e4c;
+			background: #0b0b0b;
 			box-sizing: border-box;
 			padding: 0 0.2rem;
 			border-radius: 0.04rem 0.04rem 0 0;
 			box-sizing: border-box;
 			.ui {
-				border-bottom: 1px solid #373755;
+				// border-bottom: 1px solid #373755;
 				padding: 0.2rem 0 0.18rem 0;
 			}
 			.t1 {
-				color: #47d184;
+				color: #828282;
 				font-size: 0.18rem;
+			}
+			.t2 {
+				color: #828282;
 			}
 		}
 		.watch {
-			color: #47d184;
+			color: #eb6106;
 			vertical-align: middle;
 			padding: 0.03rem 0.1rem;
-			border-radius: 0.2rem;
-			border: 1px solid #47d184;
+			border-radius: 0.04rem;
+			border: 1px solid #eb6106;
 			margin-left: 0.1rem;
 			font-size: 0.12rem;
 			font-weight: 200;
 		}
 		.unback {
-			color: #ff7044;
+			color: #5c89eb;
 			vertical-align: middle;
 			padding: 0.03rem 0.1rem;
-			border-radius: 0.2rem;
-			border: 1px solid #ff7044;
+			border-radius: 0.04rem;
+			border: 1px solid #5c89eb;
 			margin-left: 0.1rem;
 			font-size: 0.12rem;
 			font-weight: 200;
@@ -97,39 +126,53 @@
 			right: 0.4rem;
 			top: 0.66rem;
 			bottom: 0.5rem;
-			background: #2e2e4c;
+			background: #0b0b0b;
 			overflow: auto;
 			border-radius: 0 0 0.04rem 0.04rem;
 			box-sizing: border-box;
 		}
 		.group-out {
 			padding: 0 0.2rem;
+			transition: all 0.3s linear;
 			&:hover {
-				background: #3a3a59;
-			}
-		}
-		.wallet-group {
-			padding: 0.2rem 0;
-			border-top: 1px solid #373755;
-			&:nth-child(1) {
-				border-top: none;
-			}
+				background: #121212;
 
-			.wallet-img {
-				width: 0.56rem;
-				height: 0.56rem;
-				margin-right: 0.2rem;
+				.wallet-group {
+					color: #fff;
+					.wallet-address {
+						color: #47d184;
+					}
+					.t3 {
+						color: #5c89eb;
+					}
+				}
 			}
-			.wallet-name {
-				font-size: 0.18rem;
-			}
-			.wallet-address {
-				font-size: 0.14rem;
-				margin-top: 0.1rem;
-			}
-			.t3 {
-				color: #ff7044;
-				font-size: 0.2rem;
+			.wallet-group {
+				padding: 0.2rem 0;
+				border-top: 1px solid #373755;
+				color: #828282;
+				&:nth-child(1) {
+					border-top: none;
+				}
+				.wallet-img {
+					width: 0.56rem;
+					height: 0.56rem;
+					margin-right: 0.2rem;
+				}
+				.wallet-name {
+					font-size: 0.18rem;
+					transition: all 0.3s linear;
+				}
+				.wallet-address {
+					transition: all 0.3s linear;
+					font-size: 0.14rem;
+					margin-top: 0.1rem;
+				}
+				.t3 {
+					transition: all 0.3s linear;
+					color: #828282;
+					font-size: 0.2rem;
+				}
 			}
 		}
 	}

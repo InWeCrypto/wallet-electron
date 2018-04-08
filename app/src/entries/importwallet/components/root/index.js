@@ -6,9 +6,14 @@ import HeaderNav from "@/headernav";
 import { getQuery } from "../../../../utils/util";
 import "./index.less";
 import keyicon from "#/key.png";
-import mneicon from "#/mnemonic_ico.png";
+import moneicon from "#/mnemonic_ico.png";
 import priicon from "#/private_ico.png";
 import watchicon from "#/watch_ico.png";
+import keyicon1 from "#/key_s.png";
+import moneicon1 from "#/mnemonic_ico_s.png";
+import priicon1 from "#/private_ico_s.png";
+import watchicon1 from "#/watch_ico_s.png";
+
 import ethicon from "#/ethicon.png";
 import neoicon from "#/neoicon.png";
 import Item from "antd/lib/list/Item";
@@ -131,10 +136,11 @@ export default class Root extends PureComponent {
 													}}
 													className="import-group"
 												>
-													<img
+													<span className="importicon key" />
+													{/* <img
 														className="importicon"
 														src={keyicon}
-													/>
+													/> */}
 													<div className="t1">
 														{t(
 															"importWallet.keystore",
@@ -150,10 +156,7 @@ export default class Root extends PureComponent {
 													}}
 													className="import-group"
 												>
-													<img
-														className="importicon"
-														src={mneicon}
-													/>
+													<span className="importicon moneicon" />
 													<div className="t1">
 														{t(
 															"importWallet.mnemonic",
@@ -171,10 +174,7 @@ export default class Root extends PureComponent {
 													}}
 													className="import-group"
 												>
-													<img
-														className="importicon"
-														src={priicon}
-													/>
+													<span className="importicon priicon" />
 													<div className="t1">
 														{t(
 															"importWallet.private",
@@ -189,10 +189,7 @@ export default class Root extends PureComponent {
 													}}
 													className="import-group"
 												>
-													<img
-														className="importicon"
-														src={watchicon}
-													/>
+													<span className="importicon watchicon" />
 													<div className="t1">
 														{t(
 															"importWallet.watch",
@@ -214,10 +211,7 @@ export default class Root extends PureComponent {
 													}}
 													className="import-group"
 												>
-													<img
-														className="importicon"
-														src={keyicon}
-													/>
+													<span className="importicon key" />
 													<div className="t1">
 														{t(
 															"importWallet.keystore",
@@ -233,10 +227,7 @@ export default class Root extends PureComponent {
 													}}
 													className="import-group"
 												>
-													<img
-														className="importicon"
-														src={mneicon}
-													/>
+													<span className="importicon moneicon" />
 													<div className="t1">
 														{t(
 															"importWallet.mnemonic",
@@ -254,10 +245,7 @@ export default class Root extends PureComponent {
 													}}
 													className="import-group"
 												>
-													<img
-														className="importicon"
-														src={priicon}
-													/>
+													<span className="importicon priicon" />
 													<div className="t1">
 														{t(
 															"importWallet.private",

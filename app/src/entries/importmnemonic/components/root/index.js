@@ -69,6 +69,7 @@ export default class Root extends PureComponent {
 			type = "btc";
 		}
 		let mnemonic = this.state.word.trim();
+		let load = Msg.load(i18n.t("changeing", png));
 		let importres = await this.props.changeToHot({
 			name: this.state.name,
 			type: type,
@@ -76,6 +77,7 @@ export default class Root extends PureComponent {
 			password: res,
 			lang: this.props.lng == "en" ? "en_US" : "zh_CN"
 		});
+		load.hide();
 		if (importres.address && importres.address.length > 0) {
 			this.setState({
 				isShowPass: false

@@ -196,13 +196,21 @@ export default class Root extends PureComponent {
 																	index
 																)}
 															>
-																<img
+																{/* <img
 																	className="wallet-img"
 																	src={
 																		item.id ==
 																		1
 																			? ethicon
 																			: neoicon
+																	}
+																/> */}
+																<span
+																	className={
+																		item.id ==
+																		1
+																			? "wallet-img eth"
+																			: "wallet-img neo"
 																	}
 																/>
 																<div className="t1">
@@ -340,7 +348,7 @@ export default class Root extends PureComponent {
 																			onClick={this.closeClick.bind(
 																				this
 																			)}
-																			className="detail-btn"
+																			className="detail-btn button-black"
 																		>
 																			{t(
 																				"createWallet.cancel",
@@ -352,7 +360,7 @@ export default class Root extends PureComponent {
 																				this,
 																				index
 																			)}
-																			className="detail-btn c"
+																			className="detail-btn button-green"
 																		>
 																			{t(
 																				"createWallet.create",

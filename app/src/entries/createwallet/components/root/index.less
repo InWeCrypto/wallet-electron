@@ -5,33 +5,52 @@
 		font-size: 0.3rem;
 		color: #47d184;
 		text-align: center;
-		padding: 0.4rem 0;
+		padding: 0.4rem 0 0.81rem 0;
 		box-sizing: border-box;
 	}
 	.create-container {
 		display: flex;
 		justify-content: center;
 		color: #fff;
-
 		.create-group {
 			width: 2.4rem;
+
 			margin: 0 0.1rem;
 			position: relative;
 			transform-style: preserve-3d;
 			min-height: 3.4rem;
 			&:hover {
 				.wallet-img {
-					width: 1.2rem;
-					height: 1.2rem;
+					&.eth {
+						background-image: url("../../../../assets/images/project_icon_eth.png");
+					}
+					&.neo {
+						background-image: url("../../../../assets/images/project_icon_neo.png");
+					}
+				}
+				.create-face {
+					border: 3px solid #1e1e1e;
 				}
 				.t1 {
-					color: #47d184;
+					color: #fff;
 				}
 			}
-			.wallet-img {
-				width: 1rem;
-				height: 1rem;
+			.t1 {
+				color: #828282;
 				transition: all 0.3s linear;
+			}
+			.wallet-img {
+				width: 0.48rem;
+				height: 0.48rem;
+				transition: all 0.3s linear;
+				display: inline-block;
+				background-size: 100% 100% !important;
+				&.eth {
+					background-image: url("../../../../assets/images/project_icon_eth_s.png");
+				}
+				&.neo {
+					background-image: url("../../../../assets/images/project_icon_neo_s.png");
+				}
 			}
 			.wallet-img1 {
 				width: 0.6rem;
@@ -50,8 +69,16 @@
 			.create-face {
 				text-align: center;
 				transform: rotateY(0deg);
+				height: 1.6rem;
 				z-index: 2;
 				backface-visibility: hidden;
+				display: flex;
+				flex-flow: column;
+				align-items: center;
+				justify-content: center;
+				background: #0b0b0b;
+				box-sizing: border-box;
+				border: 3px solid #0b0b0b;
 			}
 			.create-back {
 				position: absolute;
@@ -64,6 +91,7 @@
 			.create-box {
 				position: relative;
 				width: 2.4rem;
+
 				height: auto;
 				transition: 0.6s;
 				transform-style: preserve-3d;
@@ -74,12 +102,14 @@
 			.create-detail {
 				text-align: left;
 				width: 100%;
-				background: #2e2e4c;
+				background: #0b0b0b;
 				position: relative;
 				top: -0.3rem;
 				box-sizing: border-box;
 				padding: 0.6rem 0.12rem 0.12rem 0.12rem;
 				border-radius: 0.08rem;
+				box-sizing: border-box;
+				border: 3px solid #1e1e1e;
 				.detail-item {
 					margin: 0.09rem 0;
 					.detail-nam {
@@ -87,15 +117,17 @@
 					}
 					.input {
 						width: 100%;
-						background: #292946;
+						background: #333333;
 						padding: 0.08rem 0.15rem;
 						box-sizing: border-box;
-						border-radius: 0.2rem;
+						border-radius: 0.04rem;
 						color: rgba(255, 255, 255, 1);
-						border: none;
+						border: 1px solid #333333;
 						outline: none;
-						&.has {
-							background: #23233f;
+						transition: all 0.3s linear;
+						&:focus {
+							background: #161616;
+							border: 1px solid #47c47f;
 						}
 						&::-webkit-input-placeholder {
 							color: rgba(255, 255, 255, 0.2);
@@ -107,24 +139,23 @@
 					text-align: center;
 					.detail-btn {
 						display: inline-block;
-						margin: 0 0.18rem;
-						border-radius: 0.08rem;
+						margin: 0 0.1rem;
 						width: 0.7rem;
 						height: 0.3rem;
 						line-height: 0.3rem;
 						cursor: pointer;
-						background: linear-gradient(
-							to bottom,
-							#dadada 0%,
-							#bdbdbd 100%
-						);
-						&.c {
-							background: linear-gradient(
-								to bottom,
-								#82e0ac,
-								#47c47f
-							);
-						}
+						// background: linear-gradient(
+						// 	to bottom,
+						// 	#dadada 0%,
+						// 	#bdbdbd 100%
+						// );
+						// &.c {
+						// 	background: linear-gradient(
+						// 		to bottom,
+						// 		#82e0ac,
+						// 		#47c47f
+						// 	);
+						// }
 					}
 				}
 			}

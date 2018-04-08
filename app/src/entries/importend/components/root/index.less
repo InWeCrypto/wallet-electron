@@ -2,30 +2,36 @@
 	.title {
 		padding: 0.4rem 0;
 		font-size: 0.3rem;
-		color: #47d184;
+		color: #4a4a4a;
 		text-align: center;
 	}
 	.end-container {
 		.end-box {
 			width: 7.7rem;
 			max-width: 90%;
-			background: #2e2e4c;
+			background: #0b0b0b;
 			border-radius: 0.08rem;
 			box-sizing: border-box;
 			padding: 0.2rem;
+			border: 3px solid #1e1e1e;
 		}
 		.end-item {
 			padding: 0.15rem 0;
 		}
 		.input {
 			width: 100%;
-			background: rgba(0, 0, 0, 0.21);
+			background: #121212;
 			border-radius: 0.08rem;
 			border: none;
 			outline: none;
 			box-sizing: border-box;
 			padding: 0.1rem;
-			color: rgba(255, 255, 255, 0.41);
+			color: #fff;
+			border: 1px solid #121212;
+			transition: all 0.3s linear;
+			&:focus {
+				border: 1px solid #47c47f;
+			}
 		}
 		.endbtn {
 			padding: 2.4rem 0 0.36rem 0;

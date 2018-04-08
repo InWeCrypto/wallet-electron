@@ -128,29 +128,36 @@ export default class Root extends PureComponent {
 			Msg.prompt(i18n.t("error.passVili", lng));
 			return;
 		}
-		let local = await this.props.importWallet(params, ism);
-		if (local && local.address) {
-			let p = {
-				category_id: this.state.category_id,
-				name: this.state.name,
-				address: local.address
-			};
-			if (this.state.type == "neo") {
-				let hash = await this.props.decodeNep5({
+		let load = Msg.load(i18n.t("importing", png));
+		try {
+			let local = await this.props.importWallet(params, ism);
+			if (local && local.address) {
+				let p = {
+					category_id: this.state.category_id,
+					name: this.state.name,
 					address: local.address
+				};
+				if (this.state.type == "neo") {
+					let hash = await this.props.decodeNep5({
+						address: local.address
+					});
+					if (hash && hash.length > 0) {
+						p.address_hash160 = hash;
+					} else {
+						load.hide();
+						Msg.prompt(i18n.t("error.hash160", lng));
+						return;
+					}
+				}
+				this.props.createServerWallet(p).then(res => {
+					load.hide();
+					if (res.code === 4000) {
+						toHref("wallet");
+					}
 				});
-				if (hash && hash.length > 0) {
-					p.address_hash160 = hash;
-				} else {
-					Msg.prompt(i18n.t("error.hash160", lng));
-					return;
-				}
 			}
-			this.props.createServerWallet(p).then(res => {
-				if (res.code === 4000) {
-					toHref("wallet");
-				}
-			});
+		} catch (e) {
+			load.hide();
 		}
 	}
 	render() {

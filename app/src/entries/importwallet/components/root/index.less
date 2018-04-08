@@ -18,7 +18,9 @@
 			border-radius: 0.08rem;
 			&:hover {
 				// background: rgba(255, 255, 255, 0.17);
-				color: #47d184;
+				.t {
+					color: #fff;
+				}
 				img {
 					width: 1.2rem;
 					height: 1.2rem;
@@ -33,6 +35,7 @@
 				font-size: 0.18rem;
 				margin-top: 0.2rem;
 				font-weight: 400;
+				color: #828282;
 			}
 		}
 	}
@@ -42,7 +45,7 @@
 		.import-group {
 			display: flex;
 			text-align: center;
-			background: #2e2e4c;
+			background: #0b0b0b;
 			width: 2.4rem;
 			height: 1.6rem;
 			margin: 0.14rem;
@@ -50,8 +53,28 @@
 			align-items: center;
 			justify-content: center;
 			border-radius: 0.08rem;
+			box-sizing: border-box;
+			border: 3px solid #0b0b0b;
+			transition: all 0.3s linear;
 			&:hover {
-				background: linear-gradient(to bottom, #525275, #262642);
+				border: 3px solid #1e1e1e;
+				.t1 {
+					color: #fff;
+				}
+				.importicon {
+					&.key {
+						background-image: url("../../../../assets/images/key.png");
+					}
+					&.moneicon {
+						background-image: url("../../../../assets/images/mnemonic_ico.png");
+					}
+					&.priicon {
+						background-image: url("../../../../assets/images/private_ico.png");
+					}
+					&.watchicon {
+						background-image: url("../../../../assets/images/watch_ico.png");
+					}
+				}
 			}
 			&.disnone {
 				background: none;
@@ -59,11 +82,25 @@
 			.t1 {
 				font-size: 0.18rem;
 				margin-top: 0.05rem;
-				color: #fff;
+				color: #4a4a4a;
+				transition: all 0.3s linear;
 			}
 			.importicon {
 				width: 0.47rem;
 				height: 0.47rem;
+				background-size: 100% 100% !important;
+				&.key {
+					background-image: url("../../../../assets/images/key_s.png");
+				}
+				&.moneicon {
+					background-image: url("../../../../assets/images/mnemonic_ico_s.png");
+				}
+				&.priicon {
+					background-image: url("../../../../assets/images/private_ico_s.png");
+				}
+				&.watchicon {
+					background-image: url("../../../../assets/images/watch_ico_s.png");
+				}
 			}
 		}
 	}

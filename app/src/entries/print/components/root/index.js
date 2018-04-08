@@ -50,13 +50,13 @@ export default class Root extends PureComponent {
 						<div className="qcodebox" id="qrcode" />
 						<div className="print-str">{str}</div>
 						<span
-							className="printbtn button-green"
+							className="printbtn button-blue"
 							onClick={this.printPDFClick.bind(this)}
 						>
 							{t("walletDetail.printPDF", lng)}
 						</span>
 						<span
-							className="printbtn button-green"
+							className="printbtn button-blue"
 							onClick={this.printClick.bind(this)}
 						>
 							{t("walletDetail.print", lng)}
