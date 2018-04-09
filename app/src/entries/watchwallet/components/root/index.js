@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import { I18n } from "react-i18next";
 import { getQuery, getEthNum } from "../../../../utils/util";
+import PerfectScrollbar from "perfect-scrollbar";
 import QRCode from "../../../../assets/js/qcode";
 import Menu from "@/menu";
 import HeaderNav from "@/headernav";
@@ -39,6 +40,9 @@ export default class Root extends PureComponent {
 				});
 			}
 		}
+		setTimeout(() => {
+			this.myScroll = new PerfectScrollbar("#coinlist");
+		}, 200);
 	}
 	navCur(idx) {
 		return idx === this.state.type ? "nav-item cur" : "nav-item";
@@ -47,6 +51,13 @@ export default class Root extends PureComponent {
 		this.setState({
 			type: idx
 		});
+		if (idx == 1) {
+			setTimeout(() => {
+				this.myScroll = new PerfectScrollbar("#coinlist");
+			}, 200);
+		} else {
+			this.myScroll.destroy();
+		}
 		if (idx === 2) {
 			this.setQcode(this.props.watchInfo.address);
 		}
@@ -73,6 +84,7 @@ export default class Root extends PureComponent {
 	setQcode(str) {
 		setTimeout(() => {
 			var box = document.getElementById("qrcode");
+			box.className = "qcode show";
 			box.innerHTML = "";
 			var n = box.offsetWidth - 60;
 			var qrcode = new QRCode(box, {
@@ -201,7 +213,10 @@ export default class Root extends PureComponent {
 				asset_id = walletList.list[key - 1].gnt_category.address;
 				img = walletList.list[key - 1].gnt_category.icon;
 				name = walletList.list[key - 1].gnt_category.name;
-				number = getEthNum(walletList.list[key - 1].balance);
+				number = getEthNum(
+					walletList.list[key - 1].balance,
+					walletList.list[key - 1].decimals
+				);
 				decimals = walletList.list[key - 1].decimals;
 				price_cny =
 					walletList.list[key - 1].gnt_category &&
@@ -422,7 +437,7 @@ export default class Root extends PureComponent {
 									</div>
 									{type === 1 &&
 										walletType == 1 && (
-											<div className="box3">
+											<div className="box3" id="coinlist">
 												{watchConver &&
 													watchConver.list &&
 													watchConver.list[0] && (
@@ -606,7 +621,7 @@ export default class Root extends PureComponent {
 										)}
 									{type === 1 &&
 										walletType == 2 && (
-											<div className="box3">
+											<div className="box3" id="coinlist">
 												{watchConver &&
 													watchConver.list &&
 													watchConver.list[0] && (
@@ -720,9 +735,7 @@ export default class Root extends PureComponent {
 																			}
 																		/>
 																		<div className="f1 name">
-																			{
-																				item.name
-																			}
+																			{item.name.toUpperCase()}
 																		</div>
 																		<div
 																			style={{

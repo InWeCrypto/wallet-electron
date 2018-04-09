@@ -11,27 +11,50 @@
 		.type-item {
 			color: #fff;
 			text-align: center;
+			width: 2.4rem;
+			height: 1.6rem;
 			flex: 0 1 2rem;
 			cursor: pointer;
 			padding: 0.2rem 0;
 			box-sizing: border-box;
 			border-radius: 0.08rem;
+			display: flex;
+			flex-flow: column;
+			align-items: center;
+			justify-content: center;
+			background: #0b0b0b;
+			border: 3px solid #0b0b0b;
+			margin: 0 0.1rem;
+			transition: all 0.3s linear;
 			&:hover {
-				// background: rgba(255, 255, 255, 0.17);
+				border: 3px solid #1e1e1e;
 				.t {
 					color: #fff;
 				}
-				img {
-					width: 1.2rem;
-					height: 1.2rem;
+				.img {
+					&.eth {
+						background-image: url("../../../../assets/images/project_icon_eth.png");
+					}
+					&.neo {
+						background-image: url("../../../../assets/images/project_icon_neo.png");
+					}
 				}
 			}
-			img {
-				width: 1rem;
-				height: 1rem;
+			.img {
+				width: 0.4rem;
+				height: 0.4rem;
 				transition: all 0.3s linear;
+				background-size: 100% 100%;
+				&.eth {
+					background-image: url("../../../../assets/images/project_icon_eth_s.png");
+				}
+				&.neo {
+					background-image: url("../../../../assets/images/project_icon_neo_s.png");
+				}
 			}
+
 			.t {
+				transition: all 0.3s linear;
 				font-size: 0.18rem;
 				margin-top: 0.2rem;
 				font-weight: 400;
@@ -78,6 +101,7 @@
 			}
 			&.disnone {
 				background: none;
+				border: none;
 			}
 			.t1 {
 				font-size: 0.18rem;

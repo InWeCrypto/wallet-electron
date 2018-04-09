@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import { I18n } from "react-i18next";
 import { Decimal } from "decimal.js";
+import PerfectScrollbar from "perfect-scrollbar";
 import {
 	getQuery,
 	getLocalTime,
@@ -28,6 +29,7 @@ export default class Root extends PureComponent {
 			isGetting: false
 		};
 		this.timer = null;
+		this.myScroll = null;
 	}
 	componentDidMount() {
 		let q = getQuery(window.location.href);
@@ -52,8 +54,13 @@ export default class Root extends PureComponent {
 		}
 		this.setState(set);
 		let box = document.querySelector("#listBox");
+		this.myScroll = new PerfectScrollbar(box, {
+			wheelSpeed: 2,
+			wheelPropagation: true,
+			suppressScrollX: true
+		});
 		box.addEventListener(
-			"scroll",
+			"ps-y-reach-end",
 			() => {
 				this.getPageData();
 			},
@@ -63,6 +70,7 @@ export default class Root extends PureComponent {
 		this.props.getBlockSecond();
 	}
 	componentWillUnmount() {
+		this.myScroll.destroy();
 		clearTimeout(this.timer);
 		this.props.clearList();
 	}
@@ -88,11 +96,11 @@ export default class Root extends PureComponent {
 					});
 				}
 			});
-
 		if (q.flag == "eth") {
 			this.props.getBlockNumber();
 			this.timer = setTimeout(() => {
 				this.rePageLoad();
+				this.myScroll.update();
 			}, this.props.blockSecond ? this.props.blockSecond.bps : 30000);
 		}
 	}
@@ -101,23 +109,22 @@ export default class Root extends PureComponent {
 		let st = box.scrollTop;
 		let h = box.offsetHeight;
 		let sh = box.scrollHeight;
-		if (h + st >= sh) {
-			this.props
-				.getOrderList({
-					flag: this.state.flag,
-					wallet_id: this.state.wallet_id,
-					asset_id: this.state.asset_id,
-					size: 20,
-					page: this.state.page
-				})
-				.then(res => {
-					if (res.code === 4000) {
-						this.setState({
-							page: this.state.page + 1
-						});
-					}
-				});
-		}
+		this.props
+			.getOrderList({
+				flag: this.state.flag,
+				wallet_id: this.state.wallet_id,
+				asset_id: this.state.asset_id,
+				size: 20,
+				page: this.state.page
+			})
+			.then(res => {
+				this.myScroll.update();
+				if (res.code === 4000) {
+					this.setState({
+						page: this.state.page + 1
+					});
+				}
+			});
 	}
 	getStateEth(item) {
 		let itemB = item.block_number;
@@ -142,7 +149,10 @@ export default class Root extends PureComponent {
 	}
 	openEthTxid(item) {
 		let isDev = localStorage.getItem("isDev");
-		let tx = item.tx.indexOf("0x") != -1 ? item.tx : "0x" + item.tx;
+		let tx =
+			item.trade_no.indexOf("0x") != -1
+				? item.trade_no
+				: "0x" + item.trade_no;
 		if (isDev && JSON.parse(isDev)) {
 			shell.openExternal(`https://ropsten.etherscan.io/tx/${tx}`);
 		} else {
@@ -151,7 +161,6 @@ export default class Root extends PureComponent {
 	}
 	openNeoTxid(item) {
 		let isDev = localStorage.getItem("isDev");
-		console.log(item.tx);
 		let tx =
 			item.tx.indexOf("0x") == -1 ? item.tx : item.tx.replace(/^0x/, "");
 		if (isDev && JSON.parse(isDev)) {
@@ -235,250 +244,276 @@ export default class Root extends PureComponent {
 									</div>
 								</div>
 								<div className="list-box" id="listBox">
-									{flag == "neo" &&
-										orderList &&
-										orderList.list &&
-										orderList.list.length > 0 &&
-										orderList.list.map((item, index) => {
-											return (
-												<div
-													key={index}
-													className={(item => {
-														return item.isShowMore
-															? "list-group show"
-															: "list-group";
-													})(item)}
-												>
-													<div className="list-base ui">
-														<div className="state">
-															{item.confirmTime &&
-															item.confirmTime
-																.length > 0
-																? t(
-																		"orderList.success",
-																		lng
-																  )
-																: t(
-																		"orderList.pending",
-																		lng
-																  )}
-														</div>
+									<div>
+										{flag == "neo" &&
+											orderList &&
+											orderList.list &&
+											orderList.list.length > 0 &&
+											orderList.list.map(
+												(item, index) => {
+													return (
 														<div
-															className="f1 txid"
-															onClick={this.openNeoTxid.bind(
-																this,
-																item
-															)}
+															key={index}
+															className={(item => {
+																return item.isShowMore
+																	? "list-group show"
+																	: "list-group";
+															})(item)}
 														>
-															{t(
-																"orderList.txid",
-																lng
-															)}:{item.tx}
-														</div>
-														<div className="time">
-															{getLocalTime(
-																item.createTime
-															)}
-														</div>
-														<div className="order">
-															{}
-															{address ==
-																item.from &&
-															address == item.to
-																? ""
-																: address ==
-																  item.from
-																	? "-"
-																	: "+"}
-															{info &&
-																info.decimals &&
-																getNumberString(
-																	Number(
-																		item.value /
-																			Math.pow(
-																				10,
-																				info.decimals
+															<div className="list-base ui">
+																<div className="state">
+																	{item.confirmTime &&
+																	item
+																		.confirmTime
+																		.length >
+																		0
+																		? t(
+																				"orderList.success",
+																				lng
+																		  )
+																		: t(
+																				"orderList.pending",
+																				lng
+																		  )}
+																</div>
+																<div
+																	className="f1 txid"
+																	onClick={this.openNeoTxid.bind(
+																		this,
+																		item
+																	)}
+																>
+																	{t(
+																		"orderList.txid",
+																		lng
+																	)}:{item.tx}
+																</div>
+																<div className="time">
+																	{getLocalTime(
+																		item.createTime
+																	)}
+																</div>
+																<div className="order">
+																	{}
+																	{address ==
+																		item.from &&
+																	address ==
+																		item.to
+																		? ""
+																		: address ==
+																		  item.from
+																			? "-"
+																			: "+"}
+																	{info &&
+																		info.decimals &&
+																		getNumberString(
+																			Number(
+																				item.value /
+																					Math.pow(
+																						10,
+																						info.decimals
+																					)
+																			).toFixed(
+																				8
 																			)
-																	).toFixed(8)
-																)}
-															{(!info ||
-																!info.decimals) &&
-																getNumberString(
-																	Number(
-																		Number(
-																			item.value
-																		).toFixed(
-																			8
-																		)
-																	)
-																)}{" "}
-															{info && info.name}
-														</div>
-														<div
-															onClick={this.showMoreClick.bind(
-																this,
-																index
-															)}
-															className={
-																item.isShowMore
-																	? "arrow"
-																	: "arrow close"
-															}
-														/>
-													</div>
-													<div
-														className={
-															item.isShowMore
-																? "list-more"
-																: "list-more close"
-														}
-													>
-														<div className="more-item">
-															{t(
-																"orderList.from",
-																lng
-															)}:{item.from}
-														</div>
-														<div className="more-item">
-															{t(
-																"orderList.to",
-																lng
-															)}:{item.to}
-														</div>
-														<div className="more-item">
-															{t(
-																"orderList.memo",
-																lng
-															)}:{item.remark}
-														</div>
-													</div>
-												</div>
-											);
-										})}
-
-									{flag == "eth" &&
-										orderList &&
-										orderList.list &&
-										orderList.list.length > 0 &&
-										orderList.list.map((item, index) => {
-											return (
-												<div
-													key={index}
-													className={(item => {
-														return item.isShowMore
-															? "list-group show"
-															: "list-group";
-													})(item)}
-												>
-													<div className="list-base ui">
-														<div className="state">
-															{item.stateText}
-															{item.percent !=
-																null && (
-																<span>
-																	&nbsp;({item.state
-																		? item.state
-																		: 0}/{minBlock &&
-																		minBlock.min_block_num})
-																</span>
-															)}
-														</div>
-														<div
-															className="f1 txid"
-															onClick={this.openEthTxid.bind(
-																this,
-																item
-															)}
-														>
-															{t(
-																"orderList.txid",
-																lng
-															)}:{item.hash}
-														</div>
-														<div className="time">
-															{getLocalTime(
-																item.created_at
-															)}
-														</div>
-														<div className="order">
-															{item.pay_address ==
-															item.receive_address
-																? ""
-																: address.toLowerCase() ==
-																  item.pay_address.toLowerCase()
-																	? "-"
-																	: "+"}
-															{getNumberString(
-																Number(
-																	Number(
-																		getEthNum(
-																			item.fee,
-																			info
-																				? info.decimals
-																				: null
-																		)
-																	).toFixed(8)
-																)
-															)}{" "}
-															{info && info.name}
-														</div>
-														<div
-															onClick={this.showMoreClick.bind(
-																this,
-																index
-															)}
-															className={
-																item.isShowMore
-																	? "arrow"
-																	: "arrow close"
-															}
-														/>
-													</div>
-													<div
-														className={
-															item.isShowMore
-																? "list-more"
-																: "list-more close"
-														}
-													>
-														<div className="more-item">
-															{t(
-																"orderList.from",
-																lng
-															)}:{
-																item.pay_address
-															}
-														</div>
-														<div className="more-item">
-															{t(
-																"orderList.to",
-																lng
-															)}:{
-																item.receive_address
-															}
-														</div>
-														<div className="more-item">
-															{t(
-																"orderList.memo",
-																lng
-															)}:{item.remark}
-														</div>
-													</div>
-													{item.percent && (
-														<div className="confirm-line">
+																		)}
+																	{(!info ||
+																		!info.decimals) &&
+																		getNumberString(
+																			Number(
+																				Number(
+																					item.value
+																				).toFixed(
+																					8
+																				)
+																			)
+																		)}{" "}
+																	{info &&
+																		info.name}
+																</div>
+																<div
+																	onClick={this.showMoreClick.bind(
+																		this,
+																		index
+																	)}
+																	className={
+																		item.isShowMore
+																			? "arrow"
+																			: "arrow close"
+																	}
+																/>
+															</div>
 															<div
-																style={{
-																	width:
-																		item.percent
-																}}
-																className="confirm-inline"
-															/>
+																className={
+																	item.isShowMore
+																		? "list-more"
+																		: "list-more close"
+																}
+															>
+																<div className="more-item">
+																	{t(
+																		"orderList.from",
+																		lng
+																	)}:{
+																		item.from
+																	}
+																</div>
+																<div className="more-item">
+																	{t(
+																		"orderList.to",
+																		lng
+																	)}:{item.to}
+																</div>
+																<div className="more-item">
+																	{t(
+																		"orderList.memo",
+																		lng
+																	)}:{
+																		item.remark
+																	}
+																</div>
+															</div>
+															{/* <div className="line1" /> */}
 														</div>
-													)}
-												</div>
-											);
-										})}
+													);
+												}
+											)}
 
+										{flag == "eth" &&
+											orderList &&
+											orderList.list &&
+											orderList.list.length > 0 &&
+											orderList.list.map(
+												(item, index) => {
+													return (
+														<div
+															key={index}
+															className={(item => {
+																return item.isShowMore
+																	? "list-group show"
+																	: "list-group";
+															})(item)}
+														>
+															<div className="list-base ui">
+																<div className="state">
+																	{
+																		item.stateText
+																	}
+																	{item.percent !=
+																		null && (
+																		<span>
+																			&nbsp;({item.state
+																				? item.state
+																				: 0}/{minBlock &&
+																				minBlock.min_block_num})
+																		</span>
+																	)}
+																</div>
+																<div
+																	className="f1 txid"
+																	onClick={this.openEthTxid.bind(
+																		this,
+																		item
+																	)}
+																>
+																	{t(
+																		"orderList.txid",
+																		lng
+																	)}:{
+																		item.hash
+																	}
+																</div>
+																<div className="time">
+																	{getLocalTime(
+																		item.created_at
+																	)}
+																</div>
+																<div className="order">
+																	{item.pay_address ==
+																	item.receive_address
+																		? ""
+																		: address.toLowerCase() ==
+																		  item.pay_address.toLowerCase()
+																			? "-"
+																			: "+"}
+																	{getNumberString(
+																		Number(
+																			Number(
+																				getEthNum(
+																					item.fee,
+																					info
+																						? info.decimals
+																						: null
+																				)
+																			).toFixed(
+																				8
+																			)
+																		)
+																	)}{" "}
+																	{info &&
+																		info.name}
+																</div>
+																<div
+																	onClick={this.showMoreClick.bind(
+																		this,
+																		index
+																	)}
+																	className={
+																		item.isShowMore
+																			? "arrow"
+																			: "arrow close"
+																	}
+																/>
+															</div>
+															<div
+																className={
+																	item.isShowMore
+																		? "list-more"
+																		: "list-more close"
+																}
+															>
+																<div className="more-item">
+																	{t(
+																		"orderList.from",
+																		lng
+																	)}:{
+																		item.pay_address
+																	}
+																</div>
+																<div className="more-item">
+																	{t(
+																		"orderList.to",
+																		lng
+																	)}:{
+																		item.receive_address
+																	}
+																</div>
+																<div className="more-item">
+																	{t(
+																		"orderList.memo",
+																		lng
+																	)}:{
+																		item.remark
+																	}
+																</div>
+															</div>
+															{item.percent && (
+																<div className="confirm-line">
+																	<div
+																		style={{
+																			width:
+																				item.percent
+																		}}
+																		className="confirm-inline"
+																	/>
+																</div>
+															)}
+															{/* <div className="line1" /> */}
+														</div>
+													);
+												}
+											)}
+									</div>
 									{(!orderList ||
 										!orderList.list ||
 										orderList.list.length <= 0) && (

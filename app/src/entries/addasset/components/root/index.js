@@ -7,7 +7,7 @@ import Menu from "@/menu/index.js";
 import HeaderNav from "@/headernav/index.js";
 import chooseico from "#/weixuanze_ico.png";
 import chooseico2 from "#/xuanze_ico.png";
-
+import PerfectScrollbar from "perfect-scrollbar";
 import "./index.less";
 import { link } from "fs";
 
@@ -15,6 +15,7 @@ export default class Root extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {};
+		this.myScroll = null;
 	}
 	componentDidMount() {
 		let q = getQuery(window.location.href);
@@ -33,6 +34,7 @@ export default class Root extends PureComponent {
 		this.setState({
 			...set
 		});
+		this.myScroll = new PerfectScrollbar("#listbox");
 	}
 	checkAsset(item) {
 		this.props.checkChange({
@@ -83,7 +85,7 @@ export default class Root extends PureComponent {
 									{t("addAsset.title")}
 								</div>
 								<div className="cokBox">
-									<ul className="assetUl">
+									<ul className="assetUl" id="listbox">
 										{assetsList &&
 											assetsList.list &&
 											assetsList.list.length > 0 &&

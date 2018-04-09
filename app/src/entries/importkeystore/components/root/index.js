@@ -30,6 +30,18 @@ export default class Root extends PureComponent {
 			set.isChange = true;
 			set.name = q.name;
 		}
+		if (q.timetamp) {
+			let sess = JSON.parse(sessionStorage.getItem(q.timetamp));
+			if (sess && sess.type == 0) {
+				set.textValue = sess.data.value;
+				set.type = 0;
+			}
+			if (sess && sess.type == 1) {
+				set.readFileName = sess.data.file;
+				set.readFileText = sess.data.value;
+				set.type = 1;
+			}
+		}
 		this.setState({ ...set });
 	}
 	checkClick(idx) {
@@ -74,9 +86,20 @@ export default class Root extends PureComponent {
 			Msg.prompt(i18n.t("error.keyerror", this.props.lng));
 			return;
 		}
+		let time = new Date().getTime();
+		let sess = {
+			type: this.state.type,
+			data: {
+				value: str,
+				file: this.state.readFileName
+			}
+		};
+		sessionStorage.setItem(`import_${time}`, JSON.stringify(sess));
 		toHref(
 			"importend",
-			`typeid=${this.state.walletType}&type=keystore&value=${str}`
+			`typeid=${
+				this.state.walletType
+			}&type=keystore&value=${str}&timetamp=import_${time}`
 		);
 	}
 	opPass() {

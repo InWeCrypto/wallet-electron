@@ -16,6 +16,7 @@ import watchicon1 from "#/watch_ico_s.png";
 
 import ethicon from "#/ethicon.png";
 import neoicon from "#/neoicon.png";
+
 import Item from "antd/lib/list/Item";
 
 export default class Root extends PureComponent {
@@ -88,7 +89,9 @@ export default class Root extends PureComponent {
 							<div className="content">
 								<div className="importwallet">
 									<div className="import-title">
-										{t("importWallet.title", lng)}
+										{type != 3
+											? t("importWallet.title", lng)
+											: t("importWallet.title1", lng)}
 									</div>
 									{type == 1 && (
 										<div className="wallet-type">
@@ -108,12 +111,12 @@ export default class Root extends PureComponent {
 																	item
 																)}
 															>
-																<img
-																	src={
+																<span
+																	className={
 																		item.id ==
 																		1
-																			? ethicon
-																			: neoicon
+																			? "img eth"
+																			: "img neo"
 																	}
 																/>
 																<div className="t">

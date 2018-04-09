@@ -123,7 +123,8 @@ export default class Root extends PureComponent {
 			});
 			return;
 		}
-		let reg = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+		let reg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,16}$/g;
+
 		if (!reg.test(params.password)) {
 			Msg.prompt(i18n.t("error.passVili", lng));
 			return;

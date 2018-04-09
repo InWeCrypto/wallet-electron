@@ -79,7 +79,7 @@ var webpackConfig = {
 					{
 						loader: "url-loader",
 						options: {
-							limit: 10000,
+							limit: 100000,
 							name: "assets/img/[name].[hash:9].[ext]"
 						}
 					}
@@ -91,7 +91,7 @@ var webpackConfig = {
 					{
 						loader: "url-loader",
 						options: {
-							limit: 10000,
+							limit: 3000,
 							name: "assets/font/[name].[hash:9].[ext]"
 						}
 					}

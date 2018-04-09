@@ -39,6 +39,7 @@ export default {
 	},
 	importWallet: {
 		title: "导入钱包",
+		title1: "转化热钱包",
 		keystore: "Keystore",
 		mnemonic: "助记词",
 		private: "私钥",
@@ -89,7 +90,7 @@ export default {
 		comfirm: "确认"
 	},
 	confirmPassword: {
-		title: "确认",
+		title: "确认密码",
 		cannel: "取消",
 		confirm: "确认",
 		holder: "密码"
@@ -139,7 +140,8 @@ export default {
 		transferSuccess: "转账成功",
 		valiSuccess: "验证成功",
 		unfreeze: "解冻成功",
-		totalClaims: "全部提现成功"
+		totalClaims: "全部提现成功",
+		copySucess: "复制成功"
 	},
 	backupMnemonic: {
 		title: "备份用户钱包",

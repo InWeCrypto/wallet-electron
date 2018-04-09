@@ -47,10 +47,9 @@
             }
         })
         window.onhashchange = function () {
-            if (window.location.href.indexOf('print') != -1) {
+            if (window.location.href.indexOf('print') == -1) {
                 window.localStorage.setItem('lastPage', window.location.href)
             }
-
         }
         let network = localStorage.getItem('isDev')
         if (!network || !JSON.parse(network)) {
@@ -60,10 +59,12 @@
         }
         (function () {
             var lastpage = localStorage.getItem('lastPage');
-            if (lastpage && lastpage.indexOf('print') != -1) {
+            if (window.location.href.indexOf('print') != -1) {
+                return;
+            }
+            if (lastpage && lastpage.indexOf('print') == -1) {
                 if (lastpage && lastpage.length > 0) {
                     window.location.href = lastpage;
-                    localStorage.removeItem('lastPage');
                 }
             }
         })()

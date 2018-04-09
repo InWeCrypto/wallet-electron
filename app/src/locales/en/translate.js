@@ -39,6 +39,7 @@ export default {
 	},
 	importWallet: {
 		title: "Import Wallet",
+		title1: "Change Hot Wallet",
 		keystore: "Keystore",
 		mnemonic: "Mnemonic",
 		private: "Private Key",
@@ -90,7 +91,7 @@ export default {
 		comfirm: "Comfirm"
 	},
 	confirmPassword: {
-		title: "Confirm",
+		title: "Confirm Password",
 		cannel: "cannel",
 		confirm: "confirm",
 		holder: "password"
@@ -141,7 +142,8 @@ export default {
 		transferSuccess: "Transfer success",
 		valiSuccess: "Verification success",
 		unfreeze: "Unfreeze Success",
-		totalClaims: "Total Claim Success"
+		totalClaims: "Total Claim Success",
+		copySucess: "Copy Success"
 	},
 	backupMnemonic: {
 		title: "Manager wallet setting",

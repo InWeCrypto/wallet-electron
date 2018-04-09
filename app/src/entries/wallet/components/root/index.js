@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import { Link } from "react-router-dom";
 import { I18n } from "react-i18next";
+import PerfectScrollbar from "perfect-scrollbar";
 import { getQuery } from "../../../../utils/util";
 import Menu from "@/menu";
 import "./index.less";
@@ -13,6 +14,7 @@ export default class Root extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {};
+		this.myScroll = null;
 	}
 	componentDidMount() {
 		this.props.getWalletList().then(res => {
@@ -36,6 +38,11 @@ export default class Root extends PureComponent {
 			}
 		});
 		this.props.getLocalList();
+		this.myScroll = new PerfectScrollbar("#listbox");
+	}
+	componentWillUnmount() {
+		this.myScroll.destroy();
+		this.myScroll = null;
 	}
 	goDetail(item) {
 		if (!item) {
@@ -285,7 +292,10 @@ export default class Root extends PureComponent {
 												</span>
 											</div>
 										</div>
-										<div className="group-main">
+										<div
+											className="group-main"
+											id="listbox"
+										>
 											{list &&
 												list.length > 0 &&
 												list.map((item, index) => {

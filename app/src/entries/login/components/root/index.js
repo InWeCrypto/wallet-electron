@@ -232,7 +232,7 @@ export default class Root extends PureComponent {
 		return (
 			<I18n>
 				{(t, { i18n }) => (
-					<div className="login">
+					<div className="login" style={{ WebkitAppRegion: "drag" }}>
 						<div className="login-content">
 							{type == "signin" && (
 								<div>

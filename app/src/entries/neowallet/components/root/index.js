@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import { I18n } from "react-i18next";
 import { Select } from "antd";
+import PerfectScrollbar from "perfect-scrollbar";
 import { getQuery, toHref } from "../../../../utils/util";
 import QRCode from "../../../../assets/js/qcode";
 import ConfirmPassword from "../../../../components/confirmpassword";
@@ -23,6 +24,7 @@ export default class Root extends PureComponent {
 			password: "",
 			backList: []
 		};
+		this.myScroll = null;
 	}
 	componentDidMount() {
 		let q = getQuery(window.location.href);
@@ -36,6 +38,7 @@ export default class Root extends PureComponent {
 			this.props.getNeoWalletConversion({ id: q.id });
 		}
 		let backUp = localStorage.getItem("backUp");
+		this.myScroll = new PerfectScrollbar("#coinlist");
 		this.setState({
 			backList: backUp ? JSON.parse(backUp) : []
 		});
@@ -53,6 +56,7 @@ export default class Root extends PureComponent {
 	setQcode(str) {
 		setTimeout(() => {
 			var box = document.getElementById("qrcode");
+			box.className = "qcode show";
 			box.innerHTML = "";
 			var n = box.offsetWidth - 60;
 			var qrcode = new QRCode(box, {
@@ -67,6 +71,13 @@ export default class Root extends PureComponent {
 	}
 	changeNav(idx) {
 		this.setState({ type: idx });
+		if (idx == 1) {
+			setTimeout(() => {
+				this.myScroll = new PerfectScrollbar("#coinlist");
+			}, 200);
+		} else {
+			this.myScroll.destroy();
+		}
 		if (idx === 3) {
 			this.setQcode(this.props.neoWalletDetailInfo.address);
 		}
@@ -616,7 +627,7 @@ export default class Root extends PureComponent {
 										</div>
 									</div>
 									{type === 1 && (
-										<div className="box3">
+										<div className="box3" id="coinlist">
 											<div className="wallet-out even">
 												<div
 													onClick={this.goOrderList.bind(

@@ -65,8 +65,8 @@ export default class Root extends PureComponent {
 	openWeb(item) {
 		let isD = JSON.parse(localStorage.getItem("isDev"));
 		let url = isD
-			? "http://testnet.inwecrypto.com/projectdetail?c_id="
-			: "http://inwecrypto.com/projectdetail?c_id=";
+			? "http://testnet.inwecrypto.com/#/projectdetail?c_id="
+			: "http://inwecrypto.com/#/projectdetail?c_id=";
 		ipc.send("openWeb", {
 			url: `${url}${item.id}`
 		});
@@ -74,6 +74,8 @@ export default class Root extends PureComponent {
 	render() {
 		let { lng, searchHistory, searchResult } = this.props;
 		let { keyword, isShowResult, isFocus } = this.state;
+		const wh = window.screen.availHeight;
+		let h = isFocus ? wh - 207 : wh - 207 - 100;
 		return (
 			<I18n>
 				{(t, { i18n }) => (
@@ -83,11 +85,7 @@ export default class Root extends PureComponent {
 							<HeaderNav history={this.props.history} />
 							<div className="content project-content">
 								<div
-									className={((isFocus, isShowResult) => {
-										return isFocus || isShowResult
-											? "title hide"
-											: "title";
-									})(isFocus, isShowResult)}
+									className={isFocus ? "title hide" : "title"}
 								>
 									{t("project.t2", lng)}
 								</div>
@@ -136,11 +134,8 @@ export default class Root extends PureComponent {
 								)}
 								{isShowResult && (
 									<div
-										className={((isFocus, isShowResult) => {
-											return isFocus || isShowResult
-												? "search-list focus"
-												: "search-list";
-										})(isFocus, isShowResult)}
+										className={"search-list"}
+										style={{ height: h + "px" }}
 									>
 										<ul className="search-list-ul">
 											{searchResult &&

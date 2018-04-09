@@ -127,7 +127,8 @@ let menuText = function() {
 			showAll: "显示全部",
 			quit: "退出",
 			clear: "清除缓存",
-			changeuser: "切换用户"
+			changeuser: "切换用户",
+			clearSuccess: "清除缓存成功"
 		};
 	} else {
 		res = {
@@ -161,7 +162,8 @@ let menuText = function() {
 			showAll: "Show All",
 			quit: "Quit",
 			clear: "Clear Cache",
-			changeuser: "Change User"
+			changeuser: "Change User",
+			clearSuccess: "clear success"
 		};
 	}
 	return res;
@@ -333,7 +335,7 @@ let template = [
 					// let userD = app.getPath("userData");
 					// deleteall(path.join(userD, "Cache"));
 					ses.clearCache(function(res) {
-						sendStatus(JSON.stringify(res));
+						sendStatus(text.clearSuccess);
 					});
 				}
 			},
@@ -658,7 +660,7 @@ function createWindow() {
 			.then(name => console.log(`Added Extension:  ${name}`))
 			.catch(err => console.log("An error occurred: ", err));
 	}
-	ses = win.webContents.session;
+
 	win.once("ready-to-show", () => {
 		win.show();
 		if (!isDev) {

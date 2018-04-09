@@ -45,11 +45,13 @@ class Menu extends PureComponent {
 	render() {
 		const { user, isDev, userInfo } = this.state;
 		const { curmenu, curchildmenu, lng } = this.props;
-
 		return (
 			<I18n>
 				{(t, { i18n }) => (
-					<div className="menu-left">
+					<div
+						className="menu-left"
+						style={{ WebkitAppRegion: "drag" }}
+					>
 						<p className="title">
 							<img className="topimg" src={menutop} />
 						</p>

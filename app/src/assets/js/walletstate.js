@@ -29,7 +29,8 @@ window.walletState = (function(win, http, undefined) {
 							if (
 								list[i].txid &&
 								v.tx &&
-								list[i].txid == v.tx &&
+								list[i].txid.replace(/^0x/, "") ==
+									v.tx.replace(/^0x/, "") &&
 								v.confirmTime &&
 								v.confirmTime.length > 0
 							) {

@@ -7,8 +7,6 @@ import QRCode from "../../../../assets/js/qcode";
 import Menu from "@/menu/index.js";
 import ShowQCode from "@/showqcode";
 import HeaderNav from "@/headernav/index.js";
-import imgfile from "#/file_ico_s.png";
-import imgcopy from "#/copy_ico_s.png";
 
 import "./index.less";
 import { link } from "fs";
@@ -36,7 +34,7 @@ export default class Root extends PureComponent {
 	}
 	setCopy(str) {
 		clipboard.writeText(str);
-		Msg.prompt("copy success");
+		Msg.prompt(i18n.t("success.copySucess", this.props.lng));
 		setBackUp(this.props.walletDetail.address);
 	}
 	setQcode(str) {
@@ -105,10 +103,7 @@ export default class Root extends PureComponent {
 											onClick={this.exportFile.bind(this)}
 										>
 											<div className="img">
-												<img
-													className="img"
-													src={imgfile}
-												/>
+												<div className="icon file" />
 												<p>
 													{t("backKey.export", lng)}
 												</p>
@@ -123,10 +118,7 @@ export default class Root extends PureComponent {
 														walletDetail.json
 												)}
 											>
-												<img
-													className="img"
-													src={imgcopy}
-												/>
+												<div className="icon copy" />
 												<p>{t("backKey.copy", lng)}</p>
 											</div>
 										</div>

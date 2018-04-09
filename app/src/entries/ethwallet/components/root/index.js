@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import { I18n } from "react-i18next";
+import PerfectScrollbar from "perfect-scrollbar";
 import { getQuery } from "../../../../utils/util";
 import ConfirmPassword from "../../../../components/confirmpassword";
 import QRCode from "../../../../assets/js/qcode";
@@ -25,6 +26,7 @@ export default class Root extends PureComponent {
 			gasNum: "",
 			backList: []
 		};
+		this.myScroll = null;
 	}
 	componentDidMount() {
 		let q = getQuery(window.location.href);
@@ -46,6 +48,7 @@ export default class Root extends PureComponent {
 			}
 		});
 		let backUp = localStorage.getItem("backUp");
+		this.myScroll = new PerfectScrollbar("#coinlist");
 		this.setState({
 			backList: backUp ? JSON.parse(backUp) : []
 		});
@@ -83,6 +86,7 @@ export default class Root extends PureComponent {
 	setQcode(str) {
 		setTimeout(() => {
 			var box = document.getElementById("qrcode");
+			box.className = "qcode show";
 			box.innerHTML = "";
 			var n = box.offsetWidth - 60;
 			var qrcode = new QRCode(box, {
@@ -99,6 +103,13 @@ export default class Root extends PureComponent {
 		this.setState({
 			type: idx
 		});
+		if (idx == 1) {
+			setTimeout(() => {
+				this.myScroll = new PerfectScrollbar("#coinlist");
+			}, 20);
+		} else {
+			this.myScroll.destroy();
+		}
 		if (idx === 3) {
 			this.setQcode(this.props.ethWalletDetailInfo.address);
 		}
@@ -557,7 +568,7 @@ export default class Root extends PureComponent {
 										</div>
 									</div>
 									{type === 1 && (
-										<div className="box3">
+										<div className="box3" id="coinlist">
 											<div className="wallet-out">
 												<div
 													className="wallet-item ui center"
