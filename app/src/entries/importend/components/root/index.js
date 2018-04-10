@@ -129,7 +129,7 @@ export default class Root extends PureComponent {
 			Msg.prompt(i18n.t("error.passVili", lng));
 			return;
 		}
-		let load = Msg.load(i18n.t("importing", png));
+		let load = Msg.load(i18n.t("importing", lng));
 		try {
 			let local = await this.props.importWallet(params, ism);
 			if (local && local.address) {

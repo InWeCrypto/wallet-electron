@@ -378,7 +378,6 @@ export default class Root extends PureComponent {
 													);
 												}
 											)}
-
 										{flag == "eth" &&
 											orderList &&
 											orderList.list &&
@@ -436,19 +435,11 @@ export default class Root extends PureComponent {
 																		  item.pay_address.toLowerCase()
 																			? "-"
 																			: "+"}
-																	{getNumberString(
-																		Number(
-																			Number(
-																				getEthNum(
-																					item.fee,
-																					info
-																						? info.decimals
-																						: null
-																				)
-																			).toFixed(
-																				8
-																			)
-																		)
+																	{getEthNum(
+																		item.fee,
+																		info
+																			? info.decimals
+																			: null
 																	)}{" "}
 																	{info &&
 																		info.name}

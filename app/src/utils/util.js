@@ -238,9 +238,11 @@ export const openInstallApp = () => {
 export const toHref = (toSit, query) => {
 	let nowL = window.location.href.split("#")[0];
 	if (query) {
-		window.location.href = nowL + "#" + toSit + "?" + query;
+		window.my.history.push(`${toSit}?${query}`);
+		//window.location.href = nowL + "#" + toSit + "?" + query;
 	} else {
-		window.location.href = nowL + "#" + toSit;
+		window.my.history.push(`${toSit}`);
+		//window.location.href = nowL + "#" + toSit;
 	}
 };
 window.toHref = toHref;
@@ -295,7 +297,7 @@ export const getNumFromStr = (str, dec) => {
 		var num = parseInt(new Number(`0x${str16}`), 10);
 	}
 
-	return num;
+	return getNumberString(Number(num.toFixed(8)));
 };
 window.getNumFromStr = getNumFromStr;
 export const getEthNum = (str, dec) => {
@@ -320,7 +322,7 @@ export const getEthNum = (str, dec) => {
 	var p = n.substr(0, n.length - dec);
 	var r = n.substr(n.length - dec);
 	var res = Number(Number(p + "." + r).toFixed(8));
-	return res;
+	return getNumberString(Number(res.toFixed(8)));
 };
 
 window.getEthNum = getEthNum;

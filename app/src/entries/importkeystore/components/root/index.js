@@ -142,7 +142,7 @@ export default class Root extends PureComponent {
 		if (this.state.type == 1) {
 			json = this.state.readFileText;
 		}
-		let load = Msg.load(i18n.t("changeing", png));
+		let load = Msg.load(i18n.t("changeing", this.props.lng));
 		this.props
 			.changeToHot({
 				name: this.state.name,

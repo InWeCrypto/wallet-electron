@@ -97,6 +97,7 @@ let menuText = function() {
 	var res = null;
 	if (lng == "zh") {
 		res = {
+			user: "用户",
 			edit: "编辑",
 			revoke: "撤销",
 			redo: "重做",
@@ -132,6 +133,7 @@ let menuText = function() {
 		};
 	} else {
 		res = {
+			user: "User",
 			edit: "Edit",
 			revoke: "Revoke",
 			redo: "Redo",
@@ -170,6 +172,17 @@ let menuText = function() {
 };
 let text = menuText();
 let template = [
+	{
+		label: text.user,
+		submenu: [
+			{
+				label: text.changeuser,
+				click: function() {
+					win.webContents.send("changeUser");
+				}
+			}
+		]
+	},
 	{
 		label: text.edit,
 		submenu: [
@@ -211,24 +224,6 @@ let template = [
 	{
 		label: text.view,
 		submenu: [
-			{
-				label: text.reload,
-				accelerator: "CmdOrCtrl+R",
-				click: function(item, focusedWindow) {
-					if (focusedWindow) {
-						if (focusedWindow.id === 1) {
-							BrowserWindow.getAllWindows().forEach(function(
-								win
-							) {
-								if (win.id > 1) {
-									win.close();
-								}
-							});
-						}
-						focusedWindow.reload();
-					}
-				}
-			},
 			{
 				label: text.fullscreen,
 				accelerator: (function() {
@@ -343,12 +338,6 @@ let template = [
 				type: "separator"
 			},
 			{
-				label: text.changeuser,
-				click: function() {
-					win.webContents.send("changeUser");
-				}
-			},
-			{
 				type: "separator"
 			},
 			{
@@ -381,7 +370,24 @@ let template = [
 		]
 	}
 ];
-
+if (isDev) {
+	template[3].submenu.unshift({
+		label: text.reload,
+		accelerator: "CmdOrCtrl+R",
+		click: function(item, focusedWindow) {
+			if (focusedWindow) {
+				if (focusedWindow.id === 1) {
+					BrowserWindow.getAllWindows().forEach(function(win) {
+						if (win.id > 1) {
+							win.close();
+						}
+					});
+				}
+				focusedWindow.reload();
+			}
+		}
+	});
+}
 if (process.platform === "darwin") {
 	const name = "InWeCrypto";
 	template.unshift({

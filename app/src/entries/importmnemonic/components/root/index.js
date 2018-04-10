@@ -69,7 +69,7 @@ export default class Root extends PureComponent {
 			type = "btc";
 		}
 		let mnemonic = this.state.word.trim();
-		let load = Msg.load(i18n.t("changeing", png));
+		let load = Msg.load(i18n.t("changeing", this.props.lng));
 		let importres = await this.props.changeToHot({
 			name: this.state.name,
 			type: type,

@@ -187,11 +187,11 @@ export default class Root extends PureComponent {
 			price_usd = "",
 			img = "",
 			decimals = null;
-		if (walletType == 1) {
+		if (walletType == 1 && walletList) {
 			if (key == 0) {
 				asset_id = "0x0000000000000000000000000000000000000000";
-				img = watchInfo.category.img;
-				name = watchInfo.category.name;
+				img = watchInfo.category && watchInfo.category.img;
+				name = watchInfo.category && watchInfo.category.name;
 				number = getEthNum(watchConver.list[0].balance);
 				price_cny =
 					watchConver.list[0].category &&
@@ -230,15 +230,21 @@ export default class Root extends PureComponent {
 						: 0;
 			}
 		}
-		if (walletType == 2) {
+		if (walletType == 2 && walletList) {
 			if (key == 0) {
 				asset_id =
 					"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b";
 				img = walletList.record.category.img;
 				name = "NEO";
 				number = walletList.record.balance;
-				price_cny = walletList.record.cap.price_cny;
-				price_usd = walletList.record.cap.price_usd;
+				price_cny =
+					walletList.record &&
+					walletList.record.cap &&
+					walletList.record.cap.price_cny;
+				price_usd =
+					walletList.record &&
+					walletList.record.cap &&
+					walletList.record.cap.price_usd;
 			}
 			if (key == 1) {
 				asset_id =
@@ -246,8 +252,16 @@ export default class Root extends PureComponent {
 				img = walletList.record.category.img;
 				name = "GAS";
 				number = walletList.record.gnt[0].balance;
-				price_cny = walletList.record.gnt[0].cap.price_cny;
-				price_usd = walletList.record.gnt[0].cap.price_usd;
+				price_cny =
+					walletList.record &&
+					walletList.record.gnt[0] &&
+					walletList.record.gnt[0].cap &&
+					walletList.record.gnt[0].cap.price_cny;
+				price_usd =
+					walletList.record &&
+					walletList.record.gnt[0] &&
+					walletList.record.gnt[0].cap &&
+					walletList.record.gnt[0].cap.price_usd;
 			}
 			if (key > 1) {
 				let item = walletList.list[key - 2];
@@ -255,6 +269,8 @@ export default class Root extends PureComponent {
 				img = item.gnt_category.icon;
 				name = item.gnt_category.name;
 				number = getNumFromStr(item.balance, item.decimals);
+				price_cny = item.gnt_category.cap.price_cny;
+				price_usd = item.gnt_category.cap.price_usd;
 				decimals = item.decimals;
 			}
 		}
@@ -304,7 +320,6 @@ export default class Root extends PureComponent {
 	render() {
 		let { lng, watchInfo, watchConver, walletList } = this.props;
 		let { type, walletType } = this.state;
-
 		return (
 			<I18n>
 				{(t, { i18n }) => (
@@ -661,11 +676,11 @@ export default class Root extends PureComponent {
 																	}}
 																>
 																	<div className="t1">
-																		{
+																		{getNumberString(
 																			watchConver
 																				.list[0]
 																				.balance
-																		}
+																		)}
 																	</div>
 																	<div className="t1">
 																		{lng ==
@@ -744,11 +759,13 @@ export default class Root extends PureComponent {
 																			}}
 																		>
 																			<div className="t1">
-																				{Number(
+																				{getNumberString(
 																					Number(
-																						item.balance
-																					).toFixed(
-																						8
+																						Number(
+																							item.balance
+																						).toFixed(
+																							8
+																						)
 																					)
 																				)}
 																			</div>
@@ -835,13 +852,9 @@ export default class Root extends PureComponent {
 																			}}
 																		>
 																			<div className="t1">
-																				{Number(
-																					getNumFromStr(
-																						item.balance,
-																						item.decimals
-																					).toFixed(
-																						4
-																					)
+																				{getNumFromStr(
+																					item.balance,
+																					item.decimals
 																				)}
 																			</div>
 																			<div className="t1">
@@ -871,7 +884,7 @@ export default class Root extends PureComponent {
 																										.price_cny
 																							: 0)
 																					).toFixed(
-																						4
+																						2
 																					)
 																				)}
 																			</div>

@@ -16,14 +16,14 @@ class Demo extends PureComponent {
 		if (this.props.back && typeof this.props.back == "function") {
 			this.props.back();
 		} else {
-			this.props.history.goBack();
+			window.history.go(-1);
 		}
 	}
 	goNext() {
 		if (this.props.go && typeof this.props.go == "function") {
 			typeof this.props.go();
 		} else {
-			this.props.history.go(1);
+			window.history.go(-1);
 		}
 	}
 	goHome() {

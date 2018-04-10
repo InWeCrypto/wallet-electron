@@ -23,7 +23,7 @@ export default {
 		bigTitle: "我的钱包",
 		createWallet: "创建钱包",
 		importWallet: "导入钱包",
-		ledger: "账本",
+		ledger: "Ledger",
 		groupTitle: "钱包列表",
 		groupMore: "所有资产",
 		soon: "敬请期待"

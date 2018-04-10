@@ -615,14 +615,10 @@ export default class Root extends PureComponent {
 																ethConversion
 																	.list[0] && (
 																	<span>
-																		{Number(
-																			getEthNum(
-																				ethConversion
-																					.list[0]
-																					.balance
-																			).toFixed(
-																				8
-																			)
+																		{getEthNum(
+																			ethConversion
+																				.list[0]
+																				.balance
 																		)}
 																	</span>
 																)}
@@ -720,13 +716,9 @@ export default class Root extends PureComponent {
 																		}}
 																	>
 																		<div className="t1">
-																			{Number(
-																				getEthNum(
-																					item.balance,
-																					item.decimals
-																				).toFixed(
-																					8
-																				)
+																			{getEthNum(
+																				item.balance,
+																				item.decimals
 																			)}
 																		</div>
 																		<div className="t1">
