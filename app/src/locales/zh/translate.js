@@ -67,13 +67,13 @@ export default {
 		title: "私钥",
 		textarea: "请输入您的私钥",
 		next: "下一步",
-		changeHot: " Import Hot导入热钱包"
+		changeHot: " 转化热钱包"
 	},
 	private: {
 		title: "私钥",
 		textarea: "请输入您的私钥",
 		next: "下一步",
-		changeHot: " Import Hot导入热钱包"
+		changeHot: "转化热钱包"
 	},
 	watch: {
 		watch: "观察",

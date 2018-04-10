@@ -376,6 +376,9 @@ export default class Root extends PureComponent {
 												);
 											})}
 									</div>
+									<div className="warn">
+										*{t("error.passVili", lng)}*
+									</div>
 								</div>
 							</div>
 						</div>

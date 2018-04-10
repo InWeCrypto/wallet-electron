@@ -411,7 +411,7 @@ export default class Root extends PureComponent {
 			img: img,
 			decimals: decimals ? decimals : null
 		};
-		sessionStorage.setItem(`orderlist_${time}`, JSON.stringify(p));
+		localStorage.setItem(`orderlist_${time}`, JSON.stringify(p));
 		toHref(
 			"orderlist",
 			`wallet_id=${

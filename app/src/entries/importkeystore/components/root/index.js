@@ -124,7 +124,7 @@ export default class Root extends PureComponent {
 			isShowPass: false
 		});
 	}
-	changeHot(res) {
+	async changeHot(res) {
 		let type = null;
 		if (this.state.walletType == 1) {
 			type = "eth";
@@ -143,22 +143,23 @@ export default class Root extends PureComponent {
 			json = this.state.readFileText;
 		}
 		let load = Msg.load(i18n.t("changeing", this.props.lng));
-		this.props
-			.changeToHot({
+		try {
+			let res = await this.props.changeToHot({
 				name: this.state.name,
 				type: type,
 				json: json,
 				password: res
-			})
-			.then(res => {
-				load.hide();
-				if (res.address && res.address.length > 0) {
-					this.setState({
-						isShowPass: false
-					});
-					toHref("wallet");
-				}
 			});
+			load.hide();
+			if (res.address && res.address.length > 0) {
+				this.setState({
+					isShowPass: false
+				});
+				toHref("wallet");
+			}
+		} catch (e) {
+			load.hide();
+		}
 	}
 	render() {
 		let { lng } = this.props;

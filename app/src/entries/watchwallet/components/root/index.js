@@ -283,7 +283,7 @@ export default class Root extends PureComponent {
 			img: img,
 			decimals: decimals
 		};
-		sessionStorage.setItem(`orderlist_${time}`, JSON.stringify(p));
+		localStorage.setItem(`orderlist_${time}`, JSON.stringify(p));
 		let flag = "eth";
 		if (walletType == 2) {
 			flag = "neo";

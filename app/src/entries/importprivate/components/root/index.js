@@ -68,7 +68,7 @@ export default class Root extends PureComponent {
 			isShowPass: false
 		});
 	}
-	importHot(res) {
+	async importHot(res) {
 		let params = {};
 		params.password = res;
 		params.name = this.state.name;
@@ -87,12 +87,15 @@ export default class Root extends PureComponent {
 		}
 		params.wif = this.state.text;
 		let load = Msg.load(i18n.t("changeing", this.props.lng));
-		this.props.importPrivate(params).then(res => {
+		try {
+			let res = await this.props.importPrivate(params);
 			load.hide();
 			if (res.address && res.address.length > 0) {
 				toHref("wallet");
 			}
-		});
+		} catch (e) {
+			load.hide();
+		}
 	}
 	render() {
 		let { lng } = this.props;

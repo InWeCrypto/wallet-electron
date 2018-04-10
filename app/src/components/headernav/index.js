@@ -23,7 +23,7 @@ class Demo extends PureComponent {
 		if (this.props.go && typeof this.props.go == "function") {
 			typeof this.props.go();
 		} else {
-			window.history.go(-1);
+			this.props.history.go(1);
 		}
 	}
 	goHome() {
@@ -45,22 +45,25 @@ class Demo extends PureComponent {
 		return (
 			<div className="header-nav">
 				<div className="left ui">
-					<div className="btn-back" onClick={this.goBack.bind(this)}>
-						<img className="img" src={leftimg} alt="" />
-					</div>
-					<div className="btn-prev" onClick={this.goNext.bind(this)}>
-						<img className="img" src={rightimg} alt="" />
-					</div>
-					<div className="btn-home" onClick={this.goHome.bind(this)}>
-						<img className="img" src={homeimg} alt="" />
-					</div>
+					<div
+						className="btn-back"
+						onClick={this.goBack.bind(this)}
+					/>
+					<div
+						className="btn-prev"
+						onClick={this.goNext.bind(this)}
+					/>
+					<div
+						className="btn-home"
+						onClick={this.goHome.bind(this)}
+					/>
 				</div>
 				<div className="right ui">
 					<div
 						className="btn-refresh"
 						onClick={this.refreash.bind(this)}
 					>
-						<img className="img" src={refreshimg} alt="" />
+						{/* <img className="img" src={refreshimg} alt="" /> */}
 					</div>
 				</div>
 			</div>

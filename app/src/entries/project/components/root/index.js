@@ -65,8 +65,8 @@ export default class Root extends PureComponent {
 	openWeb(item) {
 		let isD = JSON.parse(localStorage.getItem("isDev"));
 		let url = isD
-			? "http://testnet.inwecrypto.com/#/projectdetail?c_id="
-			: "http://inwecrypto.com/#/projectdetail?c_id=";
+			? "http://testnet.inwecrypto.com/projectdetail?c_id="
+			: "http://inwecrypto.com/projectdetail?c_id=";
 		ipc.send("openWeb", {
 			url: `${url}${item.id}`
 		});
@@ -170,12 +170,12 @@ export default class Root extends PureComponent {
 																	</div>
 																	{item.desc &&
 																		item
-																			.desc
+																			.industry
 																			.length >
 																			0 && (
 																			<div className="mess">
 																				{
-																					item.desc
+																					item.industry
 																				}
 																			</div>
 																		)}

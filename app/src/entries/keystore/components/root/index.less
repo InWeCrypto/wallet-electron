@@ -6,6 +6,7 @@
 			line-height: 0.36rem;
 			color: #4a4a4a;
 			margin-top: 0.4rem;
+			font-weight: 400;
 		}
 		.cokBox {
 			margin: 0 auto;
@@ -54,8 +55,10 @@
 					&:hover {
 						p {
 							color: #fff;
+							transform: translate3d(-50%, -0.1rem, 0);
 						}
 						.icon {
+							transform: translateY(-0.1rem);
 							&.file {
 								background-image: url("../../../../assets/images/file_ico_s.png");
 							}
@@ -68,6 +71,7 @@
 						width: 0.4rem;
 						height: 0.4rem;
 						background-size: 100% 100%;
+						transition: all 0.3s linear;
 						&.file {
 							background-image: url("../../../../assets/images/file_ico_s1.png");
 						}
@@ -84,7 +88,7 @@
 						text-align: center;
 						font-size: 0.14rem;
 						line-height: 0.17rem;
-						transform: translateX(-50%);
+						transform: translate3d(-50%, 0, 0);
 						transition: all 0.3s linear;
 					}
 				}

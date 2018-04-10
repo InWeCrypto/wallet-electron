@@ -47,7 +47,7 @@ export default class Root extends PureComponent {
 			set.address = q.address;
 		}
 		if (q.timetamp) {
-			set.info = JSON.parse(sessionStorage.getItem(`${q.timetamp}`));
+			set.info = JSON.parse(localStorage.getItem(`${q.timetamp}`));
 		}
 		if (q.wallet_id && q.flag && q.asset_id) {
 			this.rePageLoad(q);

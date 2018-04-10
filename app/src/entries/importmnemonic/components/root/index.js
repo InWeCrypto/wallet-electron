@@ -70,19 +70,23 @@ export default class Root extends PureComponent {
 		}
 		let mnemonic = this.state.word.trim();
 		let load = Msg.load(i18n.t("changeing", this.props.lng));
-		let importres = await this.props.changeToHot({
-			name: this.state.name,
-			type: type,
-			mnemonic: mnemonic,
-			password: res,
-			lang: this.props.lng == "en" ? "en_US" : "zh_CN"
-		});
-		load.hide();
-		if (importres.address && importres.address.length > 0) {
-			this.setState({
-				isShowPass: false
+		try {
+			let importres = await this.props.changeToHot({
+				name: this.state.name,
+				type: type,
+				mnemonic: mnemonic,
+				password: res,
+				lang: this.props.lng == "en" ? "en_US" : "zh_CN"
 			});
-			toHref("wallet");
+			load.hide();
+			if (importres.address && importres.address.length > 0) {
+				this.setState({
+					isShowPass: false
+				});
+				toHref("wallet");
+			}
+		} catch (e) {
+			load.hide();
 		}
 	}
 	openPass() {

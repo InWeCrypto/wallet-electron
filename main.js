@@ -12,7 +12,7 @@ const electron = require("electron");
 const cp = require("child_process");
 const os = require("os");
 const fs = require("fs");
-const log = require("electron-log");
+//const log = require("electron-log");
 const ipc = electron.ipcMain;
 const path = require("path");
 const url = require("url");
@@ -505,7 +505,22 @@ var runServer = function() {
 
 	createWindow();
 };
-
+ipc.on("lastPage", function(event, url) {
+	var userDir = app.getPath("userData");
+	var uDir = path.join(userDir, "inweuser/userdata.json");
+	var isExit = fs.existsSync(uDir);
+	if (!isExit) {
+		createFolder(uDir);
+		fs.writeFileSync(uDir, "{}");
+	}
+	var s = fs.chmodSync(uDir, 0o777);
+	let r = fs.readFileSync(uDir);
+	if (r && r.length > 0) {
+		r = JSON.parse(r);
+	}
+	r = Object.assign(r, { lastPage: encodeURIComponent(url) });
+	fs.writeFileSync(uDir, JSON.stringify(r));
+});
 ipc.on("errorMsg", function(event, text, title) {
 	dialog.showErrorBox(text, title);
 });
@@ -636,26 +651,33 @@ function createWindow() {
 			webSecurity: false
 		}
 	};
+	let loadPath = path.join(__dirname, "resources/index.html");
 	if (!isDev) {
 		windowParam.titleBarStyle = "hiddenInset";
 	}
+	var userDir = app.getPath("userData");
+	var uDir = path.join(userDir, "/inweuser/userdata.json");
+	var userFile = fs.existsSync(uDir);
+	if (userFile) {
+		var uf = fs.readFileSync(uDir);
+		if (uf && uf.length > 0) {
+			uf = JSON.parse(uf);
+			if (uf && uf.lastPage) {
+				loadPath = decodeURIComponent(uf.lastPage);
+			}
+		}
+	}
+	console.log(loadPath);
 	win = new BrowserWindow(windowParam);
-	if (!isDev) {
-		win.loadURL(
-			url.format({
-				pathname: path.join(__dirname, "resources/index.html"),
-				protocol: "file:",
-				slashes: true
-			})
-		);
-	} else {
-		win.loadURL(
-			url.format({
-				pathname: path.join(__dirname, "resources/index.html"),
-				protocol: "file:",
-				slashes: true
-			})
-		);
+	// win.loadURL(
+	// 	url.format({
+	// 		pathname: decodeURI(loadPath),
+	// 		protocol: "file:",
+	// 		slashes: true
+	// 	})
+	// );
+	win.loadURL(loadPath);
+	if (isDev) {
 		win.webContents.openDevTools();
 		const {
 			default: installExtension,
@@ -672,6 +694,8 @@ function createWindow() {
 		if (!isDev) {
 			updateHandler();
 		}
+		ses = win.webContents.session;
+		win.webContents.send("lastPage");
 		win.webContents.send("changeLng", lng);
 		if (lng == "zh") {
 			template[template.length - 2].submenu[0].submenu[0].checked = true;

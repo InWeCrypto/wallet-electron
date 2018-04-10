@@ -46,8 +46,20 @@
                 window.location.reload();
             }
         })
+        ipc.on('lastPage', function (event, type) {
+            // var lastpage = localStorage.getItem('lastPage');
+            // if (window.location.href.indexOf('print') != -1) {
+            //     return;
+            // }
+            // if (lastpage && lastpage.indexOf('print') == -1) {
+            //     if (lastpage && lastpage.length > 0) {
+            //         window.location.href = lastpage;
+            //     }
+            // }
+        })
         window.onhashchange = function () {
-            if (window.location.href.indexOf('print') == -1) {
+            if (window.location.href.indexOf('print') == -1 && !(/\#\/$/.test(window.location.href))) {
+                ipc.send('lastPage', window.location.href)
                 window.localStorage.setItem('lastPage', window.location.href)
             }
         }
@@ -57,23 +69,6 @@
         } else {
             ipc.send('loadNetwok', 'test');
         }
-        (function () {
-            var lastpage = localStorage.getItem('lastPage');
-            if (window.location.href.indexOf('print') != -1) {
-                return;
-            }
-            if (lastpage && lastpage.indexOf('print') == -1) {
-                if (lastpage && lastpage.length > 0) {
-                    window.location.href = lastpage;
-                }
-            }
-        })()
-
-
-
-
-
-
 
 
     </script>
