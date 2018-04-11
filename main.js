@@ -502,23 +502,25 @@ var runServer = function() {
 			}
 		}
 	);
-
 	createWindow();
 };
-ipc.on("lastPage", function(event, url) {
+ipc.on("pageHistory", function(event, obj) {
 	var userDir = app.getPath("userData");
 	var uDir = path.join(userDir, "inweuser/userdata.json");
 	var isExit = fs.existsSync(uDir);
 	if (!isExit) {
 		createFolder(uDir);
-		fs.writeFileSync(uDir, "{}");
+		fs.writeFileSync(uDir, "[]");
 	}
 	var s = fs.chmodSync(uDir, 0o777);
 	let r = fs.readFileSync(uDir);
 	if (r && r.length > 0) {
 		r = JSON.parse(r);
 	}
-	r = Object.assign(r, { lastPage: encodeURIComponent(url) });
+	r.push(obj);
+	if (r.length > 50) {
+		r.shift();
+	}
 	fs.writeFileSync(uDir, JSON.stringify(r));
 });
 ipc.on("errorMsg", function(event, text, title) {
@@ -651,32 +653,33 @@ function createWindow() {
 			webSecurity: false
 		}
 	};
-	let loadPath = path.join(__dirname, "resources/index.html");
+	let loadBase = path.join(__dirname, "resources/index.html");
 	if (!isDev) {
 		windowParam.titleBarStyle = "hiddenInset";
 	}
+	var loadObj = {
+		pathname: loadBase,
+		protocol: "file:",
+		slashes: true
+	};
 	var userDir = app.getPath("userData");
 	var uDir = path.join(userDir, "/inweuser/userdata.json");
 	var userFile = fs.existsSync(uDir);
+	var uf = null;
 	if (userFile) {
-		var uf = fs.readFileSync(uDir);
+		uf = fs.readFileSync(uDir);
 		if (uf && uf.length > 0) {
 			uf = JSON.parse(uf);
-			if (uf && uf.lastPage) {
-				loadPath = decodeURIComponent(uf.lastPage);
+			if (uf && uf.length > 0) {
+				var l = uf.length;
+				loadObj.hash = uf[l - 1].hash;
+				//loadObj.pathname = loadBase + uf[l - 1].search;
+				loadObj.search = uf[l - 1].search;
 			}
 		}
 	}
-	console.log(loadPath);
 	win = new BrowserWindow(windowParam);
-	// win.loadURL(
-	// 	url.format({
-	// 		pathname: decodeURI(loadPath),
-	// 		protocol: "file:",
-	// 		slashes: true
-	// 	})
-	// );
-	win.loadURL(loadPath);
+	win.loadURL(url.format(loadObj));
 	if (isDev) {
 		win.webContents.openDevTools();
 		const {
@@ -695,7 +698,10 @@ function createWindow() {
 			updateHandler();
 		}
 		ses = win.webContents.session;
-		win.webContents.send("lastPage");
+		if (uf) {
+			win.webContents.send("loadHistory", uf);
+		}
+
 		win.webContents.send("changeLng", lng);
 		if (lng == "zh") {
 			template[template.length - 2].submenu[0].submenu[0].checked = true;

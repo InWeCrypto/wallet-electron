@@ -9,7 +9,9 @@ import "./index.less";
 class Demo extends PureComponent {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			historyList: ""
+		};
 	}
 	componentDidMount() {}
 	goBack() {

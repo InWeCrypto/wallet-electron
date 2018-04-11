@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 import { I18n } from "react-i18next";
 import { Select } from "antd";
 import PerfectScrollbar from "perfect-scrollbar";
-import { getQuery, toHref } from "../../../../utils/util";
+import { getQuery, toHref, getNeoNumber } from "../../../../utils/util";
 import QRCode from "../../../../assets/js/qcode";
 import ConfirmPassword from "../../../../components/confirmpassword";
 import Menu from "@/menu";
@@ -45,7 +45,7 @@ export default class Root extends PureComponent {
 	}
 	setCopy() {
 		clipboard.writeText(this.props.neoWalletDetailInfo.address);
-		Msg.prompt("copy success");
+		Msg.prompt(i18n.t("success.copySucess", this.props.lng));
 	}
 	setPrint() {
 		ipc.send("print-preview", {
@@ -658,14 +658,10 @@ export default class Root extends PureComponent {
 														{neoConversion &&
 															neoConversion.record && (
 																<div className="t1">
-																	{Number(
-																		Number(
-																			neoConversion
-																				.record
-																				.balance
-																		).toFixed(
-																			8
-																		)
+																	{getNeoNumber(
+																		neoConversion
+																			.record
+																			.balance
 																	)}
 																</div>
 															)}
@@ -741,15 +737,11 @@ export default class Root extends PureComponent {
 															neoConversion.record
 																.gnt[0] && (
 																<div className="t1">
-																	{Number(
-																		Number(
-																			neoConversion
-																				.record
-																				.gnt[0]
-																				.balance
-																		).toFixed(
-																			8
-																		)
+																	{getNeoNumber(
+																		neoConversion
+																			.record
+																			.gnt[0]
+																			.balance
 																	)}
 																</div>
 															)}
@@ -854,18 +846,9 @@ export default class Root extends PureComponent {
 																		}}
 																	>
 																		<div className="t1">
-																			{Number(
-																				(
-																					getNumFromStr(
-																						item.balance
-																					) /
-																					Math.pow(
-																						10,
-																						item.decimals
-																					)
-																				).toFixed(
-																					8
-																				)
+																			{getNumFromStr(
+																				item.balance,
+																				item.decimals
 																			)}
 																		</div>
 																		<div className="t1">
@@ -875,10 +858,7 @@ export default class Root extends PureComponent {
 																				: "￥"}{" "}
 																			{(
 																				getNumFromStr(
-																					item.balance
-																				) /
-																				Math.pow(
-																					10,
+																					item.balance,
 																					item.decimals
 																				) *
 																				(lng ==
@@ -1027,14 +1007,14 @@ export default class Root extends PureComponent {
 															this
 														)}
 													/>
-													<div>
+													<div className="select-box">
 														<Select
 															defaultValue={
 																sendKey
 															}
 															style={{
 																width: 120,
-																height: 60
+																height: 58
 															}}
 															onChange={this.sendKeyChange.bind(
 																this

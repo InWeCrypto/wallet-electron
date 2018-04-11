@@ -46,21 +46,44 @@
                 window.location.reload();
             }
         })
-        ipc.on('lastPage', function (event, type) {
-            // var lastpage = localStorage.getItem('lastPage');
-            // if (window.location.href.indexOf('print') != -1) {
-            //     return;
-            // }
-            // if (lastpage && lastpage.indexOf('print') == -1) {
-            //     if (lastpage && lastpage.length > 0) {
-            //         window.location.href = lastpage;
-            //     }
-            // }
+        ipc.on('loadHistory', function (event, list) {
+            if (list && list instanceof Array && list.length > 0) {
+                list.map(function (item, index) {
+                    window.history.pushState(``, '', `file://${item.pathname}${item.hash}${item.search.length > 0 ? '?' + item.search : ''}`);
+                })
+                var l = list.length;
+                window.my.history.replace({
+                    path: list[l - 1].hash.replace('#/', '') + 'test',
+                    search: list[l - 1].search
+                });
+                setTimeout(() => {
+                    window.my.history.replace({
+                        path: list[l - 1].hash.replace('#/', ''),
+                        search: list[l - 1].search
+                    });
+                }, 200)
+            }
         })
         window.onhashchange = function () {
-            if (window.location.href.indexOf('print') == -1 && !(/\#\/$/.test(window.location.href))) {
-                ipc.send('lastPage', window.location.href)
-                window.localStorage.setItem('lastPage', window.location.href)
+            if (window.location.href.indexOf('print') == -1) {
+                var h = window.location;
+                var h1 = '';
+                var h2 = '';
+                if (h.hash.indexOf('?') != -1) {
+                    var ha = h.hash.split('?');
+                    h1 = ha[0];
+                    h2 = ha[1]
+                } else {
+                    h1 = h.hash
+                }
+
+                var o = {
+                    hash: h1,
+                    search: h2,
+                    pathname: h.pathname
+                }
+                ipc.send('pageHistory', o)
+                window.localStorage.setItem('lastPage', o)
             }
         }
         let network = localStorage.getItem('isDev')

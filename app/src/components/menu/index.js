@@ -63,6 +63,7 @@ class Menu extends PureComponent {
 									: memberImg
 							}
 						/>
+						<div className="line" />
 						<ul className="menuList">
 							{/* <li className={curmenu == "dashboard" ? "cur" : ""}>
 								<div className="menu-dashboard menuicon" />

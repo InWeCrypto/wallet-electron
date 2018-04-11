@@ -75,7 +75,7 @@ export default class Root extends PureComponent {
 		let { lng, searchHistory, searchResult } = this.props;
 		let { keyword, isShowResult, isFocus } = this.state;
 		const wh = window.screen.availHeight;
-		let h = isFocus ? wh - 207 : wh - 207 - 100;
+		let h = isFocus ? wh - 234 : wh - 234 - 50;
 		return (
 			<I18n>
 				{(t, { i18n }) => (
@@ -100,9 +100,9 @@ export default class Root extends PureComponent {
 										onChange={this.inputChange.bind(this)}
 										onFocus={this.changeFocus.bind(this)}
 										onBlur={this.changeBlur.bind(this)}
-										placeholder={
-											isFocus ? "" : t("project.t2", lng)
-										}
+										// placeholder={
+										// 	isFocus ? "" : t("project.t2", lng)
+										// }
 									/>
 								</div>
 								{!isShowResult && (
@@ -168,7 +168,7 @@ export default class Root extends PureComponent {
 																			item.long_name
 																		})
 																	</div>
-																	{item.desc &&
+																	{item.industry &&
 																		item
 																			.industry
 																			.length >

@@ -124,7 +124,7 @@ export default class Root extends PureComponent {
 			isShowPass: false
 		});
 	}
-	async changeHot(res) {
+	async changeHot(res1) {
 		let type = null;
 		if (this.state.walletType == 1) {
 			type = "eth";
@@ -148,7 +148,7 @@ export default class Root extends PureComponent {
 				name: this.state.name,
 				type: type,
 				json: json,
-				password: res
+				password: res1
 			});
 			load.hide();
 			if (res.address && res.address.length > 0) {
@@ -200,7 +200,11 @@ export default class Root extends PureComponent {
 												)}
 												<div className="f1">
 													<textarea
-														className="keystore-text"
+														className={
+															type == 0
+																? "keystore-text has"
+																: "keystore-text"
+														}
 														placeholder={t(
 															"keyStore.textarea",
 															lng

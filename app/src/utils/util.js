@@ -1,4 +1,5 @@
 import Alert from "antd";
+import { BigNumber } from "bignumber.js";
 export const getQuery = query => {
 	let res = {};
 	if (query.indexOf("?") == -1) {
@@ -10,11 +11,11 @@ export const getQuery = query => {
 	let arr = query.split("?")[1].split("&");
 	arr.forEach(item => {
 		let s = item.split("=");
-		res[s[0]] = s[1];
+		res[s[0]] =
+			s[1] && s[1].indexOf("#") != -1 ? s[1].replace(/#+?.*/, "") : s[1];
 	});
 	return res;
 };
-
 //获取路由参数
 export const getRouteQuery = that => {
 	let query = that.props.location.search;
@@ -297,7 +298,8 @@ export const getNumFromStr = (str, dec) => {
 		var num = parseInt(new Number(`0x${str16}`), 10);
 	}
 
-	return getNumberString(Number(num.toFixed(8)));
+	var s = getNumberString(Number(num.toFixed(9)));
+	return Number(s.substring(0, s.lastIndexOf(".") + 9));
 };
 window.getNumFromStr = getNumFromStr;
 export const getEthNum = (str, dec) => {
@@ -310,8 +312,8 @@ export const getEthNum = (str, dec) => {
 	if (st.length <= 2) {
 		return 0;
 	}
-	var int10 = parseInt(st);
-	var s = int10.toLocaleString();
+	var x = new BigNumber(st);
+	var s = x.toLocaleString();
 	var n = s.replace(/\,/gi, "");
 	if (n.length < dec) {
 		var l = dec - n.length;
@@ -321,10 +323,14 @@ export const getEthNum = (str, dec) => {
 	}
 	var p = n.substr(0, n.length - dec);
 	var r = n.substr(n.length - dec);
-	var res = Number(Number(p + "." + r).toFixed(8));
-	return getNumberString(Number(res.toFixed(8)));
+	var res = p + "." + r;
+	return Number(res.substring(0, res.lastIndexOf(".") + 9));
 };
-
+export const getNeoNumber = num => {
+	var s = getNumberString(Number(num).toFixed(9));
+	return Number(s.substring(0, s.lastIndexOf(".") + 9));
+};
+window.getNeoNumber = getNeoNumber;
 window.getEthNum = getEthNum;
 export const setBackUp = address => {
 	let backUp = localStorage.getItem("backUp");

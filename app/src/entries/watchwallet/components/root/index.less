@@ -29,14 +29,15 @@
 		}
 		.money {
 			margin-left: 0.2rem;
-			height: 0.8rem;
 			color: #5c89eb;
 			font-size: 0.24rem;
+			font-weight: bold;
 		}
 		.name {
 			font-size: 0.24rem;
 			color: #fff;
 			vertical-align: middle;
+			font-weight: 400;
 		}
 		.address {
 			font-size: 0.2rem;
@@ -71,16 +72,19 @@
 			color: #828282;
 			cursor: pointer;
 			font-weight: 200;
-			&.cur {
+			transition: all 0.3s linear;
+			&.cur,
+			&:hover {
 				color: #47d184;
 			}
 		}
 		.box-btn {
 			margin-left: 0.2rem;
 			padding: 0 0.08rem;
-			height: 0.36rem;
+			height: 0.24rem;
+			line-height: 0.22rem;
 			display: flex;
-			font-size: 0.14rem;
+			font-size: 0.12rem;
 			color: #fff;
 			flex-flow: column;
 			justify-content: center;
@@ -214,44 +218,10 @@
 			&:focus {
 				border: 1px solid #11e763;
 			}
-			&.input2 {
-				border-radius: 0.08rem 0 0 0.08rem;
-			}
 		}
 		.btn-box {
 			padding: 0.5rem 0 0.3rem 0;
 			text-align: center;
-		}
-		.ant-select-selection--single {
-			height: 0.6rem;
-			border: none;
-		}
-		.ant-select-selection {
-			border-radius: 0;
-			background: #015a23;
-		}
-		.ant-select-selection__rendered {
-			line-height: 0.6rem;
-			color: #fff;
-		}
-		.ant-select-arrow {
-			color: #fff;
-		}
-		.ant-slider-rail {
-			background: #47d184;
-		}
-		.sliderbox {
-			margin: 0 0.2rem;
-		}
-		.slideritem {
-			margin-top: 0.2rem;
-		}
-		.ant-slider-track {
-			background: #ef7247;
-		}
-		.ant-slider-handle {
-			border: none;
-			background: linear-gradient(to right, #ffba3c, #e74308);
 		}
 	}
 	.box5 {

@@ -27,6 +27,8 @@ export default class Root extends PureComponent {
 			backList: []
 		};
 		this.myScroll = null;
+		this.sendTime = 0;
+		this.timer = null;
 	}
 	componentDidMount() {
 		let q = getQuery(window.location.href);
@@ -75,7 +77,7 @@ export default class Root extends PureComponent {
 	}
 	setCopy() {
 		clipboard.writeText(this.props.ethWalletDetailInfo.address);
-		Msg.prompt("copy success");
+		Msg.prompt(i18n.t("success.copySucess", this.props.lng));
 	}
 	setPrint() {
 		ipc.send("print-preview", {
@@ -145,6 +147,10 @@ export default class Root extends PureComponent {
 		// let params = {};
 		// params.wallet_id = this.props.ethWalletConversion.record.id;
 		// params.flag = "eth";
+		if (this.sendTime != 0) {
+			Msg.prompt(i18n.t("error.ethfrequently", this.props.lng));
+			return;
+		}
 		if (this.state.sendAddress.length <= 0) {
 			Msg.prompt(i18n.t("error.addressEmpty", this.props.lng));
 			return;
@@ -201,6 +207,15 @@ export default class Root extends PureComponent {
 		// }
 		this.setState({ isShowPass: true });
 	}
+	sendTimeRun() {
+		clearTimeout(this.timer);
+		this.timer = setTimeout(() => {
+			this.sendTime--;
+			if (this.sendTime > 0) {
+				this.sendTimeRun();
+			}
+		}, 1000);
+	}
 	async confirmPass(res) {
 		let { selectKey, sendAddress, sendAmount, gasNum } = this.state;
 		let {
@@ -243,42 +258,38 @@ export default class Root extends PureComponent {
 		try {
 			let l = await this.props.setEthOrder(params);
 			if (l.length > 0) {
-				this.props
-					.createOrder({
+				let res = await this.props.createOrder({
+					wallet_id: ethWalletDetailInfo.id,
+					data: l,
+					pay_address: ethWalletDetailInfo.address,
+					receive_address: sendAddress,
+					remark: "",
+					fee: params.Amount,
+					handle_fee: params.GasPrice,
+					flag: "eth",
+					asset_id: params.Asset
+				});
+				if (res.code === 4000) {
+					window.walletState.addItem({
+						txid: res.data.tx,
+						flag: "ETH",
 						wallet_id: ethWalletDetailInfo.id,
-						data: l,
-						pay_address: ethWalletDetailInfo.address,
-						receive_address: sendAddress,
-						remark: "",
-						fee: params.Amount,
-						handle_fee: params.GasPrice,
-						flag: "eth",
-						asset_id: params.Asset
-					})
-					.then(res => {
-						if (res.code === 4000) {
-							window.walletState.addItem({
-								txid: res.data.tx,
-								flag: "ETH",
-								wallet_id: ethWalletDetailInfo.id,
-								asset_id: params.Asset,
-								from: res.data.from,
-								to: res.data.to
-							});
-							Msg.prompt(
-								i18n.t(
-									"success.transferSuccess",
-									this.props.lng
-								)
-							);
-						}
+						asset_id: params.Asset,
+						from: res.data.from,
+						to: res.data.to
 					});
+					Msg.prompt(
+						i18n.t("success.transferSuccess", this.props.lng)
+					);
+				}
 			}
 			load.hide();
 			this.setState({ isShowPass: false, password: res });
 		} catch (e) {
 			load.hide();
 		}
+		this.sendTime = 30;
+		this.sendTimeRun();
 	}
 	closePasss() {
 		this.setState({
@@ -869,7 +880,7 @@ export default class Root extends PureComponent {
 															"sendAmount"
 														)}
 													/>
-													<div>
+													<div className="select-box">
 														<Select
 															defaultValue={0}
 															style={{

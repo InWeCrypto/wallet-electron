@@ -7,6 +7,9 @@
 		width: 5.9rem;
 		background: #0b0b0b;
 		border-radius: 0.08rem;
+		border: 3px solid #1e1e1e;
+		box-sizing: border-box;
+		box-shadow: 0 2px 11px 4px rgba(0, 0, 0, 0.25);
 		.login-header {
 			text-align: center;
 			height: 0.5rem;
@@ -114,6 +117,7 @@
 					color: #4a4a4a;
 					transition: all 0.3s linear;
 					cursor: pointer;
+					text-decoration: underline;
 					&:hover {
 						color: #fff;
 					}
@@ -140,11 +144,13 @@
 	.icon-return {
 		display: inline-block;
 		cursor: pointer;
-		background: url("../../../../assets/images/zuo_ico_s.png") left top
-			no-repeat;
+		background-image: url("../../../../assets/images/login_ico.png");
 		background-size: 100% 100%;
 		width: 0.11rem;
 		height: 0.18rem;
+		&:hover {
+			background-image: url("../../../../assets/images/login_ico_hover.png");
+		}
 	}
 }
 @keyframes scaleHeader {

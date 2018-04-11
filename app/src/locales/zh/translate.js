@@ -39,7 +39,7 @@ export default {
 	},
 	importWallet: {
 		title: "导入钱包",
-		title1: "转化热钱包",
+		title1: "转化为热钱包",
 		keystore: "Keystore",
 		mnemonic: "助记词",
 		private: "私钥",
@@ -50,7 +50,7 @@ export default {
 		textarea: "复制粘贴Keystore文件内容",
 		input: "上传Keystore文件",
 		next: "下一步",
-		changeHot: "转化热钱包"
+		changeHot: "转化为热钱包"
 	},
 	backKey: {
 		title: "Keystore",
@@ -61,19 +61,13 @@ export default {
 		title: "助记词",
 		textarea: "请用空格分隔助记词",
 		next: "下一步",
-		changeHot: "转化热钱包"
+		changeHot: "转化为热钱包"
 	},
 	private: {
 		title: "私钥",
 		textarea: "请输入您的私钥",
 		next: "下一步",
-		changeHot: " 转化热钱包"
-	},
-	private: {
-		title: "私钥",
-		textarea: "请输入您的私钥",
-		next: "下一步",
-		changeHot: "转化热钱包"
+		changeHot: " 转化为热钱包"
 	},
 	watch: {
 		watch: "观察",
@@ -126,7 +120,8 @@ export default {
 		hash160: "解码地址出错",
 		nodata: "无交易记录",
 		delete: "删除失败",
-		keyerror: "Key Store 格式错误"
+		keyerror: "Key Store 格式错误",
+		ethfrequently: "转账太频繁，请稍后"
 	},
 	delete: {
 		delete: "删除"

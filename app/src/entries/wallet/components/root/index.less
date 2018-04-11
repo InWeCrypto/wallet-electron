@@ -5,7 +5,7 @@
 		text-align: center;
 		color: #4a4a4a;
 		font-size: 0.36rem;
-		padding: 0.4rem 0 0.34rem 0;
+		padding: 0.4rem 0 0 0;
 		font-weight: 400;
 	}
 	.wallet-ctrl {
@@ -23,7 +23,7 @@
 			flex-flow: column;
 			color: #fff;
 			cursor: pointer;
-			margin-right: 0.2rem;
+			margin-right: 0.28rem;
 			font-size: 0.18rem;
 			color: #4a4a4a;
 			border: 3px solid #0b0b0b;
@@ -74,31 +74,32 @@
 	}
 	.wallet-container {
 		position: absolute;
-		left: 0;
-		right: 0;
+		left: 0.4rem;
+		right: 0.4rem;
 		bottom: 0;
-		top: 3.34rem;
+		top: 3rem;
 		box-sizing: border-box;
-		padding: 0 0.4rem;
 		color: #fff;
-		box-sizing: border-box;
-		padding: 3px solid #1e1e1e;
+		border: 3px solid #1e1e1e;
+		border-radius: 0.08rem;
 		.group-title {
 			background: #0b0b0b;
 			box-sizing: border-box;
 			padding: 0 0.2rem;
 			border-radius: 0.04rem 0.04rem 0 0;
 			box-sizing: border-box;
+
 			.ui {
-				// border-bottom: 1px solid #373755;
 				padding: 0.2rem 0 0.18rem 0;
 			}
 			.t1 {
 				color: #828282;
 				font-size: 0.18rem;
+				font-weight: 400;
 			}
 			.t2 {
 				color: #828282;
+				font-weight: 200;
 			}
 		}
 		.watch {
@@ -123,9 +124,9 @@
 		}
 		.group-main {
 			position: absolute;
-			left: 0.4rem;
-			right: 0.4rem;
-			top: 0.66rem;
+			left: 0;
+			right: 0;
+			top: 0.65rem;
 			bottom: 0.5rem;
 			background: #0b0b0b;
 			overflow: auto;
@@ -133,11 +134,15 @@
 			box-sizing: border-box;
 		}
 		.group-out {
-			padding: 0 0.2rem;
+			padding: 0 0.1rem;
 			transition: all 0.3s linear;
+			&.even {
+				.wallet-group {
+					background: #121212;
+					border-bottom: 1px solid #1b1b23;
+				}
+			}
 			&:hover {
-				background: #121212;
-
 				.wallet-group {
 					color: #fff;
 					.wallet-address {
@@ -146,10 +151,13 @@
 					.t3 {
 						color: #5c89eb;
 					}
+					.wallet-img {
+						opacity: 1;
+					}
 				}
 			}
 			.wallet-group {
-				padding: 0.2rem 0;
+				padding: 0.2rem 0.1rem;
 				border-top: 1px solid #373755;
 				color: #828282;
 				&:nth-child(1) {
@@ -159,10 +167,12 @@
 					width: 0.56rem;
 					height: 0.56rem;
 					margin-right: 0.2rem;
+					opacity: 0.9;
 				}
 				.wallet-name {
 					font-size: 0.18rem;
 					transition: all 0.3s linear;
+					font-weight: 400;
 				}
 				.wallet-address {
 					transition: all 0.3s linear;
@@ -173,6 +183,7 @@
 					transition: all 0.3s linear;
 					color: #828282;
 					font-size: 0.2rem;
+					font-weight: 400;
 				}
 			}
 		}

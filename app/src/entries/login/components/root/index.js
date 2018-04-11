@@ -282,7 +282,7 @@ export default class Root extends PureComponent {
 												)}
 											/>
 											<div
-												className="btn button-green"
+												className="btn button-green2"
 												onClick={this.signInClick.bind(
 													this
 												)}
@@ -432,7 +432,7 @@ export default class Root extends PureComponent {
 									</div>
 									<div className="login-btn">
 										<span
-											className="loginbtn button-green"
+											className="loginbtn button-green2"
 											onClick={this.registerUser.bind(
 												this
 											)}
@@ -531,7 +531,7 @@ export default class Root extends PureComponent {
 									</div>
 									<div className="login-btn">
 										<span
-											className="loginbtn button-green"
+											className="loginbtn button-green2"
 											onClick={this.forgetUser.bind(this)}
 										>
 											{t("login.reset", lng)}

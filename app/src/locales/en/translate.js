@@ -113,7 +113,7 @@ export default {
 		emailSend: "Email sending failed, please try again ",
 		resetPass: "Password reset failed, please try again",
 		passLength: "The entered to contain at least 6 characters",
-		passError: "The entered passwords are inconsistent ",
+		passError: "The password you entered twice is inconsistent.",
 		passVili:
 			"The password needs to contain at least 8 characters, with upper case, lower case and digits mixed.",
 		codeEmpty: "Verification code cannot be empty",
@@ -128,7 +128,8 @@ export default {
 		hash160: "decode address error",
 		nodata: "No transactions yet.",
 		delete: "Delete Fail",
-		keyerror: "Key store type is error"
+		keyerror: "Key store type is error",
+		ethfrequently: "The transfer is too frequent, please later"
 	},
 	delete: {
 		delete: "Delete"

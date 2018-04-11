@@ -301,7 +301,11 @@ export default class Root extends PureComponent {
 												list.map((item, index) => {
 													return (
 														<div
-															className="group-out"
+															className={
+																index % 2 != 0
+																	? "group-out"
+																	: "group-out even"
+															}
 															key={index}
 														>
 															<div

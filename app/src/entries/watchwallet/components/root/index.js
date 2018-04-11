@@ -64,7 +64,7 @@ export default class Root extends PureComponent {
 	}
 	setCopy() {
 		clipboard.writeText(this.props.watchInfo.address);
-		Msg.prompt("copy success");
+		Msg.prompt(i18n.t("success.copySucess", this.props.lng));
 	}
 	setPrint() {
 		ipc.send("print-preview", {
@@ -676,7 +676,7 @@ export default class Root extends PureComponent {
 																	}}
 																>
 																	<div className="t1">
-																		{getNumberString(
+																		{getNeoNumber(
 																			watchConver
 																				.list[0]
 																				.balance
@@ -759,14 +759,8 @@ export default class Root extends PureComponent {
 																			}}
 																		>
 																			<div className="t1">
-																				{getNumberString(
-																					Number(
-																						Number(
-																							item.balance
-																						).toFixed(
-																							8
-																						)
-																					)
+																				{getNeoNumber(
+																					item.balance
 																				)}
 																			</div>
 																			<div className="t1">

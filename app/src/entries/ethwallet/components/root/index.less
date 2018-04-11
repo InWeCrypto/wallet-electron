@@ -39,15 +39,16 @@
 		}
 		.money {
 			margin-left: 0.2rem;
-			height: 0.8rem;
 			color: #5c89eb;
 			font-size: 0.24rem;
+			font-weight: bold;
 		}
 		.name {
 			font-size: 0.24rem;
 			position: relative;
 			top: 0.01rem;
 			color: #fff;
+			font-weight: 400;
 		}
 		.address {
 			font-size: 0.2rem;
@@ -72,16 +73,19 @@
 			color: #828282;
 			cursor: pointer;
 			font-weight: 200;
-			&.cur {
+			transition: all 0.3s linear;
+			&.cur,
+			&:hover {
 				color: #47d184;
 			}
 		}
 		.box-btn {
 			margin-left: 0.2rem;
 			padding: 0 0.08rem;
-			height: 0.36rem;
+			height: 0.24rem;
+			line-height: 0.22rem;
 			display: flex;
-			font-size: 0.14rem;
+			font-size: 0.12rem;
 			color: #fff;
 			flex-flow: column;
 			justify-content: center;
@@ -200,6 +204,7 @@
 		.input-box {
 			border-radius: 0.08rem;
 			overflow: hidden;
+			position: relative;
 		}
 		.input {
 			width: 100%;
@@ -216,17 +221,22 @@
 			&:focus {
 				border: 1px solid #11e763;
 			}
-			&.input2 {
-				border-radius: 0.08rem 0 0 0.08rem;
-			}
 		}
-
 		.btn-box {
 			padding: 0.5rem 0 0.3rem 0;
 			text-align: center;
 		}
+		.select-box {
+			position: absolute;
+			right: 0.01rem;
+			top: 0.01rem;
+			height: 0.58rem;
+			width: 1.2rem;
+			border-radius: 0 0.08rem 0.08rem 0;
+			overflow: hidden;
+		}
 		.ant-select-selection--single {
-			height: 0.6rem;
+			height: 0.58rem;
 			border: none;
 		}
 		.ant-select-selection {
@@ -234,11 +244,19 @@
 			background: #015a23;
 		}
 		.ant-select-selection__rendered {
-			line-height: 0.6rem;
+			line-height: 0.58rem;
 			color: #fff;
 		}
 		.ant-select-arrow {
 			color: #fff;
+		}
+		.ant-select-arrow:before {
+			content: "";
+			width: 0;
+			height: 0;
+			border-right: 6px solid transparent;
+			border-left: 6px solid transparent;
+			border-top: 6px solid #fff;
 		}
 		.ant-slider-rail {
 			background: #47d184;

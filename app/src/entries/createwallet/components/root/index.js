@@ -130,7 +130,7 @@ export default class Root extends PureComponent {
 			return;
 		}
 		if (password != repassword) {
-			Msg.prompt(i18n.t("error.passLength", lng));
+			Msg.prompt(i18n.t("error.passError", lng));
 			return;
 		}
 		let params = {
