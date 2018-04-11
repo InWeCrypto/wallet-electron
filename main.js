@@ -649,6 +649,7 @@ function createWindow() {
 		height: 800,
 		minHeight: 1080,
 		minWidth: 800,
+		//frame: false,
 		webPreferences: {
 			webSecurity: false
 		}
@@ -656,6 +657,7 @@ function createWindow() {
 	let loadBase = path.join(__dirname, "resources/index.html");
 	if (!isDev) {
 		windowParam.titleBarStyle = "hiddenInset";
+		//windowParam.frame = false;
 	}
 	var loadObj = {
 		pathname: loadBase,
@@ -734,9 +736,12 @@ app.on("ready", function() {
 });
 // Quit when all windows are closed.
 app.on("window-all-closed", () => {
-	if (process.platform !== "darwin") {
+	// if (process.platform !== "darwin") {
+	// 	app.quit();
+	// }
+	setTimeout(() => {
 		app.quit();
-	}
+	}, 1000);
 });
 app.on("activate", () => {
 	if (win === null) {
