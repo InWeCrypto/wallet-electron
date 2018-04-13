@@ -85,7 +85,7 @@ export default class Root extends PureComponent {
 		params.password = this.state.password;
 		let ism = false;
 		if (params.name.length <= 0) {
-			Msg.prompt(i18n.t("error.nameEmpty", lng));
+			Msg.prompt(i18n.t("error.walletEmpty", lng));
 			return;
 		}
 		if (this.state.importType === "keystore") {
@@ -124,7 +124,6 @@ export default class Root extends PureComponent {
 			return;
 		}
 		let reg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,16}$/g;
-
 		if (!reg.test(params.password)) {
 			Msg.prompt(i18n.t("error.passVili", lng));
 			return;

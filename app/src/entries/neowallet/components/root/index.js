@@ -1,4 +1,5 @@
 import React, { PureComponent } from "react";
+import { BigNumber } from "bignumber.js";
 import { I18n } from "react-i18next";
 import { Select } from "antd";
 import PerfectScrollbar from "perfect-scrollbar";
@@ -22,26 +23,37 @@ export default class Root extends PureComponent {
 			sendKey: 0,
 			isShowPass: false,
 			password: "",
-			backList: []
+			backList: [],
+			isLoaded: false
 		};
 		this.myScroll = null;
 	}
-	componentDidMount() {
+	async componentWillMount() {
 		let q = getQuery(window.location.href);
 		let obj = JSON.parse(localStorage.getItem("walletObject"));
 		if (q && q.id) {
-			this.props.setNeoWalletInfo(obj[q.id]);
-			this.props.getWalletAssets({
+			await this.props.setNeoWalletInfo(obj[q.id]);
+			await this.props.getWalletAssets({
 				wallet_id: q.id,
 				wallet_category_id: 2
 			});
-			this.props.getNeoWalletConversion({ id: q.id });
+			await this.props.getNeoWalletConversion({ id: q.id });
 		}
 		let backUp = localStorage.getItem("backUp");
-		this.myScroll = new PerfectScrollbar("#coinlist");
+		//this.myScroll = new PerfectScrollbar("#coinlist");
 		this.setState({
-			backList: backUp ? JSON.parse(backUp) : []
+			backList: backUp ? JSON.parse(backUp) : [],
+			isLoaded: true
 		});
+	}
+	componentDidMount() {
+		this.myScroll = new PerfectScrollbar("#coinlist");
+	}
+	componentWillUnmount() {
+		this.setState({
+			isLoaded: false
+		});
+		this.myScroll = null;
 	}
 	setCopy() {
 		clipboard.writeText(this.props.neoWalletDetailInfo.address);
@@ -322,6 +334,9 @@ export default class Root extends PureComponent {
 						from: order.data.from,
 						to: order.data.to
 					});
+					setTimeout(() => {
+						this.goOrderList(this.state.sendKey);
+					}, 2000);
 					Msg.prompt(
 						i18n.t("success.transferSuccess", this.props.lng)
 					);
@@ -333,7 +348,7 @@ export default class Root extends PureComponent {
 		}
 	}
 	getCommonMoney() {
-		let num = 0;
+		let num = new BigNumber(0);
 		let {
 			lng,
 			neoWalletDetailInfo,
@@ -342,11 +357,15 @@ export default class Root extends PureComponent {
 		} = this.props;
 		if (neoConversion && neoConversion.record) {
 			let r = neoConversion.record;
-			num += new Number(
-				r.balance *
-					(r.cap
-						? lng == "en" ? r.cap.price_usd : r.cap.price_cny
-						: 0)
+			num = num.plus(
+				new BigNumber(
+					getShowMoney(
+						getNeoNumber(r.balance),
+						r.cap
+							? lng == "en" ? r.cap.price_usd : r.cap.price_cny
+							: 0
+					)
+				)
 			);
 		}
 		if (
@@ -356,13 +375,17 @@ export default class Root extends PureComponent {
 			neoConversion.record.gnt.length > 0
 		) {
 			neoConversion.record.gnt.map((item, index) => {
-				num += new Number(
-					item.balance *
-						(item.cap
-							? lng == "en"
-								? item.cap.price_usd
-								: item.cap.price_cny
-							: 0)
+				num = num.plus(
+					new BigNumber(
+						getShowMoney(
+							getNeoNumber(item.balance),
+							item.cap
+								? lng == "en"
+									? item.cap.price_usd
+									: item.cap.price_cny
+								: 0
+						)
+					)
 				);
 			});
 		}
@@ -372,17 +395,22 @@ export default class Root extends PureComponent {
 			neoConversion.list.length > 0
 		) {
 			neoConversion.list.map((item, index) => {
-				num += new Number(
-					getNumFromStr(item.balance, item.decimals) *
-						(item.gnt_category && item.gnt_category.cap
-							? lng == "en"
-								? item.gnt_category.cap.price_usd
-								: item.gnt_category.cap.price_cny
-							: 0)
+				num = num.plus(
+					new BigNumber(
+						getShowMoney(
+							getNumFromStr(item.balance, item.decimals),
+							item.gnt_category && item.gnt_category.cap
+								? lng == "en"
+									? item.gnt_category.cap.price_usd
+									: item.gnt_category.cap.price_cny
+								: 0
+						)
+					)
 				);
 			});
 		}
-		return (parseInt(num * 10 * 10) / 10 / 10).toFixed(2);
+		let r = getNumberString(num) + "";
+		return r.substring(0, r.lastIndexOf(".") + 3);
 	}
 	goOrderList(key) {
 		let { neoWalletDetailInfo, neoConversion } = this.props;
@@ -489,7 +517,8 @@ export default class Root extends PureComponent {
 			sendAmount,
 			sendKey,
 			isShowPass,
-			backList
+			backList,
+			isLoaded
 		} = this.state;
 
 		return (
@@ -581,18 +610,6 @@ export default class Root extends PureComponent {
 											>
 												{t("walletDetail.receive", lng)}
 											</div>
-											{/* <div
-												onClick={this.changeNav.bind(
-													this,
-													4
-												)}
-												className={this.navCur.bind(
-													this,
-													4
-												)()}
-											>
-												Record
-											</div> */}
 										</div>
 										<div
 											className="button-black box-btn gas"
@@ -676,28 +693,21 @@ export default class Root extends PureComponent {
 																	{lng == "en"
 																		? "$"
 																		: "￥"}{" "}
-																	{neoConversion
-																		.record
-																		.balance ==
-																	0
-																		? "0"
-																		: (
-																				neoConversion
+																	{getShowMoney(
+																		neoConversion
+																			.record
+																			.balance,
+																		lng ==
+																		"en"
+																			? neoConversion
 																					.record
-																					.balance *
-																				(lng ==
-																				"en"
-																					? neoConversion
-																							.record
-																							.cap
-																							.price_usd
-																					: neoConversion
-																							.record
-																							.cap
-																							.price_cny)
-																		  ).toFixed(
-																				2
-																		  )}
+																					.cap
+																					.price_usd
+																			: neoConversion
+																					.record
+																					.cap
+																					.price_cny
+																	)}
 																</div>
 															)}
 													</div>
@@ -763,39 +773,32 @@ export default class Root extends PureComponent {
 																	{lng == "en"
 																		? "$"
 																		: "￥"}{" "}
-																	{neoConversion
-																		.record
-																		.gnt[0]
-																		.balance ==
-																	0
-																		? "0"
-																		: (
-																				neoConversion
+																	{getShowMoney(
+																		neoConversion
+																			.record
+																			.gnt[0]
+																			.balance,
+																		lng ==
+																		"en"
+																			? neoConversion
 																					.record
 																					.gnt[0]
-																					.balance *
-																				(lng ==
-																				"en"
-																					? neoConversion
-																							.record
-																							.gnt[0]
-																							.cap
-																							.price_usd
-																					: neoConversion
-																							.record
-																							.gnt[0]
-																							.cap
-																							.price_cny)
-																		  ).toFixed(
-																				2
-																		  )}
+																					.cap
+																					.price_usd
+																			: neoConversion
+																					.record
+																					.gnt[0]
+																					.cap
+																					.price_cny
+																	)}
 																</div>
 															)}
 													</div>
 												</div>
 											</div>
 
-											{neoConversion &&
+											{isLoaded &&
+												neoConversion &&
 												neoConversion.list &&
 												neoConversion.list.length > 0 &&
 												neoConversion.list.map(
@@ -856,12 +859,16 @@ export default class Root extends PureComponent {
 																			"en"
 																				? "$"
 																				: "￥"}{" "}
-																			{(
+																			{/* {getNumFromStr(
+																				item.balance,
+																				item.decimals
+																			)} */}
+																			{getShowMoney(
 																				getNumFromStr(
 																					item.balance,
 																					item.decimals
-																				) *
-																				(lng ==
+																				),
+																				lng ==
 																				"en"
 																					? item
 																							.gnt_category
@@ -876,9 +883,7 @@ export default class Root extends PureComponent {
 																					  item
 																							.gnt_category
 																							.cap
-																							.price_cny)
-																			).toFixed(
-																				2
+																							.price_cny
 																			)}
 																		</div>
 																	</div>

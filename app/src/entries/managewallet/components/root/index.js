@@ -39,6 +39,9 @@ export default class Root extends PureComponent {
 		this.setState({
 			...set
 		});
+		ipc.on("deleteLocalWallet", () => {
+			this.deleteWallet(true);
+		});
 	}
 
 	showInputBox() {
@@ -87,25 +90,33 @@ export default class Root extends PureComponent {
 			`address=${this.state.address}&name=${this.state.name}`
 		);
 	}
-	deleteWallet() {
+	deleteWallet(type) {
 		let { address, name, id, password } = this.state;
-		this.props
-			.deleteLocal({
-				address: address
-			})
-			.then(res => {
-				if (res == null) {
-					this.props
-						.deleteSever({
-							id: id
-						})
-						.then(res1 => {
-							if (res1.code === 4000) {
-								toHref("wallet");
-							}
-						});
-				}
-			});
+		if (!type) {
+			ipc.send(
+				"question",
+				i18n.t("deletetip.title", this.props.lng),
+				i18n.t("deletetip.txt", this.props.lng)
+			);
+		} else {
+			this.props
+				.deleteLocal({
+					address: address
+				})
+				.then(res => {
+					if (res == null) {
+						this.props
+							.deleteSever({
+								id: id
+							})
+							.then(res1 => {
+								if (res1.code === 4000) {
+									toHref("wallet");
+								}
+							});
+					}
+				});
+		}
 	}
 	render() {
 		let { lng } = this.props;
@@ -205,7 +216,9 @@ export default class Root extends PureComponent {
 									</div>
 									<div
 										className="hotarea"
-										onClick={this.deleteWallet.bind(this)}
+										onClick={() => {
+											this.deleteWallet();
+										}}
 									>
 										<div className="icon-box deleteico" />
 										<div className="name">

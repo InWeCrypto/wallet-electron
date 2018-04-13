@@ -105,6 +105,7 @@ export default {
 
 	error: {
 		nameEmpty: "Name address cannot be empty",
+		walletEmpty: "Walletname con't be empty",
 		emailEmpty: "Email address cannot be empty",
 		passwordEmpty: "Password cannot be empty",
 		memonicEmpty: "Password cannot be empty",
@@ -226,5 +227,9 @@ export default {
 	addAsset: {
 		title: "Add Asset",
 		confirm: "Confirm"
+	},
+	deletetip: {
+		title: "Delete",
+		txt: "Do you want to delete this wallet?"
 	}
 };

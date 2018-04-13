@@ -20,6 +20,8 @@
         var os = require('os');
         var path = require('path')
         var cp = require("child_process");
+        let el = document.getElementById('root');
+        window.webFrame = electron.webFrame
         window.ipc = electron.ipcRenderer;
         window.shell = electron.shell;
         window.dialog = electron.remote.dialog;
@@ -35,6 +37,9 @@
                 toHref('/');
             }
         });
+        ipc.send('clear', function () {
+            webFrame.clearCache();
+        })
         ipc.on('changeUser', function () {
             localStorage.removeItem('userInfo');
             toHref('/')

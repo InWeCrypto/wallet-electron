@@ -7,7 +7,10 @@ const {
 	Tray,
 	session
 } = require("electron");
+//const ioHook = require("iohook");
+
 const autoUpdater = require("electron-updater").autoUpdater;
+
 const electron = require("electron");
 const cp = require("child_process");
 const os = require("os");
@@ -129,7 +132,9 @@ let menuText = function() {
 			quit: "退出",
 			clear: "清除缓存",
 			changeuser: "切换用户",
-			clearSuccess: "清除缓存成功"
+			clearSuccess: "清除缓存成功",
+			sure: "确定",
+			cannel: "取消"
 		};
 	} else {
 		res = {
@@ -165,12 +170,14 @@ let menuText = function() {
 			quit: "Quit",
 			clear: "Clear Cache",
 			changeuser: "Change User",
-			clearSuccess: "clear success"
+			clearSuccess: "clear success",
+			sure: "Sure",
+			cannel: "Cannel"
 		};
 	}
 	return res;
 };
-let text = menuText();
+var text = menuText();
 let template = [
 	{
 		label: text.user,
@@ -185,6 +192,7 @@ let template = [
 	},
 	{
 		label: text.edit,
+		//role: "editMenu"
 		submenu: [
 			{
 				label: text.revoke,
@@ -241,22 +249,6 @@ let template = [
 					}
 				}
 			}
-
-			// 	 {
-			// 			label: text.toggleDev,
-			// 			accelerator: (function() {
-			// 				if (process.platform === "darwin") {
-			// 					return "Alt+Command+I";
-			// 				} else {
-			// 					return "Ctrl+Shift+I";
-			// 				}
-			// 			})(),
-			// 			click: function(item, focusedWindow) {
-			// 				if (focusedWindow) {
-			// 					focusedWindow.toggleDevTools();
-			// 				}
-			// 			}
-			// 	  }
 		]
 	},
 	{
@@ -331,6 +323,7 @@ let template = [
 					// deleteall(path.join(userD, "Cache"));
 					ses.clearCache(function(res) {
 						sendStatus(text.clearSuccess);
+						win.webContents.send("clear");
 					});
 				}
 			},
@@ -384,6 +377,21 @@ if (isDev) {
 					});
 				}
 				focusedWindow.reload();
+			}
+		}
+	});
+	template[2].submenu.push({
+		label: text.toggleDev,
+		accelerator: (function() {
+			if (process.platform === "darwin") {
+				return "Alt+Command+I";
+			} else {
+				return "Ctrl+Shift+I";
+			}
+		})(),
+		click: function(item, focusedWindow) {
+			if (focusedWindow) {
+				focusedWindow.toggleDevTools();
 			}
 		}
 	});
@@ -526,6 +534,25 @@ ipc.on("pageHistory", function(event, obj) {
 ipc.on("errorMsg", function(event, text, title) {
 	dialog.showErrorBox(text, title);
 });
+ipc.on("question", function(event, title, txt, isWatch) {
+	var sure = text.sure;
+	var cannel = text.cannel;
+	var quesState = dialog.showMessageBox({
+		type: "question",
+		title: title,
+		message: txt,
+		buttons: [sure, cannel]
+	});
+	if (!isWatch) {
+		if (quesState == 0) {
+			win.webContents.send("deleteLocalWallet");
+		}
+	} else {
+		if (quesState == 0) {
+			win.webContents.send("deleteWatchWallet");
+		}
+	}
+});
 ipc.on("openWeb", function(event, arg) {
 	if (!arg || !arg.url || arg.url.length <= 0) {
 		dislog.showErrorBox(
@@ -647,17 +674,18 @@ function createWindow() {
 		show: false,
 		width: 1080,
 		height: 800,
-		minHeight: 1080,
-		minWidth: 800,
-		//frame: false,
+		useContentSize: true,
 		webPreferences: {
-			webSecurity: false
+			webSecurity: false,
+			experimentalFeatures: true
+			// scrollBounce: true
 		}
+		// minHeight: 1080,
+		// minWidth: 800
 	};
 	let loadBase = path.join(__dirname, "resources/index.html");
 	if (!isDev) {
 		windowParam.titleBarStyle = "hiddenInset";
-		//windowParam.frame = false;
 	}
 	var loadObj = {
 		pathname: loadBase,
@@ -728,6 +756,43 @@ function createWindow() {
 	win.on("closed", () => {
 		win = null;
 	});
+	// if (process.platform == "darwin") {
+	// 	let hookObj = {};
+	// 	let time = 0;
+	// 	ioHook.on(["mousewheel"], event => {
+	// 		if (event.direction != 4) {
+	// 			return;
+	// 		}
+	// 		//(!hookObj.x || hookObj.x != event.x) &&
+	// 		if (time == 0) {
+	// 			hookObj.x = event.x;
+	// 			// if (event.rotation == -1) {
+	// 			// 	win.webContents.goBack();
+	// 			// }
+	// 			// if (event.rotation == 1) {
+	// 			// 	win.webContents.goForward();
+	// 			// }
+	// 			//time = 3;
+	// 			//setTimeGo();
+	// 		}
+	// 	});
+	// 	win.on("focus", function() {
+	// 		ioHook.start();
+	// 	});
+	// 	var setTimeGo = function() {
+	// 		var timer = null;
+	// 		clearTimeout(timer);
+	// 		timer = setTimeout(() => {
+	// 			time--;
+	// 			if (time > 0) {
+	// 				setTimeGo();
+	// 			}
+	// 		}, 1000);
+	// 	};
+	// 	win.on("blur", function() {
+	// 		ioHook.stop();
+	// 	});
+	// }
 }
 
 // Some APIs can only be used after this event occurs.

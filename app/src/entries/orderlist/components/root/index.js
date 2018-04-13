@@ -222,24 +222,21 @@ export default class Root extends PureComponent {
 										{info &&
 											info.number != "undefined" && (
 												<span>
-													{Number(
-														Number(
-															info.number
-														).toFixed(8)
+													{getNumberString(
+														info.number
 													)}
 												</span>
 											)}
 
 										<span className="t3">
 											({lng == "en" ? "$" : "￥"}
-											{(
-												(info && info.number) *
-												(info
-													? lng == "en"
+											{info &&
+												getShowMoney(
+													info.number,
+													lng == "en"
 														? info.price_usd
 														: info.price_cny
-													: 0)
-											).toFixed(2)})
+												)})
 										</span>
 									</div>
 								</div>

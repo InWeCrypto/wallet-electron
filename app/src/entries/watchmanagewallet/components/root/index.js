@@ -29,17 +29,29 @@ export default class Root extends PureComponent {
 				type: q.type
 			});
 		}
+		ipc.on("deleteWatchWallet", () => {
+			this.deleteWatch(true);
+		});
 	}
-	deleteWatch() {
-		this.props
-			.deleteWatchWallet({
-				id: this.state.id
-			})
-			.then(res => {
-				if (res.code === 4000) {
-					toHref("wallet");
-				}
-			});
+	deleteWatch(type) {
+		if (!type) {
+			ipc.send(
+				"question",
+				i18n.t("deletetip.title", this.props.lng),
+				i18n.t("deletetip.txt", this.props.lng),
+				true
+			);
+		} else {
+			this.props
+				.deleteWatchWallet({
+					id: this.state.id
+				})
+				.then(res => {
+					if (res.code === 4000) {
+						toHref("wallet");
+					}
+				});
+		}
 	}
 	goChange() {
 		toHref(
@@ -73,7 +85,9 @@ export default class Root extends PureComponent {
 									</div>
 									<div
 										className="hotarea"
-										onClick={this.deleteWatch.bind(this)}
+										onClick={() => {
+											this.deleteWatch();
+										}}
 									>
 										<div className="icon-box deleteico" />
 										<div className="name">

@@ -1,4 +1,5 @@
 import React, { PureComponent } from "react";
+import { BigNumber } from "bignumber.js";
 import { I18n } from "react-i18next";
 import PerfectScrollbar from "perfect-scrollbar";
 import { getQuery } from "../../../../utils/util";
@@ -24,36 +25,49 @@ export default class Root extends PureComponent {
 			limit: "",
 			most: "",
 			gasNum: "",
-			backList: []
+			backList: [],
+			isLoaded: false
 		};
 		this.myScroll = null;
 		this.sendTime = 0;
 		this.timer = null;
 	}
-	componentDidMount() {
+	async componentWillMount() {
 		let q = getQuery(window.location.href);
 		let obj = JSON.parse(localStorage.getItem("walletObject"));
 		if (q && q.id) {
 			this.props.setEthWalletInfo(obj[q.id]);
-			this.props.getEthWalletConversion({
+			let s = await this.props.getEthWalletConversion({
 				id: q.id
 			});
-			this.props.getEthConversion({
+			let a = await this.props.getEthConversion({
 				ids: `[${q.id}]`
 			});
 		}
 		this.commitLimit();
 		this.commitMost();
-		this.props.getEthGas().then(res => {
-			if (res.code === 4000) {
-				this.changeGastoNum(res.data.gasPrice);
-			}
-		});
+		let res = await this.props.getEthGas();
+		if (res.code === 4000) {
+			this.changeGastoNum(res.data.gasPrice);
+		}
 		let backUp = localStorage.getItem("backUp");
-		this.myScroll = new PerfectScrollbar("#coinlist");
+
 		this.setState({
-			backList: backUp ? JSON.parse(backUp) : []
+			backList: backUp ? JSON.parse(backUp) : [],
+			isLoaded: true
 		});
+	}
+	async componentDidMount() {
+		this.myScroll = new PerfectScrollbar("#coinlist");
+		// setTimeout(() => {
+		// 	this.myScroll = new PerfectScrollbar("#coinlist");
+		// }, 3000);
+	}
+	componentWillUnmount() {
+		this.setState({
+			isLoaded: false
+		});
+		this.myScroll = null;
 	}
 	changeGastoNum(num) {
 		let n10 = (
@@ -281,6 +295,9 @@ export default class Root extends PureComponent {
 					Msg.prompt(
 						i18n.t("success.transferSuccess", this.props.lng)
 					);
+					setTimeout(() => {
+						this.goOrderList(this.state.selectKey);
+					}, 2000);
 				}
 			}
 			load.hide();
@@ -332,16 +349,19 @@ export default class Root extends PureComponent {
 			ethConversion
 		} = this.props;
 
-		let num = 0;
+		let num = new BigNumber(0);
 		if (ethConversion && ethConversion.list && ethConversion.list[0]) {
 			let i = ethConversion.list[0];
-			num +=
-				getEthNum(i.balance) *
-				(i.category && i.category.cap
-					? lng == "en"
-						? i.category.cap.price_usd
-						: i.category.cap.price_cny
-					: 0);
+			num = new BigNumber(
+				getShowMoney(
+					getEthNum(i.balance),
+					i.category && i.category.cap
+						? lng == "en"
+							? i.category.cap.price_usd
+							: i.category.cap.price_cny
+						: 0
+				)
+			);
 		}
 		if (
 			ethWalletConversion &&
@@ -349,16 +369,22 @@ export default class Root extends PureComponent {
 			ethWalletConversion.list.length > 0
 		) {
 			ethWalletConversion.list.map((item, index) => {
-				num +=
-					getEthNum(item.balance, item.decimals) *
-					(item.gnt_category && item.gnt_category.cap
-						? lng == "en"
-							? item.gnt_category.cap.price_usd
-							: item.gnt_category.cap.price_cny
-						: 0);
+				num = num.plus(
+					new BigNumber(
+						getShowMoney(
+							getEthNum(item.balance, item.decimals),
+							item.gnt_category && item.gnt_category.cap
+								? lng == "en"
+									? item.gnt_category.cap.price_usd
+									: item.gnt_category.cap.price_cny
+								: 0
+						)
+					)
+				);
 			});
 		}
-		return Number(num.toFixed(2));
+		let r = getNumberString(num) + "";
+		return r.substring(0, r.lastIndexOf(".") + 3);
 	}
 	goOrderList(key) {
 		let {
@@ -466,7 +492,8 @@ export default class Root extends PureComponent {
 			limit,
 			most,
 			gasNum,
-			backList
+			backList,
+			isLoaded
 		} = this.state;
 		return (
 			<I18n>
@@ -643,36 +670,32 @@ export default class Root extends PureComponent {
 																ethConversion
 																	.list[0] && (
 																	<span>
-																		{Number(
-																			(
-																				getEthNum(
-																					ethConversion
-																						.list[0]
-																						.balance
-																				) *
-																				(ethConversion
-																					.list[0]
-																					.category &&
+																		{getShowMoney(
+																			getEthNum(
 																				ethConversion
 																					.list[0]
-																					.category
-																					.cap
-																					? lng ==
-																					  "en"
-																						? ethConversion
-																								.list[0]
-																								.category
-																								.cap
-																								.price_usd
-																						: ethConversion
-																								.list[0]
-																								.category
-																								.cap
-																								.price_cny
-																					: 0)
-																			).toFixed(
-																				2
-																			)
+																					.balance
+																			),
+																			ethConversion
+																				.list[0]
+																				.category &&
+																			ethConversion
+																				.list[0]
+																				.category
+																				.cap
+																				? lng ==
+																				  "en"
+																					? ethConversion
+																							.list[0]
+																							.category
+																							.cap
+																							.price_usd
+																					: ethConversion
+																							.list[0]
+																							.category
+																							.cap
+																							.price_cny
+																				: 0
 																		)}
 																	</span>
 																)}
@@ -680,7 +703,8 @@ export default class Root extends PureComponent {
 													</div>
 												</div>
 											</div>
-											{ethWalletConversion &&
+											{isLoaded &&
+												ethWalletConversion &&
 												ethWalletConversion.list &&
 												ethWalletConversion.list
 													.length > 0 &&
@@ -737,30 +761,28 @@ export default class Root extends PureComponent {
 																			"en"
 																				? "$"
 																				: "￥"}{" "}
-																			{Number(
+																			{getShowMoney(
 																				getEthNum(
 																					item.balance
-																				) *
-																					(lng ==
-																					"en"
-																						? item.gnt_category &&
-																						  item
-																								.gnt_category
-																								.cap &&
-																						  item
-																								.gnt_category
-																								.cap
-																								.price_usd
-																						: item.gnt_category &&
-																						  item
-																								.gnt_category
-																								.cap &&
-																						  item
-																								.gnt_category
-																								.cap
-																								.price_cny)
-																			).toFixed(
-																				2
+																				),
+																				lng ==
+																				"en"
+																					? item.gnt_category &&
+																					  item
+																							.gnt_category
+																							.cap &&
+																					  item
+																							.gnt_category
+																							.cap
+																							.price_usd
+																					: item.gnt_category &&
+																					  item
+																							.gnt_category
+																							.cap &&
+																					  item
+																							.gnt_category
+																							.cap
+																							.price_cny
 																			)}
 																		</div>
 																	</div>

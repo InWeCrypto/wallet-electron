@@ -298,8 +298,8 @@ export const getNumFromStr = (str, dec) => {
 		var num = parseInt(new Number(`0x${str16}`), 10);
 	}
 
-	var s = getNumberString(Number(num.toFixed(9)));
-	return Number(s.substring(0, s.lastIndexOf(".") + 9));
+	var s = getNumberString(num);
+	return s;
 };
 window.getNumFromStr = getNumFromStr;
 export const getEthNum = (str, dec) => {
@@ -313,22 +313,16 @@ export const getEthNum = (str, dec) => {
 		return 0;
 	}
 	var x = new BigNumber(st);
-	var s = x.toLocaleString();
-	var n = s.replace(/\,/gi, "");
-	if (n.length < dec) {
-		var l = dec - n.length;
-		for (let i = 0; i < l + 1; i++) {
-			n = "0" + n;
-		}
-	}
-	var p = n.substr(0, n.length - dec);
-	var r = n.substr(n.length - dec);
-	var res = p + "." + r;
-	return Number(res.substring(0, res.lastIndexOf(".") + 9));
+	var a = x.dividedBy(Math.pow(10, dec));
+	a = a.toLocaleString();
+	a = getNumberString(a);
+	var l = a.substring(0, a.lastIndexOf(".") + 9);
+	return l;
 };
 export const getNeoNumber = num => {
-	var s = getNumberString(Number(num).toFixed(9));
-	return Number(s.substring(0, s.lastIndexOf(".") + 9));
+	var s = new BigNumber(num);
+	s = s.toLocaleString();
+	return s.substring(0, s.lastIndexOf(".") + 9);
 };
 window.getNeoNumber = getNeoNumber;
 window.getEthNum = getEthNum;
@@ -342,19 +336,85 @@ export const setBackUp = address => {
 	localStorage.setItem("backUp", JSON.stringify(arr));
 };
 window.setBackUp = setBackUp;
-
+//数字转字符串
 export const getNumberString = number => {
 	let st = number.toString().toLowerCase();
+	let res = "";
 	if (st.indexOf("e-") != -1) {
 		let stArr = st.split("e-");
 		let p = stArr[1];
 		let t = stArr[0];
-		let r = "0.";
-		for (let i = 0; i < p - t.length; i++) {
-			r = r + "0";
+		if (t.indexOf(".") == -1) {
+			let r = "0.";
+			for (let i = 0; i < p - t.length; i++) {
+				r = r + "0";
+			}
+			res = r + t;
+		} else {
+			let h1 = t.split(".");
+			let h2 = h1[0];
+			let h3 = h1[1];
+			if (h2.length > p) {
+				res =
+					h3.substring(0, h3.length - p) +
+					"." +
+					h3.substring(h3.length - p, h3.length) +
+					h3;
+			} else {
+				res = h2 + "" + h3;
+				for (let i = 0; i < p - h2.length; i++) {
+					res = "0" + res;
+				}
+				res = "0." + res;
+			}
 		}
-		return r + t;
+		return res;
+	} else if (st.indexOf("e") != -1) {
+		let stArr;
+		if (st.indexOf("e+") != -1) {
+			stArr = st.split("e+");
+		} else {
+			stArr = st.split("e");
+		}
+		let p = stArr[1];
+		let t = stArr[0];
+		if (t.indexOf(".") == -1) {
+			for (let i = 0; i < p - t.length; i++) {
+				t = t + "0";
+			}
+		} else {
+			let h1 = t.split(".");
+			let h2 = h1[0];
+			let h3 = h1[1];
+			if (h3.length > p) {
+				h3 = h3.substring(0, p) + "." + h3.substring(p, h3.length);
+				res = h2 + "" + h3;
+			} else {
+				res = h2 + "" + h3;
+				for (let i = 0; i < p - h3.length; i++) {
+					res = res + "0";
+				}
+			}
+		}
+		return res;
+	} else {
+		return number;
 	}
-	return st;
 };
 window.getNumberString = getNumberString;
+export const getShowMoney = (num, price) => {
+	if (!num || !price || num == 0 || price == 0) {
+		return 0;
+	}
+	var s;
+	if ((num + "").indexOf("e") != -1) {
+		var p = new BigNumber(num);
+		var r = p.multipliedBy(price);
+		s = r.toLocaleString();
+	} else {
+		s = num * price;
+	}
+	s = getNumberString(s) + "";
+	return s.substring(0, s.lastIndexOf(".") + 3);
+};
+window.getShowMoney = getShowMoney;

@@ -98,6 +98,7 @@ export default {
 
 	error: {
 		nameEmpty: "用户名不得为空",
+		walletEmpty: "钱包名称不得为空",
 		emailEmpty: "邮箱地址不得为空",
 		passwordEmpty: "密码不得为空",
 		memonicEmpty: "密码不得为空",
@@ -217,5 +218,9 @@ export default {
 	addAsset: {
 		title: "添加资产",
 		confirm: "确定"
+	},
+	deletetip: {
+		title: "删除",
+		txt: "确定删除这个钱包吗？"
 	}
 };

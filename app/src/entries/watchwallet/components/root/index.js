@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
+import { BigNumber } from "bignumber.js";
 import { I18n } from "react-i18next";
-import { getQuery, getEthNum } from "../../../../utils/util";
+import { getQuery, getEthNum, getNumberString } from "../../../../utils/util";
 import PerfectScrollbar from "perfect-scrollbar";
 import QRCode from "../../../../assets/js/qcode";
 import Menu from "@/menu";
@@ -15,20 +16,14 @@ export default class Root extends PureComponent {
 		super(props);
 		this.state = {
 			type: 1,
-			walletType: ""
+			walletType: "",
+			isLoaded: false
 		};
 	}
-	componentDidMount() {
+	async componentWillMount() {
 		let q = getQuery(window.location.href);
 		let obj = JSON.parse(localStorage.getItem("walletObject"));
 		if (q.id && obj[q.id]) {
-			this.props.setInfo(obj[q.id]);
-			this.props.getConversion({
-				ids: `[${q.id}]`
-			});
-			this.props.getWalletList({
-				id: q.id
-			});
 			if (obj[q.id].category_id == 1) {
 				this.setState({
 					walletType: 1
@@ -39,10 +34,26 @@ export default class Root extends PureComponent {
 					walletType: 2
 				});
 			}
+			await this.props.setInfo(obj[q.id]);
+			await this.props.getConversion({
+				ids: `[${q.id}]`
+			});
+			await this.props.getWalletList({
+				id: q.id
+			});
+			this.setState({
+				isLoaded: true
+			});
 		}
-		setTimeout(() => {
-			this.myScroll = new PerfectScrollbar("#coinlist");
-		}, 200);
+	}
+	componentDidMount() {
+		this.myScroll = new PerfectScrollbar("#coinlist");
+	}
+	componentWillUnmount() {
+		this.setState({
+			isLoaded: false
+		});
+		this.myScroll = null;
 	}
 	navCur(idx) {
 		return idx === this.state.type ? "nav-item cur" : "nav-item";
@@ -96,48 +107,54 @@ export default class Root extends PureComponent {
 	}
 	getCommonMoney() {
 		let { lng, watchInfo, watchConver, walletList } = this.props;
-		let num = 0;
+		let num = new BigNumber(0);
 		if (watchInfo && watchInfo.category_id == 1) {
 			if (watchConver && watchConver.list[0]) {
 				let d = watchConver.list[0];
-				num += new Number(
-					(
-						getEthNum(d.balance) *
-						(d.category && d.category.cap
-							? lng == "en"
-								? d.category.cap.price_usd
-								: d.category.cap.price_cny
-							: 0)
-					).toFixed(4)
+				num = num.plus(
+					new BigNumber(
+						getShowMoney(
+							getEthNum(d.balance),
+							d.category && d.category.cap
+								? lng == "en"
+									? d.category.cap.price_usd
+									: d.category.cap.price_cny
+								: 0
+						)
+					)
 				);
 			}
 			if (walletList && walletList.list && walletList.list.length > 0) {
 				walletList.list.map((item, index) => {
-					num += new Number(
-						(
-							getEthNum(item.balance, item.decimals) *
-							(item.gnt_category && item.gnt_category.cap
-								? lng == "en"
-									? item.gnt_category.cap.price_usd
-									: item.gnt_category.cap.price_cny
-								: 0)
-						).toFixed(4)
+					num = num.plus(
+						new BigNumber(
+							getShowMoney(
+								getEthNum(item.balance, item.decimals),
+								item.gnt_category && item.gnt_category.cap
+									? lng == "en"
+										? item.gnt_category.cap.price_usd
+										: item.gnt_category.cap.price_cny
+									: 0
+							)
+						)
 					);
 				});
 			}
 		}
 		if (watchInfo && watchInfo.category_id == 2) {
 			if (watchConver && watchConver.list[0]) {
-				num += new Number(
-					(
-						watchConver.list[0].balance *
-						(watchConver.list[0].category &&
-						watchConver.list[0].category.cap
-							? lng == "en"
-								? watchConver.list[0].category.cap.price_usd
-								: watchConver.list[0].category.cap.price_cny
-							: 0)
-					).toFixed(4)
+				num = num.plus(
+					new BigNumber(
+						getShowMoney(
+							getNeoNumber(watchConver.list[0].balance),
+							watchConver.list[0].category &&
+							watchConver.list[0].category.cap
+								? lng == "en"
+									? watchConver.list[0].category.cap.price_usd
+									: watchConver.list[0].category.cap.price_cny
+								: 0
+						)
+					)
 				);
 			}
 			if (
@@ -147,35 +164,39 @@ export default class Root extends PureComponent {
 				walletList.record.gnt.length > 0
 			) {
 				walletList.record.gnt.map((item, index) => {
-					num += new Number(
-						(
-							item.balance *
-							(item.cap
-								? lng == "en"
-									? item.cap.price_usd
-									: item.cap.price_cny
-								: 0)
-						).toFixed(4)
+					num = num.plus(
+						new BigNumber(
+							getShowMoney(
+								getNeoNumber(item.balance),
+								item.cap
+									? lng == "en"
+										? item.cap.price_usd
+										: item.cap.price_cny
+									: 0
+							)
+						)
 					);
 				});
 			}
 			if (walletList && walletList.list && walletList.list.length > 0) {
 				walletList.list.map((item, index) => {
-					num += new Number(
-						(
-							getNumFromStr(item.balance, item.decimals) *
-							(item.gnt_category && item.gnt_category.cap
-								? lng == "en"
-									? item.gnt_category.cap.price_usd
-									: item.gnt_category.cap.price_cny
-								: 0)
-						).toFixed(4)
+					num = num.plus(
+						new BigNumber(
+							getShowMoney(
+								getNumFromStr(item.balance, item.decimals),
+								item.gnt_category && item.gnt_category.cap
+									? lng == "en"
+										? item.gnt_category.cap.price_usd
+										: item.gnt_category.cap.price_cny
+									: 0
+							)
+						)
 					);
 				});
 			}
 		}
-
-		return num.toFixed(2);
+		let r = getNumberString(num) + "";
+		return r.substring(0, r.lastIndexOf(".") + 3);
 	}
 	goOrderList(key) {
 		let { type, walletType } = this.state;
@@ -319,7 +340,7 @@ export default class Root extends PureComponent {
 	}
 	render() {
 		let { lng, watchInfo, watchConver, walletList } = this.props;
-		let { type, walletType } = this.state;
+		let { type, walletType, isLoaded } = this.state;
 		return (
 			<I18n>
 				{(t, { i18n }) => (
@@ -453,7 +474,8 @@ export default class Root extends PureComponent {
 									{type === 1 &&
 										walletType == 1 && (
 											<div className="box3" id="coinlist">
-												{watchConver &&
+												{isLoaded &&
+													watchConver &&
 													watchConver.list &&
 													watchConver.list[0] && (
 														<div className="wallet-out even">
@@ -503,13 +525,13 @@ export default class Root extends PureComponent {
 																		"en"
 																			? "$"
 																			: "￥"}
-																		{(
+																		{getShowMoney(
 																			getEthNum(
 																				watchConver
 																					.list[0]
 																					.balance
-																			) *
-																			(watchConver
+																			),
+																			watchConver
 																				.list[0]
 																				.category &&
 																			watchConver
@@ -528,9 +550,7 @@ export default class Root extends PureComponent {
 																							.category
 																							.cap
 																							.price_cny
-																				: 0)
-																		).toFixed(
-																			2
+																				: 0
 																		)}
 																	</div>
 																</div>
@@ -538,7 +558,8 @@ export default class Root extends PureComponent {
 														</div>
 													)}
 
-												{walletList &&
+												{isLoaded &&
+													walletList &&
 													walletList.list &&
 													walletList.list.length >
 														0 &&
@@ -602,12 +623,12 @@ export default class Root extends PureComponent {
 																				"en"
 																					? "$"
 																					: "￥"}
-																				{(
+																				{getShowMoney(
 																					getEthNum(
 																						item.balance,
 																						item.decimals
-																					) *
-																					(item.gnt_category &&
+																					),
+																					item.gnt_category &&
 																					item
 																						.gnt_category
 																						.cap
@@ -621,9 +642,7 @@ export default class Root extends PureComponent {
 																									.gnt_category
 																									.cap
 																									.price_cny
-																						: 0)
-																				).toFixed(
-																					2
+																						: 0
 																				)}
 																			</div>
 																		</div>
@@ -637,7 +656,8 @@ export default class Root extends PureComponent {
 									{type === 1 &&
 										walletType == 2 && (
 											<div className="box3" id="coinlist">
-												{watchConver &&
+												{isLoaded &&
+													watchConver &&
 													watchConver.list &&
 													watchConver.list[0] && (
 														<div className="wallet-out even">
@@ -687,41 +707,38 @@ export default class Root extends PureComponent {
 																		"en"
 																			? "$"
 																			: "￥"}
-																		{Number(
-																			(
-																				watchConver
-																					.list[0]
-																					.balance *
-																				(watchConver
-																					.list[0]
-																					.category &&
-																				watchConver
-																					.list[0]
-																					.category
-																					.cap
-																					? lng ==
-																					  "en"
-																						? watchConver
-																								.list[0]
-																								.category
-																								.cap
-																								.price_usd
-																						: watchConver
-																								.list[0]
-																								.category
-																								.cap
-																								.price_cny
-																					: 0)
-																			).toFixed(
-																				2
-																			)
+																		{getShowMoney(
+																			watchConver
+																				.list[0]
+																				.balance,
+																			watchConver
+																				.list[0]
+																				.category &&
+																			watchConver
+																				.list[0]
+																				.category
+																				.cap
+																				? lng ==
+																				  "en"
+																					? watchConver
+																							.list[0]
+																							.category
+																							.cap
+																							.price_usd
+																					: watchConver
+																							.list[0]
+																							.category
+																							.cap
+																							.price_cny
+																				: 0
 																		)}
 																	</div>
 																</div>
 															</div>
 														</div>
 													)}
-												{walletList &&
+												{isLoaded &&
+													walletList &&
 													walletList.record &&
 													walletList.record.gnt &&
 													walletList.record.gnt
@@ -768,22 +785,18 @@ export default class Root extends PureComponent {
 																				"en"
 																					? "$"
 																					: "￥"}
-																				{Number(
-																					(
-																						item.balance *
-																						(item.cap
-																							? lng ==
-																							  "en"
-																								? item
-																										.cap
-																										.price_usd
-																								: item
-																										.cap
-																										.price_cny
-																							: 0)
-																					).toFixed(
-																						2
-																					)
+																				{getShowMoney(
+																					item.balance,
+																					item.cap
+																						? lng ==
+																						  "en"
+																							? item
+																									.cap
+																									.price_usd
+																							: item
+																									.cap
+																									.price_cny
+																						: 0
 																				)}
 																			</div>
 																		</div>
@@ -792,7 +805,8 @@ export default class Root extends PureComponent {
 															);
 														}
 													)}
-												{walletList &&
+												{isLoaded &&
+													walletList &&
 													walletList.list &&
 													walletList.list.length >
 														0 &&
@@ -856,30 +870,26 @@ export default class Root extends PureComponent {
 																				"en"
 																					? "$"
 																					: "￥"}
-																				{Number(
-																					(
-																						getNumFromStr(
-																							item.balance,
-																							item.decimals
-																						) *
-																						(item.gnt_category &&
-																						item
-																							.gnt_category
-																							.cap
-																							? lng ==
-																							  "en"
-																								? item
-																										.gnt_category
-																										.cap
-																										.price_usd
-																								: item
-																										.gnt_category
-																										.cap
-																										.price_cny
-																							: 0)
-																					).toFixed(
-																						2
-																					)
+																				{getShowMoney(
+																					getNumFromStr(
+																						item.balance,
+																						item.decimals
+																					),
+																					item.gnt_category &&
+																					item
+																						.gnt_category
+																						.cap
+																						? lng ==
+																						  "en"
+																							? item
+																									.gnt_category
+																									.cap
+																									.price_usd
+																							: item
+																									.gnt_category
+																									.cap
+																									.price_cny
+																						: 0
 																				)}
 																			</div>
 																		</div>

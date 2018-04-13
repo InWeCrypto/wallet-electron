@@ -1,8 +1,9 @@
 import React, { PureComponent } from "react";
+import { BigNumber } from "bignumber.js";
 import { Link } from "react-router-dom";
 import { I18n } from "react-i18next";
 import PerfectScrollbar from "perfect-scrollbar";
-import { getQuery } from "../../../../utils/util";
+import { getQuery, getShowMoney, getNeoNumber } from "../../../../utils/util";
 import Menu from "@/menu";
 import "./index.less";
 import ledger from "#/ledger_ico.png";
@@ -63,7 +64,7 @@ export default class Root extends PureComponent {
 	}
 	getChildMoney(list, o) {
 		let { lng } = this.props;
-		let num = 0;
+		let num = new BigNumber(0);
 		if (o.category_id == 1) {
 			if (list && list.list && list.list.length > 0) {
 				list.list.map((item, index) => {
@@ -73,70 +74,13 @@ export default class Root extends PureComponent {
 								? item.gnt_category.cap.price_usd
 								: item.gnt_category.cap.price_cny
 							: 0;
-					num =
-						num -
-						0 +
-						getEthNum(item.balance, item.decimals) * price -
-						0;
-				});
-			}
-			if (
-				this.props.walletConversion &&
-				this.props.walletConversion.list &&
-				this.props.walletConversion.list.length > 0
-			) {
-				this.props.walletConversion.list.map((item, index) => {
-					if (item.id == o.id) {
-						let price =
-							item.category && item.category.cap
-								? lng == "en"
-									? item.category.cap.price_usd
-									: item.category.cap.price_cny
-								: 0;
-						num =
-							num -
-							0 +
-							getEthNum(item.balance, item.decimal) * price -
-							0;
-					}
-				});
-			}
-			let res = new Number(num) + 0;
-			return typeof res === "number" && !isNaN(res) ? res.toFixed(2) : 0;
-		}
-		if (o.category_id == 2) {
-			if (list && list.list && list.list.length > 0) {
-				list.list.map((item, index) => {
-					let price =
-						item.gnt_category && item.gnt_category.cap
-							? lng == "en"
-								? item.gnt_category.cap.price_usd
-								: item.gnt_category.cap.price_cny
-							: 0;
-
-					num =
-						num +
-						getNumFromStr(item.balance) /
-							Math.pow(10, item.decimals) *
-							price -
-						0;
-				});
-			}
-
-			if (
-				list &&
-				list.record &&
-				list.record.gnt &&
-				list.record.gnt.length > 0
-			) {
-				list.record.gnt.map((item, index) => {
-					num += Number(
-						item.balance *
-							(item.cap
-								? lng == "en"
-									? item.cap.price_usd
-									: item.cap.price_cny
-								: 0)
+					num = num.plus(
+						new BigNumber(
+							getShowMoney(
+								getEthNum(item.balance, item.decimals),
+								price
+							)
+						)
 					);
 				});
 			}
@@ -153,7 +97,79 @@ export default class Root extends PureComponent {
 									? item.category.cap.price_usd
 									: item.category.cap.price_cny
 								: 0;
-						num += item.balance * price;
+						num = num.plus(
+							new BigNumber(
+								getShowMoney(
+									getEthNum(item.balance, item.decimals),
+									price
+								)
+							)
+						);
+					}
+				});
+			}
+			let r = getNumberString(num) + "";
+			return r.substring(0, r.lastIndexOf(".") + 3);
+		}
+		if (o.category_id == 2) {
+			if (list && list.list && list.list.length > 0) {
+				list.list.map((item, index) => {
+					let price =
+						item.gnt_category && item.gnt_category.cap
+							? lng == "en"
+								? item.gnt_category.cap.price_usd
+								: item.gnt_category.cap.price_cny
+							: 0;
+					num = num.plus(
+						new BigNumber(
+							getShowMoney(
+								getNumFromStr(item.balance, item.decimals),
+								price
+							)
+						)
+					);
+				});
+			}
+
+			if (
+				list &&
+				list.record &&
+				list.record.gnt &&
+				list.record.gnt.length > 0
+			) {
+				list.record.gnt.map((item, index) => {
+					num = num.plus(
+						new BigNumber(
+							getShowMoney(
+								getNeoNumber(item.balance),
+								item.cap
+									? lng == "en"
+										? item.cap.price_usd
+										: item.cap.price_cny
+									: 0
+							)
+						)
+					);
+				});
+			}
+			if (
+				this.props.walletConversion &&
+				this.props.walletConversion.list &&
+				this.props.walletConversion.list.length > 0
+			) {
+				this.props.walletConversion.list.map((item, index) => {
+					if (item.id == o.id) {
+						let price =
+							item.category && item.category.cap
+								? lng == "en"
+									? item.category.cap.price_usd
+									: item.category.cap.price_cny
+								: 0;
+						num = num.plus(
+							new BigNumber(
+								getShowMoney(getNeoNumber(item.balance), price)
+							)
+						);
 					}
 				});
 			}
