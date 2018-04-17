@@ -384,7 +384,11 @@ export default class Root extends PureComponent {
 												</span>
 											</div>
 											<div className="address">
-												{watchInfo && watchInfo.address}
+												{watchInfo &&
+													watchInfo.address &&
+													(watchInfo.category_id == 2
+														? watchInfo.address
+														: watchInfo.address.toLowerCase())}
 											</div>
 										</div>
 										<div className="money">

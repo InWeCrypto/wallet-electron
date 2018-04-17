@@ -101,7 +101,7 @@ export default {
 		walletEmpty: "钱包名称不得为空",
 		emailEmpty: "邮箱地址不得为空",
 		passwordEmpty: "密码不得为空",
-		memonicEmpty: "密码不得为空",
+		memonicEmpty: "助记词不得为空",
 		privateKeyEmpty: "私钥不得为空",
 		rpasswordEmpty: "重新输入密码不得为空",
 		emailSend: "邮箱发送失败，请重试",

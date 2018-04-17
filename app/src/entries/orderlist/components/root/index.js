@@ -12,7 +12,6 @@ import Menu from "@/menu/index.js";
 import HeaderNav from "@/headernav/index.js";
 import img from "#/zhuye_ico.png";
 import searchimg from "#/search_ico.png";
-
 import "./index.less";
 
 export default class Root extends PureComponent {
@@ -25,7 +24,7 @@ export default class Root extends PureComponent {
 			asset_id: null,
 			address: null,
 			info: null,
-			page: 0,
+			page: 1,
 			isGetting: false
 		};
 		this.timer = null;
@@ -41,7 +40,8 @@ export default class Root extends PureComponent {
 			set.flag = q.flag;
 		}
 		if (q.asset_id) {
-			set.asset_id = q.asset_id;
+			set.asset_id =
+				q.flag == "neo" ? q.asset_id : q.asset_id.toLowerCase();
 		}
 		if (q.address) {
 			set.address = q.address;
@@ -50,7 +50,7 @@ export default class Root extends PureComponent {
 			set.info = JSON.parse(localStorage.getItem(`${q.timetamp}`));
 		}
 		if (q.wallet_id && q.flag && q.asset_id) {
-			this.rePageLoad(q);
+			this.rePageLoad(set);
 		}
 		this.setState(set);
 		let box = document.querySelector("#listBox");
@@ -60,9 +60,14 @@ export default class Root extends PureComponent {
 			suppressScrollX: true
 		});
 		box.addEventListener(
-			"ps-y-reach-end",
+			"ps-scroll-down",
 			() => {
-				this.getPageData();
+				if (
+					this.myScroll.reach.y == "end" &&
+					this.props.orderList.list.length >= 20
+				) {
+					this.getPageData();
+				}
 			},
 			false
 		);
@@ -74,57 +79,47 @@ export default class Root extends PureComponent {
 		clearTimeout(this.timer);
 		this.props.clearList();
 	}
-	rePageLoad(obj) {
+	async rePageLoad(obj) {
 		let q = obj ? obj : this.state;
 		clearTimeout(this.timer);
-		this.props
-			.getStartOrderList({
-				flag: q.flag,
-				wallet_id: q.wallet_id,
-				asset_id: q.asset_id,
-				size: obj
-					? 20
-					: this.props.orderList && this.props.orderList.list
-						? this.props.orderList.list.length
-						: 20,
-				page: 0
-			})
-			.then(res => {
-				if (res.code === 4000) {
-					this.setState({
-						page: this.state.page + 1
-					});
-				}
-			});
+		let l = obj
+			? 20
+			: this.props.orderList && this.props.orderList.list
+				? this.props.orderList.list.length
+				: 20;
+		let res = await this.props.getStartOrderList({
+			flag: q.flag,
+			wallet_id: q.wallet_id,
+			asset_id: q.asset_id,
+			size: l,
+			page: 1
+		});
 		if (q.flag == "eth") {
-			this.props.getBlockNumber();
+			let s = await this.props.getBlockNumber();
 		}
+		this.myScroll.update();
 		this.timer = setTimeout(() => {
 			this.rePageLoad();
-			this.myScroll.update();
 		}, this.props.blockSecond ? this.props.blockSecond.bps : 30000);
 	}
-	getPageData() {
+	async getPageData() {
 		let box = document.querySelector("#listBox");
 		let st = box.scrollTop;
 		let h = box.offsetHeight;
 		let sh = box.scrollHeight;
-		this.props
-			.getOrderList({
-				flag: this.state.flag,
-				wallet_id: this.state.wallet_id,
-				asset_id: this.state.asset_id,
-				size: 20,
-				page: this.state.page
-			})
-			.then(res => {
-				this.myScroll.update();
-				if (res.code === 4000) {
-					this.setState({
-						page: this.state.page + 1
-					});
-				}
+		let res = await this.props.getOrderList({
+			flag: this.state.flag,
+			wallet_id: this.state.wallet_id,
+			asset_id: this.state.asset_id,
+			size: 20,
+			page: this.state.page + 1
+		});
+		this.myScroll.update();
+		if (res.code === 4000) {
+			this.setState({
+				page: this.state.page + 1
 			});
+		}
 	}
 	getStateEth(item) {
 		let itemB = item.block_number;

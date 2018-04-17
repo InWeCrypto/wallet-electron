@@ -108,7 +108,7 @@ export default {
 		walletEmpty: "Walletname con't be empty",
 		emailEmpty: "Email address cannot be empty",
 		passwordEmpty: "Password cannot be empty",
-		memonicEmpty: "Password cannot be empty",
+		memonicEmpty: "Memonic cannot be empty",
 		privateKeyEmpty: "Private Key cannot be empty",
 		rpasswordEmpty: "Repeating password cannot be empty",
 		emailSend: "Email sending failed, please try again ",

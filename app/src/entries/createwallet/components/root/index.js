@@ -108,7 +108,7 @@ export default class Root extends PureComponent {
 			itemList: [...list]
 		});
 	}
-	createWalletClick(idx) {
+	async createWalletClick(idx) {
 		let { walletTypes, lng } = this.props;
 		let { itemList } = this.state;
 		let name = itemList[idx].walletName;
@@ -116,11 +116,15 @@ export default class Root extends PureComponent {
 		let password = itemList[idx].password;
 		let repassword = itemList[idx].repeatPassword;
 		if (!name || name.length <= 0) {
-			Msg.prompt(i18n.t("error.nameEmpty", lng));
+			Msg.prompt(i18n.t("error.walletEmpty", lng));
 			return;
 		}
 		if (!password || password.length <= 0) {
-			Msg.prompt(i18n.t("error.nameEmpty", lng));
+			Msg.prompt(i18n.t("error.passwordEmpty", lng));
+			return;
+		}
+		if (!repassword || repassword.length <= 0) {
+			Msg.prompt(i18n.t("error.rpasswordEmpty", lng));
 			return;
 		}
 		let reg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,16}$/g;
@@ -138,22 +142,23 @@ export default class Root extends PureComponent {
 			type: walletTypes[idx].name.toLowerCase(),
 			password: itemList[idx].password
 		};
-		this.props.getCreateAddress(params).then(res => {
-			this.props
-				.createWallet({
-					category_id: walletTypes[idx].id,
-					name: itemList[idx].walletName,
-					address: res.address
-				})
-				.then(res1 => {
-					if (res1.code === 4000) {
-						Msg.prompt(i18n.t("createWallet.success", lng));
-						setTimeout(() => {
-							toHref("wallet");
-						}, 2000);
-					}
-				});
-		});
+		let res = this.props.getCreateAddress(params);
+		if (res) {
+			let res1 = this.props.createWallet({
+				category_id: walletTypes[idx].id,
+				name: itemList[idx].walletName,
+				address:
+					params.type == "neo"
+						? res.address
+						: res.address.toLowerCase()
+			});
+			if (res1.code === 4000) {
+				Msg.prompt(i18n.t("createWallet.success", lng));
+				setTimeout(() => {
+					toHref("wallet");
+				}, 2000);
+			}
+		}
 	}
 	render() {
 		let { lng, createWalletR, walletTypes } = this.props;

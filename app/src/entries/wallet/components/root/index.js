@@ -193,7 +193,8 @@ export default class Root extends PureComponent {
 					if (
 						item.address &&
 						i.address &&
-						item.address === i.address &&
+						item.address.toLowerCase() ===
+							i.address.toLowerCase() &&
 						item.name === i.name
 					) {
 						item.isWatch = false;
@@ -237,7 +238,6 @@ export default class Root extends PureComponent {
 			localWalletList
 		} = this.props;
 		let list = this.getCommonList(walletList, localWalletList);
-
 		return (
 			<I18n>
 				{(t, { i18n }) => (
@@ -373,9 +373,10 @@ export default class Root extends PureComponent {
 																			)}
 																	</div>
 																	<div className="wallet-address">
-																		{
-																			item.address
-																		}
+																		{item.category_id ==
+																		2
+																			? item.address
+																			: item.address.toLowerCase()}
 																	</div>
 																</div>
 																<div>

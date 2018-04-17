@@ -103,7 +103,10 @@ export default class Root extends PureComponent {
 			let wp = {
 				category_id: this.state.category_id,
 				name: this.state.name,
-				address: this.state.watchAddress
+				address:
+					params.type == "neo"
+						? this.state.watchAddress
+						: this.state.watchAddress.toLowerCase()
 			};
 			if (this.state.type == "neo") {
 				let whash = await this.props.decodeNep5({
@@ -135,7 +138,10 @@ export default class Root extends PureComponent {
 				let p = {
 					category_id: this.state.category_id,
 					name: this.state.name,
-					address: local.address
+					address:
+						params.type == "neo"
+							? local.address
+							: local.address.toLowerCase()
 				};
 				if (this.state.type == "neo") {
 					let hash = await this.props.decodeNep5({

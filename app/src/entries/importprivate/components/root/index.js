@@ -43,7 +43,7 @@ export default class Root extends PureComponent {
 	}
 	goEnd() {
 		if (this.state.text.length <= 0) {
-			Msg.prompot(i18n.t("error.privateKeyEmpty", this.props.lng));
+			Msg.prompt(i18n.t("error.privateKeyEmpty", this.props.lng));
 			return;
 		}
 		let time = new Date().getTime();

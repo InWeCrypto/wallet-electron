@@ -239,10 +239,10 @@ export default class Root extends PureComponent {
 		} = this.props;
 		let params = {};
 		let n = await this.props.getEthNonce({
-			address: ethWalletDetailInfo.address
+			address: ethWalletDetailInfo.address.toLowerCase()
 		});
-		params.Wallet = ethWalletDetailInfo.address;
-		params.To = sendAddress;
+		params.Wallet = ethWalletDetailInfo.address.toLowerCase();
+		params.To = sendAddress.toLowerCase();
 		params.Password = res;
 		let gaspri = "0x" + (gasNum * Math.pow(10, 18) / 90000).toString(16);
 		params.GasPrice =
@@ -275,8 +275,8 @@ export default class Root extends PureComponent {
 				let res = await this.props.createOrder({
 					wallet_id: ethWalletDetailInfo.id,
 					data: l,
-					pay_address: ethWalletDetailInfo.address,
-					receive_address: sendAddress,
+					pay_address: ethWalletDetailInfo.address.toLowerCase(),
+					receive_address: sendAddress.toLowerCase(),
 					remark: "",
 					fee: params.Amount,
 					handle_fee: params.GasPrice,
@@ -536,7 +536,7 @@ export default class Root extends PureComponent {
 											</div>
 											<div className="address">
 												{ethWalletDetailInfo &&
-													ethWalletDetailInfo.address}
+													ethWalletDetailInfo.address.toLowerCase()}
 											</div>
 										</div>
 										<div className="money">
