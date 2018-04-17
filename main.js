@@ -7,10 +7,8 @@ const {
 	Tray,
 	session
 } = require("electron");
-//const ioHook = require("iohook");
 
 const autoUpdater = require("electron-updater").autoUpdater;
-
 const electron = require("electron");
 const cp = require("child_process");
 const os = require("os");
@@ -363,6 +361,22 @@ let template = [
 		]
 	}
 ];
+template[2].submenu.push({
+	label: text.toggleDev,
+	accelerator: (function() {
+		if (process.platform === "darwin") {
+			return "Alt+Command+I";
+		} else {
+			return "Ctrl+Shift+I";
+		}
+	})(),
+	click: function(item, focusedWindow) {
+		if (focusedWindow) {
+			focusedWindow.toggleDevTools();
+		}
+	}
+});
+
 if (isDev) {
 	template[3].submenu.unshift({
 		label: text.reload,
@@ -377,21 +391,6 @@ if (isDev) {
 					});
 				}
 				focusedWindow.reload();
-			}
-		}
-	});
-	template[2].submenu.push({
-		label: text.toggleDev,
-		accelerator: (function() {
-			if (process.platform === "darwin") {
-				return "Alt+Command+I";
-			} else {
-				return "Ctrl+Shift+I";
-			}
-		})(),
-		click: function(item, focusedWindow) {
-			if (focusedWindow) {
-				focusedWindow.toggleDevTools();
 			}
 		}
 	});
@@ -537,7 +536,7 @@ ipc.on("errorMsg", function(event, text, title) {
 ipc.on("question", function(event, title, txt, isWatch) {
 	var sure = text.sure;
 	var cannel = text.cannel;
-	var quesState = dialog.showMessageBox({
+	var quesState = dialog.showMessageBox(win, {
 		type: "question",
 		title: title,
 		message: txt,
@@ -627,7 +626,7 @@ ipc.on("exportJSON", function(event, arg) {
 });
 
 var sendStatus = function(text) {
-	return dialog.showMessageBox({
+	return dialog.showMessageBox(win, {
 		title: "message",
 		message: text
 	});
@@ -661,7 +660,7 @@ var updateHandler = function() {
 		setTimeout(function() {
 			autoUpdater.quitAndInstall();
 			createWindow();
-			win.webContents.send("setLastPage");
+			//win.webContents.send("setLastPage");
 		}, 2000);
 	});
 	// Wait a second for the window to exist before checking for updates.
@@ -731,7 +730,6 @@ function createWindow() {
 		if (uf) {
 			win.webContents.send("loadHistory", uf);
 		}
-
 		win.webContents.send("changeLng", lng);
 		if (lng == "zh") {
 			template[template.length - 2].submenu[0].submenu[0].checked = true;
@@ -740,7 +738,6 @@ function createWindow() {
 			template[template.length - 2].submenu[0].submenu[0].checked = false;
 			template[template.length - 2].submenu[0].submenu[1].checked = true;
 		}
-
 		const menu = Menu.buildFromTemplate(template);
 		Menu.setApplicationMenu(menu);
 	});
@@ -756,43 +753,6 @@ function createWindow() {
 	win.on("closed", () => {
 		win = null;
 	});
-	// if (process.platform == "darwin") {
-	// 	let hookObj = {};
-	// 	let time = 0;
-	// 	ioHook.on(["mousewheel"], event => {
-	// 		if (event.direction != 4) {
-	// 			return;
-	// 		}
-	// 		//(!hookObj.x || hookObj.x != event.x) &&
-	// 		if (time == 0) {
-	// 			hookObj.x = event.x;
-	// 			// if (event.rotation == -1) {
-	// 			// 	win.webContents.goBack();
-	// 			// }
-	// 			// if (event.rotation == 1) {
-	// 			// 	win.webContents.goForward();
-	// 			// }
-	// 			//time = 3;
-	// 			//setTimeGo();
-	// 		}
-	// 	});
-	// 	win.on("focus", function() {
-	// 		ioHook.start();
-	// 	});
-	// 	var setTimeGo = function() {
-	// 		var timer = null;
-	// 		clearTimeout(timer);
-	// 		timer = setTimeout(() => {
-	// 			time--;
-	// 			if (time > 0) {
-	// 				setTimeGo();
-	// 			}
-	// 		}, 1000);
-	// 	};
-	// 	win.on("blur", function() {
-	// 		ioHook.stop();
-	// 	});
-	// }
 }
 
 // Some APIs can only be used after this event occurs.

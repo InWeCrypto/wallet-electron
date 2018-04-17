@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { Modal, Button } from "antd";
 import { I18n } from "react-i18next";
-import { getQuery } from "../../../../utils/util";
+import { getQuery, getNeoNumber } from "../../../../utils/util";
 import Menu from "@/menu/index.js";
 import HeaderNav from "@/headernav/index.js";
 import imgico from "#/tishi_ico.png";
@@ -47,13 +47,23 @@ export default class Root extends PureComponent {
 		});
 	}
 	async showFrozenInp() {
+		let { walletInfo, password } = this.state;
+		let { gasInfo } = this.props;
+		if (
+			!gasInfo ||
+			!gasInfo.record ||
+			!gasInfo.record.balance ||
+			getNeoNumber(gasInfo.record.balance) <= 0
+		) {
+			Msg.prompt(i18n.t("error.neoEmpty", this.props.lng));
+			return;
+		}
 		if (!this.state.frozenShow) {
 			this.setState({
 				frozenShow: true
 			});
 			return;
 		}
-		let { walletInfo, password } = this.state;
 		if (!password || password.length <= 0) {
 			Msg.prompt(i18n.t("error.passwordEmpty", this.props.lng));
 			return;
@@ -109,10 +119,11 @@ export default class Root extends PureComponent {
 			if (params.Amount.indexOf(".") != -1) {
 				params.Amount = params.Amount.split(".")[0];
 			}
+			logger.info(JSON.stringify(params));
 			let l = await this.props.sendNeoOrader(params);
 			let fee = this.props.gasInfo.record.balance;
 			if (l && l.data && l.txid) {
-				let unfree = await this.props.createGasOrder({
+				let p2 = {
 					wallet_id: walletInfo.id,
 					data: l.data,
 					trade_no:
@@ -124,7 +135,9 @@ export default class Root extends PureComponent {
 					handle_fee: "0",
 					flag: "NEO",
 					asset_id: params.Asset
-				});
+				};
+				logger.info(JSON.stringify(p2));
+				let unfree = await this.props.createGasOrder(p2);
 				if (unfree && unfree.code === 4000) {
 					window.walletState.addItem({
 						txid: unfree.data.tx,
@@ -315,7 +328,6 @@ export default class Root extends PureComponent {
 												  ).toFixed(8)
 												: 0}
 										</div>
-
 										<input
 											className={
 												frozenShow ? "showhei" : ""
@@ -327,7 +339,6 @@ export default class Root extends PureComponent {
 												this
 											)}
 										/>
-
 										<button
 											className="button-green total"
 											onClick={this.showFrozenInp.bind(

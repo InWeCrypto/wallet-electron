@@ -89,7 +89,7 @@ class Menu extends PureComponent {
 									</div>
 								</NavLink>
 							</li>
-							<li className={curmenu == "project" ? "cur" : ""}>
+							{/* <li className={curmenu == "project" ? "cur" : ""}>
 								<NavLink
 									to={{
 										pathname: "/project"
@@ -100,7 +100,7 @@ class Menu extends PureComponent {
 										{t("menu.project", lng)}
 									</div>
 								</NavLink>
-							</li>
+							</li> */}
 							{/* <li
 								className={curmenu == "myfollowup" ? "cur" : ""}
 							>

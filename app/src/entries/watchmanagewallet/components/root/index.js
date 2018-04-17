@@ -29,9 +29,17 @@ export default class Root extends PureComponent {
 				type: q.type
 			});
 		}
-		ipc.on("deleteWatchWallet", () => {
-			this.deleteWatch(true);
+		this.deleteIPC = this.deleteIPC.bind(this);
+		ipc.once("deleteWatchWallet", this.deleteIPC);
+	}
+	componentWillUnmount() {
+		this.setState({
+			id: ""
 		});
+		ipc.removeListener("deleteLocalWallet", this.deleteIPC);
+	}
+	deleteIPC() {
+		this.deleteWatch(true);
 	}
 	deleteWatch(type) {
 		if (!type) {

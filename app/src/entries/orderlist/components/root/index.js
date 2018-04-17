@@ -98,11 +98,11 @@ export default class Root extends PureComponent {
 			});
 		if (q.flag == "eth") {
 			this.props.getBlockNumber();
-			this.timer = setTimeout(() => {
-				this.rePageLoad();
-				this.myScroll.update();
-			}, this.props.blockSecond ? this.props.blockSecond.bps : 30000);
 		}
+		this.timer = setTimeout(() => {
+			this.rePageLoad();
+			this.myScroll.update();
+		}, this.props.blockSecond ? this.props.blockSecond.bps : 30000);
 	}
 	getPageData() {
 		let box = document.querySelector("#listBox");

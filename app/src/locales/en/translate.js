@@ -130,7 +130,8 @@ export default {
 		nodata: "No transactions yet.",
 		delete: "Delete Fail",
 		keyerror: "Key store type is error",
-		ethfrequently: "The transfer is too frequent, please later"
+		ethfrequently: "The transfer is too frequent, please later",
+		neoEmpty: "The number of Neo is 0, not thawing"
 	},
 	delete: {
 		delete: "Delete"

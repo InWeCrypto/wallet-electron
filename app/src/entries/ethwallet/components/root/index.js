@@ -305,7 +305,7 @@ export default class Root extends PureComponent {
 		} catch (e) {
 			load.hide();
 		}
-		this.sendTime = 30;
+		this.sendTime = 60;
 		this.sendTimeRun();
 	}
 	closePasss() {

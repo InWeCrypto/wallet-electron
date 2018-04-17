@@ -15,7 +15,8 @@ export default class Root extends PureComponent {
 		super(props);
 		this.state = {
 			password: "",
-			isShowMemo: true
+			isShowMemo: true,
+			address: ""
 		};
 	}
 	componentDidMount() {
@@ -39,11 +40,18 @@ export default class Root extends PureComponent {
 		this.setState({
 			...set
 		});
-		ipc.on("deleteLocalWallet", () => {
-			this.deleteWallet(true);
-		});
+		this.deleteIPC = this.deleteIPC.bind(this);
+		ipc.on("deleteLocalWallet", this.deleteIPC);
 	}
-
+	deleteIPC() {
+		this.deleteWallet.call(this, true);
+	}
+	componentWillUnmount() {
+		this.setState({
+			address: ""
+		});
+		ipc.removeListener("deleteLocalWallet", this.deleteIPC);
+	}
 	showInputBox() {
 		this.setState({
 			isShowInputBox: true

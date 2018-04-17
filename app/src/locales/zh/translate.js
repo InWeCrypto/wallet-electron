@@ -122,7 +122,8 @@ export default {
 		nodata: "无交易记录",
 		delete: "删除失败",
 		keyerror: "Key Store 格式错误",
-		ethfrequently: "转账太频繁，请稍后"
+		ethfrequently: "转账太频繁，请稍后",
+		neoEmpty: "Neo数量为0，不能解冻"
 	},
 	delete: {
 		delete: "删除"

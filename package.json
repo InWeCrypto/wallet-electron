@@ -1,6 +1,6 @@
 {
 	"name": "InWeCrypto",
-	"version": "1.0.30",
+	"version": "1.0.34",
 	"description": "InWeCrypto",
 	"main": "main.js",
 	"scripts": {
@@ -75,6 +75,7 @@
 		"history": "^4.7.2",
 		"i18next": "^10.2.2",
 		"iohook": "^0.1.15",
+		"log4js": "^2.5.3",
 		"navigator": "^1.0.1",
 		"normalize.css": "^7.0.0",
 		"npm": "^5.8.0",
