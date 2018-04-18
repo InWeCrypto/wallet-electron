@@ -218,7 +218,8 @@ export default {
 		txid: "Txid",
 		fail: "Fail",
 		success: "Success",
-		pending: "Pending"
+		pending: "Pending",
+		package: "Packaging"
 	},
 	manageWatch: {
 		title: "Manager wallet setting",

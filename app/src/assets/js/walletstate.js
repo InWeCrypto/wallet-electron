@@ -6,7 +6,10 @@ window.walletState = (function(win, http, undefined) {
 		checkState.call(this);
 	};
 	var checkState = async function() {
-		var stateL = local.getItem("walletState");
+		var isTest = this.checkTest();
+		var stateL = isTest
+			? local.getItem("walletStateTest")
+			: local.getItem("walletState");
 		var _this = this;
 		if (
 			stateL &&
@@ -70,24 +73,41 @@ window.walletState = (function(win, http, undefined) {
 	};
 
 	WalletState.prototype = {
+		checkTest: function() {
+			let dev = localStorage.getItem("isDev");
+			if (dev && JSON.parse(dev)) {
+				return true;
+			} else {
+				return false;
+			}
+		},
 		addItem: function(item) {
 			if (!item) {
 				return;
 			}
-			var walletS = local.getItem("walletState");
+			var isTest = this.checkTest();
+			var walletS = isTest
+				? local.getItem("walletStateTest")
+				: local.getItem("walletState");
 			if (!walletS) {
 				walletS = [];
 			} else {
 				walletS = JSON.parse(walletS);
 			}
 			walletS.push(item);
-			local.setItem("walletState", JSON.stringify(walletS));
+			local.setItem(
+				isTest ? "walletStateTest" : "walletState",
+				JSON.stringify(walletS)
+			);
 		},
 		removeItem: function(hashid) {
 			if (!hashid) {
 				return;
 			}
-			var walletS = local.getItem("walletState");
+			var isTest = this.checkTest();
+			var walletS = isTest
+				? local.getItem("walletStateTest")
+				: local.getItem("walletState");
 			if (!walletS) {
 				return;
 			}
@@ -103,13 +123,19 @@ window.walletState = (function(win, http, undefined) {
 			if (!list) {
 				list = [];
 			}
-			local.setItem("walletState", JSON.stringify(list));
+			local.setItem(
+				isTest ? "walletStateTest" : "walletState",
+				JSON.stringify(list)
+			);
 		},
 		checkItem: function(address) {
 			if (!address) {
 				return false;
 			}
-			var walletS = local.getItem("walletState");
+			var isTest = this.checkTest();
+			var walletS = isTest
+				? local.getItem("walletStateTest")
+				: local.getItem("walletState");
 			if (
 				!walletS ||
 				walletS.length <= 0 ||

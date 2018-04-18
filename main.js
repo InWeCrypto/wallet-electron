@@ -13,7 +13,6 @@ const electron = require("electron");
 const cp = require("child_process");
 const os = require("os");
 const fs = require("fs");
-//const log = require("electron-log");
 const ipc = electron.ipcMain;
 const path = require("path");
 const url = require("url");
@@ -376,25 +375,25 @@ template[2].submenu.push({
 		}
 	}
 });
-
-if (isDev) {
-	template[3].submenu.unshift({
-		label: text.reload,
-		accelerator: "CmdOrCtrl+R",
-		click: function(item, focusedWindow) {
-			if (focusedWindow) {
-				if (focusedWindow.id === 1) {
-					BrowserWindow.getAllWindows().forEach(function(win) {
-						if (win.id > 1) {
-							win.close();
-						}
-					});
-				}
-				focusedWindow.reload();
+template[3].submenu.unshift({
+	label: text.reload,
+	accelerator: "CmdOrCtrl+R",
+	click: function(item, focusedWindow) {
+		if (focusedWindow) {
+			if (focusedWindow.id === 1) {
+				BrowserWindow.getAllWindows().forEach(function(win) {
+					if (win.id > 1) {
+						win.close();
+					}
+				});
 			}
+			focusedWindow.reload();
 		}
-	});
-}
+	}
+});
+// if (isDev) {
+
+// }
 if (process.platform === "darwin") {
 	const name = "InWeCrypto";
 	template.unshift({

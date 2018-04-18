@@ -209,7 +209,8 @@ export default {
 		txid: "交易单号",
 		fail: "交易失败",
 		success: "交易成功",
-		pending: "正在处理"
+		pending: "正在处理",
+		package: "准备打包"
 	},
 	manageWatch: {
 		title: "管理观察钱包",

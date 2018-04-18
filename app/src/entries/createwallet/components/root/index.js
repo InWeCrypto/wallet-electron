@@ -142,9 +142,9 @@ export default class Root extends PureComponent {
 			type: walletTypes[idx].name.toLowerCase(),
 			password: itemList[idx].password
 		};
-		let res = this.props.getCreateAddress(params);
-		if (res) {
-			let res1 = this.props.createWallet({
+		let res = await this.props.getCreateAddress(params);
+		if (res && res.address) {
+			let res1 = await this.props.createWallet({
 				category_id: walletTypes[idx].id,
 				name: itemList[idx].walletName,
 				address:

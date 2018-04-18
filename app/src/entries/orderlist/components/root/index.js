@@ -24,7 +24,7 @@ export default class Root extends PureComponent {
 			asset_id: null,
 			address: null,
 			info: null,
-			page: 1,
+			page: 0,
 			isGetting: false
 		};
 		this.timer = null;
@@ -50,6 +50,7 @@ export default class Root extends PureComponent {
 			set.info = JSON.parse(localStorage.getItem(`${q.timetamp}`));
 		}
 		if (q.wallet_id && q.flag && q.asset_id) {
+			this.timer = 0;
 			this.rePageLoad(set);
 		}
 		this.setState(set);
@@ -59,27 +60,31 @@ export default class Root extends PureComponent {
 			wheelPropagation: true,
 			suppressScrollX: true
 		});
-		box.addEventListener(
-			"ps-scroll-down",
-			() => {
-				if (
-					this.myScroll.reach.y == "end" &&
-					this.props.orderList.list.length >= 20
-				) {
-					this.getPageData();
-				}
-			},
-			false
-		);
+		this.listenEvent = this.listenEvent.bind(this);
+		box.addEventListener("ps-scroll-down", this.listenEvent, false);
 		this.props.getMinBlock();
 		this.props.getBlockSecond();
 	}
 	componentWillUnmount() {
+		let box = document.querySelector("#listBox");
 		this.myScroll.destroy();
 		clearTimeout(this.timer);
+		this.timer = null;
+		box.removeEventListener("ps-scroll-down", this.listenEvent, false);
 		this.props.clearList();
 	}
+	listenEvent() {
+		if (
+			this.myScroll.reach.y == "end" &&
+			this.props.orderList.list.length >= 20
+		) {
+			this.getPageData();
+		}
+	}
 	async rePageLoad(obj) {
+		if (this.timer == null) {
+			return;
+		}
 		let q = obj ? obj : this.state;
 		clearTimeout(this.timer);
 		let l = obj
@@ -87,16 +92,20 @@ export default class Root extends PureComponent {
 			: this.props.orderList && this.props.orderList.list
 				? this.props.orderList.list.length
 				: 20;
+		if (q.flag == "eth") {
+			let s = await this.props.getBlockNumber();
+		}
 		let res = await this.props.getStartOrderList({
 			flag: q.flag,
 			wallet_id: q.wallet_id,
 			asset_id: q.asset_id,
 			size: l,
-			page: 1
+			page: 0
 		});
-		if (q.flag == "eth") {
-			let s = await this.props.getBlockNumber();
-		}
+
+		this.setState({
+			page: 0
+		});
 		this.myScroll.update();
 		this.timer = setTimeout(() => {
 			this.rePageLoad();
@@ -127,11 +136,11 @@ export default class Root extends PureComponent {
 		let curB = this.props.currentBlockNumber
 			? this.props.currentBlockNumber.value
 			: 0;
-
 		let minB = this.props.minBlock ? this.props.minBlock.min_block_num : 0;
-
 		let stateB = itemB + minB - curB;
-
+		if (stateB > 0 && (!confirmAt || confirmAt.length <= 0)) {
+			return "package";
+		}
 		if (stateB < 0 && (!confirmAt || confirmAt.length <= 0)) {
 			return "fail";
 		}
@@ -139,7 +148,7 @@ export default class Root extends PureComponent {
 			return "success";
 		}
 		if (stateB > 0 && stateB < minB) {
-			return minB - stateB;
+			return minB - stateB + 1;
 		}
 	}
 	openEthTxid(item) {
@@ -179,6 +188,12 @@ export default class Root extends PureComponent {
 			orderList.list.map((item, index) => {
 				item.state = this.getStateEth(item);
 				item.percent = null;
+				if (item.state == "package") {
+					item.stateText = i18n.t("orderList.package", lng);
+					item.percent = "0%";
+					item.state = 0;
+					return;
+				}
 				if (item.state == "fail") {
 					item.stateText = i18n.t("orderList.fail", lng);
 					return;
