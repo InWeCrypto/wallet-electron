@@ -17,32 +17,33 @@ export default class Root extends PureComponent {
 		this.state = {};
 		this.myScroll = null;
 	}
-	componentDidMount() {
-		this.props.getWalletList().then(res => {
-			if (res.code === 4000) {
-				let list = [];
-				res.data.list.map((item, index) => {
-					list.push(item.id);
-				});
-				this.props
-					.getWalletConversion({ ids: `[${list.join(",")}]` })
-					.then(res => {
-						if (res.code === 4000) {
-							let dlist = [];
-							res.data.list.map((item, index) => {
-								this.props.getWalletDetail({
-									id: item.id
-								});
-							});
-						}
+	async componentDidMount() {
+		let res = await this.props.getWalletList();
+		if (res.code === 4000) {
+			let list = [];
+			res.data.list.map((item, index) => {
+				list.push(item.id);
+			});
+			let res1 = await this.props.getWalletConversion({
+				ids: `[${list.join(",")}]`
+			});
+			if (res1.code === 4000) {
+				let dlist = [];
+				res1.data.list.map((item, index) => {
+					this.props.getWalletDetail({
+						id: item.id
 					});
+				});
 			}
-		});
-		this.props.getLocalList();
+		}
+		let local = await this.props.getLocalList();
+		localStorage.setItem("localWallet", JSON.stringify(local));
 		this.myScroll = new PerfectScrollbar("#listbox");
 	}
 	componentWillUnmount() {
-		this.myScroll.destroy();
+		if (this.myScroll) {
+			this.myScroll.destroy();
+		}
 		this.myScroll = null;
 	}
 	goDetail(item) {
@@ -54,7 +55,11 @@ export default class Root extends PureComponent {
 			return;
 		}
 		if (item.category.id === 1 && !item.isWatch) {
-			toHref(`ethwallet?id=${item.id}&type=${item.category_id}`);
+			toHref(
+				`ethwallet?id=${item.id}&type=${
+					item.category_id
+				}&localaddress=${item.localAddress}`
+			);
 			return;
 		}
 		if (item.category.id === 2 && !item.isWatch) {
@@ -182,9 +187,7 @@ export default class Root extends PureComponent {
 			return null;
 		}
 		let backUp = localStorage.getItem("backUp");
-
 		let l = [];
-
 		server.list.map((item, index) => {
 			item.isWatch = true;
 			item.isBackup = false;
@@ -198,12 +201,20 @@ export default class Root extends PureComponent {
 						item.name === i.name
 					) {
 						item.isWatch = false;
+						item.localAddress = i.address;
 					}
 				});
 			}
 			if (backUp && JSON.parse(backUp).length > 0) {
 				JSON.parse(backUp).map((i, m) => {
-					if (item.address && i === item.address) {
+					if (item.category_id == 1) {
+						if (
+							item.address &&
+							i.toLowerCase() === item.address.toLowerCase()
+						) {
+							item.isBackup = true;
+						}
+					} else if (item.address && i === item.address) {
 						item.isBackup = true;
 					}
 				});
@@ -223,7 +234,7 @@ export default class Root extends PureComponent {
 			);
 		} else {
 			toHref(
-				`managewallet?id=${item.id}&address=${item.address}&name=${
+				`managewallet?id=${item.id}&address=${item.localAddress}&name=${
 					item.name
 				}`
 			);

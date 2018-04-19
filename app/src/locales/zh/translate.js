@@ -123,7 +123,8 @@ export default {
 		delete: "删除失败",
 		keyerror: "Key Store 格式错误",
 		ethfrequently: "转账太频繁，请稍后",
-		neoEmpty: "Neo数量为0，不能解冻"
+		neoEmpty: "Neo数量为0，不能解冻",
+		hasLocal: "已经存在本地钱包，不能添加为观察钱包"
 	},
 	delete: {
 		delete: "删除"

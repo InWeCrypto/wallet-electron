@@ -1,6 +1,6 @@
 {
 	"name": "InWeCrypto",
-	"version": "1.0.36",
+	"version": "1.0.40",
 	"description": "InWeCrypto",
 	"main": "main.js",
 	"scripts": {
@@ -11,17 +11,12 @@
 		"watch": "webpack --watch",
 		"postinstall":
 			"electron-builder install-app-dep&&webpack --config webpack.dll.config.js",
-		"pack:mac": "webpack &&electron-builder --win",
-		"pack:win": "webpack &&electron-builder --darwin",
+		"pack:win": "webpack &&electron-builder --win",
+		"pack:mac": "webpack &&electron-builder --darwin",
 		"pack": "rm -rf ./dist && webpack && electron-builder -mw",
 		"pack:all": "webpack && electron-builder -mw"
 	},
 	"release": "build",
-	"iohook": {
-		"targets": ["node-59", "electron-57"],
-		"platforms": ["win32", "darwin", "linux"],
-		"arches": ["x64", "ia32"]
-	},
 	"build": {
 		"productName": "InWeCrypto",
 		"appId": "com.raistone.inwecrypto",

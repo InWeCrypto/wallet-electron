@@ -1,4 +1,5 @@
 import React, { PureComponent } from "react";
+import { BigNumber } from "bignumber.js";
 import { NavLink, Link } from "react-router-dom";
 import { Modal, Button } from "antd";
 import { I18n } from "react-i18next";
@@ -103,9 +104,9 @@ export default class Root extends PureComponent {
 			params.Password = password;
 			params.Amount =
 				"0x" +
-				(
-					Number(this.props.gasInfo.record.balance) * Math.pow(10, 8)
-				).toString(16);
+				new BigNumber(this.props.gasInfo.record.balance)
+					.multipliedBy(Math.pow(10, 8))
+					.toString(16);
 			params.Asset =
 				"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b";
 			params.Gas = "0x" + 0 + "0";
@@ -119,7 +120,7 @@ export default class Root extends PureComponent {
 			if (params.Amount.indexOf(".") != -1) {
 				params.Amount = params.Amount.split(".")[0];
 			}
-			logger.info(JSON.stringify(params));
+
 			let l = await this.props.sendNeoOrader(params);
 			let fee = this.props.gasInfo.record.balance;
 			if (l && l.data && l.txid) {
@@ -149,7 +150,7 @@ export default class Root extends PureComponent {
 					});
 					Msg.prompt(i18n.t("success.unfreeze", this.props.lng));
 					setTimeout(() => {
-						window.history.back();
+						this.goOrderList(0);
 					}, 2000);
 				}
 			}
@@ -202,10 +203,9 @@ export default class Root extends PureComponent {
 		params.Password = passwordT;
 		params.Amount =
 			"0x" +
-			(
-				Number(this.props.gasInfo.record.gnt[0].available) *
-				Math.pow(10, 8)
-			).toString(16);
+			new BigNumber(this.props.gasInfo.record.gnt[0].available)
+				.multipliedBy(Math.pow(10, 8))
+				.toString(16);
 		params.Asset =
 			"0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7";
 		params.Gas = "0x" + 0 + "0";
@@ -247,10 +247,62 @@ export default class Root extends PureComponent {
 				});
 				Msg.prompt(i18n.t("success.totalClaims", this.props.lng));
 				setTimeout(() => {
-					window.history.back();
+					this.goOrderList(1);
 				}, 2000);
 			}
 		}
+	}
+	goOrderList(key) {
+		let { gasInfo } = this.props;
+		//let walletInfo = store.getState();
+		let asset_id = "",
+			name = "",
+			number = "",
+			price_cny = "",
+			price_usd = "",
+			img = "",
+			decimals = null;
+		if (key == 0) {
+			asset_id =
+				"0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b";
+			name = "NEO";
+			number = gasInfo.record.balance;
+			img = gasInfo.record.category.img;
+			price_cny = gasInfo.record.cap ? gasInfo.record.cap.price_cny : 0;
+			price_usd = gasInfo.record.cap ? gasInfo.record.cap.price_usd : 0;
+		}
+		if (key == 1) {
+			asset_id =
+				"0x602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7";
+			name = "GAS";
+			img = gasInfo.record.category.img;
+			number = gasInfo.record.gnt[0].balance;
+			price_cny = gasInfo.record.gnt[0].cap
+				? gasInfo.record.gnt[0].cap.price_cny
+				: 0;
+			price_usd = gasInfo.record.gnt[0].cap
+				? gasInfo.record.gnt[0].cap.price_usd
+				: 0;
+		}
+		let time = new Date().getTime();
+		let p = {
+			name: name,
+			number: number,
+			price_cny: price_cny,
+			price_usd: price_usd,
+			img: img,
+			decimals: decimals
+		};
+
+		localStorage.setItem(`orderlist_${time}`, JSON.stringify(p));
+		toHref(
+			"orderlist",
+			`wallet_id=${
+				this.state.walletid
+			}&flag=neo&asset_id=${asset_id}&address=${
+				gasInfo.record.address
+			}&timetamp=orderlist_${time}`
+		);
 	}
 	render() {
 		let { lng, gasInfo } = this.props;

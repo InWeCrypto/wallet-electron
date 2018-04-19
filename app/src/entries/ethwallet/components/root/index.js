@@ -26,7 +26,8 @@ export default class Root extends PureComponent {
 			most: "",
 			gasNum: "",
 			backList: [],
-			isLoaded: false
+			isLoaded: false,
+			localAddress: null
 		};
 		this.myScroll = null;
 		this.sendTime = 0;
@@ -44,6 +45,7 @@ export default class Root extends PureComponent {
 				ids: `[${q.id}]`
 			});
 		}
+
 		this.commitLimit();
 		this.commitMost();
 		let res = await this.props.getEthGas();
@@ -51,22 +53,22 @@ export default class Root extends PureComponent {
 			this.changeGastoNum(res.data.gasPrice);
 		}
 		let backUp = localStorage.getItem("backUp");
-
 		this.setState({
 			backList: backUp ? JSON.parse(backUp) : [],
-			isLoaded: true
+			isLoaded: true,
+			localAddress: q.localaddress ? q.localaddress : null
 		});
 	}
 	async componentDidMount() {
 		this.myScroll = new PerfectScrollbar("#coinlist");
-		// setTimeout(() => {
-		// 	this.myScroll = new PerfectScrollbar("#coinlist");
-		// }, 3000);
 	}
 	componentWillUnmount() {
 		this.setState({
 			isLoaded: false
 		});
+		if (this.myScroll) {
+			this.myScroll.destroy();
+		}
 		this.myScroll = null;
 	}
 	changeGastoNum(num) {
@@ -131,7 +133,6 @@ export default class Root extends PureComponent {
 		}
 	}
 	addAsset(info) {
-		console.log(info);
 		if (info) {
 			toHref(
 				`addasset?walletid=${info.id}&&wallettype=${info.category.id}`
@@ -237,12 +238,20 @@ export default class Root extends PureComponent {
 			ethWalletConversion,
 			ethConversion
 		} = this.props;
+
 		let params = {};
 		let n = await this.props.getEthNonce({
 			address: ethWalletDetailInfo.address.toLowerCase()
 		});
-		params.Wallet = ethWalletDetailInfo.address.toLowerCase();
-		params.To = sendAddress.toLowerCase();
+		let local = localStorage.getItem("localWallet");
+		if (local && JSON.parse(local).length > 0) {
+			JSON.parse(local).map((va, idx) => {
+				if (va.address.toLowerCase() == ethWalletDetailInfo.address) {
+					params.Wallet = va.address;
+				}
+			});
+		}
+		params.To = sendAddress;
 		params.Password = res;
 		let gaspri = "0x" + (gasNum * Math.pow(10, 18) / 90000).toString(16);
 		params.GasPrice =
@@ -281,7 +290,7 @@ export default class Root extends PureComponent {
 					fee: params.Amount,
 					handle_fee: params.GasPrice,
 					flag: "eth",
-					asset_id: params.Asset
+					asset_id: params.Asset.toLowerCase()
 				});
 				if (res.code === 4000) {
 					window.walletState.addItem({
@@ -471,7 +480,7 @@ export default class Root extends PureComponent {
 		let { ethWalletDetailInfo } = this.props;
 		toHref(
 			`managewallet?id=${ethWalletDetailInfo.id}&address=${
-				ethWalletDetailInfo.address
+				this.state.localAddress
 			}&name=${ethWalletDetailInfo.name}`
 		);
 	}
@@ -527,7 +536,7 @@ export default class Root extends PureComponent {
 													backList &&
 													backList.length > 0 &&
 													backList.indexOf(
-														ethWalletDetailInfo.address
+														ethWalletDetailInfo.address.toLowerCase()
 													) == -1 && (
 														<span className="backup">
 															{t("unbackup", lng)}

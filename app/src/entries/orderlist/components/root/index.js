@@ -67,7 +67,10 @@ export default class Root extends PureComponent {
 	}
 	componentWillUnmount() {
 		let box = document.querySelector("#listBox");
-		this.myScroll.destroy();
+		if (this.myScroll) {
+			this.myScroll.destroy();
+		}
+		this.myScroll = null;
 		clearTimeout(this.timer);
 		this.timer = null;
 		box.removeEventListener("ps-scroll-down", this.listenEvent, false);

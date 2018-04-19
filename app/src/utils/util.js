@@ -332,7 +332,7 @@ export const setBackUp = address => {
 	if (backUp) {
 		arr = [...JSON.parse(backUp)];
 	}
-	arr.push(address);
+	arr.push(address.indexOf("0x") != -1 ? address.toLowerCase() : address);
 	localStorage.setItem("backUp", JSON.stringify(arr));
 };
 window.setBackUp = setBackUp;

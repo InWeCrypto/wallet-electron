@@ -100,14 +100,35 @@ export default class Root extends PureComponent {
 		}
 
 		if (this.state.importType === "watch") {
+			let add =
+				params.type == "neo"
+					? this.state.watchAddress
+					: this.state.watchAddress.toLowerCase();
+			let local = localStorage.getItem("localWallet");
+			let isLocal = false;
+			if (local && JSON.parse(local).length > 0) {
+				let li = JSON.parse(local);
+				li.map((value, idx) => {
+					if (
+						value.type == "eth" &&
+						value.address.toLowerCase() == add
+					) {
+						isLocal = true;
+					} else if (value.address == add) {
+						isLocal = true;
+					}
+				});
+			}
+			if (isLocal) {
+				Msg.prompt(i18n.t("error.hasLocal", lng));
+				return;
+			}
 			let wp = {
 				category_id: this.state.category_id,
 				name: this.state.name,
-				address:
-					params.type == "neo"
-						? this.state.watchAddress
-						: this.state.watchAddress.toLowerCase()
+				address: add
 			};
+
 			if (this.state.type == "neo") {
 				let whash = await this.props.decodeNep5({
 					address: this.state.watchAddress

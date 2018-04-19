@@ -19,6 +19,7 @@ export default class Root extends PureComponent {
 			walletType: "",
 			isLoaded: false
 		};
+		this.myScroll = null;
 	}
 	async componentWillMount() {
 		let q = getQuery(window.location.href);
@@ -53,6 +54,9 @@ export default class Root extends PureComponent {
 		this.setState({
 			isLoaded: false
 		});
+		if (this.myScroll) {
+			this.myScroll.destroy();
+		}
 		this.myScroll = null;
 	}
 	navCur(idx) {

@@ -20,6 +20,7 @@ async function checkStatus(response) {
 				json.error ? "<br />" + json.error : ""
 			}`
 		);
+		logger.error(JSON.stringify(json.error));
 		var error = new Error(response.statusText);
 		error.response = response;
 		throw error;
@@ -31,13 +32,9 @@ function parseJSON(response) {
 }
 
 function checkRight(response) {
-	//cdy
-	// if (response.code !== 4000) {
-	// 	Modal.warning({
-	// 		title: "请求错误",
-	// 		content: response.msg
-	// 	});
-	// }
+	if (response.code != 4000) {
+		logger.error(JSON.stringify(response));
+	}
 	if (response.code === 4000) {
 		return response;
 	} else if (
@@ -54,6 +51,9 @@ function checkRight(response) {
 			code: response.code
 		};
 	} else {
+		if (response.msg.indexOf("发起交易失败") != -1) {
+			response.msg = '"发起交易失败"';
+		}
 		Msg.prompt(response.msg);
 		return {
 			msg: response.msg,
@@ -70,7 +70,9 @@ function request(method, url, params = {}, header = {}, isLocal = 1) {
 		const headers = {
 			"Content-Type": "application/json",
 			lang: languageItem
-				? languageItem.data ? languageItem.data : "zh"
+				? languageItem.data
+					? languageItem.data
+					: "zh"
 				: "zh",
 			Accept: "*/*",
 			...header,
@@ -99,7 +101,6 @@ function request(method, url, params = {}, header = {}, isLocal = 1) {
 		} else {
 			body = JSON.stringify(params);
 		}
-
 		return fetch(_url, {
 			method,
 			body,

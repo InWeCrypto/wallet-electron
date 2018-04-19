@@ -131,7 +131,9 @@ export default {
 		delete: "Delete Fail",
 		keyerror: "Key store type is error",
 		ethfrequently: "The transfer is too frequent, please later",
-		neoEmpty: "The number of Neo is 0, not thawing"
+		neoEmpty: "The number of Neo is 0, not thawing",
+		hasLocal:
+			"There is a local wallet , can not be added to the watch wallet."
 	},
 	delete: {
 		delete: "Delete"

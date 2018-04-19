@@ -53,6 +53,9 @@ export default class Root extends PureComponent {
 		this.setState({
 			isLoaded: false
 		});
+		if (this.myScroll) {
+			this.myScroll.destroy();
+		}
 		this.myScroll = null;
 	}
 	setCopy() {
@@ -362,7 +365,9 @@ export default class Root extends PureComponent {
 					getShowMoney(
 						getNeoNumber(r.balance),
 						r.cap
-							? lng == "en" ? r.cap.price_usd : r.cap.price_cny
+							? lng == "en"
+								? r.cap.price_usd
+								: r.cap.price_cny
 							: 0
 					)
 				)

@@ -89,7 +89,11 @@ export default class Root extends PureComponent {
 			}, 2000);
 		} else {
 			Msg.prompt(i18n.t("error.valiError", this.props.lng));
+			let arr = this.shuffle(
+				JSON.parse(JSON.stringify(this.props.walletInfo))
+			);
 			this.setState({
+				waitChoose: arr,
 				chooseArray: []
 			});
 		}
