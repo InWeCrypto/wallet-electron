@@ -111,6 +111,12 @@ var webpackConfig = {
 		}),
 		new CopyWebpackPlugin([
 			{
+				from: path.join(__dirname, "../app/src/login.html"),
+				to: "./"
+			}
+		]),
+		new CopyWebpackPlugin([
+			{
 				from: path.join(__dirname, "../server"),
 				to: "server"
 			}

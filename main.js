@@ -87,7 +87,7 @@ var getLanguage = function() {
 	return cfg.lang;
 };
 
-let win, service, lng, menuText, template, text;
+let loginWin, win, service, lng, menuText, template, text;
 const isDev = process.mainModule.filename.indexOf("app.asar") === -1;
 
 var setServer = function() {
@@ -198,6 +198,10 @@ ipc.on("question", function(event, title, txt, isWatch) {
 			win.webContents.send("deleteWatchWallet");
 		}
 	}
+});
+ipc.on("loginIn", function() {
+	loginWin.hide();
+	setServer();
 });
 ipc.on("openWeb", function(event, arg) {
 	if (!arg || !arg.url || arg.url.length <= 0) {
@@ -316,95 +320,6 @@ var updateHandler = function() {
 	}, 1000);
 };
 function createWindow() {
-	var windowParam = {
-		show: false,
-		width: 1080,
-		height: 800,
-		useContentSize: true,
-		webPreferences: {
-			webSecurity: false,
-			experimentalFeatures: true
-			// scrollBounce: true
-		}
-		// minHeight: 1080,
-		// minWidth: 800
-	};
-	let loadBase = path.join(__dirname, "resources/index.html");
-	if (!isDev) {
-		windowParam.titleBarStyle = "hiddenInset";
-	}
-	var loadObj = {
-		pathname: loadBase,
-		protocol: "file:",
-		slashes: true
-	};
-	var userDir = app.getPath("userData");
-	var uDir = path.join(userDir, "/inweuser/userdata.json");
-	var userFile = fs.existsSync(uDir);
-	var uf = null;
-	if (userFile) {
-		uf = fs.readFileSync(uDir);
-		if (uf && uf.length > 0) {
-			uf = JSON.parse(uf);
-			if (uf && uf.length > 0) {
-				var l = uf.length;
-				loadObj.hash = uf[l - 1].hash;
-				//loadObj.pathname = loadBase + uf[l - 1].search;
-				loadObj.search = uf[l - 1].search;
-			}
-		}
-	}
-	win = new BrowserWindow(windowParam);
-	win.loadURL(url.format(loadObj));
-	if (isDev) {
-		win.webContents.openDevTools();
-		const {
-			default: installExtension,
-			REACT_DEVELOPER_TOOLS,
-			REDUX_DEVTOOLS
-		} = require("electron-devtools-installer");
-		installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS])
-			.then(name => console.log(`Added Extension:  ${name}`))
-			.catch(err => console.log("An error occurred: ", err));
-	}
-
-	win.once("ready-to-show", () => {
-		win.show();
-		if (!isDev) {
-			updateHandler();
-		}
-		ses = win.webContents.session;
-		if (uf) {
-			win.webContents.send("loadHistory", uf);
-		}
-		win.webContents.send("changeLng", lng);
-		if (lng == "zh") {
-			template[template.length - 2].submenu[0].submenu[0].checked = true;
-			template[template.length - 2].submenu[0].submenu[1].checked = false;
-		} else {
-			template[template.length - 2].submenu[0].submenu[0].checked = false;
-			template[template.length - 2].submenu[0].submenu[1].checked = true;
-		}
-		const menu = Menu.buildFromTemplate(template);
-		Menu.setApplicationMenu(menu);
-	});
-	win.on("close", () => {
-		if (process.platform == "win32") {
-			let c = cp.execSync('taskkill /f /im "wallet-service.exe"', {
-				encoding: "utf8"
-			});
-		}
-		service.kill();
-	});
-	// Emitted when the window is closed.
-	win.on("closed", () => {
-		win = null;
-	});
-}
-// Some APIs can only be used after this event occurs.
-app.on("ready", function() {
-	setLanguage();
-	lng = getLanguage();
 	menuText = function() {
 		var res = null;
 		if (lng == "zh") {
@@ -488,17 +403,6 @@ app.on("ready", function() {
 	};
 	text = menuText();
 	template = [
-		{
-			label: text.user,
-			submenu: [
-				{
-					label: text.changeuser,
-					click: function() {
-						win.webContents.send("changeUser");
-					}
-				}
-			]
-		},
 		{
 			label: text.edit,
 			//role: "editMenu"
@@ -598,26 +502,39 @@ app.on("ready", function() {
 							label: text.chinese,
 							type: "radio",
 							checked: true,
-							click: function() {
-								win.webContents.send("changeLng", "zh");
+							click: function(item, focusedWindow) {
+								//win.webContents.send("changeLng", "zh");
+								focusedWindow.webContents.send(
+									"changeLng",
+									"en"
+								);
 								setLanguage("zh");
 								lng = "zh";
-								app.relaunch();
 								win.close();
-								app.exit(0);
+								setTimeout(() => {
+									createWindow();
+								}, 1000);
+								// app.relaunch();
+								// app.exit(0);
 							}
 						},
 						{
 							label: text.english,
 							type: "radio",
 							checked: false,
-							click: function() {
-								win.webContents.send("changeLng", "en");
+							click: function(item, focusedWindow) {
+								focusedWindow.webContents.send(
+									"changeLng",
+									"en"
+								);
 								setLanguage("en");
-								lng = "zh";
-								app.relaunch();
-								win.close();
-								app.exit(0);
+								lng = "en";
+								win.hide();
+								setTimeout(() => {
+									createWindow();
+								}, 1000);
+								// app.relaunch();
+								// app.exit(0);
 							}
 						}
 					]
@@ -703,9 +620,6 @@ app.on("ready", function() {
 			}
 		}
 	});
-	// if (isDev) {
-
-	// }
 	if (process.platform === "darwin") {
 		const name = "InWeCrypto";
 		template.unshift({
@@ -753,15 +667,128 @@ app.on("ready", function() {
 			]
 		});
 	}
-	setServer();
+	var windowParam = {
+		show: false,
+		width: 1080,
+		height: 800,
+		useContentSize: true,
+		webPreferences: {
+			webSecurity: false,
+			experimentalFeatures: true
+		}
+	};
+	let loadBase = path.join(__dirname, "resources/index.html");
+	if (!isDev) {
+		windowParam.titleBarStyle = "hiddenInset";
+	}
+	var loadObj = {
+		pathname: loadBase,
+		protocol: "file:",
+		slashes: true
+	};
+	var userDir = app.getPath("userData");
+	var uDir = path.join(userDir, "/inweuser/userdata.json");
+	var userFile = fs.existsSync(uDir);
+	var uf = null;
+	if (userFile) {
+		uf = fs.readFileSync(uDir);
+		if (uf && uf.length > 0) {
+			uf = JSON.parse(uf);
+			if (uf && uf.length > 0) {
+				var l = uf.length;
+				loadObj.hash = uf[l - 1].hash;
+				//loadObj.pathname = loadBase + uf[l - 1].search;
+				loadObj.search = uf[l - 1].search;
+			}
+		}
+	}
+	win = new BrowserWindow(windowParam);
+	win.loadURL(url.format(loadObj));
+	if (isDev) {
+		win.webContents.openDevTools();
+		const {
+			default: installExtension,
+			REACT_DEVELOPER_TOOLS,
+			REDUX_DEVTOOLS
+		} = require("electron-devtools-installer");
+		installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS])
+			.then(name => console.log(`Added Extension:  ${name}`))
+			.catch(err => console.log("An error occurred: ", err));
+	}
+
+	win.once("ready-to-show", () => {
+		win.show();
+		if (!isDev) {
+			updateHandler();
+		}
+		ses = win.webContents.session;
+		if (uf) {
+			win.webContents.send("loadHistory", uf);
+		}
+		win.webContents.send("changeLng", lng);
+		if (lng == "zh") {
+			template[template.length - 2].submenu[1].submenu[0].checked = true;
+			template[template.length - 2].submenu[1].submenu[1].checked = false;
+		} else {
+			template[template.length - 2].submenu[1].submenu[0].checked = false;
+			template[template.length - 2].submenu[1].submenu[1].checked = true;
+		}
+		const menu = Menu.buildFromTemplate(template);
+		Menu.setApplicationMenu(menu);
+	});
+	win.on("close", () => {});
+	win.on("closed", () => {
+		win = null;
+		loginWin = null;
+	});
+}
+function createLoginWindow() {
+	var windowParam = {
+		show: false,
+		width: 248,
+		height: 316,
+		useContentSize: true,
+		resizable: false,
+		titleBarStyle: "hiddenInset",
+		webPreferences: {
+			webSecurity: false,
+			experimentalFeatures: true
+		}
+	};
+	let loadLogin = path.join(__dirname, `resources/login.html`);
+	var loadObj = {
+		pathname: loadLogin,
+		protocol: "file:",
+		slashes: true,
+		search: `?lang=${lng}`
+	};
+	loginWin = new BrowserWindow(windowParam);
+	loginWin.loadURL(url.format(url.format(loadObj)));
+	loginWin.once("ready-to-show", function() {
+		loginWin.show();
+		// const menu = Menu.buildFromTemplate(template);
+		// Menu.setApplicationMenu(menu);
+	});
+	loginWin.on("closed", () => {
+		loginWin = null;
+	});
+}
+// Some APIs can only be used after this event occurs.
+app.on("ready", function() {
+	setLanguage();
+	lng = getLanguage();
+	createLoginWindow();
 });
 // Quit when all windows are closed.
 app.on("window-all-closed", () => {
-	// if (process.platform !== "darwin") {
-	// 	app.quit();
-	// }
 	setTimeout(() => {
 		app.quit();
+		if (process.platform == "win32") {
+			let c = cp.execSync('taskkill /f /im "wallet-service.exe"', {
+				encoding: "utf8"
+			});
+		}
+		service.kill();
 	}, 1000);
 });
 app.on("activate", () => {
