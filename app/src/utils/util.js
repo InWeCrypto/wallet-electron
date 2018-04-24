@@ -298,8 +298,8 @@ export const getNumFromStr = (str, dec) => {
 		var num = parseInt(new Number(`0x${str16}`), 10);
 	}
 
-	var s = getNumberString(num);
-	return s;
+	var s = getNumberString(num) + "";
+	return s.substring(0, s.lastIndexOf(".") + 9);
 };
 window.getNumFromStr = getNumFromStr;
 export const getEthNum = (str, dec) => {
@@ -315,13 +315,13 @@ export const getEthNum = (str, dec) => {
 	var x = new BigNumber(st);
 	var a = x.dividedBy(Math.pow(10, dec));
 	a = a.toLocaleString();
-	a = getNumberString(a);
+	a = getNumberString(a) + "";
 	var l = a.substring(0, a.lastIndexOf(".") + 9);
 	return l;
 };
 export const getNeoNumber = num => {
 	var s = new BigNumber(num);
-	s = s.toLocaleString();
+	s = getNumberString(s) + "";
 	return s.substring(0, s.lastIndexOf(".") + 9);
 };
 window.getNeoNumber = getNeoNumber;
@@ -409,7 +409,7 @@ export const getShowMoney = (num, price) => {
 	var s;
 	if ((num + "").indexOf("e") != -1) {
 		var p = new BigNumber(num);
-		var r = p.multipliedBy(price);
+		var r = p.multipliedBy(new BigNumber(price));
 		s = r.toLocaleString();
 	} else {
 		s = num * price;

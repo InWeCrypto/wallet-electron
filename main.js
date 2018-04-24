@@ -36,25 +36,23 @@ function deleteall(path) {
 		files.forEach(function(file, index) {
 			var curPath = path + "/" + file;
 			if (fs.statSync(curPath).isDirectory()) {
-				// recurse
 				deleteall(curPath);
 			} else {
-				// delete file
 				fs.unlinkSync(curPath);
 			}
 		});
-		// fs.rmdirSync(path);
 	}
 }
 var setLanguage = function(lng) {
 	const tmdir = os.tmpdir();
 	const area = app.getLocale();
+	console.log(area);
 	const langDir = path.join(tmdir, "inwecryptowallet/app.config.json");
 	const cfIsexit = fs.existsSync(langDir);
 	if (!cfIsexit) {
 		createFolder(langDir);
 		let cfg = {};
-		if (area.indexOf("zh-")) {
+		if (area.indexOf("zh") != -1) {
 			cfg.lang = "zh";
 		} else {
 			cfg.lang = "en";
@@ -66,7 +64,7 @@ var setLanguage = function(lng) {
 			cfg.lang = lng;
 		}
 		if (!cfg.lang) {
-			if (area.indexOf("zh-")) {
+			if (area.indexOf("zh") != -1) {
 				cfg.lang = "zh";
 			} else {
 				cfg.lang = "en";
@@ -80,367 +78,17 @@ var getLanguage = function() {
 	const langDir = path.join(tmdir, "inwecryptowallet/app.config.json");
 	const cfIsexit = fs.existsSync(langDir);
 	if (!cfIsexit) {
-		return "zh";
+		return "en";
 	}
 	let cfg = JSON.parse(fs.readFileSync(langDir, "utf8"));
 	if (!cfg.lang) {
-		return "zh";
+		return "en";
 	}
 	return cfg.lang;
 };
-setLanguage();
-let win,
-	service,
-	lng = getLanguage();
-const isDev = process.mainModule.filename.indexOf("app.asar") === -1;
-let menuText = function() {
-	var res = null;
-	if (lng == "zh") {
-		res = {
-			user: "用户",
-			edit: "编辑",
-			revoke: "撤销",
-			redo: "重做",
-			shear: "剪切",
-			copy: "复制",
-			paste: "粘贴",
-			selectAll: "全选",
-			view: "查看",
-			reload: "重载",
-			fullscreen: "切换全屏",
-			toggleDev: "切换开发者工具",
-			window: "窗口",
-			minimize: "最小化",
-			close: "关闭",
-			reopen: "重新打开窗口",
-			help: "帮助",
-			language: "语言",
-			chinese: "中文",
-			english: "English",
-			readMore: "了解更多",
-			network: "网络",
-			formal: "正式网",
-			test: "测试网",
-			about: "关于",
-			services: "服务",
-			hide: "隐藏",
-			hideother: "隐藏其他",
-			showAll: "显示全部",
-			quit: "退出",
-			clear: "清除缓存",
-			changeuser: "切换用户",
-			clearSuccess: "清除缓存成功",
-			sure: "确定",
-			cannel: "取消"
-		};
-	} else {
-		res = {
-			user: "User",
-			edit: "Edit",
-			revoke: "Revoke",
-			redo: "Redo",
-			shear: "Shear",
-			copy: "Copy",
-			paste: "Paste",
-			selectAll: "Select All",
-			view: "View",
-			reload: "Reload",
-			fullscreen: "Full Screen",
-			toggleDev: "Toggle Developer Tools",
-			window: "Window",
-			minimize: "Minimize",
-			close: "Close",
-			reopen: "Reopen",
-			help: "Help",
-			language: "Language",
-			chinese: "中文",
-			english: "English",
-			readMore: "Learn More",
-			network: "Network",
-			formal: "Formal Network",
-			test: "Test Network",
-			about: "About",
-			services: "Services",
-			hide: "Hide",
-			hideother: "Hide Other",
-			showAll: "Show All",
-			quit: "Quit",
-			clear: "Clear Cache",
-			changeuser: "Change User",
-			clearSuccess: "clear success",
-			sure: "Sure",
-			cannel: "Cannel"
-		};
-	}
-	return res;
-};
-var text = menuText();
-let template = [
-	{
-		label: text.user,
-		submenu: [
-			{
-				label: text.changeuser,
-				click: function() {
-					win.webContents.send("changeUser");
-				}
-			}
-		]
-	},
-	{
-		label: text.edit,
-		//role: "editMenu"
-		submenu: [
-			{
-				label: text.revoke,
-				accelerator: "CmdOrCtrl+Z",
-				role: "undo"
-			},
-			{
-				label: text.redo,
-				accelerator: "Shift+CmdOrCtrl+Z",
-				role: "redo"
-			},
-			{
-				type: "separator"
-			},
-			{
-				label: text.shear,
-				accelerator: "CmdOrCtrl+X",
-				role: "cut"
-			},
-			{
-				label: text.copy,
-				accelerator: "CmdOrCtrl+C",
-				role: "copy"
-			},
-			{
-				label: text.paste,
-				accelerator: "CmdOrCtrl+V",
-				role: "paste"
-			},
-			{
-				label: text.selectAll,
-				accelerator: "CmdOrCtrl+A",
-				role: "selectall"
-			}
-		]
-	},
-	{
-		label: text.view,
-		submenu: [
-			{
-				label: text.fullscreen,
-				accelerator: (function() {
-					if (process.platform === "darwin") {
-						return "Ctrl+Command+F";
-					} else {
-						return "F11";
-					}
-				})(),
-				click: function(item, focusedWindow) {
-					if (focusedWindow) {
-						focusedWindow.setFullScreen(
-							!focusedWindow.isFullScreen()
-						);
-					}
-				}
-			}
-		]
-	},
-	{
-		label: text.window,
-		role: "window",
-		submenu: [
-			{
-				label: text.minimize,
-				accelerator: "CmdOrCtrl+M",
-				role: "minimize"
-			},
-			{
-				label: text.close,
-				accelerator: "CmdOrCtrl+W",
-				role: "close"
-			},
-			{
-				type: "separator"
-			},
-			{
-				label: text.reopen,
-				accelerator: "CmdOrCtrl+Shift+T",
-				enabled: false,
-				key: "reopenMenuItem",
-				click: function() {
-					app.emit("activate");
-				}
-			}
-		]
-	},
-	{
-		label: text.help,
-		submenu: [
-			{
-				label: text.language,
-				submenu: [
-					{
-						label: text.chinese,
-						type: "radio",
-						checked: true,
-						click: function() {
-							win.webContents.send("changeLng", "zh");
-							setLanguage("zh");
-							lng = "zh";
-							app.relaunch();
-							win.close();
-							app.exit(0);
-						}
-					},
-					{
-						label: text.english,
-						type: "radio",
-						checked: false,
-						click: function() {
-							win.webContents.send("changeLng", "en");
-							setLanguage("en");
-							lng = "zh";
-							app.relaunch();
-							win.close();
-							app.exit(0);
-						}
-					}
-				]
-			},
-			{
-				type: "separator"
-			},
-			{
-				label: text.clear,
-				click: function() {
-					// let userD = app.getPath("userData");
-					// deleteall(path.join(userD, "Cache"));
-					ses.clearCache(function(res) {
-						sendStatus(text.clearSuccess);
-						win.webContents.send("clear");
-					});
-				}
-			},
-			{
-				type: "separator"
-			},
-			{
-				type: "separator"
-			},
-			{
-				label: text.readMore,
-				click: function() {
-					electron.shell.openExternal("http://inwecrypto.com");
-				}
-			}
-		]
-	},
-	{
-		label: text.network,
-		submenu: [
-			{
-				label: text.formal,
-				click: function() {
-					win.webContents.send("changeNetwork", "formal");
-				},
-				type: "radio",
-				checked: true
-			},
-			{
-				label: text.test,
-				click: function() {
-					win.webContents.send("changeNetwork", "test");
-				},
-				type: "radio",
-				checked: false
-			}
-		]
-	}
-];
-template[2].submenu.push({
-	label: text.toggleDev,
-	accelerator: (function() {
-		if (process.platform === "darwin") {
-			return "Alt+Command+I";
-		} else {
-			return "Ctrl+Shift+I";
-		}
-	})(),
-	click: function(item, focusedWindow) {
-		if (focusedWindow) {
-			focusedWindow.toggleDevTools();
-		}
-	}
-});
-template[3].submenu.unshift({
-	label: text.reload,
-	accelerator: "CmdOrCtrl+R",
-	click: function(item, focusedWindow) {
-		if (focusedWindow) {
-			if (focusedWindow.id === 1) {
-				BrowserWindow.getAllWindows().forEach(function(win) {
-					if (win.id > 1) {
-						win.close();
-					}
-				});
-			}
-			focusedWindow.reload();
-		}
-	}
-});
-// if (isDev) {
 
-// }
-if (process.platform === "darwin") {
-	const name = "InWeCrypto";
-	template.unshift({
-		label: name,
-		submenu: [
-			{
-				label: `${text.about} ${name}`,
-				role: "about"
-			},
-			{
-				type: "separator"
-			},
-			{
-				label: text.services,
-				role: "services",
-				submenu: []
-			},
-			{
-				type: "separator"
-			},
-			{
-				label: `${text.hide} ${name}`,
-				accelerator: "Command+H",
-				role: "hide"
-			},
-			{
-				label: text.hideother,
-				accelerator: "Command+Alt+H",
-				role: "hideothers"
-			},
-			{
-				label: text.showAll,
-				role: "unhide"
-			},
-			{
-				type: "separator"
-			},
-			{
-				label: text.quit,
-				accelerator: "Command+Q",
-				click: function() {
-					app.quit();
-				}
-			}
-		]
-	});
-}
+let win, service, lng, menuText, template, text;
+const isDev = process.mainModule.filename.indexOf("app.asar") === -1;
 
 var setServer = function() {
 	const tmdir = os.tmpdir();
@@ -753,9 +401,358 @@ function createWindow() {
 		win = null;
 	});
 }
-
 // Some APIs can only be used after this event occurs.
 app.on("ready", function() {
+	setLanguage();
+	lng = getLanguage();
+	menuText = function() {
+		var res = null;
+		if (lng == "zh") {
+			res = {
+				user: "用户",
+				edit: "编辑",
+				revoke: "撤销",
+				redo: "重做",
+				shear: "剪切",
+				copy: "复制",
+				paste: "粘贴",
+				selectAll: "全选",
+				view: "查看",
+				reload: "重载",
+				fullscreen: "切换全屏",
+				toggleDev: "切换开发者工具",
+				window: "窗口",
+				minimize: "最小化",
+				close: "关闭",
+				reopen: "重新打开窗口",
+				help: "帮助",
+				language: "语言",
+				chinese: "中文",
+				english: "English",
+				readMore: "了解更多",
+				network: "网络",
+				formal: "正式网",
+				test: "测试网",
+				about: "关于",
+				services: "服务",
+				hide: "隐藏",
+				hideother: "隐藏其他",
+				showAll: "显示全部",
+				quit: "退出",
+				clear: "清除缓存",
+				changeuser: "切换用户",
+				clearSuccess: "清除缓存成功",
+				sure: "确定",
+				cannel: "取消"
+			};
+		} else {
+			res = {
+				user: "User",
+				edit: "Edit",
+				revoke: "Revoke",
+				redo: "Redo",
+				shear: "Shear",
+				copy: "Copy",
+				paste: "Paste",
+				selectAll: "Select All",
+				view: "View",
+				reload: "Reload",
+				fullscreen: "Full Screen",
+				toggleDev: "Toggle Developer Tools",
+				window: "Window",
+				minimize: "Minimize",
+				close: "Close",
+				reopen: "Reopen",
+				help: "Help",
+				language: "Language",
+				chinese: "中文",
+				english: "English",
+				readMore: "Learn More",
+				network: "Network",
+				formal: "Formal Network",
+				test: "Test Network",
+				about: "About",
+				services: "Services",
+				hide: "Hide",
+				hideother: "Hide Other",
+				showAll: "Show All",
+				quit: "Quit",
+				clear: "Clear Cache",
+				changeuser: "Change User",
+				clearSuccess: "clear success",
+				sure: "Sure",
+				cannel: "Cannel"
+			};
+		}
+		return res;
+	};
+	text = menuText();
+	template = [
+		{
+			label: text.user,
+			submenu: [
+				{
+					label: text.changeuser,
+					click: function() {
+						win.webContents.send("changeUser");
+					}
+				}
+			]
+		},
+		{
+			label: text.edit,
+			//role: "editMenu"
+			submenu: [
+				{
+					label: text.revoke,
+					accelerator: "CmdOrCtrl+Z",
+					role: "undo"
+				},
+				{
+					label: text.redo,
+					accelerator: "Shift+CmdOrCtrl+Z",
+					role: "redo"
+				},
+				{
+					type: "separator"
+				},
+				{
+					label: text.shear,
+					accelerator: "CmdOrCtrl+X",
+					role: "cut"
+				},
+				{
+					label: text.copy,
+					accelerator: "CmdOrCtrl+C",
+					role: "copy"
+				},
+				{
+					label: text.paste,
+					accelerator: "CmdOrCtrl+V",
+					role: "paste"
+				},
+				{
+					label: text.selectAll,
+					accelerator: "CmdOrCtrl+A",
+					role: "selectall"
+				}
+			]
+		},
+		{
+			label: text.view,
+			submenu: [
+				{
+					label: text.fullscreen,
+					accelerator: (function() {
+						if (process.platform === "darwin") {
+							return "Ctrl+Command+F";
+						} else {
+							return "F11";
+						}
+					})(),
+					click: function(item, focusedWindow) {
+						if (focusedWindow) {
+							focusedWindow.setFullScreen(
+								!focusedWindow.isFullScreen()
+							);
+						}
+					}
+				}
+			]
+		},
+		{
+			label: text.window,
+			role: "window",
+			submenu: [
+				{
+					label: text.minimize,
+					accelerator: "CmdOrCtrl+M",
+					role: "minimize"
+				},
+				{
+					label: text.close,
+					accelerator: "CmdOrCtrl+W",
+					role: "close"
+				},
+				{
+					type: "separator"
+				},
+				{
+					label: text.reopen,
+					accelerator: "CmdOrCtrl+Shift+T",
+					enabled: false,
+					key: "reopenMenuItem",
+					click: function() {
+						app.emit("activate");
+					}
+				}
+			]
+		},
+		{
+			label: text.help,
+			submenu: [
+				{
+					label: text.language,
+					submenu: [
+						{
+							label: text.chinese,
+							type: "radio",
+							checked: true,
+							click: function() {
+								win.webContents.send("changeLng", "zh");
+								setLanguage("zh");
+								lng = "zh";
+								app.relaunch();
+								win.close();
+								app.exit(0);
+							}
+						},
+						{
+							label: text.english,
+							type: "radio",
+							checked: false,
+							click: function() {
+								win.webContents.send("changeLng", "en");
+								setLanguage("en");
+								lng = "zh";
+								app.relaunch();
+								win.close();
+								app.exit(0);
+							}
+						}
+					]
+				},
+				{
+					type: "separator"
+				},
+				{
+					label: text.clear,
+					click: function() {
+						// let userD = app.getPath("userData");
+						// deleteall(path.join(userD, "Cache"));
+						ses.clearCache(function(res) {
+							sendStatus(text.clearSuccess);
+							win.webContents.send("clear");
+						});
+					}
+				},
+				{
+					type: "separator"
+				},
+				{
+					type: "separator"
+				},
+				{
+					label: text.readMore,
+					click: function() {
+						electron.shell.openExternal("http://inwecrypto.com");
+					}
+				}
+			]
+		},
+		{
+			label: text.network,
+			submenu: [
+				{
+					label: text.formal,
+					click: function() {
+						win.webContents.send("changeNetwork", "formal");
+					},
+					type: "radio",
+					checked: true
+				},
+				{
+					label: text.test,
+					click: function() {
+						win.webContents.send("changeNetwork", "test");
+					},
+					type: "radio",
+					checked: false
+				}
+			]
+		}
+	];
+	template[2].submenu.push({
+		label: text.toggleDev,
+		accelerator: (function() {
+			if (process.platform === "darwin") {
+				return "Alt+Command+I";
+			} else {
+				return "Ctrl+Shift+I";
+			}
+		})(),
+		click: function(item, focusedWindow) {
+			if (focusedWindow) {
+				focusedWindow.toggleDevTools();
+			}
+		}
+	});
+	template[3].submenu.unshift({
+		label: text.reload,
+		accelerator: "CmdOrCtrl+R",
+		click: function(item, focusedWindow) {
+			if (focusedWindow) {
+				if (focusedWindow.id === 1) {
+					BrowserWindow.getAllWindows().forEach(function(win) {
+						if (win.id > 1) {
+							win.close();
+						}
+					});
+				}
+				focusedWindow.reload();
+			}
+		}
+	});
+	// if (isDev) {
+
+	// }
+	if (process.platform === "darwin") {
+		const name = "InWeCrypto";
+		template.unshift({
+			label: name,
+			submenu: [
+				{
+					label: `${text.about} ${name}`,
+					role: "about"
+				},
+				{
+					type: "separator"
+				},
+				{
+					label: text.services,
+					role: "services",
+					submenu: []
+				},
+				{
+					type: "separator"
+				},
+				{
+					label: `${text.hide} ${name}`,
+					accelerator: "Command+H",
+					role: "hide"
+				},
+				{
+					label: text.hideother,
+					accelerator: "Command+Alt+H",
+					role: "hideothers"
+				},
+				{
+					label: text.showAll,
+					role: "unhide"
+				},
+				{
+					type: "separator"
+				},
+				{
+					label: text.quit,
+					accelerator: "Command+Q",
+					click: function() {
+						app.quit();
+					}
+				}
+			]
+		});
+	}
 	setServer();
 });
 // Quit when all windows are closed.

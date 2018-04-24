@@ -244,12 +244,19 @@ export default class Root extends PureComponent {
 			address: ethWalletDetailInfo.address.toLowerCase()
 		});
 		let local = localStorage.getItem("localWallet");
+		console.log(JSON.parse(local));
 		if (local && JSON.parse(local).length > 0) {
 			JSON.parse(local).map((va, idx) => {
-				if (va.address.toLowerCase() == ethWalletDetailInfo.address) {
+				if (
+					va.address.toLowerCase() ==
+					ethWalletDetailInfo.address.toLowerCase()
+				) {
 					params.Wallet = va.address;
 				}
 			});
+		} else {
+			Msg.prompt("获取本地钱包错误");
+			return;
 		}
 		params.To = sendAddress;
 		params.Password = res;
