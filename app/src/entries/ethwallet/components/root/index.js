@@ -244,7 +244,6 @@ export default class Root extends PureComponent {
 			address: ethWalletDetailInfo.address.toLowerCase()
 		});
 		let local = localStorage.getItem("localWallet");
-		console.log(JSON.parse(local));
 		if (local && JSON.parse(local).length > 0) {
 			JSON.parse(local).map((va, idx) => {
 				if (

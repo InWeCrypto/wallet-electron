@@ -37,19 +37,6 @@ function checkRight(response) {
 	}
 	if (response.code === 4000) {
 		return response;
-	} else if (
-		response.code === 4001 ||
-		response.code === 4010 ||
-		response.code === 4009
-	) {
-		localStorage.removeItem("userInfo");
-		store.dispatch(setReduxUserInfo(null));
-		toHref("/");
-		return {
-			msg: response.msg,
-			data: null,
-			code: response.code
-		};
 	} else {
 		if (response.msg.indexOf("发起交易失败") != -1) {
 			response.msg = '"发起交易失败"';
@@ -61,6 +48,20 @@ function checkRight(response) {
 			code: response.code
 		};
 	}
+	// else if (
+	// 	response.code === 4001 ||
+	// 	response.code === 4010 ||
+	// 	response.code === 4009
+	// ) {
+	// 	localStorage.removeItem("userInfo");
+	// 	store.dispatch(setReduxUserInfo(null));
+	// 	toHref("/");
+	// 	return {
+	// 		msg: response.msg,
+	// 		data: null,
+	// 		code: response.code
+	// 	};
+	// }
 }
 
 function request(method, url, params = {}, header = {}, isLocal = 1) {

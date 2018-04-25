@@ -4,13 +4,10 @@
 	"description": "InWeCrypto",
 	"main": "main.js",
 	"scripts": {
-		"dev":
-			"concurrently \"webpack  --config webpack.config.js --progress --profile&& electron .\" \"webpack --watch\"",
-		"compile":
-			"webpack --config webpack.dll.config.js --progress --profile",
+		"dev": "concurrently \"webpack  --config webpack.config.js --progress --profile&& electron .\" \"webpack --watch\"",
+		"compile": "webpack --config webpack.dll.config.js --progress --profile",
 		"watch": "webpack --watch",
-		"postinstall":
-			"electron-builder install-app-dep&&webpack --config webpack.dll.config.js",
+		"postinstall": "electron-builder install-app-dep&&webpack --config webpack.dll.config.js",
 		"pack:win": "webpack &&electron-builder --win",
 		"pack:mac": "webpack &&electron-builder --darwin",
 		"pack": "rm -rf ./dist && webpack && electron-builder -mw",
@@ -21,15 +18,18 @@
 		"productName": "InWeCrypto",
 		"appId": "com.raistone.inwecrypto",
 		"copyright": "©InWeCrypto 2018",
-		"files": ["./main.js", "resources/index.html", "resources/"],
+		"files": [
+			"./main.js",
+			"resources/index.html",
+			"resources/"
+		],
 		"mac": {
 			"icon": "./favicon.icns"
 		},
 		"publish": [
 			{
 				"provider": "generic",
-				"url":
-					"https://inwecrypto-china.oss-cn-shanghai.aliyuncs.com/pc-wallet/"
+				"url": "https://inwecrypto-china.oss-cn-shanghai.aliyuncs.com/pc-wallet/"
 			}
 		],
 		"dmg": {
@@ -49,7 +49,10 @@
 			]
 		},
 		"linux": {
-			"target": ["AppImage", "deb"]
+			"target": [
+				"AppImage",
+				"deb"
+			]
 		},
 		"win": {
 			"target": "nsis",
@@ -87,6 +90,7 @@
 		"react-router": "^4.2.0",
 		"react-router-dom": "^4.2.2",
 		"react-router-redux": "next",
+		"react-select": "^1.2.1",
 		"redux": "^3.7.2",
 		"redux-actions": "^2.2.1",
 		"redux-devtools": "^3.4.1",

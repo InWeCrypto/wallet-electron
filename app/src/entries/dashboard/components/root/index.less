@@ -1,0 +1,238 @@
+.dashboard-main {
+	.content-container {
+		position: relative;
+		.title {
+			padding: 0.8rem 0 0 0;
+			text-align: center;
+			font-size: 0.3rem;
+			color: #4a4a4a;
+			font-weight: 400;
+		}
+		.ctrl-box {
+			padding: 0.16rem 0.23rem 0.4rem 0.4rem;
+			.ctrl-item {
+				background: #0b0b0b;
+				width: 2.5rem;
+				height: 1.25rem;
+				box-sizing: border-box;
+				border-radius: 0.04rem;
+				border: 3px solid #0b0b0b;
+				transition: all 0.3s linear;
+				display: flex;
+				align-items: center;
+				margin-right: 0.13rem;
+				&:hover {
+					border: 3px solid #1e1e1e;
+				}
+				&.totle {
+					justify-content: center;
+					flex-flow: column;
+					.txt1 {
+						color: #ea660e;
+						font-size: 0.3rem;
+					}
+					.txt2 {
+						color: #828282;
+						font-size: 0.12rem;
+					}
+				}
+				&.eth {
+					background-image: url("../../../../assets/images/eth.png");
+					background-size: 0.55rem 0.93rem;
+					background-repeat: no-repeat;
+					background-position-y: center;
+					background-position-x: 0.1rem;
+					padding: 0 0.21rem;
+					justify-content: center;
+					flex-flow: column;
+					align-items: flex-end;
+					color: #43647e;
+					&:hover {
+						background-image: url("../../../../assets/images/eth_hover.png");
+					}
+					.txt1 {
+						font-size: 0.18rem;
+						font-weight: 600;
+					}
+					.btn {
+						margin-top: 0.05rem;
+						width: 0.75rem;
+						height: 0.24rem;
+						line-height: 0.24rem;
+						font-size: 0.12rem;
+					}
+				}
+				&.neo {
+					background-image: url("../../../../assets/images/neo.png");
+					background-size: 0.62rem 0.78rem;
+					background-repeat: no-repeat;
+					background-position-y: center;
+					background-position-x: 0.1rem;
+					padding: 0 0.21rem;
+					justify-content: center;
+					flex-flow: column;
+					align-items: flex-end;
+					color: #34b137;
+					&:hover {
+						background-image: url("../../../../assets/images/neo_hover.png");
+					}
+					.txt1 {
+						font-size: 0.18rem;
+						font-weight: 600;
+					}
+					.btn {
+						margin-top: 0.05rem;
+						width: 0.75rem;
+						height: 0.24rem;
+						line-height: 0.24rem;
+						font-size: 0.12rem;
+					}
+				}
+			}
+		}
+		.middle-title {
+			box-sizing: border-box;
+			padding: 0.3rem 0.4rem 0.1rem 0.4rem;
+			color: #747474;
+			font-size: 0.14rem;
+			.hide-ctrl {
+				cursor: pointer;
+				span {
+					vertical-align: middle;
+				}
+			}
+		}
+		.check-icon {
+			display: inline-block;
+			width: 0.12rem;
+			height: 0.12rem;
+			margin-right: 0.1rem;
+			background-image: url("../../../../assets/images/uncheck2.png");
+			background-size: 0.12rem 0.12rem;
+			vertical-align: middle;
+			&.checked {
+				background-image: url("../../../../assets/images/checked2.png");
+			}
+		}
+		.assets-box {
+			position: absolute;
+			left: 0.4rem;
+			right: 0.4rem;
+			bottom: 0.4rem;
+			top: 3.68rem;
+			display: flex;
+			flex-wrap: wrap;
+			overflow: auto;
+			.assets-item {
+				width: 2.5rem;
+				height: 1.97rem;
+				box-sizing: border-box;
+				transition: all 0.3s linear;
+				overflow: hidden;
+				.assets-face {
+					padding: 0.2rem 0.36rem 0 0.36rem;
+					border: 3px solid #0b0b0b;
+					box-sizing: border-box;
+					width: 100%;
+					height: 100%;
+					background: #0b0b0b;
+					border-radius: 0.08rem;
+					transition: all 0.3s linear;
+					&:hover {
+						border: 3px solid #1e1e1e;
+						.coin-img {
+							img {
+								opacity: 1;
+							}
+						}
+						.coin-number {
+							color: #fff;
+						}
+						.item-ctrl {
+							.ctrl {
+								opacity: 1;
+							}
+						}
+					}
+					.coin-img {
+						text-align: center;
+						img {
+							width: 0.4rem;
+							height: 0.4rem;
+							opacity: 0.8;
+						}
+					}
+					.coin-name {
+						color: #828282;
+						text-align: center;
+						padding: 0.1rem 0 0 0;
+					}
+					.coin-number {
+						color: #828282;
+						text-align: center;
+					}
+					.line {
+						margin-top: 8px;
+						border-top: 1px solid #000000;
+						border-bottom: 1px solid #1e1e1e;
+					}
+					.item-ctrl {
+						text-align: center;
+						padding-top: 0.1rem;
+						.ctrl {
+							cursor: pointer;
+							display: inline-block;
+							width: 0.27rem;
+							height: 0.27rem;
+							background-size: 100% 100%;
+							opacity: 0.3;
+							transition: all 0.3s linear;
+						}
+					}
+					.tran-icon {
+						background-image: url("../../../../assets/images/asset_tran2.png");
+					}
+					.qcode-icon {
+						background-image: url("../../../../assets/images/asset_code2.png");
+					}
+					.package-icon {
+						background-image: url("../../../../assets/images/asset_pack2.png");
+					}
+				}
+				&.show {
+					.assets-list {
+						transform: translateY(-100%);
+					}
+				}
+				.assets-list {
+					transform: translateY(0);
+					height: 100%;
+					overflow: auto;
+					background: #0b0b0b;
+					border: 3px solid #1e1e1e;
+					box-sizing: border-box;
+					border-radius: 0.08rem;
+					padding: 0 0.18rem;
+					.assets-wallet {
+						padding: 0.1rem 0 0 0;
+						color: #828282;
+						font-size: 0.12rem;
+						&:hover {
+							color: #fff;
+						}
+						.wallet-name {
+							margin-bottom: 0.05rem;
+						}
+						.wallet-number {
+							margin-bottom: 0.05rem;
+						}
+						.line {
+							border-top: 1px solid #000000;
+							border-bottom: 1px solid #1e1e1e;
+						}
+					}
+				}
+			}
+		}
+	}
+}

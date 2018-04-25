@@ -91,7 +91,7 @@ export default {
 	},
 	menu: {
 		project: "项目",
-		dashboard: "DashBoard消息中心",
+		dashboard: "DashBoard",
 		wallet: "钱包",
 		myfollowup: "我的关注"
 	},

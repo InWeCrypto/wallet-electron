@@ -25,6 +25,9 @@ import WatchWallet from "./entries/watchwallet";
 import TransationDetail from "./entries/transationdetail";
 import Print from "./entries/print";
 import OrderList from "./entries/orderlist";
+import DashBoard from "./entries/dashboard";
+import TranEth from "./entries/traneth";
+
 export default () => {
 	return (
 		<Switch>
@@ -52,6 +55,8 @@ export default () => {
 			<Route path="/watchwallet" component={WatchWallet} />
 			<Route path="/transationdetail" component={TransationDetail} />
 			<Route path="/print" component={Print} />
+			<Route path="/dashboard" component={DashBoard} />
+			<Route path="/traneth" component={TranEth} />
 		</Switch>
 	);
 };
