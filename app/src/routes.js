@@ -27,7 +27,8 @@ import Print from "./entries/print";
 import OrderList from "./entries/orderlist";
 import DashBoard from "./entries/dashboard";
 import TranEth from "./entries/traneth";
-
+import TranNeo from "./entries/tranneo";
+import WalletQcode from "./entries/walletqcode";
 export default () => {
 	return (
 		<Switch>
@@ -57,6 +58,8 @@ export default () => {
 			<Route path="/print" component={Print} />
 			<Route path="/dashboard" component={DashBoard} />
 			<Route path="/traneth" component={TranEth} />
+			<Route path="/tranneo" component={TranNeo} />
+			<Route path="/walletqcode" component={WalletQcode} />
 		</Switch>
 	);
 };

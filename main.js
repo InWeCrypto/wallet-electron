@@ -521,8 +521,6 @@ function createWindow() {
 								setTimeout(() => {
 									createWindow();
 								}, 1000);
-								// app.relaunch();
-								// app.exit(0);
 							}
 						},
 						{
@@ -540,8 +538,6 @@ function createWindow() {
 								setTimeout(() => {
 									createWindow();
 								}, 1000);
-								// app.relaunch();
-								// app.exit(0);
 							}
 						}
 					]

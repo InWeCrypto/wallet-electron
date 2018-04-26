@@ -2,7 +2,6 @@ import React, { PureComponent } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { Modal, Button } from "antd";
 import { I18n } from "react-i18next";
-import { Slider } from "antd";
 import ConfirmPassword from "../../../../components/confirmpassword";
 import SelectWallet from "../../../../components/selectwallet";
 import Menu from "@/menu/index.js";
@@ -25,28 +24,6 @@ export default class Root extends PureComponent {
 	selectWallet(res) {
 		console.log(res);
 	}
-	getDecFromNum(num) {
-		let l = this.state.limit;
-		let m = this.state.most;
-		let t = m - l;
-		let r = (num - l) / t;
-		return r * 100;
-	}
-	getNumFromDec(dec) {
-		let l = this.state.limit;
-		let m = this.state.most;
-		let t = m - l;
-		let r = Number(t * (dec / 100)) + Number(l);
-		return r.toFixed(8);
-	}
-	sliderChange(res) {
-		this.setState({
-			gasNum: this.getNumFromDec(res)
-		});
-	}
-	getFormatter() {
-		return this.state.gasNum;
-	}
 	render() {
 		let { lng } = this.props;
 		let { gasNum } = this.state;
@@ -64,7 +41,7 @@ export default class Root extends PureComponent {
 		return (
 			<I18n>
 				{(t, { i18n }) => (
-					<div className="main-box tran-eth">
+					<div className="main-box tran-neo">
 						<Menu curmenu="dashboard" lng={lng} />
 						<div className="content-container">
 							<HeaderNav history={this.props.history} />
@@ -94,42 +71,6 @@ export default class Root extends PureComponent {
 												value=""
 											/>
 											<span className="name">NEO</span>
-										</div>
-									</div>
-									<div className="send-item">
-										<div className="send-name ui">
-											<div className="f1">
-												{t("walletDetail.miniFee", lng)}
-											</div>
-											<div className="t2">
-												{gasNum} ETH
-											</div>
-										</div>
-										<div className="ui center slideritem">
-											<div>
-												{t("walletDetail.slow", lng)}
-											</div>
-											<div
-												className="f1 sliderbox"
-												style={{
-													WebkitAppRegion: "no-drag"
-												}}
-											>
-												<Slider
-													onChange={this.sliderChange.bind(
-														this
-													)}
-													value={this.getDecFromNum(
-														gasNum
-													)}
-													tipFormatter={this.getFormatter.bind(
-														this
-													)}
-												/>
-											</div>
-											<div>
-												{t("walletDetail.quick", lng)}
-											</div>
 										</div>
 									</div>
 									<div className="send-item">
