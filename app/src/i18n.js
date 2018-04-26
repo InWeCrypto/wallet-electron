@@ -39,7 +39,7 @@ i18n
 		}
 	);
 //监听语言变化，重载页面
-i18n.on("languageChanged", () => {
-	window.location.reload();
-});
+// i18n.on("languageChanged", () => {
+// 	window.location.reload();
+// });
 export default i18n;

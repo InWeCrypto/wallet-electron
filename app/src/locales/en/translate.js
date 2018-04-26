@@ -235,5 +235,8 @@ export default {
 	deletetip: {
 		title: "Delete",
 		txt: "Do you want to delete this wallet?"
+	},
+	ajax: {
+		network: "Request server error"
 	}
 };

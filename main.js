@@ -46,7 +46,6 @@ function deleteall(path) {
 var setLanguage = function(lng) {
 	const tmdir = os.tmpdir();
 	const area = app.getLocale();
-	console.log(area);
 	const langDir = path.join(tmdir, "inwecryptowallet/app.config.json");
 	const cfIsexit = fs.existsSync(langDir);
 	if (!cfIsexit) {
@@ -203,6 +202,13 @@ ipc.on("loginIn", function() {
 	loginWin.hide();
 	setServer();
 });
+ipc.on("errorMessage", function(event, text) {
+	dialog.showMessageBox(win, {
+		type: "error",
+		title: "Error",
+		message: text
+	});
+});
 ipc.on("openWeb", function(event, arg) {
 	if (!arg || !arg.url || arg.url.length <= 0) {
 		dislog.showErrorBox(
@@ -282,6 +288,7 @@ var sendStatus = function(text) {
 		message: text
 	});
 };
+
 var updateHandler = function() {
 	autoUpdater.on("checking-for-update", () => {
 		//sendStatus("Checking for update...");

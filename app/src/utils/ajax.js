@@ -30,7 +30,6 @@ async function checkStatus(response) {
 function parseJSON(response) {
 	return response.json();
 }
-
 function checkRight(response) {
 	if (response.code != 4000) {
 		logger.error(JSON.stringify(response));
@@ -48,33 +47,20 @@ function checkRight(response) {
 			code: response.code
 		};
 	}
-	// else if (
-	// 	response.code === 4001 ||
-	// 	response.code === 4010 ||
-	// 	response.code === 4009
-	// ) {
-	// 	localStorage.removeItem("userInfo");
-	// 	store.dispatch(setReduxUserInfo(null));
-	// 	toHref("/");
-	// 	return {
-	// 		msg: response.msg,
-	// 		data: null,
-	// 		code: response.code
-	// 	};
-	// }
 }
 
-function request(method, url, params = {}, header = {}, isLocal = 1) {
+async function request(method, url, params = {}, header = {}, isLocal = 1) {
+	const languageItem = getLocalItem("language");
+	let lng = languageItem
+		? languageItem.data
+			? languageItem.data
+			: "zh"
+		: "zh";
 	if (isLocal != 2) {
-		const languageItem = getLocalItem("language");
 		const userInfo = getLocalItem("userInfo");
 		const headers = {
 			"Content-Type": "application/json",
-			lang: languageItem
-				? languageItem.data
-					? languageItem.data
-					: "zh"
-				: "zh",
+			lang: lng,
 			Accept: "*/*",
 			...header,
 			"neo-asset-id":
@@ -102,14 +88,27 @@ function request(method, url, params = {}, header = {}, isLocal = 1) {
 		} else {
 			body = JSON.stringify(params);
 		}
-		return fetch(_url, {
-			method,
-			body,
-			headers
-		})
-			.then(checkStatus)
-			.then(parseJSON)
-			.then(checkRight);
+		try {
+			let res = await fetch(_url, {
+				method,
+				body,
+				headers
+			});
+			return Promise.resolve(res)
+				.then(checkStatus)
+				.then(parseJSON)
+				.then(checkRight);
+			// return fetch(_url, {
+			//     method,
+			//     body,
+			//     headers
+			// })
+			//     .then(checkStatus)
+			//     .then(parseJSON)
+			//     .then(checkRight);
+		} catch (error) {
+			ipc.send("errorMessage", i18n.t("ajax.network", lng));
+		}
 	} else {
 		let body;
 		const headers = {
@@ -131,13 +130,24 @@ function request(method, url, params = {}, header = {}, isLocal = 1) {
 			body = JSON.stringify(params);
 		}
 		let _url = requestUrl(isLocal) + url;
-		return fetch(_url, {
-			method,
-			body,
-			headers
-		})
-			.then(checkStatus)
-			.then(parseJSON);
+		try {
+			let res = await fetch(_url, {
+				method,
+				body,
+				headers
+			});
+			return Promise.resolve(res)
+				.then(checkStatus)
+				.then(parseJSON);
+			// return fetch(_url, {
+			// 	method,
+			// 	body,
+			// 	headers
+			// }).then(checkStatus)
+			//.then(parseJSON);
+		} catch (error) {
+			ipc.send("errorMessage", i18n.t("ajax.network", lng));
+		}
 	}
 }
 

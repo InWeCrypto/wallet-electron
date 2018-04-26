@@ -225,5 +225,8 @@ export default {
 	deletetip: {
 		title: "删除",
 		txt: "确定删除这个钱包吗？"
+	},
+	ajax: {
+		network: "请求服务器错误"
 	}
 };
