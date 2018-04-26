@@ -2,6 +2,7 @@ import React, { PureComponent } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { Modal, Button } from "antd";
 import { I18n } from "react-i18next";
+import { BigNumber } from "bignumber.js";
 import { Slider } from "antd";
 import ConfirmPassword from "../../../../components/confirmpassword";
 import SelectWallet from "../../../../components/selectwallet";
@@ -16,12 +17,19 @@ export default class Root extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
+			sendAddress: "",
+			sendNumber: "",
 			gasNum: 0,
-			limit: 0,
+			limit: 2,
 			most: 10
 		};
 	}
 	componentDidMount() {}
+	inputChange(type, event) {
+		this.setState({
+			[type]: event.target.value
+		});
+	}
 	selectWallet(res) {
 		console.log(res);
 	}
@@ -36,8 +44,8 @@ export default class Root extends PureComponent {
 		let l = this.state.limit;
 		let m = this.state.most;
 		let t = m - l;
-		let r = Number(t * (dec / 100)) + Number(l);
-		return r.toFixed(8);
+		let r = new BigNumber(t * (dec / 100)).plus(l);
+		return getNumberString(r.toString());
 	}
 	sliderChange(res) {
 		this.setState({
@@ -49,7 +57,7 @@ export default class Root extends PureComponent {
 	}
 	render() {
 		let { lng } = this.props;
-		let { gasNum } = this.state;
+		let { gasNum, sendAddress, sendNumber } = this.state;
 		const placeholder = "请选择钱包";
 		let options = [
 			{
@@ -79,7 +87,11 @@ export default class Root extends PureComponent {
 											<input
 												type="text"
 												className="input"
-												value=""
+												value={sendAddress}
+												onChange={this.inputChange.bind(
+													this,
+													"sendAddress"
+												)}
 											/>
 										</div>
 									</div>
@@ -91,7 +103,11 @@ export default class Root extends PureComponent {
 											<input
 												type="text"
 												className="input"
-												value=""
+												value={sendNumber}
+												onChange={this.inputChange.bind(
+													this,
+													"sendNumber"
+												)}
 											/>
 											<span className="name">NEO</span>
 										</div>

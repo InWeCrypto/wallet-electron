@@ -3,6 +3,14 @@ import Select from "react-select";
 import { I18n } from "react-i18next";
 import "react-select/dist/react-select.css";
 import "./index.less";
+function setEllipsis(str) {
+	if (str.length < 8) {
+		return str;
+	}
+	var s1 = str.substring(0, 4);
+	var s2 = str.substring(str.length - 4, str.length);
+	return s1 + "****" + s2;
+}
 class GravatarOptions extends PureComponent {
 	constructor(props) {
 		super(props);
@@ -64,7 +72,11 @@ class SelectWallet extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-			value: "",
+			value: props.options
+				? props.options[0]
+					? props.options[0]
+					: ""
+				: "",
 			lng: props.lng,
 			clearable: false
 		};

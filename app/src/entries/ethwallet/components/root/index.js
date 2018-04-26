@@ -353,8 +353,8 @@ export default class Root extends PureComponent {
 		let l = this.state.limit;
 		let m = this.state.most;
 		let t = m - l;
-		let r = Number(t * (dec / 100)) + Number(l);
-		return r.toFixed(8);
+		let r = new BigNumber(t * (dec / 100)).plus(l);
+		return getNumberString(r.toString());
 	}
 	getCommonMoney() {
 		let {
@@ -363,7 +363,6 @@ export default class Root extends PureComponent {
 			ethWalletConversion,
 			ethConversion
 		} = this.props;
-
 		let num = new BigNumber(0);
 		if (ethConversion && ethConversion.list && ethConversion.list[0]) {
 			let i = ethConversion.list[0];

@@ -12,7 +12,7 @@ export default class Root extends PureComponent {
 		this.state = {};
 	}
 	componentDidMount() {
-		this.setQcode("22dsadxzczxcxcxcsads");
+		this.setQcode("ddasdasdsadsadsadsadsadsadsadsadsa");
 	}
 	setCopy() {
 		clipboard.writeText("text");
@@ -25,22 +25,24 @@ export default class Root extends PureComponent {
 		});
 	}
 	setQcode(str) {
+		var box = document.getElementById("qrcode");
+		box.className = "qcode";
 		setTimeout(() => {
-			var box = document.getElementById("qrcode");
-			box.className = "qcode show";
+			box.className = "qcode";
 			box.innerHTML = "";
 			var n = box.offsetWidth - 40;
-			console.log(n);
 			var qrcode = new QRCode(box, {
 				width: n, //设置宽高
 				height: n
 			});
 			qrcode.makeCode(str);
 		}, 10);
+		setTimeout(() => {
+			box.className = "qcode show";
+		}, 500);
 	}
 	render() {
 		let { lng } = this.props;
-
 		return (
 			<I18n>
 				{(t, { i18n }) => (

@@ -25,6 +25,9 @@
 		height: 0.6rem;
 		background: #0b0b0b;
 		border: 1px solid #015a23;
+		position: relative;
+		box-sizing: border-box;
+		padding-right: 0.3rem;
 		&.is-focused {
 			background: #0b0b0b;
 			border: 1px solid #11e763;
@@ -40,9 +43,19 @@
 	.Select-input {
 		padding: 0;
 		width: 0;
+		vertical-align: auto;
+		height: 0.6rem;
 		input {
 			height: 0.6rem;
+			padding: 0;
 		}
+	}
+	.Select-arrow-zone {
+		position: absolute;
+		top: 0;
+		right: 0;
+		height: 0.6rem;
+		line-height: 0.6rem;
 	}
 	.value-box {
 		color: #fff;

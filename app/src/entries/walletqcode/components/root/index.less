@@ -32,9 +32,14 @@
 				width: 2.2rem;
 				height: 2.2rem;
 				border: 0.1rem solid #d3d3d3;
-				border-radius: 0.04rem;
+				border-radius: 0.05rem;
 				padding: 0.1rem;
 				background: #fff;
+				transform: translateY(-0.5rem);
+				transition: all 0.3s linear;
+				&.show {
+					transform: translateY(0);
+				}
 			}
 		}
 		.btn-box {

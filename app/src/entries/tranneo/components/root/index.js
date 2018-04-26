@@ -15,18 +15,22 @@ export default class Root extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-			gasNum: 0,
-			limit: 0,
-			most: 10
+			sendAddress: "",
+			sendNumber: ""
 		};
 	}
 	componentDidMount() {}
 	selectWallet(res) {
 		console.log(res);
 	}
+	inputChange(type, event) {
+		this.setState({
+			[type]: event.target.value
+		});
+	}
 	render() {
 		let { lng } = this.props;
-		let { gasNum } = this.state;
+		let { sendAddress, sendNumber } = this.state;
 		const placeholder = "请选择钱包";
 		let options = [
 			{
@@ -56,7 +60,11 @@ export default class Root extends PureComponent {
 											<input
 												type="text"
 												className="input"
-												value=""
+												value={sendAddress}
+												onChange={this.inputChange.bind(
+													this,
+													"sendAddress"
+												)}
 											/>
 										</div>
 									</div>
@@ -68,7 +76,11 @@ export default class Root extends PureComponent {
 											<input
 												type="text"
 												className="input"
-												value=""
+												value={sendNumber}
+												onChange={this.inputChange.bind(
+													this,
+													"sendNumber"
+												)}
 											/>
 											<span className="name">NEO</span>
 										</div>
