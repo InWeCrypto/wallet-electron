@@ -63,6 +63,13 @@ class Menu extends PureComponent {
 									: memberImg
 							}
 						/>
+						<div className="moneybox">
+							<div className="total-money">
+								{lng == "en" ? "$" : "￥"}
+								900000.00
+							</div>
+							<div className="text">Total Balance</div>
+						</div>
 						<div className="line" />
 						<ul className="menuList">
 							<li className={curmenu == "dashboard" ? "cur" : ""}>
