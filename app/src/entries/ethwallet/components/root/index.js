@@ -175,39 +175,58 @@ export default class Root extends PureComponent {
 			return;
 		}
 		if (key == 0) {
-			//params.asset_id = "0x0000000000000000000000000000000000000000";
 			if (
-				this.state.sendAmount +
-					this.state.gasNum -
-					getEthNum(this.props.ethConversion.list[0].balance) >
-				0
+				new BigNumber(this.state.sendAmount)
+					.plus(this.state.gasNum)
+					.minus(getEthNum(this.props.ethConversion.list[0].balance))
+					.isGreaterThan(0)
+				// this.state.sendAmount +
+				// 	this.state.gasNum -
+				// 	getEthNum(this.props.ethConversion.list[0].balance) >
+				// 0
 			) {
 				Msg.prompt(i18n.t("error.amountError", this.props.lng));
 				return;
 			}
 		}
 		if (key > 0) {
-			// params.asset_id = this.props.ethWalletConversion.list[
-			// 	key - 1
-			// ].gnt_category.address;
 			if (
-				this.state.sendAmount -
-					getEthNum(
-						this.props.ethWalletConversion.list[key - 1].balance,
-						this.props.ethWalletConversion.list[key - 1].decimals
-					) >
-				0
+				new BigNumber(this.state.sendAmount)
+					.minus(
+						getEthNum(
+							this.props.ethWalletConversion.list[key - 1]
+								.balance,
+							this.props.ethWalletConversion.list[key - 1]
+								.decimals
+						)
+					)
+					.isGreaterThan(0)
+				// this.state.sendAmount -
+				// 	getEthNum(
+				// 		this.props.ethWalletConversion.list[key - 1].balance,
+				// 		this.props.ethWalletConversion.list[key - 1].decimals
+				// 	) >
+				// 0
 			) {
 				Msg.prompt(i18n.t("error.amountError", this.props.lng));
 				return;
 			}
+
 			if (
-				this.state.gasNum -
-					getEthNum(
-						this.props.ethConversion.list[0].balance,
-						this.props.ethConversion.list[0].decimals
-					) >
-				0
+				new BigNumber(this.state.gasNum)
+					.minus(
+						getEthNum(
+							this.props.ethConversion.list[0].balance,
+							this.props.ethConversion.list[0].decimals
+						)
+					)
+					.isGreaterThan(0)
+				// this.state.gasNum -
+				// 	getEthNum(
+				// 		this.props.ethConversion.list[0].balance,
+				// 		this.props.ethConversion.list[0].decimals
+				// 	) >
+				// 0
 			) {
 				Msg.prompt(i18n.t("error.MiningError", this.props.lng));
 				return;
@@ -244,7 +263,6 @@ export default class Root extends PureComponent {
 			address: ethWalletDetailInfo.address.toLowerCase()
 		});
 		let local = localStorage.getItem("localWallet");
-		console.log(JSON.parse(local));
 		if (local && JSON.parse(local).length > 0) {
 			JSON.parse(local).map((va, idx) => {
 				if (

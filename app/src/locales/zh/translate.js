@@ -115,7 +115,7 @@ export default {
 		amountEmpty: "数额不得为空",
 		amountZero: "金额不能小于等于0",
 		amountError: "数额不得大于余额",
-		MiningError: "Fuel不足",
+		MiningError: "燃料费不足",
 		isSend: "存在未完成的订单",
 		valiError: "验证失败",
 		hash160: "解码地址出错",
