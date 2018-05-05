@@ -5,7 +5,8 @@ const {
 	dialog,
 	Menu,
 	Tray,
-	session
+	session,
+	Notification
 } = require("electron");
 
 const autoUpdater = require("electron-updater").autoUpdater;
@@ -157,6 +158,21 @@ var runServer = function() {
 	);
 	createWindow();
 };
+ipc.on("showNotice", function(event, option) {
+	var mNotification = null;
+	mNotification = new Notification({
+		title: option.title,
+		body: option.body,
+		silent: true
+	});
+	mNotification.show();
+	mNotification.on("click", () => {
+		if (option.callback && typeof option.callback == "function") {
+			option.callback();
+		}
+		mNotification.close();
+	});
+});
 ipc.on("pageHistory", function(event, obj) {
 	var userDir = app.getPath("userData");
 	var uDir = path.join(userDir, "inweuser/userdata.json");
@@ -252,6 +268,7 @@ ipc.on("print-to-pdf", function(event, arg) {
 	win.webContents.printToPDF({}, function(error, data) {
 		if (error) throw error;
 		dialog.showSaveDialog(
+			win,
 			{
 				title: "save",
 				defaultPath: pdfPath
@@ -268,6 +285,7 @@ ipc.on("print-to-pdf", function(event, arg) {
 ipc.on("exportJSON", function(event, arg) {
 	let name = `${arg.title}_${parseInt(Math.random() * 100000000, 10)}`;
 	dialog.showSaveDialog(
+		win,
 		{
 			title: "save",
 			defaultPath: path.join(app.getPath("downloads"), `${name}.json`),
@@ -782,6 +800,7 @@ app.on("ready", function() {
 	lng = getLanguage();
 	createLoginWindow();
 });
+
 // Quit when all windows are closed.
 app.on("window-all-closed", () => {
 	setTimeout(() => {
