@@ -29,6 +29,23 @@ var createFolder = function(to) {
 		}
 	}
 };
+function deleteFolder(path) {
+	var files = [];
+	if (fs.existsSync(path)) {
+		files = fs.readdirSync(path);
+		files.forEach(function(file, index) {
+			var curPath = path + "/" + file;
+			if (fs.statSync(curPath).isDirectory()) {
+				// recurse
+				deleteFolder(curPath);
+			} else {
+				// delete file
+				fs.unlinkSync(curPath);
+			}
+		});
+		fs.rmdirSync(path);
+	}
+}
 function deleteall(path) {
 	var files = [];
 	if (fs.existsSync(path)) {
@@ -44,7 +61,7 @@ function deleteall(path) {
 	}
 }
 var setLanguage = function(lng) {
-	const tmdir = os.tmpdir();
+	const tmdir = app.getPath("userData");
 	const area = app.getLocale();
 	console.log(area);
 	const langDir = path.join(tmdir, "inwecryptowallet/app.config.json");
@@ -74,7 +91,7 @@ var setLanguage = function(lng) {
 	}
 };
 var getLanguage = function() {
-	const tmdir = os.tmpdir();
+	const tmdir = app.getPath("userData");
 	const langDir = path.join(tmdir, "inwecryptowallet/app.config.json");
 	const cfIsexit = fs.existsSync(langDir);
 	if (!cfIsexit) {
@@ -91,11 +108,20 @@ let win, service, lng, menuText, template, text;
 const isDev = process.mainModule.filename.indexOf("app.asar") === -1;
 
 var setServer = function() {
-	const tmdir = os.tmpdir();
+	var old = os.tmpdir();
+	const tmdir = app.getPath("userData");
 	const dbdir = path.join(
 		tmdir,
 		`/inwecryptowallet/appdata/localdb/wallet.db`
 	);
+	var oldDir = path.join(old, `/inwecryptowallet/appdata/localdb/wallet.db`);
+	var isHasOld = fs.existsSync(oldDir);
+	if (isHasOld) {
+		var oldD = fs.readFileSync(oldDir);
+		createFolder(dbdir);
+		let wold = fs.writeFileSync(dbdir, oldD);
+		deleteFolder(path.join(old, `/inwecryptowallet/`));
+	}
 	let sdir = "";
 	if (process.platform == "darwin") {
 		sdir = path.join(tmdir, `/inwecryptowallet/wallet-service`);
@@ -132,7 +158,7 @@ var setServer = function() {
 	runServer();
 };
 var runServer = function() {
-	var tmdir = os.tmpdir();
+	var tmdir = app.getPath("userData");
 	//修改文件执行权限
 	if (process.platform == "darwin") {
 		var s = fs.chmodSync(
@@ -149,7 +175,7 @@ var runServer = function() {
 	var db = path.join(tmdir, "inwecryptowallet/appdata");
 	//启动服务
 	service = cp.exec(
-		tmdir + "/inwecryptowallet/wallet-service -appdir " + db,
+		`"${tmdir}/inwecryptowallet/wallet-service" -appdir "${db}"`,
 		function(err) {
 			if (err) {
 				console.log(err);
