@@ -986,10 +986,7 @@ export default class Root extends PureComponent {
 																				sendKey -
 																					2
 																			]
-																				.balance
-																	  ) /
-																	  Math.pow(
-																			10,
+																				.balance,
 																			neoConversion
 																				.list[
 																				sendKey -

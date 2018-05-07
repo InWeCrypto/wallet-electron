@@ -110,18 +110,8 @@ const isDev = process.mainModule.filename.indexOf("app.asar") === -1;
 var setServer = function() {
 	var old = os.tmpdir();
 	const tmdir = app.getPath("userData");
-	const dbdir = path.join(
-		tmdir,
-		`/inwecryptowallet/appdata/localdb/wallet.db`
-	);
+	const dbdir = path.join(tmdir, `/inwecryptowallet/appdata/localdb/`);
 	var oldDir = path.join(old, `/inwecryptowallet/appdata/localdb/wallet.db`);
-	var isHasOld = fs.existsSync(oldDir);
-	if (isHasOld) {
-		var oldD = fs.readFileSync(oldDir);
-		createFolder(dbdir);
-		let wold = fs.writeFileSync(dbdir, oldD);
-		deleteFolder(path.join(old, `/inwecryptowallet/`));
-	}
 	let sdir = "";
 	if (process.platform == "darwin") {
 		sdir = path.join(tmdir, `/inwecryptowallet/wallet-service`);
@@ -132,11 +122,14 @@ var setServer = function() {
 	const dbf = path.join(tmdir, `/inwecryptowallet/appdata`);
 	const isExit = fs.existsSync(dbdir);
 	if (!isExit) {
-		let db = fs.readFileSync(
-			path.join(__dirname, "resources/server/appdata/localdb/wallet.db")
-		);
-		createFolder(dbdir);
-		let wdb = fs.writeFileSync(dbdir, db);
+		var isHasOld = fs.existsSync(oldDir);
+		if (isHasOld) {
+			var oldD = fs.readFileSync(oldDir);
+			createFolder(path.join(dbdir, "wallet.db"));
+			let wold = fs.writeFileSync(path.join(dbdir, "wallet.db"), oldD);
+		} else {
+			createFolder(dbdir);
+		}
 	}
 	//复制JSON到本地目录
 	let cf = fs.readFileSync(
