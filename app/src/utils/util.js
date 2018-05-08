@@ -309,7 +309,7 @@ export const getEthNum = (str, dec) => {
 	var dec = dec ? dec : 18;
 	var reg = /(?:0x)0*/gi;
 	var st = "0x" + str.replace(reg, "");
-	if (st.length <= 2) {
+	if (!st || st.length <= 2) {
 		return 0;
 	}
 	var x = new BigNumber(st);
@@ -320,6 +320,9 @@ export const getEthNum = (str, dec) => {
 	return l;
 };
 export const getNeoNumber = num => {
+	if (!num) {
+		return 0;
+	}
 	var s = new BigNumber(num);
 	s = getNumberString(s) + "";
 	return s.substring(0, s.lastIndexOf(".") + 9);

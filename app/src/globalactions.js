@@ -13,11 +13,14 @@ export const WALLETTYPES = "WALLETTYPES";
 export const changeLng = createAction(LNG, lng => {
 	return lng;
 });
-export const sendEmailCode = createAction(EMAILCODE, email => {
+export const sendEmailCode = createAction(EMAILCODE, (email, type) => {
 	return http
 		.post(
 			{
-				url: `send_code/${email}`
+				url: `send_code/${email}`,
+				params: {
+					type: type
+				}
 			},
 			3
 		)

@@ -94,6 +94,9 @@ export default class Root extends PureComponent {
 										id="qrcode"
 										onClick={this.showBig.bind(this)}
 									/>
+									<div className="tip">
+										点击放大才能扫描二维码
+									</div>
 									<div className="showWordBox">
 										{walletDetail && walletDetail.json}
 									</div>

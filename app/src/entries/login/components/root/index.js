@@ -67,7 +67,9 @@ export default class Root extends PureComponent {
 			Msg.prompt(i18n.t("error.emailEmpty", this.props.lng));
 			return;
 		}
-		this.props.sendEmailCode(this.state.registerEmail).then(res => {
+		var type = 1;
+
+		this.props.sendEmailCode(this.state.registerEmail, type).then(res => {
 			if (res.code === 4000 && typeof callback === "function") {
 				callback();
 			}
@@ -78,7 +80,8 @@ export default class Root extends PureComponent {
 			Msg.prompt(i18n.t("error.emailEmpty", this.props.lng));
 			return;
 		}
-		this.props.sendEmailCode(this.state.forgetEmail).then(res => {
+		var type = 2;
+		this.props.sendEmailCode(this.state.forgetEmail, type).then(res => {
 			if (res.code === 4000 && typeof callback === "function") {
 				callback();
 			}
