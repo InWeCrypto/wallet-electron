@@ -35,7 +35,12 @@ export default {
 		walletName: "钱包名称",
 		password: "密码",
 		repeatPassword: "再次输入密码",
-		success: "创建成功"
+		success: "创建成功",
+		msgTitle: "添加钱包成功",
+		msgTxt:
+			"请及时进入钱包并备份助记词以及Key Store保障钱包的安全，助记词一经备份则会在APP上消失，需要牢记，否则钱包无法找回。",
+		msgBtn0: "暂不备份，直接进入钱包",
+		msgBtn1: "备份钱包"
 	},
 	importWallet: {
 		title: "导入钱包",
@@ -55,7 +60,8 @@ export default {
 	backKey: {
 		title: "Keystore",
 		export: "导出文件",
-		copy: "复制"
+		copy: "复制",
+		tip: "点击放大二维码，扫描更清晰"
 	},
 	mnemonic: {
 		title: "助记词",
@@ -93,7 +99,9 @@ export default {
 		project: "项目",
 		dashboard: "DashBoard消息中心",
 		wallet: "钱包",
-		myfollowup: "我的关注"
+		myfollowup: "我的关注",
+		hasUpdate: "你有新版本",
+		goUpdate: "去更新"
 	},
 
 	error: {
@@ -224,6 +232,13 @@ export default {
 	},
 	deletetip: {
 		title: "删除",
-		txt: "确定删除这个钱包吗？"
+		txt: "确定删除这个钱包吗？",
+		sure: "确定",
+		cannel: "取消"
+	},
+	downloadP: {
+		progress: "下载进度",
+		speed: "下载速度",
+		title: "下载更新"
 	}
 };

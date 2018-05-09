@@ -6,7 +6,6 @@ export default connect(
 	({
 		globData: { userInfo, lng },
 		neowallet: {
-			neoWalletDetailInfo,
 			neoWalletAssets,
 			neoConversion,
 			sendCapital,
@@ -15,7 +14,6 @@ export default connect(
 	}) => ({
 		userInfo,
 		lng,
-		neoWalletDetailInfo,
 		neoWalletAssets,
 		neoConversion,
 		sendCapital,

@@ -32,7 +32,7 @@ export default class Root extends PureComponent {
 		let q = getQuery(window.location.href);
 		let obj = JSON.parse(localStorage.getItem("walletObject"));
 		if (q && q.id) {
-			await this.props.setNeoWalletInfo(obj[q.id]);
+			//await this.props.setNeoWalletInfo(obj[q.id]);
 			await this.props.getWalletAssets({
 				wallet_id: q.id,
 				wallet_category_id: 2
@@ -59,13 +59,13 @@ export default class Root extends PureComponent {
 		this.myScroll = null;
 	}
 	setCopy() {
-		clipboard.writeText(this.props.neoWalletDetailInfo.address);
+		clipboard.writeText(this.props.neoConversion.record.address);
 		Msg.prompt(i18n.t("success.copySucess", this.props.lng));
 	}
 	setPrint() {
 		ipc.send("print-preview", {
-			str: this.props.neoWalletDetailInfo.address,
-			title: this.props.neoWalletDetailInfo.name
+			str: this.props.neoConversion.record.address,
+			title: this.props.neoConversion.record.name
 		});
 	}
 	setQcode(str) {
@@ -94,7 +94,7 @@ export default class Root extends PureComponent {
 			this.myScroll.destroy();
 		}
 		if (idx === 3) {
-			this.setQcode(this.props.neoWalletDetailInfo.address);
+			this.setQcode(this.props.neoConversion.record.address);
 		}
 	}
 	addAsset(info) {
@@ -112,7 +112,7 @@ export default class Root extends PureComponent {
 	async sendClick() {
 		let key = this.state.sendKey;
 		var params = {};
-		params.wallet_id = this.props.neoWalletDetailInfo.id;
+		params.wallet_id = this.props.neoConversion.record.id;
 		params.flag = "NEO";
 		let arr = [];
 		if (this.state.sendAmount <= 0) {
@@ -183,7 +183,9 @@ export default class Root extends PureComponent {
 		}
 		//判断当前app是否有正在转账的订单
 		if (
-			window.walletState.checkItem(this.props.neoWalletDetailInfo.address)
+			window.walletState.checkItem(
+				this.props.neoConversion.record.address
+			)
 		) {
 			Msg.prompt(i18n.t("error.isSend", this.props.lng));
 			return;
@@ -234,16 +236,11 @@ export default class Root extends PureComponent {
 	}
 	async confirmPass(res) {
 		this.setState({ isShowPass: false, password: res });
-		let {
-			neoWalletDetailInfo,
-			neoConversion,
-			neoUtxo,
-			gasUtxo
-		} = this.props;
+		let { neoConversion, neoUtxo, gasUtxo } = this.props;
 		let { sendKey, sendAmount, sendAddress } = this.state;
 		let params = {};
-		params.Wallet = neoWalletDetailInfo.address;
-		let address = neoWalletDetailInfo.address;
+		params.Wallet = neoConversion.record.address;
+		let address = neoConversion.record.address;
 		params.To = this.state.sendAddress;
 		params.Amount =
 			"0x" + (this.state.sendAmount * Math.pow(10, 8)).toString(16);
@@ -316,11 +313,11 @@ export default class Root extends PureComponent {
 			let l = await this.props.sendNeoOrader(params);
 			if (l && l.data && l.txid) {
 				let order = await this.props.createOrder({
-					wallet_id: neoWalletDetailInfo.id,
+					wallet_id: neoConversion.record.id,
 					data: l.data,
 					trade_no:
 						l.txid.indexOf("0x") == -1 ? "0x" + l.txid : l.txid,
-					pay_address: neoWalletDetailInfo.address,
+					pay_address: neoConversion.record.address,
 					receive_address: sendAddress,
 					remark: "",
 					fee: fee + "",
@@ -332,7 +329,7 @@ export default class Root extends PureComponent {
 					window.walletState.addItem({
 						txid: order.data.tx,
 						flag: "NEO",
-						wallet_id: neoWalletDetailInfo.id,
+						wallet_id: neoConversion.record.id,
 						asset_id: params.Asset,
 						from: order.data.from,
 						to: order.data.to
@@ -352,12 +349,7 @@ export default class Root extends PureComponent {
 	}
 	getCommonMoney() {
 		let num = new BigNumber(0);
-		let {
-			lng,
-			neoWalletDetailInfo,
-			neoWalletAssets,
-			neoConversion
-		} = this.props;
+		let { lng, neoWalletAssets, neoConversion } = this.props;
 		if (neoConversion && neoConversion.record) {
 			let r = neoConversion.record;
 			num = num.plus(
@@ -418,7 +410,7 @@ export default class Root extends PureComponent {
 		return r.substring(0, r.lastIndexOf(".") + 3);
 	}
 	goOrderList(key) {
-		let { neoWalletDetailInfo, neoConversion } = this.props;
+		let { neoConversion } = this.props;
 		let asset_id = "",
 			name = "",
 			number = "",
@@ -482,14 +474,14 @@ export default class Root extends PureComponent {
 		toHref(
 			"orderlist",
 			`wallet_id=${
-				neoWalletDetailInfo.id
+				neoConversion.record.id
 			}&flag=neo&asset_id=${asset_id}&address=${
-				neoWalletDetailInfo.address
+				neoConversion.record.address
 			}&timetamp=orderlist_${time}`
 		);
 	}
 	goGas() {
-		toHref("gas", `walletid=${this.props.neoWalletDetailInfo.id}`);
+		toHref("gas", `walletid=${this.props.neoConversion.record.id}`);
 	}
 	async deleteCoin(item, e) {
 		e.stopPropagation();
@@ -501,19 +493,18 @@ export default class Root extends PureComponent {
 		}
 	}
 	goManage() {
-		let { neoWalletDetailInfo } = this.props;
+		let { neoConversion } = this.props;
 		toHref(
-			`managewallet?id=${neoWalletDetailInfo.id}&address=${
-				neoWalletDetailInfo.address
-			}&name=${neoWalletDetailInfo.name}`
+			`managewallet?id=${neoConversion.record.id}&address=${
+				neoConversion.record.address
+			}&name=${neoConversion.record.name}`
 		);
 	}
 	render() {
 		let {
 			lng,
-			neoWalletDetailInfo,
-			neoWalletAssets,
 			neoConversion,
+			neoWalletAssets,
 			walletOrderList
 		} = this.props;
 		let {
@@ -551,14 +542,16 @@ export default class Root extends PureComponent {
 										</div>
 										<div className="f1">
 											<div className="name">
-												{neoWalletDetailInfo &&
-													neoWalletDetailInfo.name}
-												{neoWalletDetailInfo &&
-												neoWalletDetailInfo.address &&
+												{neoConversion &&
+													neoConversion.record &&
+													neoConversion.record.name}
+												{neoConversion &&
+												neoConversion.record &&
+												neoConversion.record.address &&
 												backList &&
 												backList.length > 0 &&
 												backList.indexOf(
-													neoWalletDetailInfo.address
+													neoConversion.record.address
 												) == -1 ? (
 													<span className="backup">
 														{t("unbackup", lng)}
@@ -568,8 +561,9 @@ export default class Root extends PureComponent {
 												)}
 											</div>
 											<div className="address">
-												{neoWalletDetailInfo &&
-													neoWalletDetailInfo.address}
+												{neoConversion &&
+													neoConversion.record
+														.address}
 											</div>
 										</div>
 										<div className="money">
@@ -641,7 +635,8 @@ export default class Root extends PureComponent {
 										<div
 											onClick={this.addAsset.bind(
 												this,
-												neoWalletDetailInfo
+												neoConversion &&
+													neoConversion.record
 											)}
 											className="box-btn button-blue"
 										>

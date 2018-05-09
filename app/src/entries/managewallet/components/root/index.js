@@ -41,7 +41,7 @@ export default class Root extends PureComponent {
 			...set
 		});
 		this.deleteIPC = this.deleteIPC.bind(this);
-		ipc.on("deleteLocalWallet", this.deleteIPC);
+		// ipc.on("deleteLocalWallet", this.deleteIPC);
 	}
 	deleteIPC() {
 		this.deleteWallet.call(this, true);
@@ -50,7 +50,7 @@ export default class Root extends PureComponent {
 		this.setState({
 			address: ""
 		});
-		ipc.removeListener("deleteLocalWallet", this.deleteIPC);
+		// ipc.removeListener("deleteLocalWallet", this.deleteIPC);
 	}
 	showInputBox() {
 		this.setState({
@@ -100,13 +100,16 @@ export default class Root extends PureComponent {
 	}
 	deleteWallet(type) {
 		let { address, name, id, password } = this.state;
-		if (!type) {
-			ipc.send(
-				"question",
-				i18n.t("deletetip.title", this.props.lng),
-				i18n.t("deletetip.txt", this.props.lng)
-			);
-		} else {
+		let delW = dialog.showMessageBox(EWin, {
+			type: "question",
+			title: i18n.t("deletetip.title", this.props.lng),
+			message: i18n.t("deletetip.txt", this.props.lng),
+			buttons: [
+				i18n.t("deletetip.sure", this.props.lng),
+				i18n.t("deletetip.cannel", this.props.lng)
+			]
+		});
+		if (delW == 0) {
 			this.props
 				.deleteLocal({
 					address: address
@@ -125,6 +128,32 @@ export default class Root extends PureComponent {
 					}
 				});
 		}
+		return;
+		// if (!type) {
+		// 	ipc.send(
+		// 		"question",
+		// 		i18n.t("deletetip.title", this.props.lng),
+		// 		i18n.t("deletetip.txt", this.props.lng)
+		// 	);
+		// } else {
+		// 	this.props
+		// 		.deleteLocal({
+		// 			address: address
+		// 		})
+		// 		.then(res => {
+		// 			if (res == null) {
+		// 				this.props
+		// 					.deleteSever({
+		// 						id: id
+		// 					})
+		// 					.then(res1 => {
+		// 						if (res1.code === 4000) {
+		// 							toHref("wallet");
+		// 						}
+		// 					});
+		// 			}
+		// 		});
+		// }
 	}
 	render() {
 		let { lng } = this.props;

@@ -35,7 +35,12 @@ export default {
 		walletName: "Wallet Name",
 		password: "Password",
 		repeatPassword: "Repeat Password",
-		success: "Create Success"
+		success: "Create Success",
+		msgTitle: "Add Wallet Success",
+		msgTxt:
+			"Please make sure you have backed up your mnemonic and keystore file. Once backed up, the mnemonic will no longer exist in the app. If you lose the mnemonic or keystore, your wallet will not be recovered.",
+		msgBtn0: "Not now, enter the wallet",
+		msgBtn1: "Backup"
 	},
 	importWallet: {
 		title: "Import Wallet",
@@ -55,7 +60,8 @@ export default {
 	backKey: {
 		title: "Keystore",
 		export: "Export in file",
-		copy: "Copy"
+		copy: "Copy",
+		tip: "Click to enlarge the QR code for better scanning."
 	},
 
 	mnemonic: {
@@ -100,7 +106,9 @@ export default {
 		project: "Project",
 		dashboard: "DashBoard",
 		wallet: "Wallet",
-		myfollowup: "My Follow-up"
+		myfollowup: "My Follow-up",
+		hasUpdate: "New Version",
+		goUpdate: "Go update"
 	},
 
 	error: {
@@ -234,6 +242,13 @@ export default {
 	},
 	deletetip: {
 		title: "Delete",
-		txt: "Do you want to delete this wallet?"
+		txt: "Do you want to delete this wallet?",
+		sure: "Sure",
+		cannel: "Cannel"
+	},
+	downloadP: {
+		progress: "Download progress",
+		speed: "Download speed",
+		title: "Download Update"
 	}
 };

@@ -1,0 +1,55 @@
+.downloadP {
+	display: none;
+	position: fixed;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	background: rgba(0, 0, 0, 0);
+	z-index: 10000;
+	text-align: center;
+	&.show {
+		display: block;
+	}
+	&.animate {
+		.download-box {
+			transform: translateY(0);
+		}
+	}
+	.download-box {
+		width: 4rem;
+		display: inline-block;
+		background: #f8f8f8;
+		border-radius: 0.04rem;
+		padding: 0.1rem 0.1rem 0.2rem 0.1rem;
+		text-align: left;
+		box-shadow: 0 0 5px #000;
+		transform: translateY(-3rem);
+		transition: all 0.3s linear;
+		.download-title {
+			font-size: 0.14rem;
+			font-weight: normal;
+			margin-bottom: 0.1rem;
+			color: #404040;
+			text-align: center;
+		}
+		.txt {
+			color: #404040;
+			font-size: 0.14rem;
+			font-weight: normal;
+		}
+		.download-line {
+			height: 0.1rem;
+			background: #ccc;
+			border-radius: 0.04rem;
+			margin-top: 0.1rem;
+			overflow: hidden;
+			.download-inline {
+				width: 0;
+				height: 100%;
+				background: #44cb82;
+				transition: all 0.3s linear;
+			}
+		}
+	}
+}

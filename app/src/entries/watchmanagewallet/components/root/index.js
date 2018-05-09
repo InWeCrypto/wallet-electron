@@ -30,26 +30,28 @@ export default class Root extends PureComponent {
 			});
 		}
 		this.deleteIPC = this.deleteIPC.bind(this);
-		ipc.once("deleteWatchWallet", this.deleteIPC);
+		//ipc.once("deleteWatchWallet", this.deleteIPC);
 	}
 	componentWillUnmount() {
 		this.setState({
 			id: ""
 		});
-		ipc.removeListener("deleteLocalWallet", this.deleteIPC);
+		//ipc.removeListener("deleteLocalWallet", this.deleteIPC);
 	}
 	deleteIPC() {
 		this.deleteWatch(true);
 	}
 	deleteWatch(type) {
-		if (!type) {
-			ipc.send(
-				"question",
-				i18n.t("deletetip.title", this.props.lng),
-				i18n.t("deletetip.txt", this.props.lng),
-				true
-			);
-		} else {
+		var delW = dialog.showMessageBox(EWin, {
+			type: "question",
+			title: i18n.t("deletetip.title", this.props.lng),
+			message: i18n.t("deletetip.txt", this.props.lng),
+			buttons: [
+				i18n.t("deletetip.sure", this.props.lng),
+				i18n.t("deletetip.cannel", this.props.lng)
+			]
+		});
+		if (delW == 0) {
 			this.props
 				.deleteWatchWallet({
 					id: this.state.id
@@ -60,6 +62,25 @@ export default class Root extends PureComponent {
 					}
 				});
 		}
+		return;
+		// if (!type) {
+		// 	ipc.send(
+		// 		"question",
+		// 		i18n.t("deletetip.title", this.props.lng),
+		// 		i18n.t("deletetip.txt", this.props.lng),
+		// 		true
+		// 	);
+		// } else {
+		// 	this.props
+		// 		.deleteWatchWallet({
+		// 			id: this.state.id
+		// 		})
+		// 		.then(res => {
+		// 			if (res.code === 4000) {
+		// 				toHref("wallet");
+		// 			}
+		// 		});
+		// }
 	}
 	goChange() {
 		toHref(

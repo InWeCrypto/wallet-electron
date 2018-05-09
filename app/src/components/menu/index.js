@@ -4,13 +4,19 @@ import { I18n } from "react-i18next";
 import { Popover } from "antd";
 import menutop from "#/menutop.png";
 import memberImg from "#/tou_ico.png";
+import DownLoadProgress from "../downloadprogress/index";
 import { setLocalItem, getLocalItem, toHref } from "../../utils/util";
 import "./index.less";
 
 class Menu extends PureComponent {
 	constructor(props) {
 		super(props);
-		this.state = { showSearch: false, user: null, isDev: false };
+		this.state = {
+			showSearch: false,
+			user: null,
+			isDev: false,
+			hasUpdate: null
+		};
 	}
 	componentDidMount() {
 		let isDev = localStorage.getItem("isDev");
@@ -24,8 +30,23 @@ class Menu extends PureComponent {
 		} else {
 			set.isDev = false;
 		}
+		let hasUpdate = sessionStorage.getItem("hasUpdate");
+		if (hasUpdate) {
+			set.hasUpdate = JSON.parse(hasUpdate);
+		}
+
 		this.setState({
 			...set
+		});
+		ipc.on("checkUpdate", (event, res) => {
+			if (!res) {
+				sessionStorage.setItem("hasUpdate", false);
+			} else {
+				sessionStorage.setItem("hasUpdate", JSON.stringify(res));
+			}
+			this.setState({
+				hasUpdate: res
+			});
 		});
 	}
 	changeLanguage(type) {
@@ -36,6 +57,9 @@ class Menu extends PureComponent {
 			toHref("wallet");
 		}
 	}
+	updateClick() {
+		ipc.send("downUpdate");
+	}
 	changeNetWork(type) {
 		if (this.state.isDev != type) {
 			localStorage.setItem("isDev", type);
@@ -43,7 +67,7 @@ class Menu extends PureComponent {
 		}
 	}
 	render() {
-		const { user, isDev, userInfo } = this.state;
+		const { user, isDev, userInfo, hasUpdate } = this.state;
 		const { curmenu, curchildmenu, lng } = this.props;
 		return (
 			<I18n>
@@ -116,6 +140,26 @@ class Menu extends PureComponent {
 								</div>
 							</li> */}
 						</ul>
+						{hasUpdate && (
+							<div className="hasUpdater">
+								<div>
+									<i className="font_family icon-oval" />
+									<span>
+										{t("menu.hasUpdate", lng)}V{
+											hasUpdate.version
+										}
+									</span>
+								</div>
+								<div
+									className="updatebtn"
+									onClick={this.updateClick.bind(this)}
+								>
+									<span>{t("menu.goUpdate", lng)}</span>
+									<i className="font_family icon-golink" />
+								</div>
+							</div>
+						)}
+						<DownLoadProgress lng={lng} />
 					</div>
 				)}
 			</I18n>

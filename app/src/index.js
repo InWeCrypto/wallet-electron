@@ -8,7 +8,7 @@ import { render as domRender } from "react-dom";
 import Routes from "./routes";
 import registerServiceWorker from "./registerServiceWorker";
 import { changeLng, setReduxUserInfo } from "./globalactions";
-import { getLocalItem, remFun, addClass } from "./utils/util";
+import { remFun, addClass } from "./utils/util";
 import i18n from "./i18n";
 window.i18n = i18n;
 const store = storeFun();

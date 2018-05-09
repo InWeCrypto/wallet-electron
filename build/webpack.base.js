@@ -9,7 +9,11 @@ var path = require("path");
 var entries = {};
 var rootPath = path.resolve(__dirname, "../app/src");
 
-entries.app = [rootPath + "/index.js", rootPath + "/assets/less/common.less"];
+entries.app = [
+	rootPath + "/index.js",
+	rootPath + "/assets/less/common.less",
+	rootPath + "/assets/iconfont/iconfont.css"
+];
 entries.pace = [
 	path.join(rootPath, "/assets/js/pace.js"),
 	path.join(rootPath, "/assets/less/pace.theme.less")
@@ -30,6 +34,12 @@ var webpackConfig = {
 	},
 	node: {
 		fs: "empty"
+	},
+	externals: {
+		electron: "require('electron')",
+		child_process: "require('child_process')",
+		fs: "require('fs')",
+		path: "require('path')"
 	},
 	devtool: "cheap-module-source-map",
 	devServer: {
@@ -74,7 +84,7 @@ var webpackConfig = {
 				}
 			},
 			{
-				test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+				test: /\.(png|jpe?g|gif)(\?.*)?$/,
 				use: [
 					{
 						loader: "url-loader",
@@ -86,13 +96,13 @@ var webpackConfig = {
 				]
 			},
 			{
-				test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+				test: /\.(woff2?|eot|ttf|svg)(\?.*)?$/,
 				use: [
 					{
 						loader: "url-loader",
 						options: {
-							limit: 3000,
-							name: "assets/font/[name].[hash:9].[ext]"
+							limit: 10000,
+							name: "assets/iconfont/[name].[hash:9].[ext]"
 						}
 					}
 				]

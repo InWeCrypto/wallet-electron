@@ -92,13 +92,13 @@ export default class Root extends PureComponent {
 		return r;
 	}
 	setCopy() {
-		clipboard.writeText(this.props.ethWalletDetailInfo.address);
+		clipboard.writeText(this.props.ethWalletConversion.record.address);
 		Msg.prompt(i18n.t("success.copySucess", this.props.lng));
 	}
 	setPrint() {
 		ipc.send("print-preview", {
-			str: this.props.ethWalletDetailInfo.address,
-			title: this.props.ethWalletDetailInfo.name
+			str: this.props.ethWalletConversion.record.address,
+			title: this.props.ethWalletConversion.record.name
 		});
 	}
 	setQcode(str) {
@@ -129,7 +129,7 @@ export default class Root extends PureComponent {
 			this.myScroll.destroy();
 		}
 		if (idx === 3) {
-			this.setQcode(this.props.ethWalletDetailInfo.address);
+			this.setQcode(this.props.ethWalletConversion.record.address);
 		}
 	}
 	addAsset(info) {
@@ -252,22 +252,18 @@ export default class Root extends PureComponent {
 	}
 	async confirmPass(res) {
 		let { selectKey, sendAddress, sendAmount, gasNum } = this.state;
-		let {
-			ethWalletDetailInfo,
-			ethWalletConversion,
-			ethConversion
-		} = this.props;
+		let { ethWalletConversion, ethConversion } = this.props;
 
 		let params = {};
 		let n = await this.props.getEthNonce({
-			address: ethWalletDetailInfo.address.toLowerCase()
+			address: ethWalletConversion.record.address.toLowerCase()
 		});
 		let local = localStorage.getItem("localWallet");
 		if (local && JSON.parse(local).length > 0) {
 			JSON.parse(local).map((va, idx) => {
 				if (
 					va.address.toLowerCase() ==
-					ethWalletDetailInfo.address.toLowerCase()
+					ethWalletConversion.record.address.toLowerCase()
 				) {
 					params.Wallet = va.address;
 				}
@@ -307,9 +303,9 @@ export default class Root extends PureComponent {
 			let l = await this.props.setEthOrder(params);
 			if (l.length > 0) {
 				let res = await this.props.createOrder({
-					wallet_id: ethWalletDetailInfo.id,
+					wallet_id: ethWalletConversion.record.id,
 					data: l,
-					pay_address: ethWalletDetailInfo.address.toLowerCase(),
+					pay_address: ethWalletConversion.record.address.toLowerCase(),
 					receive_address: sendAddress.toLowerCase(),
 					remark: "",
 					fee: params.Amount,
@@ -321,7 +317,7 @@ export default class Root extends PureComponent {
 					window.walletState.addItem({
 						txid: res.data.tx,
 						flag: "ETH",
-						wallet_id: ethWalletDetailInfo.id,
+						wallet_id: ethWalletConversion.record.id,
 						asset_id: params.Asset,
 						from: res.data.from,
 						to: res.data.to
@@ -376,12 +372,7 @@ export default class Root extends PureComponent {
 		return r.toFixed(8);
 	}
 	getCommonMoney() {
-		let {
-			lng,
-			ethWalletDetailInfo,
-			ethWalletConversion,
-			ethConversion
-		} = this.props;
+		let { lng, ethWalletConversion, ethConversion } = this.props;
 
 		let num = new BigNumber(0);
 		if (ethConversion && ethConversion.list && ethConversion.list[0]) {
@@ -421,12 +412,7 @@ export default class Root extends PureComponent {
 		return r.substring(0, r.lastIndexOf(".") + 3);
 	}
 	goOrderList(key) {
-		let {
-			lng,
-			ethWalletDetailInfo,
-			ethWalletConversion,
-			ethConversion
-		} = this.props;
+		let { lng, ethWalletConversion, ethConversion } = this.props;
 		let asset_id = "",
 			name = "",
 			number = "",
@@ -434,10 +420,10 @@ export default class Root extends PureComponent {
 			price_usd = "",
 			decimals = null,
 			img = "";
-		if (key == 0 && ethWalletDetailInfo) {
+		if (key == 0 && ethWalletConversion.record) {
 			asset_id = "0x0000000000000000000000000000000000000000";
-			img = ethWalletDetailInfo.category.img;
-			name = ethWalletDetailInfo.category.name;
+			img = ethWalletConversion.record.category.img;
+			name = ethWalletConversion.record.category.name;
 			number = getEthNum(
 				ethConversion.list &&
 					ethConversion.list[0] &&
@@ -486,9 +472,9 @@ export default class Root extends PureComponent {
 		toHref(
 			"orderlist",
 			`wallet_id=${
-				ethWalletDetailInfo.id
+				ethWalletConversion.record.id
 			}&flag=eth&asset_id=${asset_id}&address=${
-				ethWalletDetailInfo.address
+				ethWalletConversion.record.address
 			}&timetamp=orderlist_${time}`
 		);
 	}
@@ -502,20 +488,15 @@ export default class Root extends PureComponent {
 		}
 	}
 	goManage() {
-		let { ethWalletDetailInfo } = this.props;
+		let { ethWalletConversion } = this.props;
 		toHref(
-			`managewallet?id=${ethWalletDetailInfo.id}&address=${
+			`managewallet?id=${ethWalletConversion.record.id}&address=${
 				this.state.localAddress
-			}&name=${ethWalletDetailInfo.name}`
+			}&name=${ethWalletConversion.record.name}`
 		);
 	}
 	render() {
-		let {
-			lng,
-			ethWalletDetailInfo,
-			ethWalletConversion,
-			ethConversion
-		} = this.props;
+		let { lng, ethWalletConversion, ethConversion } = this.props;
 		let {
 			type,
 			selectKey,
@@ -554,14 +535,16 @@ export default class Root extends PureComponent {
 										</div>
 										<div className="f1">
 											<div className="name">
-												{ethWalletDetailInfo &&
-													ethWalletDetailInfo.name}
-												{ethWalletDetailInfo &&
-													ethWalletDetailInfo.address &&
+												{ethWalletConversion &&
+													ethWalletConversion.record
+														.name}
+												{ethWalletConversion &&
+													ethWalletConversion.record
+														.address &&
 													backList &&
 													backList.length > 0 &&
 													backList.indexOf(
-														ethWalletDetailInfo.address.toLowerCase()
+														ethWalletConversion.record.address.toLowerCase()
 													) == -1 && (
 														<span className="backup">
 															{t("unbackup", lng)}
@@ -569,8 +552,8 @@ export default class Root extends PureComponent {
 													)}
 											</div>
 											<div className="address">
-												{ethWalletDetailInfo &&
-													ethWalletDetailInfo.address.toLowerCase()}
+												{ethWalletConversion &&
+													ethWalletConversion.record.address.toLowerCase()}
 											</div>
 										</div>
 										<div className="money">
@@ -633,7 +616,8 @@ export default class Root extends PureComponent {
 											className="box-btn button-blue"
 											onClick={this.addAsset.bind(
 												this,
-												ethWalletDetailInfo
+												ethWalletConversion &&
+													ethWalletConversion.record
 											)}
 										>
 											{t("walletDetail.addAsset", lng)}

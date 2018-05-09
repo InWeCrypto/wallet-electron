@@ -8,7 +8,7 @@ export default connect(
 		globData: { userInfo, lng },
 		ethwallet: {
 			ethWalletConversion,
-			ethWalletDetailInfo,
+
 			ethConversion,
 			ethGasNum,
 			assetsOrderList,
@@ -18,7 +18,6 @@ export default connect(
 		userInfo,
 		lng,
 		ethWalletConversion,
-		ethWalletDetailInfo,
 		ethConversion,
 		ethGasNum,
 		assetsOrderList,

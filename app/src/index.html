@@ -13,25 +13,38 @@
 <body>
     <div style="-webkit-app-region: drag;position: fixed;top: 0;left: 0;width: 100%;height: .2rem;z-index:100000;pointer-events:none;"></div>
     <div id="root"></div>
-    <script type="text/javascript" src="./mainfest/vendor.dll.js "></script>
+
     <script>
-        var electron = require("electron");
-        var fs = require('fs');
-        var os = require('os');
-        var path = require('path')
-        var cp = require("child_process");
-        window.log4js = require('log4js');
+        var electron = window.require("electron");
+        var os = window.require('os');
+        var fs = window.require('fs');
+        var path = window.require('path')
+        var cp = window.require("child_process");
+        window.log4js = window.require('log4js');
         let el = document.getElementById('root');
         log4js.configure({
             appenders: { cheese: { type: 'file', filename: path.join(os.tmpdir(), 'inwewallet/debug/cheese.log') } },
             categories: { default: { appenders: ['cheese'], level: 'info' } }
         });
         const logger = log4js.getLogger('cheese');
-        window.webFrame = electron.webFrame
-        window.ipc = electron.ipcRenderer;
-        window.shell = electron.shell;
-        window.dialog = electron.remote.dialog;
-        window.clipboard = electron.clipboard;
+        var webFrame = window.webFrame = electron.webFrame
+        var ipc = window.ipc = electron.ipcRenderer;
+        var shell = window.shell = electron.shell;
+        var EWin = window.EWin = electron.remote.getCurrentWindow();
+        var dialog = window.dialog = electron.remote.dialog;
+        var clipboard = window.clipboard = electron.clipboard;
+
+        ipc.on('checkUpdate', function (event, res) {
+            if (!res) {
+                sessionStorage.setItem('hasUpdate', false)
+            } else {
+                sessionStorage.setItem('hasUpdate', JSON.stringify(res))
+            }
+        })
+
+        ipc.on('downUpdate', function (event, ev) {
+            console.log(ev)
+        })
         ipc.on('changeNetwork', function (event, type) {
             let network = localStorage.getItem('isDev')
             if (type == 'test' && (!network || !JSON.parse(network))) {
@@ -105,6 +118,7 @@
         }
 
     </script>
+    <script type="text/javascript" src="./mainfest/vendor.dll.js "></script>
 </body>
 
 </html>

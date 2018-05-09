@@ -11,12 +11,12 @@ import {
 	DELETECOIN
 } from "./actions";
 
-export const ethWalletDetailInfo = handleActions(
-	{
-		[WALLETINFO]: (state, { payload }) => payload
-	},
-	null
-);
+// export const ethWalletDetailInfo = handleActions(
+// 	{
+// 		[WALLETINFO]: (state, { payload }) => payload
+// 	},
+// 	null
+// );
 export const ethWalletConversion = handleActions(
 	{
 		[GETETHWALLETCONVERSION]: (state, { payload }) => payload,

@@ -154,9 +154,31 @@ export default class Root extends PureComponent {
 			});
 			if (res1.code === 4000) {
 				Msg.prompt(i18n.t("createWallet.success", lng));
-				setTimeout(() => {
-					toHref("wallet");
-				}, 2000);
+				let qu = { ...res1.data, localAddress: res.address };
+				var go = dialog.showMessageBox(EWin, {
+					type: "question",
+					title: i18n.t("createWallet.msgTitle", lng),
+					message: i18n.t("createWallet.msgTxt", lng),
+					buttons: [
+						i18n.t("createWallet.msgBtn0", lng),
+						i18n.t("createWallet.msgBtn1", lng)
+					]
+				});
+				let data = res1.data.record;
+				if (go == 0) {
+					if (data.category_id == 2) {
+						toHref("neowallet", `id=${data.id}&type=2`);
+					}
+					if (data.category_id == 1) {
+						toHref("ethwallet", `id=${data.id}&type=2`);
+					}
+				}
+				if (go == 1) {
+					toHref(
+						"managewallet",
+						`id=${data.id}&address=${res.address}&name=${data.name}`
+					);
+				}
 			}
 		}
 	}

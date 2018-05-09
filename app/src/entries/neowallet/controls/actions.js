@@ -12,9 +12,9 @@ export const SENDNEOORDER = `${PRE_FIX}SENDNEOORDER`;
 export const CREATEORDER = `${PRE_FIX}CREATEORDER`;
 export const DELETECOIN = `${PRE_FIX}DELETECOIN`;
 
-export const setNeoWalletInfo = createAction(WALLETINFO, params => {
-	return params;
-});
+// export const setNeoWalletInfo = createAction(WALLETINFO, params => {
+// 	return params;
+// });
 export const getWalletAssets = createAction(GETWALLETASSETS, params => {
 	return http.get({ url: "user-gnt", params });
 });

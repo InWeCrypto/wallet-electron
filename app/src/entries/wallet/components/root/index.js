@@ -38,7 +38,9 @@ export default class Root extends PureComponent {
 		}
 		let local = await this.props.getLocalList();
 		localStorage.setItem("localWallet", JSON.stringify(local));
-		this.myScroll = new PerfectScrollbar("#listbox");
+		if (document.querySelector("#listbox")) {
+			this.myScroll = new PerfectScrollbar("#listbox");
+		}
 	}
 	componentWillUnmount() {
 		if (this.myScroll) {

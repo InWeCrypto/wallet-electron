@@ -95,7 +95,7 @@ export default class Root extends PureComponent {
 										onClick={this.showBig.bind(this)}
 									/>
 									<div className="tip">
-										点击放大才能扫描二维码
+										{t("backKey.tip", lng)}
 									</div>
 									<div className="showWordBox">
 										{walletDetail && walletDetail.json}

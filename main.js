@@ -63,7 +63,6 @@ function deleteall(path) {
 var setLanguage = function(lng) {
 	const tmdir = app.getPath("userData");
 	const area = app.getLocale();
-	console.log(area);
 	const langDir = path.join(tmdir, "inwecryptowallet/app.config.json");
 	const cfIsexit = fs.existsSync(langDir);
 	if (!cfIsexit) {
@@ -177,6 +176,20 @@ var runServer = function() {
 	);
 	createWindow();
 };
+// ipc.on("createSuccess", function(event, param) {
+// 	var createS = dialog.showMessageBox(win, {
+// 		type: "question",
+// 		title: param.title,
+// 		message: param.txt,
+// 		buttons: [param.button0, param.button1]
+// 	});
+// 	if (createS == 0 && param.queryData) {
+// 		win.webContents.send("createToWallet", param.queryData);
+// 	}
+// 	if (createS == 1 && param.queryData) {
+// 		win.webContents.send("createToManage", param.queryData);
+// 	}
+// });
 ipc.on("pageHistory", function(event, obj) {
 	var userDir = app.getPath("userData");
 	var uDir = path.join(userDir, "inweuser/userdata.json");
@@ -199,25 +212,25 @@ ipc.on("pageHistory", function(event, obj) {
 ipc.on("errorMsg", function(event, text, title) {
 	dialog.showErrorBox(text, title);
 });
-ipc.on("question", function(event, title, txt, isWatch) {
-	var sure = text.sure;
-	var cannel = text.cannel;
-	var quesState = dialog.showMessageBox(win, {
-		type: "question",
-		title: title,
-		message: txt,
-		buttons: [sure, cannel]
-	});
-	if (!isWatch) {
-		if (quesState == 0) {
-			win.webContents.send("deleteLocalWallet");
-		}
-	} else {
-		if (quesState == 0) {
-			win.webContents.send("deleteWatchWallet");
-		}
-	}
-});
+// ipc.on("question", function(event, title, txt, isWatch) {
+// 	var sure = text.sure;
+// 	var cannel = text.cannel;
+// 	var quesState = dialog.showMessageBox(win, {
+// 		type: "question",
+// 		title: title,
+// 		message: txt,
+// 		buttons: [sure, cannel]
+// 	});
+// 	if (!isWatch) {
+// 		if (quesState == 0) {
+// 			win.webContents.send("deleteLocalWallet");
+// 		}
+// 	} else {
+// 		if (quesState == 0) {
+// 			win.webContents.send("deleteWatchWallet");
+// 		}
+// 	}
+// });
 ipc.on("openWeb", function(event, arg) {
 	if (!arg || !arg.url || arg.url.length <= 0) {
 		dislog.showErrorBox(
@@ -297,39 +310,45 @@ var sendStatus = function(text) {
 		message: text
 	});
 };
-var updateHandler = function() {
-	autoUpdater.on("checking-for-update", () => {
-		//sendStatus("Checking for update...");
+ipc.on("downUpdate", function(event) {
+	win.webContents.send("startUpdate");
+	autoUpdater.downloadUpdate();
+});
+autoUpdater.on("download-progress", (ev, progressObj) => {
+	win.webContents.send("downUpdate", ev);
+});
+autoUpdater.on("update-downloaded", (ev, info) => {
+	win.webContents.send("endUpdate");
+	var isUpdate = dialog.showMessageBox(win, {
+		type: "question",
+		title: lng == "en" ? `Update` : "更新",
+		message: lng == "en" ? `Update download success` : "更新下载成功",
+		buttons: [
+			lng == "en" ? "update now" : "立即更新",
+			lng == "en" ? "update next time" : "下次启动更新"
+		]
 	});
-	autoUpdater.on("update-available", (ev, info) => {
-		// sendStatus(
-		// 	`Update available.${JSON.stringify(ev)}${JSON.stringify(info)}`
-		// );
-	});
-	autoUpdater.on("update-not-available", (ev, info) => {
-		// sendStatus(
-		// 	`Update not available.${JSON.stringify(ev)}${JSON.stringify(info)}`
-		// );
-	});
-	autoUpdater.on("error", (ev, err) => {
-		//sendStatus(`Error in auto-updater.${JSON.stringify(ev)}`);
-	});
-	autoUpdater.on("download-progress", (ev, progressObj) => {
-		//sendStatus(`Download progress ${JSON.stringify(progressObj)}`);
-	});
-	autoUpdater.on("update-downloaded", (ev, info) => {
-		sendStatus(
-			lng == "en"
-				? `you has an update,the app will restart to update`
-				: "你有一个更新，请重启"
-		);
+	if (isUpdate === 0) {
 		setTimeout(function() {
 			autoUpdater.quitAndInstall();
 			createWindow();
-			//win.webContents.send("setLastPage");
-		}, 2000);
+		}, 1000);
+	}
+});
+var updateHandler = function() {
+	autoUpdater.autoDownload = false;
+	autoUpdater.on("checking-for-update", ev => {
+		// sendStatus("Checking for update...");
 	});
-	// Wait a second for the window to exist before checking for updates.
+	autoUpdater.on("update-available", (ev, info) => {
+		win.webContents.send("checkUpdate", ev);
+	});
+	autoUpdater.on("update-not-available", (ev, info) => {
+		win.webContents.send("checkUpdate", null);
+	});
+	autoUpdater.on("error", (ev, err) => {
+		sendStatus(`Error in auto-updater.${JSON.stringify(ev)}`);
+	});
 	setTimeout(function() {
 		autoUpdater.checkForUpdates();
 	}, 1000);
@@ -392,6 +411,7 @@ function createWindow() {
 		if (!isDev) {
 			updateHandler();
 		}
+		// updateHandler();
 		ses = win.webContents.session;
 		if (uf) {
 			win.webContents.send("loadHistory", uf);
