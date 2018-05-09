@@ -384,6 +384,21 @@ export default class Root extends PureComponent {
 																					)}
 																				</span>
 																			)}
+																		{!item.isWatch &&
+																			!item.isBackup && (
+																				<span
+																					onClick={this.goManger.bind(
+																						this,
+																						item
+																					)}
+																					className="goback"
+																				>
+																					{t(
+																						"gobackup",
+																						lng
+																					)}
+																				</span>
+																			)}
 																	</div>
 																	<div className="wallet-address">
 																		{item.category_id ==

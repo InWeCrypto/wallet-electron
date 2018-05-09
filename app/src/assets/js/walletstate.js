@@ -20,6 +20,9 @@ window.walletState = (function(win, http, undefined) {
 			let list = JSON.parse(stateL);
 			for (let i = 0; i < list.length; i++) {
 				if (list[i]) {
+					if (list[i].indexOf("0x") != -1) {
+						return;
+					}
 					var isPending = true;
 					var state = await checkSingle({
 						wallet_id: list[i].wallet_id,

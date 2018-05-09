@@ -24,7 +24,8 @@ export default class Root extends PureComponent {
 			forgetCode: "",
 			forgetPassword: "",
 			forgetRepassword: "",
-			registerTime: 60
+			registerTime: 60,
+			userAgreement: false
 		};
 		this.pressLogin = this.pressLogin.bind(this);
 	}
@@ -94,6 +95,10 @@ export default class Root extends PureComponent {
 		}
 		if (this.state.password.length <= 0) {
 			Msg.prompt(i18n.t("error.passwordEmpty", this.props.lng));
+			return;
+		}
+		if (!this.state.userAgreement) {
+			Msg.prompt(i18n.t("error.agreement", this.props.lng));
 			return;
 		}
 		let loading = Msg.load(i18n.t("login.loading", this.props.lng));
@@ -216,6 +221,16 @@ export default class Root extends PureComponent {
 				}
 			});
 	}
+	checkClick(e) {
+		this.setState({
+			userAgreement: !this.state.userAgreement
+		});
+	}
+	goAgreement() {
+		ipc.send("openWeb", {
+			url: `http://inwecrypto.com/userAgreement.html`
+		});
+	}
 	render() {
 		let { lng } = this.props;
 		let {
@@ -230,7 +245,8 @@ export default class Root extends PureComponent {
 			forgetEmail,
 			forgetCode,
 			forgetPassword,
-			forgetRepassword
+			forgetRepassword,
+			userAgreement
 		} = this.state;
 		return (
 			<I18n>
@@ -292,6 +308,25 @@ export default class Root extends PureComponent {
 											>
 												{t("login.signin", lng)}
 											</div>
+										</div>
+									</div>
+									<div className="agreement-item">
+										<div className="agreement">
+											<input
+												className="checkbox"
+												type="checkbox"
+												checked={userAgreement}
+												onChange={this.checkClick.bind(
+													this
+												)}
+											/>
+											<span
+												onClick={this.goAgreement.bind(
+													this
+												)}
+											>
+												同意用户协议
+											</span>
 										</div>
 									</div>
 									<div className="login-item">

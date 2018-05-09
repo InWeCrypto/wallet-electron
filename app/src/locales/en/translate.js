@@ -141,7 +141,9 @@ export default {
 		ethfrequently: "The transfer is too frequent, please later",
 		neoEmpty: "The number of Neo is 0, not thawing",
 		hasLocal:
-			"There is a local wallet , can not be added to the watch wallet."
+			"There is a local wallet , can not be added to the watch wallet.",
+		agreement:
+			"Please agree to agreement on Software License and Service of InWeCrypto"
 	},
 	delete: {
 		delete: "Delete"
@@ -196,7 +198,8 @@ export default {
 		btn2: "Unfreeze",
 		place: "Enter your password"
 	},
-	unbackup: "unbackup",
+	unbackup: "Unbackup",
+	gobackup: "Backup",
 	walletDetail: {
 		watch: "watch",
 		asset: "Assets",

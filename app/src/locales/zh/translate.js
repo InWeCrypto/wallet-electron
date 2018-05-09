@@ -132,7 +132,8 @@ export default {
 		keyerror: "Key Store 格式错误",
 		ethfrequently: "转账太频繁，请稍后",
 		neoEmpty: "Neo数量为0，不能解冻",
-		hasLocal: "已经存在本地钱包，不能添加为观察钱包"
+		hasLocal: "已经存在本地钱包，不能添加为观察钱包",
+		agreement: "未勾选用户协议"
 	},
 	delete: {
 		delete: "删除"
@@ -187,6 +188,7 @@ export default {
 		place: "输入您的密码"
 	},
 	unbackup: "未备份",
+	gobackup: "去备份",
 	walletDetail: {
 		watch: "观察",
 		asset: "资产",
