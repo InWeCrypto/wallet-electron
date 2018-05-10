@@ -5,6 +5,7 @@ export const LNG = "LNG";
 export const USERINFO = "USERINFO";
 export const EMAILCODE = "EMAILCODE";
 export const WALLETTYPES = "WALLETTYPES";
+export const SUBMITFEEDBACK = "SUBMITFEEDBACK";
 // export const NICKNAME = "NICKNAME";
 // export const USERHEADER = "USERHEADER";
 // export const HEADERMARKET = "HEADERMARKET";
@@ -93,6 +94,20 @@ export const resetPassword = createAction(USERINFO, params => {
 			}
 		});
 });
+export const getWalletType = createAction(WALLETTYPES, params => {
+	return http.get({
+		url: "wallet-category"
+	});
+});
+export const submitFeedBack = createAction(SUBMITFEEDBACK, params => {
+	return http.post(
+		{
+			url: "user/feedbackc",
+			params
+		},
+		3
+	);
+});
 // export const resetNickName = createAction(NICKNAME, params => {
 // 	return http
 // 		.put({
@@ -106,11 +121,7 @@ export const resetPassword = createAction(USERINFO, params => {
 // 			return res;
 // 		});
 // });
-export const getWalletType = createAction(WALLETTYPES, params => {
-	return http.get({
-		url: "wallet-category"
-	});
-});
+
 // export const uploadHeader = createAction(USERHEADER, img => {
 // 	return http
 // 		.put({

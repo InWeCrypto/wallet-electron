@@ -5,7 +5,8 @@ import {
 	USERINFO,
 	WALLETTYPES,
 	NICKNAME,
-	USERHEADER
+	USERHEADER,
+	SUBMITFEEDBACK
 	// HEADERMARKET,
 	// RESETPASSWORD,
 	// GETIMGOPTION
@@ -42,6 +43,12 @@ export const emailCode = handleActions(
 export const walletTypes = handleActions(
 	{
 		[WALLETTYPES]: (state, { payload }) => payload
+	},
+	null
+);
+export const feedback = handleActions(
+	{
+		[SUBMITFEEDBACK]: (state, { payload }) => payload
 	},
 	null
 );

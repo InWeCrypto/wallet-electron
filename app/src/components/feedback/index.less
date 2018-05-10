@@ -1,0 +1,108 @@
+.feedback {
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0;
+	background: rgba(0, 0, 0, 0);
+	z-index: 1000;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	.feedback-box {
+		background: #efefef;
+		width: 3.68rem;
+		height: 4.25rem;
+		border-radius: 0.04rem;
+		overflow: hidden;
+		.feedback-title {
+			height: 0.26rem;
+			background: linear-gradient(
+				to bottom,
+				#f5f5f5,
+				#cfcfcf 70%,
+				#cfcfcf
+			);
+		}
+		.feedback-content {
+			box-sizing: border-box;
+			padding: 0 0.3rem;
+			.txt1 {
+				font-size: 0.16rem;
+				color: #333;
+				font-weight: bold;
+				padding: 0.2rem 0 0.1rem 0;
+			}
+			.txt2 {
+				font-size: 0.14rem;
+				color: #9fa0a0;
+			}
+			.label {
+				padding: 0.05rem 0;
+				display: inline-block;
+				width: 1rem;
+				vertical-align: middle;
+				.font_family {
+					margin-right: 0.05rem;
+					vertical-align: middle;
+				}
+				.icon-checked {
+					color: #009857;
+				}
+				span {
+					vertical-align: middle;
+				}
+			}
+			.feedback-text {
+				height: 1.78rem;
+				border: 1px solid #e1e1e1;
+				border-radius: 0.04rem;
+				overflow: hidden;
+				margin-top: 0.1rem;
+				.area {
+					width: 100%;
+					height: 100%;
+					background: #ffffff;
+					resize: none;
+					box-sizing: border-box;
+					padding: 0.1rem;
+					outline: none;
+					border: none;
+					font-size: 0.12rem;
+				}
+				.area::-webkit-input-placeholder {
+					color: #9fa0a0;
+				}
+			}
+			.contact {
+				height: 0.36rem;
+				border: 1px solid #e1e1e1;
+				border-radius: 0.04rem;
+				margin-top: 0.1rem;
+				overflow: hidden;
+				.contact-input {
+					width: 100%;
+					height: 100%;
+					border: none;
+					outline: none;
+					padding: 0 0.1rem;
+					font-size: 0.12rem;
+				}
+				.contact-input::-webkit-input-placeholder {
+					color: #9fa0a0;
+				}
+			}
+			.feedback-btn {
+				margin-top: 0.15rem;
+				text-align: right;
+				.btn {
+					width: 0.54rem;
+					height: 0.24rem;
+					line-height: 0.22rem;
+					font-size: 0.12rem;
+					margin-left: 0.1rem;
+				}
+			}
+		}
+	}
+}

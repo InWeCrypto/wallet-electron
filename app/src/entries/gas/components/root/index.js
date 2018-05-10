@@ -304,6 +304,9 @@ export default class Root extends PureComponent {
 			}&timetamp=orderlist_${time}`
 		);
 	}
+	submitFeed(params) {
+		return this.props.submitFeedBack(params);
+	}
 	render() {
 		let { lng, gasInfo } = this.props;
 		let { frozenShow, totalShow, password, passwordT } = this.state;
@@ -311,7 +314,11 @@ export default class Root extends PureComponent {
 			<I18n>
 				{(t, { i18n }) => (
 					<div className="main-box gas">
-						<Menu curmenu="wallet" lng={lng} />
+						<Menu
+							submitFeed={this.submitFeed.bind(this)}
+							curmenu="wallet"
+							lng={lng}
+						/>
 						<div className="content-container">
 							<HeaderNav history={this.props.history} />
 							<div className="content gas-content">

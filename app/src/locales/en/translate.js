@@ -108,7 +108,9 @@ export default {
 		wallet: "Wallet",
 		myfollowup: "My Follow-up",
 		hasUpdate: "New Version",
-		goUpdate: "Go update"
+		goUpdate: "Go update",
+		nowVersion: "Version",
+		feedback: "FeedBack"
 	},
 
 	error: {
@@ -253,5 +255,20 @@ export default {
 		progress: "Download progress",
 		speed: "Download speed",
 		title: "Download Update"
+	},
+	feedback: {
+		title: "Feedback",
+		type: "Selection feedback type",
+		type1: "Function",
+		type2: "Content",
+		type3: "Others",
+		place1: "We value your feedback and advice",
+		place2: "Contact（Phone Number/QQ/Email）",
+		btn1: "Cancel",
+		btn0: "Submit",
+		success: "Submit Success",
+		contentEmpty: "content con't empty",
+		contactEmpty: "contact con't empty",
+		subError: "Submit Error"
 	}
 };

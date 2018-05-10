@@ -33,6 +33,7 @@
         var EWin = window.EWin = electron.remote.getCurrentWindow();
         var dialog = window.dialog = electron.remote.dialog;
         var clipboard = window.clipboard = electron.clipboard;
+        var app = window.app = electron.remote.app;
 
         ipc.on('checkUpdate', function (event, res) {
             if (!res) {

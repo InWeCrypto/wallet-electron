@@ -1,8 +1,8 @@
 import React, { PureComponent } from "react";
 import { I18n } from "react-i18next";
 import { BigNumber } from "bignumber.js";
+
 import "./index.less";
-import { getNumberString } from "../../utils/util";
 
 class DownloadProgress extends PureComponent {
 	constructor() {
@@ -49,7 +49,6 @@ class DownloadProgress extends PureComponent {
 	render() {
 		let { totle, transferred, percent, bytesPerSecond } = this.state;
 		let { lng } = this.props;
-		console.log(this.state);
 		return (
 			<I18n>
 				{(t, { i18n }) => (

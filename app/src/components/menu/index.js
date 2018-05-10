@@ -5,6 +5,7 @@ import { Popover } from "antd";
 import menutop from "#/menutop.png";
 import memberImg from "#/tou_ico.png";
 import DownLoadProgress from "../downloadprogress/index";
+import FeedBack from "../feedback/index";
 import { setLocalItem, getLocalItem, toHref } from "../../utils/util";
 import "./index.less";
 
@@ -15,7 +16,8 @@ class Menu extends PureComponent {
 			showSearch: false,
 			user: null,
 			isDev: false,
-			hasUpdate: null
+			hasUpdate: null,
+			isShowFeed: false
 		};
 	}
 	componentDidMount() {
@@ -34,6 +36,7 @@ class Menu extends PureComponent {
 		if (hasUpdate) {
 			set.hasUpdate = JSON.parse(hasUpdate);
 		}
+		set.version = app.getVersion();
 
 		this.setState({
 			...set
@@ -66,8 +69,28 @@ class Menu extends PureComponent {
 			toHref("/");
 		}
 	}
+	showFeedBack() {
+		this.setState({
+			isShowFeed: true
+		});
+	}
+	closeFeed() {
+		this.setState({
+			isShowFeed: false
+		});
+	}
+	submitFeed(params) {
+		return this.props.submitFeed(params);
+	}
 	render() {
-		const { user, isDev, userInfo, hasUpdate } = this.state;
+		const {
+			user,
+			isDev,
+			userInfo,
+			hasUpdate,
+			isShowFeed,
+			version
+		} = this.state;
 		const { curmenu, curchildmenu, lng } = this.props;
 		return (
 			<I18n>
@@ -149,6 +172,12 @@ class Menu extends PureComponent {
 											hasUpdate.version
 										}
 									</span>
+									<span
+										className="feedbtn"
+										onClick={this.showFeedBack.bind(this)}
+									>
+										{t("menu.feedback", lng)}
+									</span>
 								</div>
 								<div
 									className="updatebtn"
@@ -158,6 +187,27 @@ class Menu extends PureComponent {
 									<i className="font_family icon-golink" />
 								</div>
 							</div>
+						)}
+						{!hasUpdate && (
+							<div className="hasUpdater">
+								<span>
+									{t("menu.nowVersion", lng)}V{version}
+								</span>
+								<span
+									className="feedbtn"
+									onClick={this.showFeedBack.bind(this)}
+								>
+									{t("menu.feedback", lng)}
+								</span>
+							</div>
+						)}
+
+						{isShowFeed && (
+							<FeedBack
+								lng={lng}
+								close={this.closeFeed.bind(this)}
+								submit={this.submitFeed.bind(this)}
+							/>
 						)}
 						<DownLoadProgress lng={lng} />
 					</div>

@@ -73,6 +73,9 @@ export default class Root extends PureComponent {
 		}
 		this.props.history.go(-1);
 	}
+	submitFeed(params) {
+		return this.props.submitFeedBack(params);
+	}
 	render() {
 		let { lng, walletTypes } = this.props;
 		let { type, walletId, name } = this.state;
@@ -80,7 +83,11 @@ export default class Root extends PureComponent {
 			<I18n>
 				{(t, { i18n }) => (
 					<div className="main-box">
-						<Menu curmenu="wallet" lng={lng} />
+						<Menu
+							submitFeed={this.submitFeed.bind(this)}
+							curmenu="wallet"
+							lng={lng}
+						/>
 						<div className="content-container">
 							<HeaderNav
 								back={this.backClick.bind(this)}

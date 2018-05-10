@@ -101,7 +101,9 @@ export default {
 		wallet: "钱包",
 		myfollowup: "我的关注",
 		hasUpdate: "你有新版本",
-		goUpdate: "去更新"
+		goUpdate: "去更新",
+		nowVersion: "当前版本",
+		feedback: "意见反馈"
 	},
 
 	error: {
@@ -242,5 +244,20 @@ export default {
 		progress: "下载进度",
 		speed: "下载速度",
 		title: "下载更新"
+	},
+	feedback: {
+		title: "意见反馈",
+		type: "选择反馈类型",
+		type1: "功能建议",
+		type2: "内容建议",
+		type3: "其他",
+		place1: "我们希望倾听您宝贵的意见与反馈",
+		place2: "你的联系方式（可填写您的手机号码/QQ/邮箱等）",
+		btn1: "取消",
+		btn0: "提交",
+		success: "提交成功",
+		contentEmpty: "内容不能为空",
+		contactEmpty: "联系方式不能为空",
+		subError: "提交错误"
 	}
 };

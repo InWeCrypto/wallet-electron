@@ -1,6 +1,6 @@
 {
 	"name": "InWeCrypto",
-	"version": "1.0.2",
+	"version": "1.0.30",
 	"description": "InWeCrypto",
 	"main": "main.js",
 	"scripts": {
@@ -29,7 +29,7 @@
 			{
 				"provider": "generic",
 				"url":
-					"https://inwecrypto-china.oss-cn-shanghai.aliyuncs.com/pc-wallet/"
+					"https://inwecrypto-china.oss-cn-shanghai.aliyuncs.com/pcwallet/"
 			}
 		],
 		"dmg": {

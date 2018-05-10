@@ -40,6 +40,9 @@ export default class Root extends PureComponent {
 			arrShow: JSON.parse(JSON.stringify(arrShow))
 		});
 	}
+	submitFeed(params) {
+		return this.props.submitFeedBack(params);
+	}
 	render() {
 		let { lng } = this.props;
 		let { isfirstPage, arr, arrShow } = this.state;
@@ -48,7 +51,11 @@ export default class Root extends PureComponent {
 			<I18n>
 				{(t, { i18n }) => (
 					<div className="main-box mnemonic">
-						<Menu curmenu="wallet" lng={lng} />
+						<Menu
+							submitFeed={this.submitFeed.bind(this)}
+							curmenu="wallet"
+							lng={lng}
+						/>
 						<div className="content-container">
 							<HeaderNav history={this.props.history} />
 							<div className="content mnemonic-content">
