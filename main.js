@@ -341,13 +341,13 @@ var updateHandler = function() {
 		// sendStatus("Checking for update...");
 	});
 	autoUpdater.on("update-available", (ev, info) => {
-		win.webContents.send("checkUpdate", ev);
+		//win.webContents.send("checkUpdate", ev);
 	});
 	autoUpdater.on("update-not-available", (ev, info) => {
-		win.webContents.send("checkUpdate", null);
+		//win.webContents.send("checkUpdate", null);
 	});
 	autoUpdater.on("error", (ev, err) => {
-		sendStatus(`Error in auto-updater.${JSON.stringify(ev)}`);
+		//sendStatus(`Error in auto-updater.${JSON.stringify(ev)}`);
 	});
 	setTimeout(function() {
 		autoUpdater.checkForUpdates();
@@ -674,9 +674,6 @@ app.on("ready", function() {
 							win.webContents.send("clear");
 						});
 					}
-				},
-				{
-					type: "separator"
 				},
 				{
 					type: "separator"
